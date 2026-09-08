@@ -10,3 +10,5 @@ localization-output/
 __pycache__/
 patch_repo/
 tools/bin/
+build/
+*.str

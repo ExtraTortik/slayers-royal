@@ -56,3 +56,5 @@ All tasks agree with global constraints. Scan clean.
 - FMV Task 1: complete (tools/bin/psxavenc compiled, tools/fmv_pipeline.py and tools/test_fmv_pipeline.py implemented, 22/22 tests pass, report written)
 - FMV Subtitles Task 1: complete (commit 21f8cc5, psxavenc compiled in tools/bin/, MOVIE_MAP created in tools/fmv_pipeline.py, 22/22 tests pass)
 - FMV Task 2: complete (subtitle burning with FFmpeg, PS1 STR encoding with psxavenc, pad_str_to_sectors, and encode_movie implemented, 42/42 tests pass)
+- FMV Subtitles Task 2: complete (commit 35634d2, encode_movie implemented with subtitle burn, psxavenc encoding, and sector padding; 42/42 tests pass)
+- FMV Subtitles Task 3: complete (batch encoding of all 11 Russian subtitled cutscenes, MOVIE.STR 433,450,080 B injected into disc at LBA 127, 712,300,848 B, SHA256 18f3da6c096d6fbbdfce7819af248cbd6200c9873d03a3655ca1bd94a996dbe3, preview frame verified, 122/122 tests pass)

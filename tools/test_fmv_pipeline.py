@@ -35,13 +35,16 @@ from tools.fmv_pipeline import (
     PSXAVENC_PATH,
     SECTOR_RAW_SIZE,
     VIDEOS_DIR,
+    batch_encode_all_movies,
     burn_subtitles_to_avi,
     check_psxavenc,
+    concat_movies_to_str,
     encode_avi_to_str,
     encode_movie,
     get_movie_info,
     get_psxavenc_path,
     get_video_assets,
+    inject_movie_str_into_disc,
     make_padding_sector,
     pad_str_to_sectors,
     verify_movie_map,
@@ -417,3 +420,100 @@ class TestEncodeMoviePipeline:
     def test_encode_movie_missing_video_raises(self, tmp_path: Path):
         with pytest.raises(FileNotFoundError):
             encode_movie(1, tmp_path / "empty_videos", tmp_path / "out.str")
+
+
+class TestConcatMoviesToStr:
+    """Validate concatenating individual movie STR streams into MOVIE.STR."""
+
+    def test_concat_movies_missing_file_raises(self, tmp_path: Path):
+        missing = tmp_path / "missing.str"
+        with pytest.raises(FileNotFoundError):
+            concat_movies_to_str([missing], tmp_path / "out.str")
+
+    def test_concat_movies_size_mismatch_raises(self, tmp_path: Path):
+        dummy = tmp_path / "dummy.str"
+        dummy.write_bytes(b"\x00" * 2352)
+        with pytest.raises(ValueError):
+            concat_movies_to_str([dummy], tmp_path / "out.str")
+
+
+class TestBatchEncodeAllMovies:
+    """Validate batch encoding orchestrator."""
+
+    def test_batch_encode_missing_videos_dir_raises(self, tmp_path: Path):
+        with pytest.raises(FileNotFoundError):
+            batch_encode_all_movies(videos_dir=tmp_path / "nonexistent", out_dir=tmp_path / "out")
+
+
+class TestInjectMovieStrIntoDisc:
+    """Validate injecting MOVIE.STR into target disc image."""
+
+    def test_inject_disc_not_found_raises(self, tmp_path: Path):
+        with pytest.raises(FileNotFoundError):
+            inject_movie_str_into_disc(tmp_path / "missing.bin", tmp_path)
+
+    def test_inject_disc_invalid_size_raises(self, tmp_path: Path):
+        bad_disc = tmp_path / "bad.bin"
+        bad_disc.write_bytes(b"\x00" * 1000)
+        with pytest.raises(ValueError, match="Invalid target disc size"):
+            inject_movie_str_into_disc(bad_disc, tmp_path)
+
+    def test_inject_disc_from_movies_directory(self, tmp_path: Path):
+        # Create mock 712,300,848-byte disc image
+        mock_disc = tmp_path / "disc.bin"
+        with open(mock_disc, "wb") as f:
+            f.truncate(712_300_848)
+
+        # Create 12 mock movie files with correct sync & MDEC header
+        movies_dir = tmp_path / "movies"
+        movies_dir.mkdir()
+        for idx in range(12):
+            info = get_movie_info(idx)
+            movie_file = movies_dir / f"{info.name}.str"
+            # First sector needs sync and MDEC magic
+            first_sec = bytearray(b"\x00" * SECTOR_RAW_SIZE)
+            first_sec[:12] = b"\x00" + b"\xff" * 10 + b"\x00"
+            first_sec[15] = 2
+            first_sec[18] = 0x48
+            first_sec[24:28] = b"\x60\x01\x01\x80"
+            with open(movie_file, "wb") as f:
+                f.write(first_sec)
+                if info.raw_size_bytes > SECTOR_RAW_SIZE:
+                    f.truncate(info.raw_size_bytes)
+
+        bytes_injected = inject_movie_str_into_disc(mock_disc, movies_dir)
+        assert bytes_injected == MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE
+        assert mock_disc.stat().st_size == 712_300_848
+
+        # Verify injected sectors at movie boundaries
+        with open(mock_disc, "rb") as f:
+            for idx in range(12):
+                info = get_movie_info(idx)
+                f.seek(info.raw_offset)
+                sec = f.read(SECTOR_RAW_SIZE)
+                assert sec[:12] == b"\x00" + b"\xff" * 10 + b"\x00"
+                assert sec[24:28] == b"\x60\x01\x01\x80"
+
+    def test_inject_disc_from_single_movie_str(self, tmp_path: Path):
+        mock_disc = tmp_path / "disc.bin"
+        with open(mock_disc, "wb") as f:
+            f.truncate(712_300_848)
+
+        # Create mock MOVIE.STR of exact size
+        movie_str_file = tmp_path / "MOVIE.STR"
+        with open(movie_str_file, "wb") as f:
+            f.truncate(MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE)
+            # Stamp first sector of each movie
+            for idx in range(12):
+                info = get_movie_info(idx)
+                sec = bytearray(b"\x00" * SECTOR_RAW_SIZE)
+                sec[:12] = b"\x00" + b"\xff" * 10 + b"\x00"
+                sec[15] = 2
+                sec[18] = 0x48
+                sec[24:28] = b"\x60\x01\x01\x80"
+                f.seek(info.rel_sec * SECTOR_RAW_SIZE)
+                f.write(sec)
+
+        bytes_injected = inject_movie_str_into_disc(mock_disc, movie_str_file)
+        assert bytes_injected == MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE
+        assert mock_disc.stat().st_size == 712_300_848

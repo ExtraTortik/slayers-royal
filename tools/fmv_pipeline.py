@@ -407,6 +407,181 @@ def encode_movie(
 
     return len(final_bytes)
 
+def concat_movies_to_str(movie_paths: list[Path | str], out_path: Path | str) -> int:
+    """Concatenate individual movie STR files into a unified MOVIE.STR stream."""
+    out_p = Path(out_path)
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+    total_bytes = 0
+    with open(out_p, "wb") as f_out:
+        for p in movie_paths:
+            p = Path(p)
+            if not p.is_file():
+                raise FileNotFoundError(f"Cannot concatenate missing movie file: {p}")
+            with open(p, "rb") as f_in:
+                while chunk := f_in.read(1024 * 1024):
+                    f_out.write(chunk)
+                    total_bytes += len(chunk)
+    expected_bytes = MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE
+    if total_bytes != expected_bytes:
+        raise ValueError(
+            f"Combined MOVIE.STR size mismatch: got {total_bytes:,} bytes, expected {expected_bytes:,} bytes"
+        )
+    return total_bytes
+
+
+def batch_encode_all_movies(
+    videos_dir: Path | str = VIDEOS_DIR,
+    out_dir: Path | str | None = None,
+    source_bin_path: Path | str | None = None,
+    duration: float | int | None = None,
+    force: bool = False,
+) -> list[Path]:
+    """Batch encode all 12 movies (s00..s11) into PS1 STR files and generate MOVIE.STR.
+
+    - s00: extracted directly from source_bin_path (downloads/sr.bin) as unsubbed opening.
+    - s01..s11: burned with Russian subtitles via FFmpeg, encoded to STR via psxavenc,
+      and padded to exact MOVIE_MAP sector bounds.
+
+    Returns a list of generated STR file paths.
+    """
+    videos_path = Path(videos_dir)
+    out_path = Path(out_dir) if out_dir is not None else (REPO_ROOT / "build" / "movies")
+    out_path.mkdir(parents=True, exist_ok=True)
+
+    results: list[Path] = []
+    print(f"Batch encoding all 12 movies into {out_path}...")
+    for idx in range(12):
+        info = get_movie_info(idx)
+        dest_str = out_path / f"{info.name}.str"
+        if not force and duration is None and dest_str.is_file() and dest_str.stat().st_size == info.raw_size_bytes:
+            print(f"[{idx+1:2d}/12] Movie {idx:2d} ({info.name}) already encoded ({info.raw_size_bytes:,} bytes), reusing.")
+            results.append(dest_str)
+            continue
+
+        print(f"[{idx+1:2d}/12] Encoding movie {idx:2d} ({info.name}): target {info.sectors:,} sectors ({info.raw_size_bytes:,} bytes)...")
+        bytes_written = encode_movie(
+            movie_idx=idx,
+            videos_dir=videos_path,
+            out_str_path=dest_str,
+            source_bin_path=source_bin_path,
+            duration=duration,
+        )
+        if bytes_written != info.raw_size_bytes:
+            raise ValueError(
+                f"Movie {info.name} size mismatch: got {bytes_written} bytes, expected {info.raw_size_bytes}"
+            )
+        results.append(dest_str)
+
+    combined_str_path = out_path / "MOVIE.STR"
+    if not force and duration is None and combined_str_path.is_file() and combined_str_path.stat().st_size == MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE:
+        print(f"Combined MOVIE.STR already exists ({combined_str_path.stat().st_size:,} bytes), reusing.")
+    else:
+        print(f"Concatenating all 12 movies into {combined_str_path}...")
+        concat_movies_to_str(results, combined_str_path)
+    print("Batch encoding completed successfully.")
+    return results
+
+
+def inject_movie_str_into_disc(
+    disc_path: Path | str,
+    movies_dir: Path | str,
+) -> int:
+    """Inject the combined 184,290-sector MOVIE.STR into a PS1 CD-ROM disc image.
+
+    Can accept:
+    - A directory containing s00.str..s11.str (or MOVIE.STR).
+    - A single combined MOVIE.STR file.
+
+    Writes exactly 433,450,080 bytes (184,290 sectors) at LBA 127 (raw byte offset 298,704).
+    Validates disc size and movie stream headers.
+
+    Returns the total number of bytes written.
+    """
+    disc_p = Path(disc_path)
+    if not disc_p.is_file():
+        raise FileNotFoundError(f"Target disc image not found: {disc_p}")
+
+    disc_size = disc_p.stat().st_size
+    if disc_size != 712_300_848:
+        raise ValueError(
+            f"Invalid target disc size: expected 712,300,848 bytes, got {disc_size:,} bytes"
+        )
+
+    movies_p = Path(movies_dir)
+    movie_str_file: Path | None = None
+    if movies_p.is_file():
+        movie_str_file = movies_p
+    elif (movies_p / "MOVIE.STR").is_file():
+        movie_str_file = movies_p / "MOVIE.STR"
+
+    total_bytes_written = 0
+    disc_start_offset = MOVIE_STR_LBA * SECTOR_RAW_SIZE
+    expected_total_bytes = MOVIE_STR_TOTAL_SECTORS * SECTOR_RAW_SIZE
+
+    if movie_str_file is not None and movie_str_file.stat().st_size == expected_total_bytes:
+        print(f"Injecting combined {movie_str_file.name} ({expected_total_bytes:,} bytes) into {disc_p} at LBA {MOVIE_STR_LBA}...")
+        with open(disc_p, "r+b") as f_disc, open(movie_str_file, "rb") as f_movie:
+            f_disc.seek(disc_start_offset)
+            while chunk := f_movie.read(1024 * 1024):
+                f_disc.write(chunk)
+                total_bytes_written += len(chunk)
+    else:
+        print(f"Injecting individual movies from directory {movies_p} into {disc_p}...")
+        with open(disc_p, "r+b") as f_disc:
+            for idx in range(12):
+                info = get_movie_info(idx)
+                movie_file = movies_p / f"{info.name}.str"
+                if not movie_file.is_file():
+                    raise FileNotFoundError(f"Missing movie file: {movie_file}")
+                if movie_file.stat().st_size != info.raw_size_bytes:
+                    raise ValueError(
+                        f"Movie {movie_file.name} size mismatch: "
+                        f"{movie_file.stat().st_size:,} != expected {info.raw_size_bytes:,}"
+                    )
+                f_disc.seek(info.raw_offset)
+                with open(movie_file, "rb") as f_movie:
+                    while chunk := f_movie.read(1024 * 1024):
+                        f_disc.write(chunk)
+                        total_bytes_written += len(chunk)
+
+    if total_bytes_written != expected_total_bytes:
+        raise ValueError(
+            f"Injected {total_bytes_written:,} bytes, expected {expected_total_bytes:,} bytes"
+        )
+
+    # Post-injection integrity check: verify start of each movie
+    with open(disc_p, "rb") as f_disc:
+        for idx in range(12):
+            info = get_movie_info(idx)
+            f_disc.seek(info.raw_offset)
+            sec = f_disc.read(SECTOR_RAW_SIZE)
+            if len(sec) != SECTOR_RAW_SIZE:
+                raise IOError(f"Failed to read movie {idx} start sector from disc")
+            if sec[:12] != b"\x00" + b"\xff" * 10 + b"\x00":
+                raise ValueError(f"Movie {idx} at LBA {info.start_lba} has invalid sync bytes")
+            if sec[15] != 2:
+                raise ValueError(f"Movie {idx} at LBA {info.start_lba} is not Mode 2")
+            if sec[18] not in (0x48, 0x64):
+                raise ValueError(
+                    f"Movie {idx} at LBA {info.start_lba} has unexpected submode: 0x{sec[18]:02X}"
+                )
+            # Find and verify first video sector within first 8 sectors
+            found_mdec = False
+            for s in range(min(8, info.sectors)):
+                f_disc.seek(info.raw_offset + s * SECTOR_RAW_SIZE)
+                cand = f_disc.read(SECTOR_RAW_SIZE)
+                if cand[18] == 0x48 and cand[24:28] == b"\x60\x01\x01\x80":
+                    found_mdec = True
+                    break
+            if not found_mdec:
+                raise ValueError(f"Movie {idx} at LBA {info.start_lba} missing MDEC video stream")
+    new_disc_size = disc_p.stat().st_size
+    if new_disc_size != 712_300_848:
+        raise ValueError(f"Disc size corrupted after injection: {new_disc_size:,} bytes")
+
+    print(f"Successfully injected {total_bytes_written:,} bytes into {disc_p} (size={new_disc_size:,} bytes).")
+    return total_bytes_written
+
 
 def main() -> None:
     """CLI helper to inspect MOVIE_MAP and test psxavenc installation."""
@@ -418,9 +593,13 @@ def main() -> None:
     parser.add_argument("--out", type=Path, metavar="OUT_STR", help="Output STR file path for --encode")
     parser.add_argument("--duration", type=float, metavar="SECS", help="Limit encoding duration in seconds")
     parser.add_argument("--bin", type=Path, metavar="BIN", help="Source disc image BIN path (for s00)")
+    parser.add_argument("--all-movies", action="store_true", help="Batch encode all 12 movies (s00..s11)")
+    parser.add_argument("--inject-disc", "--disc", type=Path, dest="inject_disc", metavar="BIN", help="Inject MOVIE.STR into target disc image")
+    parser.add_argument("--videos-dir", type=Path, default=VIDEOS_DIR, help="Source videos directory containing webm and srt")
+    parser.add_argument("--movies-dir", type=Path, help="Directory containing encoded sXX.str or MOVIE.STR")
+    parser.add_argument("--force", action="store_true", help="Force re-encoding even if output files exist")
     args = parser.parse_args()
-
-    if args.verify or (not args.list and args.info is None and args.encode is None):
+    if args.verify or (not args.list and args.info is None and args.encode is None and not args.all_movies and args.inject_disc is None):
         verify_movie_map()
         print("MOVIE_MAP verified: 12 movies, 184,290 sectors, contiguous.")
         version = check_psxavenc()
@@ -462,6 +641,25 @@ def main() -> None:
         sectors = bytes_written // SECTOR_RAW_SIZE
         print(f"Done! Written {bytes_written:,} bytes ({sectors:,} sectors). Target was {info.sectors:,} sectors.")
 
-
+    if args.all_movies:
+        target_dir = args.movies_dir or args.out or (REPO_ROOT / "build" / "movies")
+        batch_encode_all_movies(
+            videos_dir=args.videos_dir,
+            out_dir=target_dir,
+            source_bin_path=args.bin,
+            duration=args.duration,
+            force=args.force,
+        )
+        if args.inject_disc is not None:
+            inject_movie_str_into_disc(
+                disc_path=args.inject_disc,
+                movies_dir=target_dir,
+            )
+    elif args.inject_disc is not None:
+        target_dir = args.movies_dir or args.out or (REPO_ROOT / "build" / "movies")
+        inject_movie_str_into_disc(
+            disc_path=args.inject_disc,
+            movies_dir=target_dir,
+        )
 if __name__ == "__main__":
     main()
