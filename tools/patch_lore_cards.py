@@ -109,8 +109,10 @@ DEFAULT_OPT_SPECS: dict[int, dict[str, Any]] = {
     193: {"id": "rezarium_magic", "sectors": 2, "vram_x": 656, "vram_y": 392, "clut_x": 0, "clut_y": 507},
 }
 
-FONT_SEARCH_PATHS = {
+DEFAULT_FONT_SEARCH = {
     "bold": [
+        str(REPO_ROOT / "fonts" / "PressStart2P.ttf"),
+        "/home/samvel/dddd/fonts/PressStart2P.ttf",
         "/usr/share/fonts/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
@@ -120,6 +122,8 @@ FONT_SEARCH_PATHS = {
         "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
     ],
     "regular": [
+        str(REPO_ROOT / "fonts" / "PressStart2P.ttf"),
+        "/home/samvel/dddd/fonts/PressStart2P.ttf",
         "/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans.ttf",
@@ -129,6 +133,7 @@ FONT_SEARCH_PATHS = {
         "/usr/share/fonts/TTF/DejaVuSans.ttf",
     ],
 }
+FONT_SEARCH_PATHS = DEFAULT_FONT_SEARCH
 
 
 @dataclass
@@ -164,7 +169,7 @@ def find_font_path(style: str = "regular", custom_path: str | Path | None = None
         p = Path(custom_path)
         if p.exists():
             return p
-    for candidate in FONT_SEARCH_PATHS.get(style, []):
+    for candidate in DEFAULT_FONT_SEARCH.get(style, []):
         p = Path(candidate)
         if p.exists():
             return p
