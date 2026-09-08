@@ -238,3 +238,36 @@ def test_zero_mechanical_truncations(catalog: dict[str, dict]):
             unintended_dots.append((eng, ru))
 
     assert not unintended_dots, f"Found {len(unintended_dots)} mechanical truncations: {unintended_dots[:5]}"
+
+
+def test_missing_rooms_jp_ru_catalog(charmap: dict[str, int]):
+    """Verify data/missing_rooms_jp_ru.json satisfies all 37 rooms and formatting requirements."""
+    missing_rooms_path = REPO_ROOT / "data" / "missing_rooms_jp_ru.json"
+    assert missing_rooms_path.is_file(), f"Missing {missing_rooms_path}"
+
+    data = json.loads(missing_rooms_path.read_text(encoding="utf-8"))
+    assert len(data) == 37, f"Expected 37 rooms, got {len(data)}"
+    assert "0x059" in data, "Room 0x059 (MAIN ST) missing"
+
+    room_059_ru = data["0x059"]["strings_ru"]
+    assert len(room_059_ru) == 43, f"Expected 43 strings in 0x059, got {len(room_059_ru)}"
+
+    total_strings = 0
+    for room_id, info in data.items():
+        ru_strs = info["strings_ru"]
+        jp_strs = info["strings_jp"]
+        assert len(ru_strs) == len(jp_strs), f"Mismatch in {room_id}"
+        total_strings += len(ru_strs)
+
+        for idx, s in enumerate(ru_strs):
+            assert s.strip(), f"Empty string in {room_id}[{idx}]"
+            assert unicodedata.is_normalized("NFC", s), f"Not NFC in {room_id}[{idx}]"
+
+            lines = s.split("\n")
+            assert 1 <= len(lines) <= 3, f"Lines count {len(lines)} in {room_id}[{idx}]"
+            for line_idx, line in enumerate(lines):
+                assert len(line) <= 15, f"Line {line_idx} > 15 chars in {room_id}[{idx}]: {line!r}"
+                for ch in line:
+                    assert ch in charmap, f"Glyph {ch!r} not in charmap in {room_id}[{idx}]"
+
+    assert total_strings == 816, f"Expected 816 total string instances, got {total_strings}"
