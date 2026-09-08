@@ -49,3 +49,4 @@ All tasks agree with global constraints. Scan clean.
 - Main St Task 2: complete (tools/patch_inspection.py and tools/test_batch_inspection_patch.py updated, all 37 omitted rooms patch cleanly including 0x059 with 43 Russian strings, 0 sector overflows, 12/12 tests pass)
 - Main St Task 2: complete (commit 5b1fac8, missing rooms source fallback implemented in tools/patch_inspection.py, Room 0x059 MAIN ST has 43 Russian strings, 12/12 tests pass)
 - Main St Task 3: complete (master rebuild executed, Room 0x059 MAIN ST has 43 Russian strings, all 37 omitted rooms restored, 13 lore cards injected, 712,300,848 B, SHA256 2c1bb07b5b0a576e1e1d9f404cccce9a68d215e69d6375eaaa603f8590996ba0, 73/73 tests pass, launcher verified, report written)
+- Main St Task 3: complete (commit 06db3aa, master disc rebuilt with restored MAIN ST (0x059) and 36 omitted rooms, 73/73 tests pass, SHA256 2c1bb07b5b0a576e1e1d9f404cccce9a68d215e69d6375eaaa603f8590996ba0)
