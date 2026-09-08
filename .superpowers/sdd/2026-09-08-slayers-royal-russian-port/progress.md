@@ -34,3 +34,5 @@ All tasks agree with global constraints. Scan clean.
 - Full Inspection Task 2: complete (tools/build_inspection_translations.py and tools/test_inspection_translations.py implemented, 734/734 inspection strings translated, <=15 chars/line & 1-3 lines enforced, 49/49 tests pass)
 - Full Inspection Task 2: complete (commit 7a145b4, 100% of 734 strings translated in translations/room_inspection_ru.json, 0 lines > 15 chars, 49/49 tests pass)
 - Full Inspection Task 3: complete (tools/patch_inspection.py batch mode implemented with sector budget enforcement & progressive condensation, tools/test_batch_inspection_patch.py implemented, 29/29 tests pass, 149/149 rooms patched with 0 sector overflows)
+- Full Inspection Task 3: complete (commit 7ab1ddc, batch injection engine implemented in tools/patch_inspection.py, 149/149 rooms patched with 0 overflows, 29/29 tests pass)
+- Full Inspection Task 4: complete (rebuilt slayers_royal_ru.bin 712,300,848 B, SHA256 ed2be479585c8d428e0c5dcd2602caa41e4b95c01a7e5ee621d98f06523966f4, 149/149 rooms patched, 13 lore cards injected, Mode 2 Form 1 EDC/ECC recalculated, 67/67 tests pass, launcher dry-run verified)
