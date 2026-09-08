@@ -66,7 +66,7 @@
     "frequency": 1
   },
   "Climb these\nstairs, go on,\nthen down the": {
-    "russian": "Вверх по этой,\nчуть дальше\nвниз — и на...",
+    "russian": "Вверх по этой,\nчуть дальше и\nвниз по другой.",
     "type": "description",
     "rooms": [
       "0x05A"
@@ -130,7 +130,7 @@
     "frequency": 1
   },
   "That upper\nwindow is open.\nToss in a rock?": {
-    "russian": "Окно открыто.\nШвырнуть туда\nкамешек, что...",
+    "russian": "Вон то окно\nоткрыто. Кинуть\nтуда камешек?",
     "type": "description",
     "rooms": [
       "0x05A"
@@ -138,7 +138,7 @@
     "frequency": 1
   },
   "Big house.\nRed roof, of\ncourse.": {
-    "russian": "Большой дом.\nКрыша снова,\nясно дело...",
+    "russian": "Большой дом.\nКрыша, ясное\nдело, красная.",
     "type": "name",
     "rooms": [
       "0x05A"
@@ -154,7 +154,7 @@
     "frequency": 1
   },
   "Chimney means\na living room\nlies below...": {
-    "russian": "Труба... Внизу,\nнебось,\nгостиная...",
+    "russian": "Раз труба —\nвнизу, небось,\nгостиная...",
     "type": "description",
     "rooms": [
       "0x05A"
@@ -185,7 +185,7 @@
     "frequency": 8
   },
   "Can't peek in.\nCan't reach it.": {
-    "russian": "Хоть\nзаглядывай,\nхоть нет...",
+    "russian": "И не заглянешь,\nи не достать.",
     "type": "description",
     "rooms": [
       "0x05A"
@@ -209,7 +209,7 @@
     "frequency": 1
   },
   "More houses.\nYes, I know...\nRed roof again.": {
-    "russian": "И там дома.\nДа-да, знаю...\nКрыша опять же.",
+    "russian": "И там дома.\nДа-да, знаю...\nОпять же крыша.",
     "type": "name",
     "rooms": [
       "0x05A"
@@ -303,7 +303,7 @@
     "frequency": 2
   },
   "A tree this big\nought to have\nsome fruit.": {
-    "russian": "На таком дереве\nмогли б расти\nхоть плоды...",
+    "russian": "Такой гигант!\nХоть бы яблоки\nросли на нём.",
     "type": "description",
     "rooms": [
       "0x05B"
@@ -311,7 +311,7 @@
     "frequency": 1
   },
   "If it's this\nbig, it should\nbe enough for": {
-    "russian": "Из такой\nгромадины целый\nдом...",
+    "russian": "Из громадины\nможно целый дом\nпостроить!",
     "type": "description",
     "rooms": [
       "0x05B"
@@ -367,7 +367,7 @@
     "frequency": 1
   },
   "Turn this rock\nover and you'll\nfind tiny bugs.": {
-    "russian": "Переверни — и\nтам куча мелких\nжуков...",
+    "russian": "Сдвинь камень —\nтам наверняка\nкуча букашек!",
     "type": "description",
     "rooms": [
       "0x05B"
@@ -431,7 +431,7 @@
     "frequency": 1
   },
   "Never saw this\ntower in town.": {
-    "russian": "Башня\nвиднеется. В\nгороде ее не...",
+    "russian": "Вон та башня. В\nсамом городе её\nне замечала.",
     "type": "description",
     "rooms": [
       "0x05B"
@@ -463,7 +463,7 @@
     "frequency": 1
   },
   "Hazy and far\naway.": {
-    "russian": "В дымке еле\nвидна.\nДалековато...",
+    "russian": "Вся в дымке.\nДалековато до\nнеё будет.",
     "type": "description",
     "rooms": [
       "0x05B"
@@ -553,7 +553,7 @@
     "frequency": 1
   },
   "Big place, but\nonly one door.": {
-    "russian": "Места тут\nмного, а дверь\nвсего одна...",
+    "russian": "Зал большой, а\nдверь наружу\nвсего одна.",
     "type": "description",
     "rooms": [
       "0x05D"
@@ -569,7 +569,7 @@
     "frequency": 1
   },
   "Someone's bound\nto trip on that\nstep.": {
-    "russian": "На этой ступени\nкто-нибудь\nточно...",
+    "russian": "Кто-то точно\nспоткнётся на\nэтой ступеньке!",
     "type": "description",
     "rooms": [
       "0x05D"
@@ -692,7 +692,7 @@
     "frequency": 1
   },
   "Look them in\nthe face when\nyou speak.": {
-    "russian": "Говоря с\nкем-то, надо\nсмотреть в...",
+    "russian": "Говоришь с\nкем-то — смотри\nпрямо в лицо.",
     "type": "name",
     "rooms": [
       "0x05D"
@@ -700,7 +700,7 @@
     "frequency": 1
   },
   "Older than me.\nStill pretty\nyoung, though.": {
-    "russian": "Постарше меня,\nно всё еще\nдовольно...",
+    "russian": "Старше меня, но\nвсё равно еще\nмолодой парень.",
     "type": "description",
     "rooms": [
       "0x05D"
@@ -756,7 +756,7 @@
     "frequency": 1
   },
   "Maybe the tree\nwas here before\nthe town.": {
-    "russian": "Может, дерево\nросло тут еще\nдо самого...",
+    "russian": "Это дерево тут\nросло еще до\nсамого города!",
     "type": "description",
     "rooms": [
       "0x060"
@@ -772,7 +772,7 @@
     "frequency": 1
   },
   "Looks like a\nchimney...": {
-    "russian": "Вроде\nдымоход...",
+    "russian": "Похоже, это\nдымоход...",
     "type": "name",
     "rooms": [
       "0x060"
@@ -860,7 +860,7 @@
     "frequency": 1
   },
   "Why not put the\ndoor and sign\non the square?": {
-    "russian": "Могли б дверь с\nвывеской к\nплощади...",
+    "russian": "Вход и вывеску\nмогли вывести к\nсамой площади!",
     "type": "description",
     "rooms": [
       "0x060"
@@ -970,7 +970,7 @@
     "frequency": 1
   },
   "A bigger town\nmeans more\nfoot traffic.": {
-    "russian": "Город\nпокрупнее, вот\nи народу...",
+    "russian": "Город большой,\nвот и народу на\nулицах полно!",
     "type": "description",
     "rooms": [
       "0x060"
@@ -978,7 +978,7 @@
     "frequency": 1
   },
   "A parent and\nchild. Shopping\nor out walking?": {
-    "russian": "Родитель с\nребенком.\nГуляют...",
+    "russian": "Родитель с\nмалышом. Гуляют\nили на базар?",
     "type": "name",
     "rooms": [
       "0x060"
@@ -1034,7 +1034,7 @@
     "frequency": 1
   },
   "The wall is\ncrumbling here\nand there.": {
-    "russian": "Кое-где\nштукатурка со\nстены...",
+    "russian": "Штукатурка со\nстены кое-где\nосыпалась.",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1066,7 +1066,7 @@
     "frequency": 1
   },
   "With a window\nhere, passersby\ncould see in.": {
-    "russian": "В такое окно с\nулицы все как\nна ладони...",
+    "russian": "С улицы в такое\nокно всё видно\nкак на ладони!",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1074,7 +1074,7 @@
     "frequency": 1
   },
   "At least hang\nsome curtains.": {
-    "russian": "Хоть бы\nзанавески\nповесили...",
+    "russian": "Хоть занавески\nповесили бы,\nчто ли!",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1149,7 +1149,7 @@
     "frequency": 1
   },
   "Touch the rust:\nyour hand turns\nred. Know that?": {
-    "russian": "Тронешь\nржавчину —\nладонь...",
+    "russian": "От ржавчины вся\nрука порыжеет.\nЗнаешь об этом?",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1173,7 +1173,7 @@
     "frequency": 1
   },
   "Plain ground.\nNo bricks like\non main street.": {
-    "russian": "Просто земля,\nне то что\nбрусчатка на...",
+    "russian": "Просто земля, а\nне брусчатка,\nкак на главной.",
     "type": "name",
     "rooms": [
       "0x061"
@@ -1213,7 +1213,7 @@
     "frequency": 1
   },
   "He may be\nfleeing the man\nbehind him.": {
-    "russian": "А может,\nудирает от\nпарня позади...",
+    "russian": "Может, удирает\nот парня, что\nсзади идет?",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1237,7 +1237,7 @@
     "frequency": 1
   },
   "Hard to tell\nfrom this far,\nAn old woman?": {
-    "russian": "Издали не\nразглядеть.\nСтарушка...",
+    "russian": "Издалека плохо\nвидно. Старушка\nтам, что ли?",
     "type": "description",
     "rooms": [
       "0x061"
@@ -1349,7 +1349,7 @@
     "frequency": 2
   },
   "Up these stairs\nis the second\nfloor.": {
-    "russian": "По этой\nлестнице\nподнимешься...",
+    "russian": "По лестнице\nподнимешься на\nвторой этаж.",
     "type": "description",
     "rooms": [
       "0x062",
@@ -1376,7 +1376,7 @@
     "frequency": 2
   },
   "If every inn\nwere so clean,\nI'd have no": {
-    "russian": "Будь все\nгостиницы\nтакими, я б...",
+    "russian": "Будь везде так\nчисто, я б и не\nжаловалась!",
     "type": "description",
     "rooms": [
       "0x062",
@@ -1439,7 +1439,7 @@
     "frequency": 2
   },
   "Shiny counter.\nAs it should.": {
-    "russian": "Стойка блестит.\nТак и надо в\nгостиничном...",
+    "russian": "Стойка блестит.\nВ гостинице так\nи должно быть!",
     "type": "name",
     "rooms": [
       "0x062",
@@ -1448,7 +1448,7 @@
     "frequency": 2
   },
   "Hand grime may\nbe why it\nshines... No,": {
-    "russian": "Может, от грязи\nс рук блестит?\nФу, не хочу...",
+    "russian": "От грязи с рук\nблестит?.. Фу,\nне хочу знать!",
     "type": "description",
     "rooms": [
       "0x062",
@@ -1548,7 +1548,7 @@
     "frequency": 1
   },
   "Only this door\nopens two ways.\nHow do they": {
-    "russian": "Створчатая\nдверь. Как они\nзакрывают...",
+    "russian": "Дверь на обе\nстороны. И как\nее запирают?",
     "type": "name",
     "rooms": [
       "0x064"
@@ -1596,7 +1596,7 @@
     "frequency": 1
   },
   "Cushions would\nbe nice, but\ntavern chairs": {
-    "russian": "С подушкой было\nб лучше, но в\nдраках их...",
+    "russian": "С подушкой было\nб лучше, но их\nв драке порвут!",
     "type": "description",
     "rooms": [
       "0x064"
@@ -1708,7 +1708,7 @@
     "frequency": 1
   },
   "Item shops sell\ntravel goods,\nlike capes.": {
-    "russian": "Тут продают\nвсякое для\nпоходов...",
+    "russian": "Тут продают\nвещи в дорогу —\nвроде плащей.",
     "type": "description",
     "rooms": [
       "0x065"
@@ -1788,7 +1788,7 @@
     "frequency": 1
   },
   "All sorts of\nthings here.": {
-    "russian": "Чего тут только\nнет...",
+    "russian": "Чего тут только\nне найдется!",
     "type": "name",
     "rooms": [
       "0x065"
@@ -1812,7 +1812,7 @@
     "frequency": 1
   },
   "Not just some\nold lady.\nSome merchants": {
-    "russian": "Она может\nсмыслить в\nмагии...",
+    "russian": "Она в магии\nразбирается не\nхуже чародеев!",
     "type": "description",
     "rooms": [
       "0x065"
@@ -1860,7 +1860,7 @@
     "frequency": 1
   },
   "That's one big\ndoor. Do elves\ngrow huge with": {
-    "russian": "Огромная дверь.\nЭльфы к\nстарости...",
+    "russian": "Огромная дверь!\nОни к старости\nрастут, что ли?",
     "type": "name",
     "rooms": [
       "0x068"
@@ -1884,7 +1884,7 @@
     "frequency": 1
   },
   "Brick and white\nplaster? In an\nelf town? They": {
-    "russian": "Кирпич и\nштукатурка?\nМогли б...",
+    "russian": "И это у эльфов?\nМогли б орихалк\nв дело пустить!",
     "type": "description",
     "rooms": [
       "0x068"
@@ -1972,7 +1972,7 @@
     "frequency": 1
   },
   "I'm not Naga.\nI don't stare\nat the ground": {
-    "russian": "Я не Нага, чтоб\nпод ноги\nмонетки...",
+    "russian": "Я вам не Нага,\nчтоб под ноги\nмонеты искать!",
     "type": "description",
     "rooms": [
       "0x068"
@@ -1996,7 +1996,7 @@
     "frequency": 1
   },
   "I'd like to ask\nthe old man and\nchild how old": {
-    "russian": "Интересно,\nсколько лет\nдеду и этому...",
+    "russian": "Сколько же лет\nэтому деду и\nтому ребенку?",
     "type": "description",
     "rooms": [
       "0x068"
@@ -2012,7 +2012,7 @@
     "frequency": 1
   },
   "With long hair,\nit's hard to\ntell male and": {
-    "russian": "С такими косами\nи не поймешь:\nпарень иль...",
+    "russian": "С косами и не\nпоймешь: парень\nили девица.",
     "type": "description",
     "rooms": [
       "0x068"
@@ -2076,7 +2076,7 @@
     "frequency": 1
   },
   "That elf looks\nabout Gourry's\nage, but who": {
-    "russian": "С виду ровесник\nГаури, а на\nделе кто его...",
+    "russian": "С виду ровесник\nГаури, а на\nделе кто знает?",
     "type": "description",
     "rooms": [
       "0x068"
@@ -2092,7 +2092,7 @@
     "frequency": 2
   },
   "I expected more\nfrom an elf\nvillage. It": {
-    "russian": "Ждала чего-то\nот эльфов, а\nдеревня как...",
+    "russian": "Ждала чудес от\nэльфов, а тут\nпросто село.",
     "type": "description",
     "rooms": [
       "0x069"
@@ -2100,7 +2100,7 @@
     "frequency": 1
   },
   "A tree trunk.\nBent in the\nmiddle. Poor": {
-    "russian": "Изогнутый\nствол. На\nбревна такой...",
+    "russian": "Изогнутый ствол\nна бревна точно\nне сгодится.",
     "type": "name",
     "rooms": [
       "0x069"
@@ -2124,7 +2124,7 @@
     "frequency": 1
   },
   "That house must\nsit higher up.\nI can't see": {
-    "russian": "Этот дом стоит\nна пригорке —\nствола не...",
+    "russian": "Дом на холме: и\nствола дерева\nне разглядеть.",
     "type": "description",
     "rooms": [
       "0x069"
@@ -2284,7 +2284,7 @@
     "frequency": 1
   },
   "By the stairs,\ndirt replaces\nthe stone wall,": {
-    "russian": "Перед лестницей\nвместо стены\nпоросший...",
+    "russian": "Перед лестницей\nвместо стены\nпоросший холм.",
     "type": "name",
     "rooms": [
       "0x069"
@@ -2316,7 +2316,7 @@
     "frequency": 1
   },
   "From that peak,\nyou could see\nthe whole town.": {
-    "russian": "С этой вершины\nвесь город\nвиден как на...",
+    "russian": "С вершины весь\nгород виден как\nна ладони!",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2341,7 +2341,7 @@
     "frequency": 1
   },
   "A north-facing\nwindow. Must be\ncool in summer.": {
-    "russian": "Окно на север.\nЛетом тут,\nнебось...",
+    "russian": "Окно на север.\nЛетом тут,\nнебось, свежо.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2373,7 +2373,7 @@
     "frequency": 1
   },
   "A bay window.\nMaybe an attic\nis up there.": {
-    "russian": "Эркер.\nНаверное, там\nмансарда под...",
+    "russian": "Эркер. Под\nкрышей, небось,\nмансарда.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2389,7 +2389,7 @@
     "frequency": 1
   },
   "Pretty big for\nan ordinary\nhome.": {
-    "russian": "Для простых\nлюдей дом\nвеликоват...",
+    "russian": "Для обычных\nлюдей дом явно\nвеликоват.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2405,7 +2405,7 @@
     "frequency": 1
   },
   "If there were a\nwindow here,\nevery passerby": {
-    "russian": "Будь тут окно,\nкаждый бы\nвнутрь...",
+    "russian": "Будь тут окно —\nвсе бы внутрь\nзаглядывали.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2413,7 +2413,7 @@
     "frequency": 1
   },
   "Nothing's more\nawkward than\npeeking in and": {
-    "russian": "Заглянешь в\nдом, а там\nхозяин...",
+    "russian": "В окно глянешь,\nа там хозяин —\nвот неловкость!",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2437,7 +2437,7 @@
     "frequency": 1
   },
   "These streets\nare so wide,\ntwenty people": {
-    "russian": "Улица широкая:\nдвадцать\nчеловек в...",
+    "russian": "Улица широкая:\nдвадцать людей\nв ряд пройдут.",
     "type": "name",
     "rooms": [
       "0x077"
@@ -2445,7 +2445,7 @@
     "frequency": 1
   },
   "Still, twenty\npeople walking\nside by side": {
-    "russian": "Хотя пойди\nтолпа в\nдвадцать...",
+    "russian": "Идти толпой в\nдвадцать рядов\n— жутко было б.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2488,7 +2488,7 @@
     "frequency": 1
   },
   "Don't chat by\nsomeone's home.\nYou'd block the": {
-    "russian": "Чего у дверей\nтрепаться?\nПроход...",
+    "russian": "Чего у дверей\nболтать? Проход\nзагораживают.",
     "type": "description",
     "rooms": [
       "0x077"
@@ -2525,7 +2525,7 @@
     "frequency": 1
   },
   "An old woman...\nIs she spacing\nout?": {
-    "russian": "Старушка...\nЗамечталась о\nчемто, что ли?",
+    "russian": "Старушка...\nЗамечталась о\nчём-то, что ли?",
     "type": "name",
     "rooms": [
       "0x077"
@@ -2557,7 +2557,7 @@
     "frequency": 1
   },
   "That roof is\neasy to see\nfrom here. Not": {
-    "russian": "Крыши как на\nладони, хотя\nсмотреть не...",
+    "russian": "Крыши отлично\nвидны, а толку\nсмотреть нет.",
     "type": "description",
     "rooms": [
       "0x078"
@@ -2589,7 +2589,7 @@
     "frequency": 1
   },
   "Big houses for\na back street.\nThis town must": {
-    "russian": "Для закоулка\nдома богатые.\nГород...",
+    "russian": "Для закоулка\nдома богатые.\nГород богатеет!",
     "type": "description",
     "rooms": [
       "0x078"
@@ -2653,7 +2653,7 @@
     "frequency": 1
   },
   "It may look far\nbelow, but I'm\nnot up in the": {
-    "russian": "Кажется, что\nдалеко внизу,\nно я просто...",
+    "russian": "Кажется, я\nвысоко, но тут\nлишь пригорок.",
     "type": "description",
     "rooms": [
       "0x078"
@@ -2685,7 +2685,7 @@
     "frequency": 1
   },
   "Same as on the\nmain street...\nWalk in the": {
-    "russian": "Опять у стенки\nжмется... Иди\nпо середине...",
+    "russian": "Опять у стенки!\nИди по центру\nвсей дороги!",
     "type": "description",
     "rooms": [
       "0x078"
@@ -2742,7 +2742,7 @@
     "frequency": 1
   },
   "A few people\nhere and there.\nWe're on a hill": {
-    "russian": "Народу немного.\nОтсюда весь\nпорт...",
+    "russian": "Народу немного.\nОтсюда виден\nвесь этот порт.",
     "type": "description",
     "rooms": [
       "0x07A"
@@ -2750,7 +2750,7 @@
     "frequency": 1
   },
   "Just imagining\nthe walk from\none end to the": {
-    "russian": "От одной мысли\nобойти весь\nпорт ноги...",
+    "russian": "Мысль обойти\nвесь порт — и\nноги уже гудят!",
     "type": "name",
     "rooms": [
       "0x07A"
@@ -2758,7 +2758,7 @@
     "frequency": 1
   },
   "Boats dock\nright by the\nport, so the": {
-    "russian": "Корабли у\nберега: значит,\nморе тут...",
+    "russian": "Суда у берега —\nзначит, здесь\nглубоко.",
     "type": "name",
     "rooms": [
       "0x07A"
@@ -2834,7 +2834,7 @@
     "frequency": 4
   },
   "At night, they\ncast Lighting\non this lamp.": {
-    "russian": "На ночь на\nнего, небось,\nколдуют...",
+    "russian": "Ночью на фонарь\nколдуют чары\nСвета, небось.",
     "type": "description",
     "rooms": [
       "0x07D",
@@ -2889,7 +2889,7 @@
     "frequency": 4
   },
   "Guest rooms lie\npast this door.\nIf the entrance": {
-    "russian": "За дверью\nномера. А что\nтогда за той...",
+    "russian": "Тут номера. А\nчто тогда за\nтой дверью?",
     "type": "name",
     "rooms": [
       "0x07D",
@@ -2922,7 +2922,7 @@
     "frequency": 4
   },
   "It's polished\nenough to slide\ndown from the": {
-    "russian": "Так натерты,\nчто съехать\nвниз можно...",
+    "russian": "Начищено так,\nчто можно вниз\nсъехать в холл!",
     "type": "name",
     "rooms": [
       "0x07D",
@@ -2955,7 +2955,7 @@
     "frequency": 4
   },
   "A flowerpot.\nIt's dried out.\nGive it some": {
-    "russian": "Цветок в\nгоршке. Засох\nвесь, хоть...",
+    "russian": "Цветок в кадке.\nЗасох совсем,\nхоть бы полили!",
     "type": "name",
     "rooms": [
       "0x07D",
@@ -2966,7 +2966,7 @@
     "frequency": 4
   },
   "That flowerpot\ncould block you\ncoming down the": {
-    "russian": "Спускаясь, об\nэтот горшок\nспоткнуться...",
+    "russian": "Спускаясь вниз,\nоб этот горшок\nлегко упасть.",
     "type": "description",
     "rooms": [
       "0x07D",
@@ -2988,7 +2988,7 @@
     "frequency": 4
   },
   "If we ran wild\nupstairs, this\ncould give way": {
-    "russian": "Устроим бучу\nнаверху — пол\nпроломится...",
+    "russian": "Устроим бучу —\nпол проломится\nпрямо ко входу!",
     "type": "description",
     "rooms": [
       "0x07D",
@@ -3092,7 +3092,7 @@
     "frequency": 2
   },
   "No matter how\nmany times I\nlook at the": {
-    "russian": "Сколько ни\nсмотри на стену\n— умнее не...",
+    "russian": "Сколько в стену\nни смотри — ума\nне прибавится!",
     "type": "description",
     "rooms": [
       "0x082"
@@ -3124,7 +3124,7 @@
     "frequency": 1
   },
   "Ugh, it's made\nof wood...": {
-    "russian": "Фу, она еще и\nдеревянная...",
+    "russian": "Фу, она ещё и\nдеревянная...",
     "type": "name",
     "rooms": [
       "0x082"
@@ -3300,7 +3300,7 @@
     "frequency": 1
   },
   "I can't tell if\nthey're a man\nor a woman.": {
-    "russian": "Парень или\nдевица? У Гаури\nтоже длинные...",
+    "russian": "Кто это: парень\nили девица? Как\nу Гаури косы.",
     "type": "description",
     "rooms": [
       "0x082"
@@ -3324,7 +3324,7 @@
     "frequency": 1
   },
   "One leg\nsupports this\nwhole table.": {
-    "russian": "Большой стол на\nодной-\nединственной...",
+    "russian": "Целый стол — и\nна единственной\nножке стоит!",
     "type": "name",
     "rooms": [
       "0x082"
@@ -3372,7 +3372,7 @@
     "frequency": 1
   },
   "Light comes in\nthrough the\nwindow.": {
-    "russian": "Из окна падает\nсвет, вот и\nвидно хоть...",
+    "russian": "Из окна падает\nсвет, вот хоть\nчто-то и видно.",
     "type": "name",
     "rooms": [
       "0x084"
@@ -3380,7 +3380,7 @@
     "frequency": 1
   },
   "There's so much\nstuff, I can't\nwalk through": {
-    "russian": "Столько\nбарахла, что\nбез света...",
+    "russian": "Столько хлама,\nчто без света и\nшею свернешь!",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3404,7 +3404,7 @@
     "frequency": 1
   },
   "A stone atop\nthe barrel.\nDon't tell me": {
-    "russian": "Камень на\nбочке. Соленья\nтам прижали...",
+    "russian": "Камень на бочке\nсоленья прижал,\nчто ли?",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3428,7 +3428,7 @@
     "frequency": 1
   },
   "They could at\nleast clean.\nEven I wash my": {
-    "russian": "Прибрались бы!\nЯ и то одежду в\nгостиницах...",
+    "russian": "Прибрались бы!\nЯ и то стираю в\nночлежках вещи.",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3460,7 +3460,7 @@
     "frequency": 1
   },
   "This junk is\nwhy the shop's\nso cramped.": {
-    "russian": "Из-за этого\nбарахла в лавке\nне...",
+    "russian": "Из-за хлама в\nэтой лавке и не\nразвернуться!",
     "type": "name",
     "rooms": [
       "0x084"
@@ -3484,7 +3484,7 @@
     "frequency": 1
   },
   "Don't put boxes\nhere. Someone\ncould trip.": {
-    "russian": "Не ставьте\nкоробки на\nпроходе...",
+    "russian": "Ящики у входа —\nведь расшибется\nкто-нибудь!",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3492,7 +3492,7 @@
     "frequency": 1
   },
   "Watch this box.\nWith all this\nstuff lying": {
-    "russian": "Осторожнее с\nкоробкой:\nупадешь...",
+    "russian": "Осторожнее с\nэтой коробкой —\nшею свернешь!",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3508,7 +3508,7 @@
     "frequency": 1
   },
   "She fell for a\nbust potion,\nthen worked for": {
-    "russian": "Повелась на\nснадобье для\nгруди и...",
+    "russian": "Купила зелье\nдля груди и тут\nпашет задарма!",
     "type": "name",
     "rooms": [
       "0x084"
@@ -3516,7 +3516,7 @@
     "frequency": 1
   },
   "Frilly skirt,\nan apron.\nDefinitely a": {
-    "russian": "Оборочки и\nфартук.\nТипичная...",
+    "russian": "Оборки, фартук.\nТипичная девица\nна побегушках.",
     "type": "name",
     "rooms": [
       "0x084"
@@ -3524,7 +3524,7 @@
     "frequency": 1
   },
   "Suede boots.\nSuede is tanned\nleather.": {
-    "russian": "Замшевые\nсапожки. Замша\n— это мягкая...",
+    "russian": "Сапожки из\nзамши. А ведь\nзамша — кожа.",
     "type": "name",
     "rooms": [
       "0x084"
@@ -3532,7 +3532,7 @@
     "frequency": 1
   },
   "Why is she\nwearing boots?\nThick legs,": {
-    "russian": "И чего в\nсапогах ходит?\nНоги...",
+    "russian": "Чего в сапогах?\nНожки толстые,\nчто ли?",
     "type": "description",
     "rooms": [
       "0x084"
@@ -3580,7 +3580,7 @@
     "frequency": 1
   },
   "No one travels\nwith this damn\nheavy thing": {
-    "russian": "С такой\nтяжеленной\nдурой нынче...",
+    "russian": "С такой тяжелой\nдурой никто в\nпуть не пойдет.",
     "type": "description",
     "rooms": [
       "0x085"
@@ -3612,7 +3612,7 @@
     "frequency": 1
   },
   "Carelessly\nleft out.\nMust be cheap.": {
-    "russian": "Торчит без\nприсмотра —\nзначит...",
+    "russian": "Бросили тут —\nзначит, вещь\nгрошовая.",
     "type": "description",
     "rooms": [
       "0x085"
@@ -3644,7 +3644,7 @@
     "frequency": 1
   },
   "Need a weapon?\nAsk the owner.\nFaster than": {
-    "russian": "Нужно оружие?\nСпроси деда, а\nне глазей...",
+    "russian": "Нужно оружие?\nСпроси хозяина,\nне глазей зря!",
     "type": "description",
     "rooms": [
       "0x085"
@@ -3700,7 +3700,7 @@
     "frequency": 1
   },
   "The road by the\nchurch is\nspotless.": {
-    "russian": "Дорога перед\nцерковью\nвылизана до...",
+    "russian": "У церкви дорога\nпрямо до блеска\nвылизана!",
     "type": "name",
     "rooms": [
       "0x086"
@@ -3773,7 +3773,7 @@
     "frequency": 1
   },
   "That window's\nlight gives the\nchurch a dreamy": {
-    "russian": "Свет из окон\nсоздает\nсказочную...",
+    "russian": "Свет из окон\nсоздает в храме\nсказочный уют.",
     "type": "description",
     "rooms": [
       "0x087"
@@ -3781,7 +3781,7 @@
     "frequency": 1
   },
   "Some kind of\nstatue.\nGods aren't my": {
-    "russian": "Статуя бога. Я\nв богах не\nшибко...",
+    "russian": "Статуя бога. Я\nв богах не\nразбираюсь.",
     "type": "name",
     "rooms": [
       "0x087"
@@ -3813,7 +3813,7 @@
     "frequency": 1
   },
   "It's a town\nchurch, so it\nmust be used": {
-    "russian": "В городской\nцеркви небось\nслужбы...",
+    "russian": "В храме небось\nслужбы идут\nкаждый день.",
     "type": "description",
     "rooms": [
       "0x087"
@@ -3853,7 +3853,7 @@
     "frequency": 2
   },
   "The sky looks\nso wide.": {
-    "russian": "Небо отсюда\nтаким\nбескрайним...",
+    "russian": "Небо отсюда\nкажется совсем\nбескрайним.",
     "type": "description",
     "rooms": [
       "0x090"
@@ -3861,7 +3861,7 @@
     "frequency": 1
   },
   "There's another\nmountain far\noff.": {
-    "russian": "Вон там еще\nодна гора\nвиднеется...",
+    "russian": "Вон там еще\nгора виднеется,\nдалеко-далеко.",
     "type": "name",
     "rooms": [
       "0x090"
@@ -3885,7 +3885,7 @@
     "frequency": 1
   },
   "Leaving by that\nhouse leads up\nthe mountain.": {
-    "russian": "Выйдешь за тот\nдом — и\nпрямиком в...",
+    "russian": "Выйдешь за дом\n— и прямиком в\nгору пойдешь.",
     "type": "description",
     "rooms": [
       "0x090"
@@ -4005,7 +4005,7 @@
     "frequency": 1
   },
   "These streets\ncan't be old.\nThey're still": {
-    "russian": "Улицы-то совсем\nновенькие,\nнедавно...",
+    "russian": "Улицы совсем\nновые: недавно\nпостроили.",
     "type": "name",
     "rooms": [
       "0x090"
@@ -4021,7 +4021,7 @@
     "frequency": 1
   },
   "What's that?\nNot a\nchimney...": {
-    "russian": "А это что? На\nтрубу\nнепохоже...",
+    "russian": "А это что? На\nтрубу совсем не\nпохоже...",
     "type": "name",
     "rooms": [
       "0x090"
@@ -4085,7 +4085,7 @@
     "frequency": 1
   },
   "Lots of houses\nhere are round.": {
-    "russian": "Круглых домов\nтут на\nудивление...",
+    "russian": "Круглых домов\nтут на диво\nмного.",
     "type": "name",
     "rooms": [
       "0x091"
@@ -4101,7 +4101,7 @@
     "frequency": 1
   },
   "These stairs\nlead into the\nhouse on the": {
-    "russian": "По этим\nступенькам\nвойдешь в...",
+    "russian": "По ступенькам\nвойдешь в дом\nсправа.",
     "type": "description",
     "rooms": [
       "0x091"
@@ -4190,7 +4190,7 @@
     "frequency": 1
   },
   "One's clearly\nan old lady.\nNo clue about": {
-    "russian": "Одна точно\nтетка, а со\nспины вторую...",
+    "russian": "Одна — старуха,\nа вторую со\nспины не видно.",
     "type": "description",
     "rooms": [
       "0x091"
@@ -4198,7 +4198,7 @@
     "frequency": 1
   },
   "Talk to them\nand I'm either\nignored, or": {
-    "russian": "Заговоришь —\nили прогонят,\nили...",
+    "russian": "Заговоришь —\nили прогонят,\nили заболтают.",
     "type": "description",
     "rooms": [
       "0x091"
@@ -4214,7 +4214,7 @@
     "frequency": 1
   },
   "Poor kid, stuck\nlistening to a\nparent ramble.": {
-    "russian": "Бедный ребенок,\nслушает\nродительскую...",
+    "russian": "Бедный ребенок:\nслушает чужую\nболтовню.",
     "type": "description",
     "rooms": [
       "0x091"
@@ -4222,7 +4222,7 @@
     "frequency": 1
   },
   "Sit here and\nmy butt gets\nwet.": {
-    "russian": "Сяду тут — попу\nпромочу. Хотя\nфонтан-то...",
+    "russian": "Сяду тут — попу\nпромочу. Хотя\nфонтан сухой.",
     "type": "name",
     "rooms": [
       "0x091"
@@ -4246,7 +4246,7 @@
     "frequency": 1
   },
   "That old lady\nreally narrows\nmy view.": {
-    "russian": "Из-за этой\nтетки мне\nпол-улицы не...",
+    "russian": "Из-за старухи\nмне пол-улицы\nне видать!",
     "type": "description",
     "rooms": [
       "0x091"
@@ -4262,7 +4262,7 @@
     "frequency": 2
   },
   "An inn's for\nsleeping, not\nsightseeing.": {
-    "russian": "В гостинице\nспят, а не\nвидами...",
+    "russian": "В отеле спят, а\nне видами из\nокон любуются!",
     "type": "name",
     "rooms": [
       "0x092"
@@ -4318,7 +4318,7 @@
     "frequency": 2
   },
   "A nice, clean\ninn.": {
-    "russian": "Чистенькая\nгостиница,\nприятно...",
+    "russian": "Вполне уютная\nгостиница,\nчисто везде.",
     "type": "description",
     "rooms": [
       "0x093"
@@ -4366,7 +4366,7 @@
     "frequency": 1
   },
   "Come to think,\nI haven't seen\nother guests at": {
-    "russian": "А ведь в\nгостиницах я\nдругих...",
+    "russian": "А ведь других\nжильцов я тут и\nне видела.",
     "type": "description",
     "rooms": [
       "0x093"
@@ -4398,7 +4398,7 @@
     "frequency": 2
   },
   "I've seen this\nsomewhere.\nThen again, all": {
-    "russian": "Где-то я это\nвидела...\nВпрочем, все...",
+    "russian": "Где-то видела.\nВпрочем, кабаки\nвсе одинаковы!",
     "type": "name",
     "rooms": [
       "0x098"
@@ -4472,7 +4472,7 @@
     "frequency": 1
   },
   "Stone floors\ndon't keep the\ntables fixed.": {
-    "russian": "На камне столы\nшатаются,\nтерпеть не...",
+    "russian": "На камне столы\nкачаются, не\nтерплю такое!",
     "type": "description",
     "rooms": [
       "0x098"
@@ -4560,7 +4560,7 @@
     "frequency": 1
   },
   "Don't tell me\nthis guy cooks\nthe food...": {
-    "russian": "Только не\nговори, что он\nеще и еду...",
+    "russian": "Не говори, что\nон еще и еду\nстряпает!..",
     "type": "description",
     "rooms": [
       "0x098"
@@ -4616,7 +4616,7 @@
     "frequency": 1
   },
   "Not as grand as\nthose on the\nmain street,": {
-    "russian": "Не такой\nроскошный, как\nна главной...",
+    "russian": "Не такой пышный\nкак на главной,\nно просторный.",
     "type": "name",
     "rooms": [
       "0x09F"
@@ -4720,7 +4720,7 @@
     "frequency": 1
   },
   "Put stairs in a\nbusy market and\nsomeone's bound": {
-    "russian": "На рынке с\nлестницы\nкто-нибудь...",
+    "russian": "На рынке с этих\nлестниц точно\nкто-то упадет!",
     "type": "description",
     "rooms": [
       "0x09F"
@@ -4753,7 +4753,7 @@
     "frequency": 1
   },
   "Can't sell food\nhere. It gets\nfull sun.": {
-    "russian": "Еду тут не\nпродашь — на\nсолнце мигом...",
+    "russian": "Еду тут не\nпродашь — на\nсолнце стухнет!",
     "type": "description",
     "rooms": [
       "0x09F"
@@ -4769,7 +4769,7 @@
     "frequency": 1
   },
   "She has that\nmother-of-three\nlook.": {
-    "russian": "Вид такой,\nбудто у нее\nдома трое...",
+    "russian": "Вид, словно у\nнее дома трое\nсорванцов.",
     "type": "description",
     "rooms": [
       "0x09F"
@@ -4793,7 +4793,7 @@
     "frequency": 1
   },
   "No wonder meals\ncost so much.": {
-    "russian": "Не зря тут\nдерут\nвтридорога...",
+    "russian": "Не зря дерут\nвтридорога за\nобычную еду!",
     "type": "description",
     "rooms": [
       "0x0B2"
@@ -4857,7 +4857,7 @@
     "frequency": 1
   },
   "Looks pricey.\nDon't spill a\ndrink on it.": {
-    "russian": "Ковер\nдорогущий, не\nвздумай...",
+    "russian": "Ковер дорогой:\nне вздумай на\nнего пролить!",
     "type": "description",
     "rooms": [
       "0x0B2"
@@ -4913,7 +4913,7 @@
     "frequency": 1
   },
   "A white silk\ndress.\nAre we in the": {
-    "russian": "В белом\nшелку... Мы\nточно туда...",
+    "russian": "Вся в шелку! Мы\nточно туда\nсвернули?",
     "type": "description",
     "rooms": [
       "0x0B2"
@@ -4961,7 +4961,7 @@
     "frequency": 1
   },
   "He only takes\norders...": {
-    "russian": "Только заказы\nпринимает...",
+    "russian": "Он лишь заказы\nпринимает...",
     "type": "description",
     "rooms": [
       "0x0B2"
@@ -4969,7 +4969,7 @@
     "frequency": 1
   },
   "A ceiling?\nWhy make me say\nthe obvious?": {
-    "russian": "Потолок! Чего\nзаставляешь\nочевидное...",
+    "russian": "Потолок! Зачем\nзаставлять меня\nэто твердить?",
     "type": "name",
     "rooms": [
       "0x0B4"
@@ -5073,7 +5073,7 @@
     "frequency": 1
   },
   "One plate, one\nbottle, one\nglass, and this": {
-    "russian": "Тарелка,\nбутылка, стакан\n— и места...",
+    "russian": "Тарелка, кубок,\nбутылка — места\nбольше и нет.",
     "type": "description",
     "rooms": [
       "0x0B4"
@@ -5081,7 +5081,7 @@
     "frequency": 1
   },
   "Bottles on the\ntable. I don't\ncare who drinks": {
-    "russian": "Бутылки на\nстоле. Пейте\nчто хотите...",
+    "russian": "Бутылки кругом.\nПейте что есть,\nмне все равно.",
     "type": "name",
     "rooms": [
       "0x0B4"
@@ -5146,7 +5146,7 @@
     "frequency": 1
   },
   "Dressed better,\nhe could pass\nfor a top-class": {
-    "russian": "Оденься он\nприлично —\nсошел бы за...",
+    "russian": "Оденься лучше —\nсошел бы за\nлихого бойца!",
     "type": "description",
     "rooms": [
       "0x0B4"
@@ -5186,7 +5186,7 @@
     "frequency": 1
   },
   "I don't want to\nsee it. Please\nstop...": {
-    "russian": "Глаза б мои не\nвидели!\nХватит...",
+    "russian": "Глаза б мои не\nвидели! Хватит\nуже этого...",
     "type": "description",
     "rooms": [
       "0x0B4"
@@ -5194,7 +5194,7 @@
     "frequency": 1
   },
   "A wine glass...": {
-    "russian": "Бокал для\nвина...",
+    "russian": "Бокал под\nвино...",
     "type": "name",
     "rooms": [
       "0x0B4"
@@ -5250,7 +5250,7 @@
     "frequency": 1
   },
   "Every book may\nhide treasure\ntales, but I'd": {
-    "russian": "Тут море тайн о\nкладах, но\nжизни не...",
+    "russian": "Тут море тайн,\nно жизни читать\nне хватит!",
     "type": "description",
     "rooms": [
       "0x0BC"
@@ -5282,7 +5282,7 @@
     "frequency": 1
   },
   "The Royal\nLibrary has a\nlarge garden.": {
-    "russian": "Королевский\nсад:\nпросторный...",
+    "russian": "Сад библиотеки:\nи просторный, и\nочень красивый.",
     "type": "name",
     "rooms": [
       "0x0BC"
@@ -5338,7 +5338,7 @@
     "frequency": 1
   },
   "How many days\nhas it been\nsince we met": {
-    "russian": "Сколько дней\nпрошло, как мы\nвстретили...",
+    "russian": "Сколько дней мы\nзнакомы с этим\nЛарком?",
     "type": "description",
     "rooms": [
       "0x0BE"
@@ -5346,7 +5346,7 @@
     "frequency": 1
   },
   "Looks like this\njourney is\nalmost over...": {
-    "russian": "Путь почти\nокончен... Лишь\nбы награду...",
+    "russian": "Путь на исходе.\nЛишь бы награду\nнам отдали...",
     "type": "description",
     "rooms": [
       "0x0BE"
@@ -5442,7 +5442,7 @@
     "frequency": 1
   },
   "Don't stare\nsomewhere rude!\n...I'm the one": {
-    "russian": "Не пялься куда\nне надо!.. Ой,\nэто ж я сама...",
+    "russian": "Не пялься туда!\nОй, я же сама\nпялюсь...",
     "type": "name",
     "rooms": [
       "0x0BE"
@@ -5450,7 +5450,7 @@
     "frequency": 1
   },
   "Big brown legs.\nSo thick...\nWait a sec...": {
-    "russian": "Толстые\nкоричневые\nноги...",
+    "russian": "Толстые ноги...\nТьфу ты, это ж\nножки стола!",
     "type": "name",
     "rooms": [
       "0x0BE"
@@ -5466,7 +5466,7 @@
     "frequency": 1
   },
   "Oh! For a\ntavern keeper,\nhe's unusually": {
-    "russian": "Ого, а\nхозяин-то для\nкабатчика на...",
+    "russian": "Хозяин-то для\nкабатчика прямо\nна диво худ!",
     "type": "name",
     "rooms": [
       "0x0BE"
@@ -5570,7 +5570,7 @@
     "frequency": 1
   },
   "A cup by the\nbottle... Is\nthe barkeep": {
-    "russian": "Кружка рядом...\nНе хозяин ли\nсам втихаря...",
+    "russian": "Кружка у винца.\nНе хозяин ли\nсам пригубил?..",
     "type": "name",
     "rooms": [
       "0x0C5"
@@ -5626,7 +5626,7 @@
     "frequency": 1
   },
   "No matter where\nI go, and stand\non the ground,": {
-    "russian": "Куда ни пойди —\nнад головой\nвсегда будет...",
+    "russian": "Куда ни пойди,\nнад головой\nвсегда небо!",
     "type": "description",
     "rooms": [
       "0x0C7"
@@ -5666,7 +5666,7 @@
     "frequency": 1
   },
   "A town without\na single tree\nwould be sad.": {
-    "russian": "Без единого\nдерева в городе\nбыло б...",
+    "russian": "Без деревьев в\nгороде было бы\nочень грустно.",
     "type": "description",
     "rooms": [
       "0x0C7"
@@ -5706,7 +5706,7 @@
     "frequency": 1
   },
   "An odd house.\nNot a shop or\na church...": {
-    "russian": "Странный дом:\nни лавка, ни\nхрам...",
+    "russian": "Странное место:\nни лавка, ни\nхрам...",
     "type": "name",
     "rooms": [
       "0x0C7"
@@ -5746,7 +5746,7 @@
     "frequency": 1
   },
   "A hexagonal\ndoor, too?\nBold choice...": {
-    "russian": "И дверь\nшестигранная?\nНу и...",
+    "russian": "Шестигранная\nдверь? Ну и вид\nу зодчего...",
     "type": "name",
     "rooms": [
       "0x0C7"
@@ -5770,7 +5770,7 @@
     "frequency": 1
   },
   "It earns the\nCity in its\nname.": {
-    "russian": "Не зря Сити\nзовется: город\nи правда...",
+    "russian": "Не зря он Сити:\nгород и правда\nогромен!",
     "type": "name",
     "rooms": [
       "0x0C7"
@@ -5794,7 +5794,7 @@
     "frequency": 1
   },
   "Stand on that,\nand you could\nclimb inside.": {
-    "russian": "Встанешь — и\nпрямиком в окно\nвлезешь. Как...",
+    "russian": "Встанешь сюда —\nи прямо в окно!\nкак вор.",
     "type": "description",
     "rooms": [
       "0x0C7"
@@ -5826,7 +5826,7 @@
     "frequency": 1
   },
   "Coins get stuck\nbetween stones\nlike these...": {
-    "russian": "В щелях меж\nкамней монеты\nзастревают...",
+    "russian": "В щелях камней\nмонеты вечно\nзастревают...",
     "type": "description",
     "rooms": [
       "0x0C7"
@@ -5938,7 +5938,7 @@
     "frequency": 1
   },
   "It's easily\ntwice as wide\nas I am.": {
-    "russian": "В ширину она уж\nточно раза в\nдва пошире...",
+    "russian": "В ширину она\nраза в два шире\nменя самой!",
     "type": "description",
     "rooms": [
       "0x0CF"
@@ -6026,7 +6026,7 @@
     "frequency": 1
   },
   "I feel like no\none would\nnotice if I": {
-    "russian": "Свистни я\nчто-то — никто\nи глазом не...",
+    "russian": "Свистни я вещь\n— никто ведь и\nне заметит!",
     "type": "description",
     "rooms": [
       "0x0D0"
@@ -6034,7 +6034,7 @@
     "frequency": 1
   },
   "Drab shop, but\nflashy clothes.": {
-    "russian": "Лавка серая, а\nнаряд у\nторговца...",
+    "russian": "Серая лавка, а\nнаряд торговца\nвырвиглазный.",
     "type": "name",
     "rooms": [
       "0x0D0"

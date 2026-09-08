@@ -37,3 +37,5 @@ All tasks agree with global constraints. Scan clean.
 - Full Inspection Task 3: complete (commit 7ab1ddc, batch injection engine implemented in tools/patch_inspection.py, 149/149 rooms patched with 0 overflows, 29/29 tests pass)
 - Full Inspection Task 4: complete (rebuilt slayers_royal_ru.bin 712,300,848 B, SHA256 ed2be479585c8d428e0c5dcd2602caa41e4b95c01a7e5ee621d98f06523966f4, 149/149 rooms patched, 13 lore cards injected, Mode 2 Form 1 EDC/ECC recalculated, 67/67 tests pass, launcher dry-run verified)
 - Full Inspection Task 4: complete (commit 9f4fa47, master rebuild complete, 149/149 rooms patched, 67/67 tests pass, disc verified with SHA256 ed2be479585c8d428e0c5dcd2602caa41e4b95c01a7e5ee621d98f06523966f4)
+- Unabridge Task 1: complete (commits c39af14, d64e8b1; 4514/4514 dialogue entries translated, 03C 100% translated, validated without --allow-incomplete)
+- Unabridge Task 2: complete (all 143 truncated inspection strings re-authored into complete sentences, 0 lines > 15 chars, 9/9 pytest pass)

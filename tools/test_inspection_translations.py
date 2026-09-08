@@ -220,3 +220,21 @@ def test_build_pipeline_idempotence(tmp_path: Path, catalog: dict[str, dict]):
     assert len(rebuilt) == 734
     for key in catalog:
         assert rebuilt[key]["russian"] == catalog[key]["russian"]
+
+
+def test_zero_mechanical_truncations(catalog: dict[str, dict]):
+    """Verify that zero inspection strings suffer from mechanical trailing '...' truncations."""
+    # 1. Check user-reported feedback example
+    rock_window = "That upper\nwindow is open.\nToss in a rock?"
+    assert rock_window in catalog
+    assert catalog[rock_window]["russian"].rstrip().endswith(("камешек?", "что ли?"))
+
+    # 2. Check that no string without English ellipsis ends in '...'
+    unintended_dots = []
+    for eng, entry in catalog.items():
+        ru = entry["russian"].strip()
+        has_eng_dots = "..." in eng
+        if not has_eng_dots and ru.endswith("..."):
+            unintended_dots.append((eng, ru))
+
+    assert not unintended_dots, f"Found {len(unintended_dots)} mechanical truncations: {unintended_dots[:5]}"
