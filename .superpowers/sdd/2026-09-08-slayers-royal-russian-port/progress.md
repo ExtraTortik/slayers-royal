@@ -47,3 +47,5 @@ All tasks agree with global constraints. Scan clean.
 - Press Start Task 2: complete (commit 82f88a7, master disc rebuilt with Press Start 2P font, all 149 rooms and 13 lore cards patched, 68/68 tests pass, SHA256 ce279b9c8c2203c2780f5bd6811ac05461e36a832b6ef452fd7a2bea2bb50d97)
 - Main St Task 1: complete (commit 44a1c41, 37 omitted rooms translated from Japanese source including 0x059 MAIN ST with 43 strings, 59/59 tests pass)
 - Main St Task 2: complete (tools/patch_inspection.py and tools/test_batch_inspection_patch.py updated, all 37 omitted rooms patch cleanly including 0x059 with 43 Russian strings, 0 sector overflows, 12/12 tests pass)
+- Main St Task 2: complete (commit 5b1fac8, missing rooms source fallback implemented in tools/patch_inspection.py, Room 0x059 MAIN ST has 43 Russian strings, 12/12 tests pass)
+- Main St Task 3: complete (master rebuild executed, Room 0x059 MAIN ST has 43 Russian strings, all 37 omitted rooms restored, 13 lore cards injected, 712,300,848 B, SHA256 2c1bb07b5b0a576e1e1d9f404cccce9a68d215e69d6375eaaa603f8590996ba0, 73/73 tests pass, launcher verified, report written)
