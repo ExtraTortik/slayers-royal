@@ -44,3 +44,4 @@ All tasks agree with global constraints. Scan clean.
 - Unabridge Task 3: complete (commit cdca4fb, master rebuild without --allow-incomplete, 4514/4514 dialogue translated, 149/149 rooms unabridged, 68/68 tests pass, SHA256 29b8327bce3d6a4a4d84db397e2f4d0377c1ba0b8bbb6ad56ab5344c96a606c9)
 - Press Start Task 1: complete (commits 3ab4b3e, e8fb16a; PressStart2P.ttf integrated at 11pt baseline y=12, all 33 tests pass)
 - Press Start Task 2: complete (master rebuild with Press Start 2P font atlas, 149 rooms patched, 13 lore cards injected, 712,300,848 B, SHA256 ce279b9c8c2203c2780f5bd6811ac05461e36a832b6ef452fd7a2bea2bb50d97, 68/68 tests pass)
+- Press Start Task 2: complete (commit 82f88a7, master disc rebuilt with Press Start 2P font, all 149 rooms and 13 lore cards patched, 68/68 tests pass, SHA256 ce279b9c8c2203c2780f5bd6811ac05461e36a832b6ef452fd7a2bea2bb50d97)
