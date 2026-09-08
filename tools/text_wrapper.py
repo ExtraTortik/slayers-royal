@@ -64,11 +64,48 @@ def _break_long_word(word: str, max_chars: int) -> list[str]:
     return chunks
 
 
+def shorten_lines(
+    text: str,
+    max_lines: int = 2,
+    max_chars_per_line: int = 15,
+) -> str:
+    """Truncate multi-line single-page text to at most max_lines with ellipsis."""
+    lines = text.splitlines()
+    if len(lines) <= max_lines:
+        return text
+    kept_lines = lines[: max_lines - 1]
+    last_line = lines[max_lines - 1]
+    ellipsis = "..."
+    max_prefix = max_chars_per_line - len(ellipsis)
+
+    if len(last_line) <= max_prefix:
+        truncated_last = last_line.rstrip(" ,.!?—") + ellipsis
+    else:
+        w_list = last_line.split()
+        cand = ""
+        for w in w_list:
+            test = (cand + " " + w).strip() if cand else w
+            if len(test) <= max_prefix:
+                cand = test
+            else:
+                break
+        if cand:
+            truncated_last = cand.rstrip(" ,.!?—") + ellipsis
+        else:
+            truncated_last = last_line[:max_prefix].rstrip(" ,.!?—") + ellipsis
+
+    if not truncated_last:
+        truncated_last = ellipsis
+    kept_lines.append(truncated_last)
+    return "\n".join(kept_lines)
+
+
 def wrap_dialogue(
     text: str,
     allow_continuation: bool = True,
     max_chars_per_line: int = 15,
     max_lines_per_page: int = 3,
+    max_pages: int | None = None,
 ) -> str:
     """Format Russian dialogue text complying with PS1 hardware layout limits.
 
@@ -77,6 +114,8 @@ def wrap_dialogue(
     - Breaks words > max_chars_per_line with hyphens.
     - Formats into pages of 1 to max_lines_per_page lines (joined with \\n).
     - If allow_continuation=True, joins pages with \\f.
+    - If max_pages is specified, caps the number of output pages, truncating the
+      final line with '...' if text overflows.
     - If allow_continuation=False, limits output to 1 page (<= 3 lines),
       truncating with '...' on the last line if necessary.
     - Validates output with parse_target.
@@ -124,11 +163,13 @@ def wrap_dialogue(
         lines.append(current_line)
 
     # Format into pages
-    if not allow_continuation:
-        # At most 1 page of at most max_lines_per_page lines
-        if len(lines) > max_lines_per_page:
-            kept_lines = lines[: max_lines_per_page - 1]
-            last_line = lines[max_lines_per_page - 1]
+    effective_max_pages = 1 if not allow_continuation else max_pages
+
+    if effective_max_pages is not None:
+        max_total_lines = effective_max_pages * max_lines_per_page
+        if len(lines) > max_total_lines:
+            kept_lines = lines[: max_total_lines - 1]
+            last_line = lines[max_total_lines - 1]
             ellipsis = "..."
             max_prefix = max_chars_per_line - len(ellipsis)
 
@@ -153,6 +194,7 @@ def wrap_dialogue(
             kept_lines.append(truncated_last)
             lines = kept_lines
 
+    if not allow_continuation or effective_max_pages == 1:
         result = "\n".join(lines)
     else:
         pages: list[str] = []

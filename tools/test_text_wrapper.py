@@ -5,7 +5,7 @@ from __future__ import annotations
 import unicodedata
 import pytest
 
-from tools.text_wrapper import wrap_dialogue
+from tools.text_wrapper import wrap_dialogue, shorten_lines
 from patch_repo.localization.script import parse_target, ScriptError
 
 
@@ -125,3 +125,32 @@ class TestTextWrapper:
         assert wrap_dialogue("") == ""
         assert wrap_dialogue("   ") == ""
         assert wrap_dialogue("\n\t") == ""
+
+    def test_max_pages_constraint(self) -> None:
+        """When max_pages=2 is specified, long text should not produce more than 2 pages."""
+        long_text = (
+            "Это очень длинный текст диалога для проверки ограничения количества страниц "
+            "в игре Слейерс Роял на консоли PlayStation 1."
+        )
+        result = wrap_dialogue(long_text, allow_continuation=True, max_pages=2)
+        pages = result.split("\f")
+        assert len(pages) <= 2
+        for page in pages:
+            lines = page.splitlines()
+            assert 1 <= len(lines) <= 3
+            for line in lines:
+                assert len(line) <= 15
+        assert result.endswith("...")
+        parsed = parse_target(result, 0x00FD, "test_max_pages")
+        assert len(parsed) <= 2
+
+    def test_shorten_lines(self) -> None:
+        """shorten_lines should reduce 3-line text to 2 lines with ellipsis."""
+        text = "Первая строка\nВторая строка\nТретья строка"
+        result = shorten_lines(text, max_lines=2)
+        lines = result.splitlines()
+        assert len(lines) == 2
+        assert lines[0] == "Первая строка"
+        assert lines[1].endswith("...")
+        for line in lines:
+            assert len(line) <= 15
