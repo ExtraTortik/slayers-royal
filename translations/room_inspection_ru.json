@@ -1,0 +1,6044 @@
+{
+  "No clue what\nkind. It's a\ntree.": {
+    "russian": "Не знаю породы,\nпросто дерево.",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 2
+  },
+  "It's a tree\nabout twice the\nheight of": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "A stone wall,\nwith a tree\non top.": {
+    "russian": "Каменная стена,\nа на ней дерево.",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Uneven stones,\nsmooth surface.": {
+    "russian": "Неровные камни,\nгладкая кладка.",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Enough with the\nstone walls.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Some bushes.": {
+    "russian": "Кустарник.",
+    "type": "name",
+    "rooms": [
+      "0x05A",
+      "0x090",
+      "0x091"
+    ],
+    "frequency": 3
+  },
+  "Lots of shrubs.\nMaybe it's a\nbeautification": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Stairs between\nthe houses.": {
+    "russian": "Лестница между\nдомами.",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Climb these\nstairs, go on,\nthen down the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "A red-roofed\nhouse.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Steps at the\nentrance.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "The ground.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "It's just the\nground.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Just a\ntwo-story\nhouse, I think.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "The curtains on\nthis window are\nclosed.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Polished enough\nto reflect the\nsky.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "That upper\nwindow is open.\nToss in a rock?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Big house.\nRed roof, of\ncourse.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "The back side.\nNo entrance.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Chimney means\na living room\nlies below...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Enough of this.\nLet's move on.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "A window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A",
+      "0x060",
+      "0x064",
+      "0x087",
+      "0x09F",
+      "0x0C5",
+      "0x0C7",
+      "0x0D0"
+    ],
+    "frequency": 8
+  },
+  "Can't peek in.\nCan't reach it.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Iron bars.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "What if those\nbars are the\nentrance...?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "More houses.\nYes, I know...\nRed roof again.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "A huge house.\nWho lives here?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Nice weather.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A",
+      "0x060"
+    ],
+    "frequency": 3
+  },
+  "A mountain.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A",
+      "0x077",
+      "0x078",
+      "0x090",
+      "0x0C7"
+    ],
+    "frequency": 6
+  },
+  "Mountains look\nclose. They're\nactually way": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "A passerby.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05A",
+      "0x060"
+    ],
+    "frequency": 2
+  },
+  "Their legs look\nshort. Must be\nthe clothes.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Don't stare at\npeople.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Why barge into\nsomeone's home?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "Nothing for me\nat this house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05A"
+    ],
+    "frequency": 1
+  },
+  "No clue what\nkind. That's a\nbig tree.": {
+    "russian": "Не знаю породы,\nно дерево\nгромадное.",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 2
+  },
+  "A tree this big\nought to have\nsome fruit.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "If it's this\nbig, it should\nbe enough for": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Grass around\nthe tree.": {
+    "russian": "Трава под\nдеревом.",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "This grass\ndoesn't look\nuseful for": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "More trees in\nthe distance.": {
+    "russian": "Вдали видны\nдеревья.",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Looks like a\nforest on this\nside.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "More a grove\nthan a forest.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "A rock in the\nshade.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Turn this rock\nover and you'll\nfind tiny bugs.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "A nice road,\neven outside\ntown.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Heh-heh!\nA loose stone.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Town entrance.\nOr maybe exit.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Lakewood starts\nbeyond there.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "There's a wall\naround the\ntown.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "I wonder if\nthis town is\nsurrounded by": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "I can see the\ntown.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Never saw this\ntower in town.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Lots of houses\nwith red roofs.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "The roofs seem\ntall because\nhouses sit on": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "A mountain.\nNo idea which.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Hazy and far\naway.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Mm... Nice day.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "It's easier to\ntravel in this\nkind of": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x05B"
+    ],
+    "frequency": 1
+  },
+  "Diner ceiling.": {
+    "russian": "Потолок таверны.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 2
+  },
+  "No upstairs.\nThe owners must\nlive down here.": {
+    "russian": "Второго этажа\nтут нет. Видно,\nживут внизу.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Just a wall.": {
+    "russian": "Стена таверны.",
+    "type": "name",
+    "rooms": [
+      "0x05D",
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 3
+  },
+  "Outside, past\nthis wall.\nObviously.": {
+    "russian": "Снаружи за этой\nстеной — улица.\nОчевидно же.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "What color was\nthis wall when\nit was new...?": {
+    "russian": "Какой же цвет\nбыл у этих стен\nизначально?",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Barred window.": {
+    "russian": "Окно с решёткой.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "No glass, just\niron bars.": {
+    "russian": "Никаких стёкол,\nтолько железные\nпрутья.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "The diner door.": {
+    "russian": "Дверь таверны.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Big place, but\nonly one door.": {
+    "russian": "Места тут много,\nа дверь всего\nодна на всех.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "The entrance is\none step down.": {
+    "russian": "Вход на одну\nступеньку ниже.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Someone's bound\nto trip on that\nstep.": {
+    "russian": "На этой ступени\nкто-нибудь точно\nспоткнётся.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "A hanging lamp.": {
+    "russian": "Подвесная лампа.",
+    "type": "name",
+    "rooms": [
+      "0x05D",
+      "0x098",
+      "0x0C5"
+    ],
+    "frequency": 3
+  },
+  "It takes a lamp\nthis big to\nlight it all.": {
+    "russian": "Нужна огромная\nлампа, чтобы всё\nосветить.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "The lamp cord.": {
+    "russian": "Шнур от лампы.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "If it snaps,\nthis wood floor\nburns fast.": {
+    "russian": "Оборвётся — и\nдеревянный пол\nмигом вспыхнет.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Plank flooring.": {
+    "russian": "Дощатый пол.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "A wooden chair.": {
+    "russian": "Деревянный стул.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Not exactly a\ncomfy chair.": {
+    "russian": "Не сказать чтобы\nочень удобный.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "A wooden table.": {
+    "russian": "Деревянный стол.",
+    "type": "name",
+    "rooms": [
+      "0x05D",
+      "0x0B2"
+    ],
+    "frequency": 2
+  },
+  "A water jar.": {
+    "russian": "Кувшин с водой.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Definitely not\na spittoon.": {
+    "russian": "Это уж точно\nне плевательница,\nуверяю вас.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Someone's here.": {
+    "russian": "Кто-то сидит.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Two customers.": {
+    "russian": "Двое гостей.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Likely locals.": {
+    "russian": "Похоже, местные.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Facing away.\nMan or woman?": {
+    "russian": "Сидят спиной.\nМужчина или\nженщина?",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Look them in\nthe face when\nyou speak.": {
+    "russian": "Говоря с кем-то,\nнадо смотреть\nв лицо.",
+    "type": "name",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "Older than me.\nStill pretty\nyoung, though.": {
+    "russian": "Постарше меня,\nно всё ещё\nдовольно молоды.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "B lunch.": {
+    "russian": "Обед «Б».",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "An older guy,\non a break from\nwork.": {
+    "russian": "Мужичок сидит.\nОтдыхает в\nразгар работы.",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "A lunch.": {
+    "russian": "Обед «А».",
+    "type": "description",
+    "rooms": [
+      "0x05D"
+    ],
+    "frequency": 1
+  },
+  "No rain lately.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "That tree rises\nover the roofs.\nMust be huge.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Who planted the\nhuge tree in\ntown?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Maybe the tree\nwas here before\nthe town.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Isn't it just\nan ordinary\ntree?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Looks like a\nchimney...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Like I said,\nit's a\nchimney.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Enough already.\nWhat else but a\nchimney?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "A house. Well,\nwe are in town.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "I think it's\njust an\nordinary house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Nearly everyone\nin the square\nis visible.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "There is a\nfountain in the\nmiddle of the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "The fountain's\nstone rim is\nalso a bench.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Flowing water.\nWho looks this\nclosely?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "This one's some\nkind of shop.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "An entrance.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Why not put the\ndoor and sign\non the square?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "This one's just\na normal house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "I can't see\nwell, but there\nseems to be a": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "A lamp.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "It won't be lit\nuntil night.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Plain ground.\nNothing lying\naround, either.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Bricks set into\nthe ground.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "If these bricks\nstick out a\nlittle, you'll": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "A woman.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060",
+      "0x077",
+      "0x082",
+      "0x091",
+      "0x098"
+    ],
+    "frequency": 5
+  },
+  "A local.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060",
+      "0x0C5",
+      "0x0CF"
+    ],
+    "frequency": 3
+  },
+  "Just a kid.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "An old couple.\nThey chat.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "Your basic\nPasserby A.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "A bigger town\nmeans more\nfoot traffic.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "A parent and\nchild. Shopping\nor out walking?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x060"
+    ],
+    "frequency": 1
+  },
+  "My neck hurts\nfrom staring at\nthe sky.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 2
+  },
+  "A tree beyond\nthe roof.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Houses are\nlined up on\nboth sides of": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "About three\nhouses joined\ninto one large": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "In plain terms,\na row house.\nAn apartment.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Hard to see,\nbut there's a\ndoor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "The wall is\ncrumbling here\nand there.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "I think it's a\nlittle old,\nthough.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "It's a window\nthat opens\noutward.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Which window\ngoes with which\ndoor?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "With a window\nhere, passersby\ncould see in.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "At least hang\nsome curtains.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "A door.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061",
+      "0x098"
+    ],
+    "frequency": 2
+  },
+  "Just a normal\nfront door.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "A plaque above\nthe door.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Whether it's a\nsign or a\nnotice, I can't": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Stairs.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061",
+      "0x069",
+      "0x07D",
+      "0x082",
+      "0x090",
+      "0x091",
+      "0x093",
+      "0x09F",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 11
+  },
+  "They only lead\nto a house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "An iron rail,\nbadly rusted.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Touch the rust:\nyour hand turns\nred. Know that?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "The rail ends\nin a spiral.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Just for looks.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Plain ground.\nNo bricks like\non main street.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "A man holding\nsomething.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "He's in an\napron. Must be\nworking.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Lots of people\nback here, too.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "He's probably\nfollowing the\nwoman ahead.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "He may be\nfleeing the man\nbehind him.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "A kid walking.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "That kid looks\nfamiliar...\nMaybe not.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Hard to tell\nfrom this far,\nAn old woman?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "A cheap, plain\nwalking stick.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Staring at the\nsky isn't much\nfun.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "Looks like a\ntavern keeper\nor something.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "You look like\nyou're tired.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x061"
+    ],
+    "frequency": 1
+  },
+  "What can I say\nabout a wall?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 4
+  },
+  "Walls aren't\nmuch fun.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A stair rail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A pretty\nhandrail.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Beneath stairs.\nOnly good for\nstorage.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Dead space.\nNothing there.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Stairs. Exactly\nfifteen steps.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Sixteen if you\ncount the top?\nWho cares?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Up these stairs\nis the second\nfloor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "The upper floor\nis polished to\na shine.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "All thanks to\nthe cleaner's\nwork.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "If every inn\nwere so clean,\nI'd have no": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A chandelier\nhangs from the\nlobby ceiling.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Only for show.\nNo candles.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "The inn's door.\nLeads outside.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Looks pricey.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Pull it toward\nyou to open it.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A lit lamp.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Shiny counter.\nAs it should.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Hand grime may\nbe why it\nshines... No,": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A calling bell.\nUse it when no\none is here.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Maybe a shelf\nfor dishes and\nsuch?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "What's this?\nHmm... no idea.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "Maybe it holds\nslippers?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "A red carpet\non the floor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "The floor's\nclean, too.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x062",
+      "0x063"
+    ],
+    "frequency": 2
+  },
+  "The innkeeper.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x062",
+      "0x07D",
+      "0x092",
+      "0x093",
+      "0x0BB",
+      "0x0D1"
+    ],
+    "frequency": 6
+  },
+  "It's a bar in\nBarkland.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 2
+  },
+  "Last time here,\nI had no time\nto visit.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "An open entry.\nNo door blocks\nthe view out.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Only this door\nopens two ways.\nHow do they": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Leave it open\nand it swings\nback by itself.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "The entrance is\nright by it.\nWhy a window?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Wooden plank\nfloor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Oil coats the\nfloor, so it\nburns easily.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Chairs here are\nfairly comfy.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Cushions would\nbe nice, but\ntavern chairs": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "The table looks\nsturdy too.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "A round table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Locals are\nsitting here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "They look oddly\nshort-legged.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Too busy\ntalking to\nlisten.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "That table base\nmust crowd the\npeople sitting": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Their clothes\nmark them as\nlocals.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "They've had\nquite a lot.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Only liquor\nbottles here.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "An old woman in\na black hood...\nOr is that an": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "What a deeply\nsuspicious guy.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "They seem to be\ndrinking.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "They ordered\none drink only.\nNothing else.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x064"
+    ],
+    "frequency": 1
+  },
+  "Item shops sell\ntravel goods,\nlike capes.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 2
+  },
+  "It's probably\nsome kind of\nmedicine.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "Door to the\nback room.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "Most shops\ndouble as the\nowner's home.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "A counter.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065",
+      "0x07D",
+      "0x084",
+      "0x085",
+      "0x0BB",
+      "0x0C3",
+      "0x0C5",
+      "0x0D0",
+      "0x0D1"
+    ],
+    "frequency": 9
+  },
+  "Beyond the\ncounter is\noff-limits.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "Boxes up there\nlook abandoned,\nnot stacked.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "The items on\nthis side don't\nlook like much.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "These goods say\nthis shop sells\nnothing fancy.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "All sorts of\nthings here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "No hidden gems.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "The shop lady.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "Not just some\nold lady.\nSome merchants": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "An item shop.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x065"
+    ],
+    "frequency": 1
+  },
+  "Nasty-looking\nweapons cover\nthe wall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x067"
+    ],
+    "frequency": 2
+  },
+  "It's the sky.\nWhat else could\nI call it?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 2
+  },
+  "A house in the\ndistance.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Elf towns don't\nlook different\nfrom human": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "That's one big\ndoor. Do elves\ngrow huge with": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Up on the roof.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "An ordinary\nroof.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Brick and white\nplaster? In an\nelf town? They": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "These windows\nlook just like\nhuman ones.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "This house\ndoesn't look\nvery tall.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Bushes by the\nhouse.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "A tree stands\nin the square.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "It's low, but\nwide.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "A thick tree.\nHow old is it?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Just dirt.\nSand and soil\nare mixed in,": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Nothing's lying\naround.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "A wide tree\ncasts a wide\nshadow.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Nothing's lying\nin the shade.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "I'm not Naga.\nI don't stare\nat the ground": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "An elf out\nfor a walk.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "An elf with a\nchild.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "I'd like to ask\nthe old man and\nchild how old": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "A blond elf.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "With long hair,\nit's hard to\ntell male and": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "This elf looks\nlike a girl.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "She looks older\nthan Lark.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "The elf beside\nher looks male.\nShe's tracing": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "I see figures\nover there.\nThey're not": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "Only elves live\nin this town.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "The sky is\nclear as\nalways.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "An elf is\nwatching me.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "That elf looks\nabout Gourry's\nage, but who": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x068"
+    ],
+    "frequency": 1
+  },
+  "A tree on the\nleft.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 2
+  },
+  "I expected more\nfrom an elf\nvillage. It": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A tree trunk.\nBent in the\nmiddle. Poor": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Like I said,\na tree trunk.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Looks like the\nforest starts\nbehind the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "That house must\nsit higher up.\nI can't see": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "The roof.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "I wonder how\nthis roof looks\nfrom inside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "What's that on\nthe tip of the\nroof?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Something odd\nis attached.\nWhat is it?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "It's a chimney.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "That chimney is\nabout right for\nthis house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Something's on\nthe roof.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "What's that?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "An ordinary\nlittle house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Just a normal\nhouse in a\nnormal village.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A window. Well,\nof course. It's\na house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A-I-U-E-O": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Two doors.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "The two doors\naren't the same\nsize.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A fence. Yes,\na fence.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "It keeps people\nfrom falling\ndown there.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "You need these\nstairs to reach\nthat house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A stone wall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "I don't know\nhow elves live,\nbut this place": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "By the stairs,\ndirt replaces\nthe stone wall,": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "A wall beside\nthe house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "Maybe it's not\na wall. Maybe\nit's a shed.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "The sky is the\nsky anywhere.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x069"
+    ],
+    "frequency": 1
+  },
+  "From that peak,\nyou could see\nthe whole town.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Sonia City's\nskyline.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077",
+      "0x07A"
+    ],
+    "frequency": 2
+  },
+  "These houses\nface north.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "A north-facing\nwindow. Must be\ncool in summer.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Not a shop.\nJust a front\ndoor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "We don't even\nknow who lives\nhere. Why go": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "These houses\nface south.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "A bay window.\nMaybe an attic\nis up there.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "A second-floor\nwindow.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Pretty big for\nan ordinary\nhome.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Its upper floor\njuts out over\nthe street.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "If there were a\nwindow here,\nevery passerby": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Nothing's more\nawkward than\npeeking in and": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Don't stare at\nthe window.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "This really is\na big city. The\nmain street is": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "These streets\nare so wide,\ntwenty people": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Still, twenty\npeople walking\nside by side": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Sonia City's\nmain street.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "An old man.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077",
+      "0x090",
+      "0x091",
+      "0x0BE"
+    ],
+    "frequency": 4
+  },
+  "Why walk at the\nedge? Use the\nmiddle.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Someone's\ntalking by a\nfront door.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "Don't chat by\nsomeone's home.\nYou'd block the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "A woman. Maybe\nshe's returning\nfrom shopping.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "The sky.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077",
+      "0x078",
+      "0x07A",
+      "0x086",
+      "0x092",
+      "0x0C7"
+    ],
+    "frequency": 10
+  },
+  "Just some guy\npassing by.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "An old woman...\nIs she spacing\nout?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x077"
+    ],
+    "frequency": 1
+  },
+  "What else could\nit possibly be?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A forest over\nthere.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Hmm. Nice view\nfrom here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "That roof is\neasy to see\nfrom here. Not": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A window in\nthe roof.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Rows of similar\nhouses.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Only this house\nis three\nstories high.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Big houses for\na back street.\nThis town must": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A window...\nOf course, it's\non the third": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "You can see\nright inside\nthat window": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "The house on\nthe right is\npretty big too.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "There's a bay\nwindow.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A two-story\nhouse with an\nattic.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A window. Too\nfar away to see\ninside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Sonia City's\nback street.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "It may look far\nbelow, but I'm\nnot up in the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "People down on\nthe back street\nlook tiny as": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Hard to tell,\nbut probably\na child. What's": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "A woman is\nwalking.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Same as on the\nmain street...\nWalk in the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "Anyone avoiding\nthe middle has\nsomething to": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x078"
+    ],
+    "frequency": 1
+  },
+  "There's a tree.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x078",
+      "0x07A"
+    ],
+    "frequency": 2
+  },
+  "There's a\nmountain right\nat the edge of": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "If that cliff\ncollapsed, we'd\nbe in trouble.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "Warehouses line\nthe harbor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "This port is\nhuge.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "A few people\nhere and there.\nWe're on a hill": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "Just imagining\nthe walk from\none end to the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "Boats dock\nright by the\nport, so the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "What a lovely\nsea.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "Staring at a\ntree won't give\nme any ideas.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "I can see the\nroof of a\nnearby house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07A"
+    ],
+    "frequency": 1
+  },
+  "An inn wall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 8
+  },
+  "An empty frame.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "This is where\nguests pay for\ntheir rooms.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "A lamp on the\ncounter.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "At night, they\ncast Lighting\non this lamp.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "A pen holder\nbeside it.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Someone's\nportrait hangs\nin that round": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "A portrait.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Upstairs.\nThat's where\nthe guest rooms": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Guest rooms lie\npast this door.\nIf the entrance": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Maybe this door\nopens straight\noutside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "The upstairs\nhandrail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "It's polished\nenough to slide\ndown from the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Stairs lead to\nthe second\nfloor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Some sort of\nplant.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "A flowerpot.\nIt's dried out.\nGive it some": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "That flowerpot\ncould block you\ncoming down the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Under the\nupstairs hall.\nIn other words,": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "If we ran wild\nupstairs, this\ncould give way": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "The boundary\nbetween first\nand second": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "There's a small\nwindow above\nthe entrance": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0D1"
+    ],
+    "frequency": 3
+  },
+  "Just outside,\npast this wall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "The front door.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Both halves of\nthis door open.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "He's always\nhere.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB"
+    ],
+    "frequency": 2
+  },
+  "The inn floor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "Clean or not,\ndon't sleep\nhere.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x07D",
+      "0x0BB",
+      "0x0C3",
+      "0x0D1"
+    ],
+    "frequency": 4
+  },
+  "It's the tavern\nwall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 2
+  },
+  "No matter how\nmany times I\nlook at the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A second-floor\nlamp.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A chandelier...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A cheap-looking\nchandelier.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Ugh, it's made\nof wood...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "They could use\na nicer one.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "The upstairs\nrailing.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Apparently,\npatrons are\nupstairs too.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "It's too dark\nto tell.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "The handrail's\npretty thin.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "This handrail\nlooks ready to\nsnap.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Wooden stairs.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A window, but\nit's too dark\nto see outside.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A first-floor\nlamp.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A chair.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "The chairs here\nare actually\ncomfortable.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "A table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Not many\ncustomers.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "The tavern\nfloor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "She works here.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "She seems to be\ngoing upstairs.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "She's wearing a\npurple dress.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Those two are\ndrinking.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Some old guy\ndrinking.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Isn't that a\nbeer mug?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Empty mugs are\nsitting on the\ntable.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "I can't tell if\nthey're a man\nor a woman.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Hmm... A man\nor a woman?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Judging by the\nfeet, maybe a\nman.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "One leg\nsupports this\nwhole table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "If Zelgadis\nstood on it,\nit'd collapse.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x082"
+    ],
+    "frequency": 1
+  },
+  "Some bottles\nlook medicinal.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 2
+  },
+  "Just looks like\njunk.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "An item shop?\nFeels more like\na junk shop.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A staff on\ndisplay.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Light comes in\nthrough the\nwindow.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "There's so much\nstuff, I can't\nwalk through": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A door... also\nknown as the\nentrance.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A barrel.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A stone atop\nthe barrel.\nDon't tell me": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Something's in\nthose pots and\nbarrels.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "It's absolutely\ncaked in dust.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "They could at\nleast clean.\nEven I wash my": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A price tag.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Some kind of\nmedicine bottle\non the counter.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Some kind of\nbox...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "This junk is\nwhy the shop's\nso cramped.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Throw this out\nand there'd be\nmore room.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "This junk's in\nthe way.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Don't put boxes\nhere. Someone\ncould trip.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Watch this box.\nWith all this\nstuff lying": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Despite all the\njunk around,\nat least the": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "She fell for a\nbust potion,\nthen worked for": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Frilly skirt,\nan apron.\nDefinitely a": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Suede boots.\nSuede is tanned\nleather.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "Why is she\nwearing boots?\nThick legs,": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x084"
+    ],
+    "frequency": 1
+  },
+  "A nasty-looking\nweapon.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 2
+  },
+  "A poleaxe,\nI think.\nNot really my": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Crossbows on\ndisplay.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Probably a\nknife.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "An iron shield.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "No one travels\nwith this damn\nheavy thing": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Who'd buy this\nheavy thing?\nMaybe it's here": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "A longsword.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "A spear in\nthe barrel.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Carelessly\nleft out.\nMust be cheap.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "The door we\ncame through.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Inside the\nweapon shop.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "The weapon shop\nold-timer.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "Need a weapon?\nAsk the owner.\nFaster than": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x085"
+    ],
+    "frequency": 1
+  },
+  "A common tree.\nNothing rare.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "Looks like a\nchurch to me.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "What else could\nit be but a\nchurch?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "The church.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "The church sits\na step higher.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "These stairs\nlead into the\nchurch.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "The road by the\nchurch is\nspotless.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "So spotless,\nit feels wrong\nto walk on it.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "A tower.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "A bell.\nWonder how it\nsounds.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "Church bells\nprobably only\nring during": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "No need to\ngo inside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086"
+    ],
+    "frequency": 1
+  },
+  "Let's go\nsomewhere else.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x086",
+      "0x092"
+    ],
+    "frequency": 2
+  },
+  "Inside the\nchurch.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 2
+  },
+  "The rear has a\ndomed ceiling.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "That window's\nlight gives the\nchurch a dreamy": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "Some kind of\nstatue.\nGods aren't my": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "I know plenty\nabout Mazoku.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "Plenty of\nopen space.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "It's where the\npriest speaks.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "It's a town\nchurch, so it\nmust be used": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "Enough chairs\nfor quite a\ncrowd.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "The floor's\npolished too.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "The church's\npriest.\nLooks like he's": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x087"
+    ],
+    "frequency": 1
+  },
+  "Just the sky.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 2
+  },
+  "The sky looks\nso wide.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "There's another\nmountain far\noff.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "That's Mount\nIzelcen.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Those houses\nlook different.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Leaving by that\nhouse leads up\nthe mountain.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Isn't that door\nhuge?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "A house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "A window, but\nI can't see in.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "An ordinary\nhouse.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Nothing odd.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "That house's\nentrance.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Why is the roof\nround?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "A normal house.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "The roof looks\nlike a hat.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "A round house\ndoesn't seem\nvery cozy.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Even the walls\nare round.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "White-painted\nwalls. Nothing\nspecial.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "It's the main\nstreet.\nPeople are out.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "All kinds of\npeople.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "These streets\ncan't be old.\nThey're still": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Feels like they\njust put houses\non empty land.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "What's that?\nNot a\nchimney...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Maybe some kind\nof tower.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x090"
+    ],
+    "frequency": 1
+  },
+  "Grass up front.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 2
+  },
+  "A little plaza.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Compared to the\nmain street,\nthis feels like": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "This was likely\nthe old main\nstreet.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "A fountain, but\nit's dry.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "It used to be\na fountain.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Lots of houses\nhere are round.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "They must build\nhouses\ndifferently.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "These stairs\nlead into the\nhouse on the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "More houses\nover there.\nRound ones.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Isn't this the\nonly town with\nroofs like": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "More round\nhouses.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "A round window\nover the door.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "There's a door.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091",
+      "0x093"
+    ],
+    "frequency": 2
+  },
+  "Open that door\nand you'd see\nthe whole": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Probably lives\nin the house\nbehind him.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Aren't they\nlovers?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Better not\ninterrupt them.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Two women are\ndeep in\nconversation.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "One's clearly\nan old lady.\nNo clue about": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Talk to them\nand I'm either\nignored, or": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "The kid looks\nbored.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Poor kid, stuck\nlistening to a\nparent ramble.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Sit here and\nmy butt gets\nwet.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "An old lady.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "Definitely an\nold lady.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "That old lady\nreally narrows\nmy view.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x091"
+    ],
+    "frequency": 1
+  },
+  "There's forest\nbehind the inn.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 2
+  },
+  "An inn's for\nsleeping, not\nsightseeing.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "Nothing to see.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "There's a\ngarden.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "Bushes beside\nthe entrance.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "Staring at this\nwon't get us\nanywhere.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "He needn't come\nall the way\noutside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x092"
+    ],
+    "frequency": 1
+  },
+  "Inside the inn.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 2
+  },
+  "A nice, clean\ninn.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "A painting\nupstairs.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "A chandelier.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "A red carpet.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "The stair rail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "A sofa and\ntable.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "Come to think,\nI haven't seen\nother guests at": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "More carpet\non the floor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "He's neatly\ndressed.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x093"
+    ],
+    "frequency": 1
+  },
+  "In a tavern.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 2
+  },
+  "I've seen this\nsomewhere.\nThen again, all": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Not a very big\ntavern.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "A liquor bottle\non the shelf.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "A bottle on\nthe counter.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Maybe they're\ncleaning up.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "The counter.\nNo one's seated\nhere.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "An open seat.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "A round stool.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098",
+      "0x0B4",
+      "0x0C5"
+    ],
+    "frequency": 3
+  },
+  "A stone floor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Stone floors\ndon't keep the\ntables fixed.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Food and drinks\non the table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Don't peek at\nsomeone else's\ntable.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "A pretty large\ntable.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "A bearded man.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Pretty drunk.\nHis face\nis red.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "An old drunk.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Long hair...\nProbably a man.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Their head is\nhigher than\nthe bearded man": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "She must work\nhere. She's\nbringing a": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "The bartender.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Don't tell me\nthis guy cooks\nthe food...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Closed window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x098"
+    ],
+    "frequency": 1
+  },
+  "Quit staring at\nthe sky.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 2
+  },
+  "Freegrant's\ntownscape.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "These houses\nbelong to the\nmarket people.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A slightly old\nhouse.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A window, but\nno glass.\nJust boards.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Not as grand as\nthose on the\nmain street,": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Every market\nstall has a\ntent.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A cheap tent.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A pillar stands\nhere, set into\nthe ground.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "The market\nstreet.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "The entire\nstreet is a\nmarket.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "People shopping\nover there.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Probably buying\ndinner fixings.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Some kind of\nhanging meat.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Some kind of\nfood?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Looks like\ndried fish.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A man carrying\ngoods.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A woman trying\nto decide what\nto buy.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Put stairs in a\nbusy market and\nsomeone's bound": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Nothing here.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F",
+      "0x0C7"
+    ],
+    "frequency": 2
+  },
+  "Well, there are\nvegetable\nscraps.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Plates and such\nat this stall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Can't sell food\nhere. It gets\nfull sun.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "A middle-aged\nwoman.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "She has that\nmother-of-three\nlook.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x09F"
+    ],
+    "frequency": 1
+  },
+  "Huh. Pretty\nbright in here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 2
+  },
+  "Nice place,\nI suppose.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "No wonder meals\ncost so much.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A blurry figure\nat the piano.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A piano.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Fancy curtains.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Not really my\nkind of place.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "The windows are\nthe only plain\nthing here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A raised step\nby the windows,\nwith a rail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Carpeted floor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Looks pricey.\nDon't spill a\ndrink on it.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "This chair has\na seat cushion.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Rounded corners\nand a smooth,\npolished top.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Only this lamp\nand the stage\nlights brighten": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A purple\ncocktail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A blue\ncocktail.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A seated woman.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A white silk\ndress.\nAre we in the": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A seated man.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Not a good time\nto talk.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A long-haired\nwoman in a\ngreen dress.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "Late twenties,\nI'd say.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A waiter.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "He only takes\norders...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B2"
+    ],
+    "frequency": 1
+  },
+  "A ceiling?\nWhy make me say\nthe obvious?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 2
+  },
+  "A shop needs a\nceiling.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Candles hang\noverhead.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Don't you dare\ncall that a\nchandelier!": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "A typical\ntavern.\nNothing odd.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 2
+  },
+  "At least it has\na window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "This door is\nmade of thin\nplanks, so it": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Barrels.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Beer or wine\nbarrels.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "More barrels\nover there.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "No one at the\ncounter.\nI wouldn't sit": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "A cheap wooden\nchair.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "A small table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "One plate, one\nbottle, one\nglass, and this": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Bottles on the\ntable. I don't\ncare who drinks": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Some food.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Wooden floor.\nCreaks when you\nwalk.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "The floor makes\na nasty sound,\nlike it might": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "An old man.\nNo help at all.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "His face is red\nand his eyes\nare glazed, so": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Quite a crowd.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4",
+      "0x0CF"
+    ],
+    "frequency": 2
+  },
+  "Those arm\nmuscles are\nimpressive.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Dressed better,\nhe could pass\nfor a top-class": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Ugh. Red high\nheels.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "How are those\nheels intact?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "They could sink\nright into the\nfloor.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Just lose the\ndress, please.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "I don't want to\nsee it. Please\nstop...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "A wine glass...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Was a wine\nglass always\nthat small?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0B4"
+    ],
+    "frequency": 1
+  },
+  "Nothing but\nsky.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 2
+  },
+  "The Royal\nLibrary.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "This is the\nfront building,\nand there are": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "There's no one\nwho can name\nevery book in": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "Only mages or\npriests come\nhere.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "Every book may\nhide treasure\ntales, but I'd": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "After having\nSylphiel check,\nthere's no need": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "Trees in the\nRoyal Library\ngarden.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "The Royal\nLibrary's front\nsteps.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "The Royal\nLibrary has a\nlarge garden.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "Don't walk on\nthis.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BC"
+    ],
+    "frequency": 1
+  },
+  "Seyruun's\ntavern.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 2
+  },
+  "That ceiling is\nridiculously\nhigh.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "This tavern is\npretty big.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Double doors,\nwide enough for\nthree people.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "It's nighttime\noutside.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "How many days\nhas it been\nsince we met": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Looks like this\njourney is\nalmost over...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Only here is\nbrick exposed.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "A tavern chair.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "A tavern table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Can't see past\nthis wall.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Quite a crowd\nin here.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "The back of\nsomeone's head.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Also known as\nthe back of the\nhead.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Brown hair is\ncommon enough.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "He's too old to\ntravel. Why not\ndrink at home?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Tavern staff.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Blonde hair and\nred clothes\nstand out.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Don't stare\nsomewhere rude!\n...I'm the one": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Big brown legs.\nSo thick...\nWait a sec...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Such long,\nslender\nlegs.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "Oh! For a\ntavern keeper,\nhe's unusually": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "This guy must\nreally like\ngreen.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0BE"
+    ],
+    "frequency": 1
+  },
+  "A little window\nabove the front\ndoor.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C3"
+    ],
+    "frequency": 1
+  },
+  "A woman runs\nthis inn.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C3"
+    ],
+    "frequency": 1
+  },
+  "She never moves\nfrom this spot.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C3"
+    ],
+    "frequency": 1
+  },
+  "A tavern in\nSunburg.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 2
+  },
+  "A real country\ntavern.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "The only light\nin the tavern.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "The entrance.\nPretty narrow.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "When he\nentered, Gourry\nalmost hit his": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "Liquor bottles.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "A liquor cask.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "Another barrel.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "A cup by the\nbottle... Is\nthe barkeep": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "Booze and food\non the table.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "Two young men\ndrinking and\ntalking.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "A hard-looking\ntable.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "A chair with a\ncloth backrest.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "The barkeep.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C5"
+    ],
+    "frequency": 1
+  },
+  "I said, sky.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "No matter where\nI go, and stand\non the ground,": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "I said, a\nmountain.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Mountains are\neverywhere.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A tree.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "I said, a tree.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A town without\na single tree\nwould be sad.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Toul City's\nstreets.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A chimney?": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "How should I\nknow? I didn't\nbuild it!": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "The house next\ndoor has brick\nwalls.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "An odd house.\nNot a shop or\na church...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Probably just\na house.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Odd-shaped\nwindows, too.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Whoever built\nthis place must\nbe an oddball.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A round window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A hexagonal\ndoor, too?\nBold choice...": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A gently sloped\nentrance stair.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "An open window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "It earns the\nCity in its\nname.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Another window\nover there.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Something in\nfront of the\nwindow.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Stand on that,\nand you could\nclimb inside.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A hedge.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "It's a hedge!": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "The main street\nis paved with\nfitted stones.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Coins get stuck\nbetween stones\nlike these...": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "Lots of people\npassing by.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "People talking.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "An old man\nwalking with\na load on his": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0C7"
+    ],
+    "frequency": 1
+  },
+  "A tavern in\nToul City.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 2
+  },
+  "Indoors means\na ceiling.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "A window. Duh.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "The tavern\nentrance.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "A pretty big\ntable.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "A wide, comfy\nchair.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "Don't stare at\nsomeone else's\nfood.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "Big city, big\ntavern.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "She works here.\nShe's serving\nfood.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "The waitress.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "It's easily\ntwice as wide\nas I am.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0CF"
+    ],
+    "frequency": 1
+  },
+  "An item shop in\nToul City.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 2
+  },
+  "A solid wall.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Shabby window.": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Stones around\nthe window.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "A red shield.\nCarry that and\neveryone will": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "A price for\nsomething.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Boxes piled up\ncarelessly.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Sacks, books,\neven a shovel.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "What kind of\nshop is this?": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Stuff all over\nthe place.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "I feel like no\none would\nnotice if I": {
+    "russian": "",
+    "type": "description",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  },
+  "Drab shop, but\nflashy clothes.": {
+    "russian": "",
+    "type": "name",
+    "rooms": [
+      "0x0D0"
+    ],
+    "frequency": 1
+  }
+}
