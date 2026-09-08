@@ -25,6 +25,67 @@ BIN_DIR = TOOLS_DIR / "bin"
 PSXAVENC_PATH = BIN_DIR / "psxavenc"
 VIDEOS_DIR = REPO_ROOT / "renpy_extracted" / "game" / "videos"
 
+PATCH_REPO = REPO_ROOT / "patch_repo"
+if str(PATCH_REPO) not in sys.path:
+    sys.path.insert(0, str(PATCH_REPO))
+
+try:
+    from localization.disc import CdChecksums
+except ImportError:
+    class CdChecksums:  # type: ignore[no-redef]
+        """EDC/ECC generator for PlayStation Mode 2 Form 1 sectors."""
+
+        def __init__(self) -> None:
+            self.ecc_f = [0] * 256
+            self.ecc_b = [0] * 256
+            self.edc = [0] * 256
+            for value in range(256):
+                forward = ((value << 1) ^ (0x11D if value & 0x80 else 0)) & 0xFF
+                self.ecc_f[value] = forward
+                self.ecc_b[value ^ forward] = value
+                crc = value
+                for _ in range(8):
+                    crc = (crc >> 1) ^ (0xD8018001 if crc & 1 else 0)
+                self.edc[value] = crc
+
+        def compute_edc(self, data: bytes) -> bytes:
+            crc = 0
+            for value in data:
+                crc = (crc >> 8) ^ self.edc[(crc ^ value) & 0xFF]
+            return crc.to_bytes(4, "little")
+
+        def compute_ecc(
+            self,
+            source: bytes,
+            major_count: int,
+            minor_count: int,
+            major_mult: int,
+            minor_inc: int,
+        ) -> bytes:
+            address = b"\0\0\0\0"
+            length = major_count * minor_count
+            output = bytearray(major_count * 2)
+            for major in range(major_count):
+                index = (major >> 1) * major_mult + (major & 1)
+                ecc_a = 0
+                ecc_b = 0
+                for _ in range(minor_count):
+                    value = address[index] if index < 4 else source[index - 4]
+                    index = (index + minor_inc) % length
+                    ecc_a ^= value
+                    ecc_b ^= value
+                    ecc_a = self.ecc_f[ecc_a]
+                ecc_a = self.ecc_b[self.ecc_f[ecc_a] ^ ecc_b]
+                output[major] = ecc_a
+                output[major + major_count] = ecc_a ^ ecc_b
+            return bytes(output)
+
+        def repair_mode2_form1(self, sector: bytearray) -> None:
+            if len(sector) != SECTOR_RAW_SIZE or sector[15] != 2 or sector[18] & 0x20:
+                raise ValueError("target sector is not MODE2/2352 Form 1")
+            sector[0x818:0x81C] = self.compute_edc(sector[0x10:0x818])
+            sector[0x81C:0x8C8] = self.compute_ecc(sector[0x10:], 86, 24, 2, 86)
+            sector[0x8C8:0x930] = self.compute_ecc(sector[0x10:], 52, 43, 86, 88)
 # PS1 CD-ROM and MOVIE.STR constants
 MOVIE_STR_LBA = 127
 MOVIE_STR_TOTAL_SECTORS = 184290
@@ -188,29 +249,40 @@ def extract_movie_from_bin(bin_path: Path, movie_idx: int, out_path: Path) -> in
 
     return len(data)
 
-def make_padding_sector(sector_num: int = 0) -> bytes:
-    """Generate a single 2,352-byte CD-XA Mode 2 Form 1 zero-padding sector."""
-    sync = b"\x00" + b"\xff" * 10 + b"\x00"
-    lba = 150 + sector_num
-    m = (lba // 75) // 60
-    s = (lba // 75) % 60
-    f = lba % 75
-    header = bytes([
+def lba_to_msf(lba: int) -> bytes:
+    """Convert a CD-ROM LBA address to 3-byte physical BCD MSF (Minute, Second, Frame).
+
+    Applies the standard 150-sector (+2 seconds) CD-ROM pregap offset.
+    Returns 3 bytes: (BCD_M, BCD_S, BCD_F).
+    """
+    total_frames = lba + 150
+    m = (total_frames // 75) // 60
+    s = (total_frames // 75) % 60
+    f = total_frames % 75
+    return bytes([
         ((m // 10) << 4) | (m % 10),
         ((s // 10) << 4) | (s % 10),
         ((f // 10) << 4) | (f % 10),
-        2,
     ])
+
+
+def make_padding_sector(sector_lba: int = 0) -> bytes:
+    """Generate a single 2,352-byte CD-XA Mode 2 Form 1 zero-padding sector."""
+    sync = b"\x00" + b"\xff" * 10 + b"\x00"
+    header = lba_to_msf(sector_lba) + b"\x02"
     subheader = b"\x00" * 8
     payload = b"\x00" * (SECTOR_RAW_SIZE - 24)
-    return sync + header + subheader + payload
+    sector = bytearray(sync + header + subheader + payload)
+    checksums = CdChecksums()
+    checksums.repair_mode2_form1(sector)
+    return bytes(sector)
 
 
-def pad_str_to_sectors(str_bytes: bytes, target_sectors: int) -> bytes:
+def pad_str_to_sectors(str_bytes: bytes, target_sectors: int, start_lba: int = 0) -> bytes:
     """Enforce exact sector count on an STR stream matching target_sectors * 2352 bytes.
 
     - If str_bytes is shorter than target_sectors * 2352, appends valid CD-XA zero-padding
-      sectors (subheader 0x00 * 8) with accurate Mode 2 CD-ROM sector timing.
+      sectors (subheader 0x00 * 8) with accurate physical BCD MSF headers and Mode 2 Form 1 EDC/ECC.
     - If str_bytes is longer, truncates trailing bytes to target_sectors * 2352.
     """
     if target_sectors < 0:
@@ -229,28 +301,22 @@ def pad_str_to_sectors(str_bytes: bytes, target_sectors: int) -> bytes:
     if rem != 0:
         needed = min(SECTOR_RAW_SIZE - rem, target_bytes - len(result))
         result.extend(b"\x00" * needed)
+        completed_sec_start = len(result) - SECTOR_RAW_SIZE
+        sec_slice = result[completed_sec_start:]
+        if len(sec_slice) == SECTOR_RAW_SIZE and sec_slice[15] == 2 and not (sec_slice[18] & 0x20):
+            sector_ba = bytearray(sec_slice)
+            checksums = CdChecksums()
+            checksums.repair_mode2_form1(sector_ba)
+            result[completed_sec_start:] = sector_ba
 
     current_sec_count = len(result) // SECTOR_RAW_SIZE
     remaining_secs = target_sectors - current_sec_count
 
     if remaining_secs > 0:
-        sync = b"\x00" + b"\xff" * 10 + b"\x00"
-        subheader = b"\x00" * 8
-        payload = b"\x00" * (SECTOR_RAW_SIZE - 24)
         padding_chunks = []
         for i in range(remaining_secs):
-            sec_idx = current_sec_count + i
-            lba = 150 + sec_idx
-            m = (lba // 75) // 60
-            s = (lba // 75) % 60
-            f = lba % 75
-            header = bytes([
-                ((m // 10) << 4) | (m % 10),
-                ((s // 10) << 4) | (s % 10),
-                ((f // 10) << 4) | (f % 10),
-                2,
-            ])
-            padding_chunks.append(sync + header + subheader + payload)
+            sec_lba = start_lba + current_sec_count + i
+            padding_chunks.append(make_padding_sector(sec_lba))
         result.extend(b"".join(padding_chunks))
 
     return bytes(result[:target_bytes])
@@ -314,12 +380,16 @@ def burn_subtitles_to_avi(
     return out_avi_path
 
 
-def encode_avi_to_str(avi_path: Path | str, out_str_path: Path | str) -> Path:
+def encode_avi_to_str(
+    avi_path: Path | str,
+    out_str_path: Path | str,
+    start_lba: int | None = None,
+) -> Path:
     """Encode an uncompressed AVI into a PlayStation 1 MDEC STR CD-XA stream via psxavenc.
 
     Uses:
-        psxavenc -t strcd -f 18900 -c 1 -F 1 -C 1 -r 15 -x 2 -T 0x8001 {avi_path} {out_str_path}
-    Produces 2,352-byte CD-XA Mode 2 Form 1 interleaved audio/video sectors.
+        psxavenc -t strcd -f 18900 -c 1 -F 1 -C 1 -r 15 -x 2 -T 0x8001 [-L {start_lba}] -X {avi_path} {out_str_path}
+    Produces 2,352-byte CD-XA Mode 2 Form 1 interleaved audio/video sectors (1/32 audio interleave).
     """
     avi_path = Path(avi_path)
     if not avi_path.is_file():
@@ -339,9 +409,14 @@ def encode_avi_to_str(avi_path: Path | str, out_str_path: Path | str) -> Path:
         "-r", "15",
         "-x", "2",
         "-T", "0x8001",
+    ]
+    if start_lba is not None:
+        cmd.extend(["-L", str(start_lba)])
+    cmd.append("-X")
+    cmd.extend([
         str(avi_path),
         str(out_str_path),
-    ]
+    ])
 
     res = subprocess.run(cmd, capture_output=True, text=True)
     if res.returncode != 0:
@@ -399,10 +474,10 @@ def encode_movie(
         temp_str = Path(tmpdir) / f"{info.name}.str"
 
         burn_subtitles_to_avi(webm_file, srt_file, temp_avi, duration=duration)
-        encode_avi_to_str(temp_avi, temp_str)
+        encode_avi_to_str(temp_avi, temp_str, start_lba=info.start_lba)
 
         raw_bytes = temp_str.read_bytes()
-        final_bytes = pad_str_to_sectors(raw_bytes, info.sectors)
+        final_bytes = pad_str_to_sectors(raw_bytes, info.sectors, start_lba=info.start_lba)
         out_path.write_bytes(final_bytes)
 
     return len(final_bytes)
@@ -561,6 +636,12 @@ def inject_movie_str_into_disc(
                 raise ValueError(f"Movie {idx} at LBA {info.start_lba} has invalid sync bytes")
             if sec[15] != 2:
                 raise ValueError(f"Movie {idx} at LBA {info.start_lba} is not Mode 2")
+            expected_msf = lba_to_msf(info.start_lba)
+            if sec[12:15] != expected_msf:
+                raise ValueError(
+                    f"Movie {idx} at LBA {info.start_lba} MSF mismatch: "
+                    f"got {sec[12:15].hex()}, expected {expected_msf.hex()}"
+                )
             if sec[18] not in (0x48, 0x64):
                 raise ValueError(
                     f"Movie {idx} at LBA {info.start_lba} has unexpected submode: 0x{sec[18]:02X}"

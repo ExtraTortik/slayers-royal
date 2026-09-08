@@ -45,6 +45,7 @@ from tools.fmv_pipeline import (
     get_psxavenc_path,
     get_video_assets,
     inject_movie_str_into_disc,
+    lba_to_msf,
     make_padding_sector,
     pad_str_to_sectors,
     verify_movie_map,
@@ -190,6 +191,32 @@ class TestDiscImageAlignment:
                 assert chunk_idx == 0, f"Movie {idx} did not start at chunk 0 (got {chunk_idx})"
                 assert frame_idx == 1, f"Movie {idx} did not start at frame 1 (got {frame_idx})"
 
+class TestLbaToMsf:
+    """Validate CD-ROM LBA to BCD physical MSF sector header conversion."""
+
+    def test_lba_0_msf(self):
+        # LBA 0 corresponds to 00:02:00 (150 pregap sectors)
+        assert lba_to_msf(0) == bytes([0x00, 0x02, 0x00])
+
+    def test_movie_0_lba_127_msf(self):
+        # Movie 0 start LBA 127 = 00:03:52
+        assert lba_to_msf(127) == bytes([0x00, 0x03, 0x52])
+
+    def test_movie_1_lba_13628_msf(self):
+        # Movie 1 start LBA 13628 = 03:03:53
+        assert lba_to_msf(13628) == bytes([0x03, 0x03, 0x53])
+
+    def test_all_movie_msf_against_disc(self):
+        disc_bin = REPO_ROOT / "downloads" / "sr.bin"
+        if not disc_bin.is_file():
+            pytest.skip("Original disc not found")
+        with open(disc_bin, "rb") as f:
+            for idx in range(12):
+                info = get_movie_info(idx)
+                f.seek(info.raw_offset)
+                sec = f.read(SECTOR_RAW_SIZE)
+                assert sec[12:15] == lba_to_msf(info.start_lba)
+
 
 class TestPadStrToSectors:
     """Validate CD-XA Mode 2 Form 1 sector padding and bounds enforcement."""
@@ -199,12 +226,21 @@ class TestPadStrToSectors:
         assert len(sec) == SECTOR_RAW_SIZE
         # Sync bytes
         assert sec[:12] == b"\x00" + b"\xff" * 10 + b"\x00"
+        # CD-ROM Header: LBA 0 = 00:02:00
+        assert sec[12:15] == bytes([0x00, 0x02, 0x00])
         # CD-XA Mode 2 byte
         assert sec[15] == 2
         # Subheader: 8 zero bytes
         assert sec[16:24] == b"\x00" * 8
-        # Payload: all zeros
-        assert sec[24:] == b"\x00" * (SECTOR_RAW_SIZE - 24)
+        # User data (2048 bytes): all zeros
+        assert sec[24:2072] == b"\x00" * 2048
+
+        # Also test with LBA of Movie 1 (13628 -> 03:03:53)
+        sec_m1 = make_padding_sector(13628)
+        assert sec_m1[12:15] == bytes([0x03, 0x03, 0x53])
+        assert sec_m1[15] == 2
+        assert sec_m1[16:24] == b"\x00" * 8
+        assert sec_m1[24:2072] == b"\x00" * 2048
 
     @pytest.mark.parametrize("target_sectors", [0, 1, 5, 128, 12800])
     def test_padding_exact_length(self, target_sectors: int):
@@ -237,6 +273,17 @@ class TestPadStrToSectors:
     def test_negative_target_sectors_raises(self):
         with pytest.raises(ValueError):
             pad_str_to_sectors(b"", -1)
+    def test_padding_with_start_lba_writes_accurate_msf(self):
+        # Pad 1 sector of data to 3 sectors starting at LBA 13628
+        data = b"\x00" * SECTOR_RAW_SIZE
+        padded = pad_str_to_sectors(data, 3, start_lba=13628)
+        assert len(padded) == 3 * SECTOR_RAW_SIZE
+        # Sector 1: padding sector at LBA 13629
+        sec1 = padded[SECTOR_RAW_SIZE : 2 * SECTOR_RAW_SIZE]
+        assert sec1[12:15] == lba_to_msf(13629)
+        # Sector 2: padding sector at LBA 13630
+        sec2 = padded[2 * SECTOR_RAW_SIZE : 3 * SECTOR_RAW_SIZE]
+        assert sec2[12:15] == lba_to_msf(13630)
 
 
 class TestSubtitleBurning:
@@ -318,14 +365,17 @@ class TestEncodeAviToStrAndStreamValidation:
         str_file = tmp_path / "s10.str"
 
         burn_subtitles_to_avi(webm_file, srt_file, avi_file, duration=0.5)
-        encode_avi_to_str(avi_file, str_file)
+        encode_avi_to_str(avi_file, str_file, start_lba=150480)
 
         assert str_file.is_file()
         data = str_file.read_bytes()
         assert len(data) > 0
         assert len(data) % SECTOR_RAW_SIZE == 0
         total_sectors = len(data) // SECTOR_RAW_SIZE
-        assert total_sectors >= 5
+        assert total_sectors >= 35
+
+        # Verify physical MSF on first sector matches start_lba
+        assert data[12:15] == lba_to_msf(150480)
 
         # Inspect all sectors
         video_sectors = []
@@ -336,7 +386,8 @@ class TestEncodeAviToStrAndStreamValidation:
             assert sec[:12] == b"\x00" + b"\xff" * 10 + b"\x00", f"Sector {i} missing sync"
             # Verify Mode 2 indicator
             assert sec[15] == 2
-
+            # Verify physical MSF timing matches start_lba + i
+            assert sec[12:15] == lba_to_msf(150480 + i)
             submode = sec[18]
             if submode == 0x48:  # Video
                 video_sectors.append((i, sec))
@@ -346,6 +397,9 @@ class TestEncodeAviToStrAndStreamValidation:
         # Both video and audio sectors must be present
         assert len(video_sectors) > 0, "No video sectors found in STR output"
         assert len(audio_sectors) > 0, "No audio sectors found in STR output"
+        # Verify 1/32 audio interleave with -X: sectors 0..30 video, sector 31 audio
+        assert video_sectors[0][0] == 0
+        assert audio_sectors[0][0] == 31
 
         # Verify MDEC STR payload header on first video sector
         _, first_video = video_sectors[0]
@@ -401,17 +455,19 @@ class TestEncodeMoviePipeline:
         assert bytes_written == 3456 * SECTOR_RAW_SIZE
 
         data = out_str.read_bytes()
-        # Initial sector should be valid encoded stream sector
+        # Initial sector should be valid encoded stream sector with start_lba MSF
         sec0 = data[:SECTOR_RAW_SIZE]
         assert sec0[:12] == b"\x00" + b"\xff" * 10 + b"\x00"
+        assert sec0[12:15] == lba_to_msf(info.start_lba)
         assert sec0[18] in (0x48, 0x64)
 
-        # Final sector must be a valid zero-padding CD-XA sector
+        # Final sector must be a valid zero-padding CD-XA sector with accurate MSF
         last_sec = data[-SECTOR_RAW_SIZE:]
         assert last_sec[:12] == b"\x00" + b"\xff" * 10 + b"\x00"
+        assert last_sec[12:15] == lba_to_msf(info.start_lba + info.sectors - 1)
         assert last_sec[15] == 2
         assert last_sec[16:24] == b"\x00" * 8
-        assert last_sec[24:] == b"\x00" * (SECTOR_RAW_SIZE - 24)
+        assert last_sec[24:2072] == b"\x00" * 2048
 
     def test_encode_movie_invalid_index_raises(self, tmp_path: Path):
         with pytest.raises(KeyError):
@@ -473,6 +529,7 @@ class TestInjectMovieStrIntoDisc:
             # First sector needs sync and MDEC magic
             first_sec = bytearray(b"\x00" * SECTOR_RAW_SIZE)
             first_sec[:12] = b"\x00" + b"\xff" * 10 + b"\x00"
+            first_sec[12:15] = lba_to_msf(info.start_lba)
             first_sec[15] = 2
             first_sec[18] = 0x48
             first_sec[24:28] = b"\x60\x01\x01\x80"
@@ -508,6 +565,7 @@ class TestInjectMovieStrIntoDisc:
                 info = get_movie_info(idx)
                 sec = bytearray(b"\x00" * SECTOR_RAW_SIZE)
                 sec[:12] = b"\x00" + b"\xff" * 10 + b"\x00"
+                sec[12:15] = lba_to_msf(info.start_lba)
                 sec[15] = 2
                 sec[18] = 0x48
                 sec[24:28] = b"\x60\x01\x01\x80"
