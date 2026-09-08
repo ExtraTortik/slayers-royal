@@ -52,3 +52,4 @@ All tasks agree with global constraints. Scan clean.
 - Main St Task 3: complete (commit 06db3aa, master disc rebuilt with restored MAIN ST (0x059) and 36 omitted rooms, 73/73 tests pass, SHA256 2c1bb07b5b0a576e1e1d9f404cccce9a68d215e69d6375eaaa603f8590996ba0)
 - Lore Cards Font Task 1: complete (commit 5e74249, tools/patch_lore_cards.py reconfigured to prioritize Liberation Sans, min 38px margin, 13/13 tests pass)
 - Lore Cards Font Task 2: complete (all 13 cards injected into disc with Liberation Sans, 712,300,848 B, SHA256 ac49012b20b0ac7087855c06babc69aa04f5b18d93e89934ce086b0ed7f595a6, 73/73 tests pass, launcher verified, report written)
+- Lore Cards Font Task 2: complete (commit 84f639c, disc re-injected with Liberation Sans lore cards, 0 clipping with min 39px margin, 73/73 tests pass, SHA256 ac49012b20b0ac7087855c06babc69aa04f5b18d93e89934ce086b0ed7f595a6)
