@@ -32,3 +32,5 @@ All tasks agree with global constraints. Scan clean.
 - Mojibake & Inspection Task 3: complete (commit 5d73270, full rebuild with zero mojibake choices, Russian room inspection, and lore cards; 46/46 tests pass)
 - Full Inspection Task 1: complete (commit e7bf227, translations/room_inspection_ru.json created with 734 unique strings, 18/18 tests pass)
 - Full Inspection Task 2: complete (tools/build_inspection_translations.py and tools/test_inspection_translations.py implemented, 734/734 inspection strings translated, <=15 chars/line & 1-3 lines enforced, 49/49 tests pass)
+- Full Inspection Task 2: complete (commit 7a145b4, 100% of 734 strings translated in translations/room_inspection_ru.json, 0 lines > 15 chars, 49/49 tests pass)
+- Full Inspection Task 3: complete (tools/patch_inspection.py batch mode implemented with sector budget enforcement & progressive condensation, tools/test_batch_inspection_patch.py implemented, 29/29 tests pass, 149/149 rooms patched with 0 sector overflows)

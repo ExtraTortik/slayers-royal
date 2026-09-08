@@ -34,6 +34,14 @@ try:
 except ImportError:
     replace_extent_in_place = None
 
+try:
+    from tools.text_wrapper import shorten_lines
+except ImportError:
+    try:
+        from text_wrapper import shorten_lines
+    except ImportError:
+        shorten_lines = None
+
 # Slayers Royal PS1 Hardware & Architecture Constants
 RAM_BASE = 0x00200000
 SECTOR_SIZE = 2048
@@ -51,6 +59,10 @@ HDR_PTR_TABLE_OFFSET = 0x0024
 HDR_TRAILING_PTR_1 = 0x002C
 HDR_TRAILING_PTR_2 = 0x0030
 HDR_ROOM_NAME_PTR = 0x003C
+# Entry range for room inspection entries in PROG.UNT
+ROOM_ENTRIES_START = 0x059
+ROOM_ENTRIES_END = 0x0F8
+
 
 # Canonical Russian charmap mapping characters to 16-bit glyph IDs
 # Derived from patch_repo glyph allocation for Slayers Royal PS1 Russian localization.
@@ -290,14 +302,32 @@ def encode_string(
     charmap: dict[str, int],
     terminator: int = CHAR_STRING_TERMINATOR,
 ) -> bytes:
-    """Encode a Unicode string into Slayers Royal 16-bit big-endian words."""
+    """Encode a Unicode string into Slayers Royal 16-bit big-endian words.
+
+    Supports Unicode characters via charmap, newline '\\n' as CHAR_NEWLINE (0x00FE),
+    form-feed '\\f' as CHAR_PAGE_CONTINUE (0x00FD), and hex escapes '<XXXX>' (e.g. '<0007>').
+    """
     words: list[int] = []
-    for ch in text:
+    i = 0
+    n = len(text)
+    while i < n:
+        if text[i] == "<" and i + 5 < n and text[i + 5] == ">":
+            hex_part = text[i + 1 : i + 5]
+            try:
+                val = int(hex_part, 16)
+                words.append(val)
+                i += 6
+                continue
+            except ValueError:
+                pass
+
+        ch = text[i]
         if ch == "\n":
             words.append(CHAR_NEWLINE)
         elif ch == "\f":
             words.append(CHAR_PAGE_CONTINUE)
         elif ch == "\r":
+            i += 1
             continue
         elif ch in charmap:
             words.append(charmap[ch])
@@ -305,6 +335,7 @@ def encode_string(
             raise KeyError(
                 f"Character {ch!r} (U+{ord(ch):04X}) not found in charmap"
             )
+        i += 1
     words.append(terminator)
     return struct.pack(f">{len(words)}H", *words)
 
@@ -409,14 +440,53 @@ def parse_inspection_entry(
     )
 
 
+def _encode_entry_payload(
+    info: InspectionEntryInfo,
+    strings: Sequence[str],
+    charmap: dict[str, int],
+) -> tuple[bytearray, bytearray, int, int]:
+    """Encode string block and pointer table for an inspection entry."""
+    target_to_new_offset: dict[int, int] = {}
+    new_pointer_offsets: list[int] = []
+    curr_offset = info.min_str_offset
+    string_payload = bytearray()
+
+    for orig_target, text in zip(info.pointer_offsets, strings):
+        if orig_target in target_to_new_offset:
+            new_pointer_offsets.append(target_to_new_offset[orig_target])
+        else:
+            enc = encode_string(text, charmap)
+            target_to_new_offset[orig_target] = curr_offset
+            new_pointer_offsets.append(curr_offset)
+            string_payload.extend(enc)
+            curr_offset += len(enc)
+
+    new_pt_offset = (curr_offset + 3) & ~3
+    pad_len = new_pt_offset - curr_offset
+    string_payload.extend(b"\x00" * pad_len)
+
+    pointer_table_payload = bytearray()
+    for p_off in new_pointer_offsets:
+        pointer_table_payload.extend(struct.pack(">I", RAM_BASE + p_off))
+
+    new_pt_end = new_pt_offset + len(pointer_table_payload)
+    new_data_end = new_pt_end + len(info.trailing_block)
+    return string_payload, pointer_table_payload, new_pt_offset, new_data_end
+
+
 def rebuild_inspection_entry(
     original_bytes: bytes,
     translated_strings: Sequence[str],
     charmap: dict[str, int] | None = None,
     entry_index: int = 0,
     room_name: str | None = None,
+    progressive_shorten: bool = True,
 ) -> tuple[bytes, InspectionPatchResult]:
     """Rebuild an inspection entry with new translated strings and updated pointers.
+
+    Enforces sector budget (rebuilt_size <= allocated). If rebuilt data exceeds
+    allocated capacity and progressive_shorten is True, automatically shortens
+    multi-line strings until it fits within sector budget.
 
     Returns:
         (rebuilt_entry_bytes, InspectionPatchResult)
@@ -430,41 +500,78 @@ def rebuild_inspection_entry(
             f"Entry {entry_index:#05x} requires {info.num_pointers} strings, but got {len(translated_strings)}"
         )
 
-    # Encode strings, maintaining pointer deduplication
-    target_to_new_offset: dict[int, int] = {}
-    new_pointer_offsets: list[int] = []
-    curr_offset = info.min_str_offset
-    string_payload = bytearray()
+    working_strings = list(translated_strings)
+    (
+        string_payload,
+        pointer_table_payload,
+        new_pt_offset,
+        new_data_end,
+    ) = _encode_entry_payload(info, working_strings, cm)
 
-    for orig_target, text in zip(info.pointer_offsets, translated_strings):
-        if orig_target in target_to_new_offset:
-            new_pointer_offsets.append(target_to_new_offset[orig_target])
-        else:
-            enc = encode_string(text, cm)
-            target_to_new_offset[orig_target] = curr_offset
-            new_pointer_offsets.append(curr_offset)
-            string_payload.extend(enc)
-            curr_offset += len(enc)
+    # Sector budget enforcement with progressive condensation
+    if new_data_end > allocated and progressive_shorten and shorten_lines is not None:
+        # Build map from orig_target to list of string indices to keep duplicates synchronized
+        target_to_indices: dict[int, list[int]] = {}
+        for i, target in enumerate(info.pointer_offsets):
+            target_to_indices.setdefault(target, []).append(i)
 
-    # Align start of pointer table to 4-byte boundary
-    new_pt_offset = (curr_offset + 3) & ~3
-    pad_len = new_pt_offset - curr_offset
-    string_payload.extend(b"\x00" * pad_len)
+        # Pass 1: Shorten strings with > 2 lines down to at most 2 lines (longest first)
+        cand_targets_p1 = [
+            t
+            for t, indices in target_to_indices.items()
+            if len(working_strings[indices[0]].splitlines()) > 2
+        ]
+        cand_targets_p1.sort(
+            key=lambda t: len(working_strings[target_to_indices[t][0]]), reverse=True
+        )
+        for t in cand_targets_p1:
+            indices = target_to_indices[t]
+            shortened = shorten_lines(working_strings[indices[0]], max_lines=2)
+            if shortened != working_strings[indices[0]]:
+                for k in indices:
+                    working_strings[k] = shortened
+                (
+                    string_payload,
+                    pointer_table_payload,
+                    new_pt_offset,
+                    new_data_end,
+                ) = _encode_entry_payload(info, working_strings, cm)
+                if new_data_end <= allocated:
+                    break
 
-    # Build 32-bit big-endian RAM pointer table
-    pointer_table_payload = bytearray()
-    for p_off in new_pointer_offsets:
-        pointer_table_payload.extend(struct.pack(">I", RAM_BASE + p_off))
-
-    new_pt_end = new_pt_offset + len(pointer_table_payload)
-    trailing_block = info.trailing_block
-    new_data_end = new_pt_end + len(trailing_block)
+        # Pass 2: If still overflowing, shorten strings with > 1 line down to 1 line (longest first)
+        if new_data_end > allocated:
+            cand_targets_p2 = [
+                t
+                for t, indices in target_to_indices.items()
+                if len(working_strings[indices[0]].splitlines()) > 1
+            ]
+            cand_targets_p2.sort(
+                key=lambda t: len(working_strings[target_to_indices[t][0]]), reverse=True
+            )
+            for t in cand_targets_p2:
+                indices = target_to_indices[t]
+                shortened = shorten_lines(working_strings[indices[0]], max_lines=1)
+                if shortened != working_strings[indices[0]]:
+                    for k in indices:
+                        working_strings[k] = shortened
+                    (
+                        string_payload,
+                        pointer_table_payload,
+                        new_pt_offset,
+                        new_data_end,
+                    ) = _encode_entry_payload(info, working_strings, cm)
+                    if new_data_end <= allocated:
+                        break
 
     if new_data_end > allocated:
         raise ValueError(
             f"Entry {entry_index:#05x} rebuilt data size ({new_data_end} bytes) "
             f"exceeds allocated capacity ({allocated} bytes) by {new_data_end - allocated} bytes"
         )
+
+    new_pt_end = new_pt_offset + len(pointer_table_payload)
+    trailing_block = info.trailing_block
 
     # Construct complete rebuilt entry
     rebuilt = bytearray(original_bytes[: info.min_str_offset])
@@ -494,11 +601,10 @@ def rebuild_inspection_entry(
         allocated_size=allocated,
         used_size=new_data_end,
         free_margin=allocated - new_data_end,
-        strings_count=len(translated_strings),
+        strings_count=len(working_strings),
         pointer_table_offset=new_pt_offset,
     )
     return bytes(rebuilt), result
-
 
 def read_unt_index(archive_bytes: bytes) -> list[ArchiveEntry]:
     """Parse UNT entry allocation table from sector 0."""
@@ -546,7 +652,18 @@ def resolve_entry_translations(
     info: InspectionEntryInfo,
     translations_doc: dict[str, Any],
 ) -> tuple[list[str], str | None]:
-    """Resolve the list of translated strings for an entry from the translations JSON."""
+    """Resolve the list of translated strings for an entry from the translations JSON.
+
+    Supports both:
+    1. Master Catalog schema (translations/room_inspection_ru.json):
+       English string -> {"russian": "...", ...} or direct string.
+    2. Specific Entries schema (data/inspection_ru.json):
+       "entries" -> {"0x05D": {"strings": [...], "room_name": "..."}}
+       and "common" -> {"orig": "trans"}.
+
+    If a translation is non-empty, replaces the English string.
+    If empty or not found, preserves the existing string unchanged.
+    """
     entry_hex = f"0x{info.entry_index:03X}"
     entry_hex_lower = f"0x{info.entry_index:03x}"
     entry_dec = str(info.entry_index)
@@ -570,17 +687,27 @@ def resolve_entry_translations(
     else:
         candidate_strings = []
 
-    # If full list provided, use directly
-    if len(candidate_strings) == info.num_pointers:
+    # If full list provided for this entry, use directly if all strings non-empty
+    if len(candidate_strings) == info.num_pointers and all(candidate_strings):
         return candidate_strings, room_name
 
-    # Otherwise, resolve strings using common translation dictionary and index mapping
+    def extract_ru(val: Any) -> str | None:
+        if isinstance(val, dict):
+            ru = val.get("russian")
+            if isinstance(ru, str) and ru.strip():
+                return ru
+        elif isinstance(val, str) and val.strip():
+            return val
+        return None
+
     resolved: list[str] = []
     for idx, orig_text in enumerate(info.extracted_strings):
         if idx < len(candidate_strings) and candidate_strings[idx]:
             resolved.append(candidate_strings[idx])
-        elif orig_text in common_map:
-            resolved.append(common_map[orig_text])
+        elif orig_text in translations_doc and extract_ru(translations_doc[orig_text]) is not None:
+            resolved.append(extract_ru(translations_doc[orig_text]))
+        elif orig_text in common_map and extract_ru(common_map[orig_text]) is not None:
+            resolved.append(extract_ru(common_map[orig_text]))
         else:
             resolved.append(orig_text)
 
@@ -592,13 +719,23 @@ def patch_inspection_entries(
     translations_doc: dict[str, Any],
     charmap: dict[str, int] | None = None,
     target_entries: Sequence[int] | None = None,
+    all_rooms: bool = False,
+    verbose: bool = False,
+    progressive_shorten: bool = True,
 ) -> list[InspectionPatchResult]:
     """Patch room inspection entries in a PROG.UNT archive in memory."""
     cm = charmap if charmap is not None else DEFAULT_CHARMAP
     entries = read_unt_index(prog_archive)
     results: list[InspectionPatchResult] = []
 
-    if target_entries is None:
+    if target_entries is not None:
+        entry_indices = list(target_entries)
+    elif all_rooms or "entries" not in translations_doc:
+        # Batch mode: iterate over all room entries 0x059..0x0F8
+        entry_indices = [
+            idx for idx in range(ROOM_ENTRIES_START, min(ROOM_ENTRIES_END + 1, len(entries)))
+        ]
+    else:
         # Resolve target entries from JSON keys
         target_set: set[int] = set()
         for key in translations_doc.get("entries", {}):
@@ -607,8 +744,6 @@ def patch_inspection_entries(
             except ValueError:
                 pass
         entry_indices = sorted(target_set)
-    else:
-        entry_indices = list(target_entries)
 
     for entry_idx in entry_indices:
         if entry_idx >= len(entries):
@@ -630,10 +765,17 @@ def patch_inspection_entries(
             charmap=cm,
             entry_index=entry_idx,
             room_name=room_name,
+            progressive_shorten=progressive_shorten,
         )
 
         patch_unt_entry(prog_archive, entry_idx, rebuilt_bytes)
         results.append(result)
+
+        if verbose:
+            print(
+                f"  Entry {result.entry_index:#05x}: {result.strings_count} strings, "
+                f"{result.used_size}/{result.allocated_size} bytes (margin: {result.free_margin} bytes)"
+            )
 
     return results
 
@@ -681,6 +823,9 @@ def patch_disc_image(
     translations_doc: dict[str, Any],
     charmap: dict[str, int] | None = None,
     target_entries: Sequence[int] | None = None,
+    all_rooms: bool = False,
+    verbose: bool = False,
+    progressive_shorten: bool = True,
 ) -> list[InspectionPatchResult]:
     """Patch PROG.UNT directly within a PS1 CD-ROM BIN image with EDC/ECC repair."""
     if replace_extent_in_place is None:
@@ -702,6 +847,9 @@ def patch_disc_image(
         translations_doc,
         charmap=charmap,
         target_entries=target_entries,
+        all_rooms=all_rooms,
+        verbose=verbose,
+        progressive_shorten=progressive_shorten,
     )
 
     replace_extent_in_place(disc_path, prog_lba, bytes(prog_archive))
@@ -712,19 +860,34 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Translate and patch room inspection entries for Slayers Royal PS1."
     )
+    default_trans = REPO_ROOT / "translations" / "room_inspection_ru.json"
+    if not default_trans.is_file():
+        default_trans = REPO_ROOT / "data" / "inspection_ru.json"
     parser.add_argument("--bin", type=Path, help="Path to PS1 CD-ROM BIN image to patch")
     parser.add_argument("--prog", type=Path, help="Path to standalone PROG.UNT archive")
     parser.add_argument(
         "--translations",
         type=Path,
-        default=REPO_ROOT / "data" / "inspection_ru.json",
-        help="Path to inspection_ru.json",
+        default=default_trans,
+        help="Path to room_inspection_ru.json or inspection_ru.json",
     )
     parser.add_argument("--charmap", type=Path, help="Path to custom glyph_map.json")
     parser.add_argument(
         "--entry",
         type=str,
         help="Target entry to patch or inspect (hex e.g. 0x05D or decimal)",
+    )
+    parser.add_argument(
+        "--all-rooms",
+        "--batch",
+        action="store_true",
+        help="Batch patch all room inspection entries (0x059..0x0F8)",
+    )
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
     )
     parser.add_argument(
         "--dump",
@@ -792,13 +955,18 @@ def main() -> int:
             translations_doc,
             charmap=charmap,
             target_entries=target_entries,
+            all_rooms=args.all_rooms,
+            verbose=args.verbose,
         )
         print(f"Successfully patched {len(results)} inspection entries in {args.bin}:")
-        for r in results:
-            print(
-                f"  Entry {r.entry_index:#05x}: {r.strings_count} strings, "
-                f"{r.used_size}/{r.allocated_size} bytes (margin: {r.free_margin} bytes)"
-            )
+        if not args.verbose:
+            for r in results[:5]:
+                print(
+                    f"  Entry {r.entry_index:#05x}: {r.strings_count} strings, "
+                    f"{r.used_size}/{r.allocated_size} bytes (margin: {r.free_margin} bytes)"
+                )
+            if len(results) > 5:
+                print(f"  ... and {len(results) - 5} more entries.")
         return 0
 
     # Handle standalone PROG.UNT patching
@@ -810,15 +978,20 @@ def main() -> int:
             translations_doc,
             charmap=charmap,
             target_entries=target_entries,
+            all_rooms=args.all_rooms,
+            verbose=args.verbose,
         )
         out_path = args.output if args.output else args.prog
         out_path.write_bytes(archive)
         print(f"Successfully patched {len(results)} inspection entries -> {out_path}:")
-        for r in results:
-            print(
-                f"  Entry {r.entry_index:#05x}: {r.strings_count} strings, "
-                f"{r.used_size}/{r.allocated_size} bytes (margin: {r.free_margin} bytes)"
-            )
+        if not args.verbose:
+            for r in results[:5]:
+                print(
+                    f"  Entry {r.entry_index:#05x}: {r.strings_count} strings, "
+                    f"{r.used_size}/{r.allocated_size} bytes (margin: {r.free_margin} bytes)"
+                )
+            if len(results) > 5:
+                print(f"  ... and {len(results) - 5} more entries.")
         return 0
 
     parser.print_help()
