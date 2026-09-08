@@ -1,0 +1,10 @@
+.superpowers/
+downloads/
+renpy_raw/
+renpy_extracted/
+localization-output/
+*.bin
+*.tar.gz
+*.zip
+*.apk
+__pycache__/
