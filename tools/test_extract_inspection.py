@@ -78,7 +78,7 @@ def test_hanging_lamp_example(catalog: dict[str, dict]):
     assert target in catalog
     entry = catalog[target]
 
-    assert entry["russian"] == "Подвесная лампа."
+    assert entry["russian"] in ("Подвесная лампа.", "Подвесная\nлампа.")
     assert entry["type"] == "name"
     assert entry["rooms"] == ["0x05D", "0x098", "0x0C5"]
     assert entry["frequency"] == 3
@@ -93,7 +93,7 @@ def test_prepopulated_translations(catalog: dict[str, dict]):
     common = doc.get("common", {})
     for eng_k, ru_v in common.items():
         if eng_k in catalog:
-            assert catalog[eng_k]["russian"] == ru_v, f"Mismatch for common string {eng_k!r}"
+            assert catalog[eng_k]["russian"].replace("\n", " ") == ru_v.replace("\n", " "), f"Mismatch for common string {eng_k!r}"
 
     # Verify at least 38 strings are pre-populated
     prepopulated_count = sum(1 for v in catalog.values() if v["russian"])
