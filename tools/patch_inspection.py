@@ -62,6 +62,60 @@ HDR_ROOM_NAME_PTR = 0x003C
 # Entry range for room inspection entries in PROG.UNT
 ROOM_ENTRIES_START = 0x059
 ROOM_ENTRIES_END = 0x0F8
+DEFAULT_MISSING_ROOMS = REPO_ROOT / "data" / "missing_rooms_jp_ru.json"
+DEFAULT_SOURCE_BIN = REPO_ROOT / "downloads" / "sr.bin"
+
+
+def load_missing_rooms(path: str | Path | None = None) -> dict[str, Any]:
+    """Load omitted room translations mapping from JSON."""
+    if path is not None:
+        p = Path(path)
+        if p.is_file():
+            return json.loads(p.read_text(encoding="utf-8"))
+    elif DEFAULT_MISSING_ROOMS.is_file():
+        return json.loads(DEFAULT_MISSING_ROOMS.read_text(encoding="utf-8"))
+    return {}
+
+
+def get_missing_room_strings(
+    entry_idx: int, missing_rooms_doc: dict[str, Any] | None
+) -> list[str] | None:
+    """Retrieve translated strings list for an entry from missing_rooms dictionary."""
+    if not missing_rooms_doc:
+        return None
+    keys = [
+        f"0x{entry_idx:03X}",
+        f"0x{entry_idx:03x}",
+        f"0x{entry_idx:X}",
+        f"0x{entry_idx:x}",
+        str(entry_idx),
+        entry_idx,
+    ]
+    for k in keys:
+        if k in missing_rooms_doc:
+            val = missing_rooms_doc[k]
+            if isinstance(val, dict):
+                return val.get("strings_ru") or val.get("strings") or []
+            elif isinstance(val, list):
+                return list(val)
+    return None
+
+
+def extract_prog_from_path(path: str | Path) -> bytes:
+    """Extract PROG.UNT bytes from either a standalone archive or a PS1 BIN disc image."""
+    p = Path(path)
+    if not p.is_file():
+        raise FileNotFoundError(f"File not found: {p}")
+    if p.stat().st_size > 100 * 1024 * 1024:
+        pvd = read_sector(p, 16)
+        root_lba = struct.unpack_from("<I", pvd, 156 + 2)[0]
+        root_size = struct.unpack_from("<I", pvd, 156 + 10)[0]
+        root_dir = parse_iso_dir(p, root_lba, root_size)
+        if "PROG.UNT" not in root_dir:
+            raise ValueError(f"PROG.UNT not found in ISO root directory of {p}")
+        prog_lba, prog_size = root_dir["PROG.UNT"]
+        return read_extent(p, prog_lba, prog_size)
+    return p.read_bytes()
 
 
 # Canonical Russian charmap mapping characters to 16-bit glyph IDs
@@ -481,6 +535,7 @@ def rebuild_inspection_entry(
     entry_index: int = 0,
     room_name: str | None = None,
     progressive_shorten: bool = True,
+    allocated_size: int | None = None,
 ) -> tuple[bytes, InspectionPatchResult]:
     """Rebuild an inspection entry with new translated strings and updated pointers.
 
@@ -493,7 +548,7 @@ def rebuild_inspection_entry(
     """
     cm = charmap if charmap is not None else DEFAULT_CHARMAP
     info = parse_inspection_entry(original_bytes, entry_index=entry_index, charmap=cm)
-    allocated = len(original_bytes)
+    allocated = allocated_size if allocated_size is not None else len(original_bytes)
 
     if len(translated_strings) != info.num_pointers:
         raise ValueError(
@@ -722,11 +777,29 @@ def patch_inspection_entries(
     all_rooms: bool = False,
     verbose: bool = False,
     progressive_shorten: bool = True,
+    missing_rooms_doc: dict[str, Any] | None = None,
+    source_prog: bytes | None = None,
 ) -> list[InspectionPatchResult]:
     """Patch room inspection entries in a PROG.UNT archive in memory."""
     cm = charmap if charmap is not None else DEFAULT_CHARMAP
     entries = read_unt_index(prog_archive)
     results: list[InspectionPatchResult] = []
+
+    # Auto-load missing rooms doc if not explicitly provided and default file exists
+    if missing_rooms_doc is None and DEFAULT_MISSING_ROOMS.is_file():
+        try:
+            missing_rooms_doc = json.loads(DEFAULT_MISSING_ROOMS.read_text(encoding="utf-8"))
+        except Exception:
+            missing_rooms_doc = None
+
+    # Auto-load source_prog if not explicitly provided and DEFAULT_SOURCE_BIN exists
+    if source_prog is None and DEFAULT_SOURCE_BIN.is_file():
+        try:
+            source_prog = extract_prog_from_path(DEFAULT_SOURCE_BIN)
+        except Exception:
+            source_prog = None
+
+    source_entries = read_unt_index(source_prog) if source_prog is not None else None
 
     if target_entries is not None:
         entry_indices = list(target_entries)
@@ -743,6 +816,12 @@ def patch_inspection_entries(
                 target_set.add(int(str(key), 16 if str(key).lower().startswith("0x") else 10))
             except ValueError:
                 pass
+        if missing_rooms_doc:
+            for key in missing_rooms_doc:
+                try:
+                    target_set.add(int(str(key), 16 if str(key).lower().startswith("0x") else 10))
+                except ValueError:
+                    pass
         entry_indices = sorted(target_set)
 
     for entry_idx in entry_indices:
@@ -750,21 +829,75 @@ def patch_inspection_entries(
             continue
         entry = entries[entry_idx]
         orig_bytes = entry.extract(prog_archive)
+        if not any(orig_bytes):
+            if target_entries is None or entry_idx not in target_entries:
+                continue
+            if source_prog is None:
+                continue
 
-        # Parse and check if entry has an inspection pointer table
+        missing_strings = get_missing_room_strings(entry_idx, missing_rooms_doc)
+        use_missing_rooms = False
+
+        orig_info: InspectionEntryInfo | None = None
         try:
-            info = parse_inspection_entry(orig_bytes, entry_index=entry_idx, charmap=cm)
+            orig_info = parse_inspection_entry(orig_bytes, entry_index=entry_idx, charmap=cm)
         except Exception:
-            # Not a room inspection entry
+            orig_info = None
+
+        if missing_strings is not None:
+            if orig_info is None:
+                use_missing_rooms = True
+            else:
+                is_zeroed = not any(s.strip() for s in orig_info.extracted_strings)
+                has_catalog_trans = False
+                if not is_zeroed and translations_doc:
+                    for s in orig_info.extracted_strings:
+                        if s in translations_doc or s in translations_doc.get("common", {}):
+                            has_catalog_trans = True
+                            break
+                if is_zeroed or not has_catalog_trans:
+                    use_missing_rooms = True
+
+        if use_missing_rooms:
+            if source_prog is not None and source_entries is not None and entry_idx < len(source_entries):
+                base_bytes = source_entries[entry_idx].extract(source_prog)
+            else:
+                base_bytes = orig_bytes
+
+            try:
+                base_info = parse_inspection_entry(base_bytes, entry_index=entry_idx, charmap=cm)
+            except Exception:
+                continue
+
+            rebuilt_bytes, result = rebuild_inspection_entry(
+                base_bytes,
+                missing_strings,
+                charmap=cm,
+                entry_index=entry_idx,
+                allocated_size=entry.size,
+                progressive_shorten=progressive_shorten,
+            )
+            patch_unt_entry(prog_archive, entry_idx, rebuilt_bytes)
+            results.append(result)
+
+            if verbose:
+                print(
+                    f"  Entry {result.entry_index:#05x} (omitted room): {result.strings_count} strings, "
+                    f"{result.used_size}/{result.allocated_size} bytes (margin: {result.free_margin} bytes)"
+                )
             continue
 
-        translated_strings, room_name = resolve_entry_translations(info, translations_doc)
+        if orig_info is None:
+            continue
+
+        translated_strings, room_name = resolve_entry_translations(orig_info, translations_doc)
         rebuilt_bytes, result = rebuild_inspection_entry(
             orig_bytes,
             translated_strings,
             charmap=cm,
             entry_index=entry_idx,
             room_name=room_name,
+            allocated_size=entry.size,
             progressive_shorten=progressive_shorten,
         )
 
@@ -826,6 +959,8 @@ def patch_disc_image(
     all_rooms: bool = False,
     verbose: bool = False,
     progressive_shorten: bool = True,
+    missing_rooms_doc: dict[str, Any] | None = None,
+    source_prog: bytes | None = None,
 ) -> list[InspectionPatchResult]:
     """Patch PROG.UNT directly within a PS1 CD-ROM BIN image with EDC/ECC repair."""
     if replace_extent_in_place is None:
@@ -850,6 +985,8 @@ def patch_disc_image(
         all_rooms=all_rooms,
         verbose=verbose,
         progressive_shorten=progressive_shorten,
+        missing_rooms_doc=missing_rooms_doc,
+        source_prog=source_prog,
     )
 
     replace_extent_in_place(disc_path, prog_lba, bytes(prog_archive))
@@ -870,6 +1007,20 @@ def main() -> int:
         type=Path,
         default=default_trans,
         help="Path to room_inspection_ru.json or inspection_ru.json",
+    )
+    parser.add_argument(
+        "--missing-rooms",
+        type=Path,
+        default=DEFAULT_MISSING_ROOMS if DEFAULT_MISSING_ROOMS.is_file() else None,
+        help="Path to missing_rooms_jp_ru.json containing translations for omitted rooms",
+    )
+    parser.add_argument(
+        "--source-bin",
+        "--source-prog",
+        dest="source_bin",
+        type=Path,
+        default=DEFAULT_SOURCE_BIN if DEFAULT_SOURCE_BIN.is_file() else None,
+        help="Path to Japanese source BIN (sr.bin) or PROG.UNT archive for fallback pointer layouts",
     )
     parser.add_argument("--charmap", type=Path, help="Path to custom glyph_map.json")
     parser.add_argument(
@@ -946,6 +1097,14 @@ def main() -> int:
     translations_doc = json.loads(args.translations.read_text(encoding="utf-8"))
 
     target_entries = [target_entry_idx] if target_entry_idx is not None else None
+    missing_rooms_doc: dict[str, Any] | None = None
+    if args.missing_rooms and args.missing_rooms.is_file():
+        missing_rooms_doc = json.loads(args.missing_rooms.read_text(encoding="utf-8"))
+
+    source_prog: bytes | None = None
+    if args.source_bin and args.source_bin.is_file():
+        source_prog = extract_prog_from_path(args.source_bin)
+
 
     # Handle BIN image patching
     if args.bin:
@@ -957,6 +1116,8 @@ def main() -> int:
             target_entries=target_entries,
             all_rooms=args.all_rooms,
             verbose=args.verbose,
+            missing_rooms_doc=missing_rooms_doc,
+            source_prog=source_prog,
         )
         print(f"Successfully patched {len(results)} inspection entries in {args.bin}:")
         if not args.verbose:
@@ -980,6 +1141,8 @@ def main() -> int:
             target_entries=target_entries,
             all_rooms=args.all_rooms,
             verbose=args.verbose,
+            missing_rooms_doc=missing_rooms_doc,
+            source_prog=source_prog,
         )
         out_path = args.output if args.output else args.prog
         out_path.write_bytes(archive)

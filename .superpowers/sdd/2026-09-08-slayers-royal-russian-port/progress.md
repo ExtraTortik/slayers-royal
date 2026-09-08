@@ -45,3 +45,5 @@ All tasks agree with global constraints. Scan clean.
 - Press Start Task 1: complete (commits 3ab4b3e, e8fb16a; PressStart2P.ttf integrated at 11pt baseline y=12, all 33 tests pass)
 - Press Start Task 2: complete (master rebuild with Press Start 2P font atlas, 149 rooms patched, 13 lore cards injected, 712,300,848 B, SHA256 ce279b9c8c2203c2780f5bd6811ac05461e36a832b6ef452fd7a2bea2bb50d97, 68/68 tests pass)
 - Press Start Task 2: complete (commit 82f88a7, master disc rebuilt with Press Start 2P font, all 149 rooms and 13 lore cards patched, 68/68 tests pass, SHA256 ce279b9c8c2203c2780f5bd6811ac05461e36a832b6ef452fd7a2bea2bb50d97)
+- Main St Task 1: complete (commit 44a1c41, 37 omitted rooms translated from Japanese source including 0x059 MAIN ST with 43 strings, 59/59 tests pass)
+- Main St Task 2: complete (tools/patch_inspection.py and tools/test_batch_inspection_patch.py updated, all 37 omitted rooms patch cleanly including 0x059 with 43 Russian strings, 0 sector overflows, 12/12 tests pass)
