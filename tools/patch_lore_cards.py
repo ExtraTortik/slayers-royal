@@ -111,8 +111,6 @@ DEFAULT_OPT_SPECS: dict[int, dict[str, Any]] = {
 
 DEFAULT_FONT_SEARCH = {
     "bold": [
-        str(REPO_ROOT / "fonts" / "PressStart2P.ttf"),
-        "/home/samvel/dddd/fonts/PressStart2P.ttf",
         "/usr/share/fonts/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
@@ -122,8 +120,6 @@ DEFAULT_FONT_SEARCH = {
         "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
     ],
     "regular": [
-        str(REPO_ROOT / "fonts" / "PressStart2P.ttf"),
-        "/home/samvel/dddd/fonts/PressStart2P.ttf",
         "/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans.ttf",
