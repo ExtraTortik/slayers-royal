@@ -8,3 +8,4 @@ localization-output/
 *.zip
 *.apk
 __pycache__/
+patch_repo/
