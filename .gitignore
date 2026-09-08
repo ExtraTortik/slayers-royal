@@ -9,3 +9,4 @@ localization-output/
 *.apk
 __pycache__/
 patch_repo/
+tools/bin/
