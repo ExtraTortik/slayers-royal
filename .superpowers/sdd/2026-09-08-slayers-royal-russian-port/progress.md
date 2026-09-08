@@ -29,3 +29,4 @@ All tasks agree with global constraints. Scan clean.
 - Mojibake Task 2: complete (tools/patch_inspection.py and data/inspection_ru.json implemented, 0x05D 31/31 translated including Подвесная лампа., 13/13 tests pass)
 - Mojibake Task 2: complete (commit 6e87538, tools/patch_inspection.py and data/inspection_ru.json implemented, 31/31 tavern strings translated including 'Подвесная лампа', 13/13 tests pass)
 - Mojibake Task 3: complete (rebuilt slayers_royal_ru.bin 712,300,848 B, SHA256 d6239fa6ed143098ca3581c6992963f17851628aaca8ee40e279d8e41c738efe, choices & inspection & lore cards integrated, 46/46 tests pass, launcher verified)
+- Mojibake & Inspection Task 3: complete (commit 5d73270, full rebuild with zero mojibake choices, Russian room inspection, and lore cards; 46/46 tests pass)
