@@ -605,12 +605,16 @@ def main() -> int:
     )
     parser.add_argument(
         "--json",
+        "--cards",
+        dest="json",
         type=Path,
         default=Path("data/lore_cards_ru.json"),
         help="Path to lore cards JSON file (default: data/lore_cards_ru.json)",
     )
     parser.add_argument(
         "--bin",
+        "--disc",
+        dest="bin",
         type=Path,
         default=None,
         help="Path to target PS1 BIN image to patch in place",
@@ -655,6 +659,12 @@ def main() -> int:
         type=Path,
         default=None,
         help="Path to custom regular TTF font",
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging",
     )
 
     args = parser.parse_args()
@@ -729,6 +739,11 @@ def main() -> int:
             font_bold_path=args.font_bold,
             font_reg_path=args.font_regular,
         )
+        if args.verbose:
+            print("--- Patch Details ---")
+            for r in results:
+                opt_info = f", OPT entry {r.opt_entry}: {r.opt_size}/{r.opt_budget}B" if r.opt_entry is not None else ""
+                print(f"  [{r.card_id}] PROG entry {r.prog_entry}: {r.prog_compressed_size}/{r.prog_budget}B (margin: {r.prog_margin}B){opt_info}")
         print(f"Successfully patched {len(results)} cards into {args.bin}.")
         return 0
 
