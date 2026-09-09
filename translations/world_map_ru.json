@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "title": "Slayers Royal (PS1) - World Map Locations Catalog",
+    "source_archive": "PROG.UNT",
+    "entry_index": "0x001",
+    "table_sector": 89,
+    "table_sector_offset": "0x05FC",
+    "pointer_sector": 93,
+    "pointer_sector_offset": "0x0120",
+    "ram_base": "0x8005BDB0",
+    "locations_count": 20,
+    "max_table_bytes": 458
+  },
+  "locations": [
+    {
+      "index": 0,
+      "id": "LAKEWOOD",
+      "text_en": "LAKEWOOD",
+      "text_ru": "ЛЕЙКВУД"
+    },
+    {
+      "index": 1,
+      "id": "BARKLAND",
+      "text_en": "BARKLAND",
+      "text_ru": "БАРКЛЕНД"
+    },
+    {
+      "index": 2,
+      "id": "GRAMSTOCK",
+      "text_en": "GRAMSTOCK",
+      "text_ru": "ГРАМСТОК"
+    },
+    {
+      "index": 3,
+      "id": "SONIA_CITY",
+      "text_en": "SONIA CITY",
+      "text_ru": "СОНИЯ"
+    },
+    {
+      "index": 4,
+      "id": "MARK_WELLS",
+      "text_en": "MARK WELLS",
+      "text_ru": "МАРК-УЭЛЛС"
+    },
+    {
+      "index": 5,
+      "id": "IZELCEN",
+      "text_en": "IZELCEN",
+      "text_ru": "ИЗЕЛЬСЕН"
+    },
+    {
+      "index": 6,
+      "id": "FREYGROUND",
+      "text_en": "FREYGROUND",
+      "text_ru": "ФРИГРАНТ"
+    },
+    {
+      "index": 7,
+      "id": "KUZACK",
+      "text_en": "KUZACK",
+      "text_ru": "КЬЮЗАК"
+    },
+    {
+      "index": 8,
+      "id": "SEYRUUN",
+      "text_en": "SEYRUUN",
+      "text_ru": "СЕЙРУН"
+    },
+    {
+      "index": 9,
+      "id": "SUNBURG",
+      "text_en": "SUNBURG",
+      "text_ru": "САМБУРГ"
+    },
+    {
+      "index": 10,
+      "id": "TOUL_CITY",
+      "text_en": "TOUL CITY",
+      "text_ru": "ТУР-СИТИ"
+    },
+    {
+      "index": 11,
+      "id": "LEZARIAM",
+      "text_en": "LEZARIAM",
+      "text_ru": "ЛЕЗАРИАМ"
+    },
+    {
+      "index": 12,
+      "id": "BARK_E_FOREST_1",
+      "text_en": "BARK E FOREST",
+      "text_ru": "В. ЛЕС БАРКЛЕНДА"
+    },
+    {
+      "index": 13,
+      "id": "BARK_W_FOREST",
+      "text_en": "BARK W FOREST",
+      "text_ru": "З. ЛЕС БАРКЛЕНДА"
+    },
+    {
+      "index": 14,
+      "id": "GRAMSTOCK_EAST",
+      "text_en": "GRAMSTOCK EAST",
+      "text_ru": "В. ГРАМСТОК"
+    },
+    {
+      "index": 15,
+      "id": "SONIA_HWY",
+      "text_en": "SONIA HWY",
+      "text_ru": "ТРАКТ СОНИИ"
+    },
+    {
+      "index": 16,
+      "id": "SONIA_BACK_RD_1",
+      "text_en": "SONIA BACK RD",
+      "text_ru": "ЗАКОУЛКИ СОНИИ"
+    },
+    {
+      "index": 17,
+      "id": "SONIA_BACK_RD_2",
+      "text_en": "SONIA BACK RD",
+      "text_ru": "ПЕРЕУЛКИ СОНИИ"
+    },
+    {
+      "index": 18,
+      "id": "BARK_S_FOREST",
+      "text_en": "BARK S FOREST",
+      "text_ru": "Ю. ЛЕС БАРКЛЕНДА"
+    },
+    {
+      "index": 19,
+      "id": "BARK_E_FOREST_2",
+      "text_en": "BARK E FOREST",
+      "text_ru": "В. ЛЕС БАРКЛЕНДА"
+    }
+  ]
+}

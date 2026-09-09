@@ -110,24 +110,8 @@ if [[ "$TARGET_MODE" == "orig" ]]; then
 else
     mkdir -p "$RU_DIR"
     if [[ "$DO_BUILD" == "true" || ! -f "$RU_BIN" || ! -f "$RU_CUE" ]]; then
-        echo "[*] Собираем русскоязычный образ диска..."
-        python3 "$SCRIPT_DIR/patch_repo/localize.py" build \
-            --bin "$BIN_ORIG" \
-            --workspace "$SCRIPT_DIR/patch_repo/localization-work/ru" \
-            --locale ru \
-            --output-dir "$RU_DIR" \
-            --force
-        echo "[*] Внедряем описания интерактивных объектов (translations/room_inspection_ru.json)..."
-        python3 "$SCRIPT_DIR/tools/patch_inspection.py" \
-            --bin "$RU_BIN" \
-            --translations "$SCRIPT_DIR/translations/room_inspection_ru.json" \
-            --all-rooms
-        echo "[*] Внедряем энциклопедические карточки персонажей (data/lore_cards_ru.json)..."
-        python3 "$SCRIPT_DIR/tools/patch_lore_cards.py" \
-            --disc "$RU_BIN" \
-            --cards "$SCRIPT_DIR/data/lore_cards_ru.json"
-        cp -a "$RU_DIR/." "$SCRIPT_DIR/patch_repo/localization-output/ru/"
-        echo "[*] Сборка полностью завершена: $RU_CUE"
+        echo "[*] Запуск полной сборки локализованного образа через build.sh..."
+        "$SCRIPT_DIR/build.sh"
     else
         echo "[*] Найден готовый русскоязычный образ диска: $RU_CUE"
     fi

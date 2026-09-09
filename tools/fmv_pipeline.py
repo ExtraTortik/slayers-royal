@@ -94,18 +94,18 @@ SECTOR_USER_SIZE = 2048
 
 # Exact movie stream sector layout in MOVIE.STR (12 movies)
 MOVIE_MAP: dict[int, dict[str, Any]] = {
-    0:  {"name": "s00", "rel_sec": 0,      "sectors": 13501, "subbed": False},
-    1:  {"name": "s01", "rel_sec": 13501,  "sectors": 12800, "subbed": True},
-    2:  {"name": "s02", "rel_sec": 26301,  "sectors": 23399, "subbed": True},
-    3:  {"name": "s03", "rel_sec": 49700,  "sectors": 10308, "subbed": True},
-    4:  {"name": "s04", "rel_sec": 60008,  "sectors": 12384, "subbed": True},
-    5:  {"name": "s05", "rel_sec": 72392,  "sectors": 19570, "subbed": True},
-    6:  {"name": "s06", "rel_sec": 91962,  "sectors": 9792,  "subbed": True},
-    7:  {"name": "s07", "rel_sec": 101754, "sectors": 9920,  "subbed": True},
-    8:  {"name": "s08", "rel_sec": 111674, "sectors": 11877, "subbed": True},
-    9:  {"name": "s09", "rel_sec": 123551, "sectors": 26802, "subbed": True},
-    10: {"name": "s10", "rel_sec": 150353, "sectors": 3456,  "subbed": True},
-    11: {"name": "s11", "rel_sec": 153809, "sectors": 30481, "subbed": True},
+    0:  {"name": "s00", "rel_sec": 0,      "sectors": 13501, "subbed": False},  # Opening
+    1:  {"name": "s02", "rel_sec": 13501,  "sectors": 12800, "subbed": True},   # Lark story
+    2:  {"name": "s03", "rel_sec": 26301,  "sectors": 23399, "subbed": True},   # Road fork
+    3:  {"name": "s04", "rel_sec": 49700,  "sectors": 10308, "subbed": True},   # Book found
+    4:  {"name": "s05", "rel_sec": 60008,  "sectors": 12384, "subbed": True},   # Ruins entry
+    5:  {"name": "s06", "rel_sec": 72392,  "sectors": 19570, "subbed": True},   # Library
+    6:  {"name": "s07", "rel_sec": 91962,  "sectors": 9792,  "subbed": True},   # Necklace
+    7:  {"name": "s08", "rel_sec": 101754, "sectors": 9920,  "subbed": True},   # Too late
+    8:  {"name": "s09", "rel_sec": 111674, "sectors": 11877, "subbed": True},   # Fireball
+    9:  {"name": "s10", "rel_sec": 123551, "sectors": 26802, "subbed": True},   # Treasures
+    10: {"name": "s11", "rel_sec": 150353, "sectors": 3456,  "subbed": True},   # Ending
+    11: {"name": "s01", "rel_sec": 153809, "sectors": 30481, "subbed": True},   # Lakewood exit
 }
 
 

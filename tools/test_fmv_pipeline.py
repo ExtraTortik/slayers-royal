@@ -79,10 +79,23 @@ class TestMovieStreamMapping:
 
     def test_movie_count(self):
         assert len(MOVIE_MAP) == 12, f"Expected 12 movies, got {len(MOVIE_MAP)}"
+        expected_names = {
+            0: "s00",
+            1: "s02",
+            2: "s03",
+            3: "s04",
+            4: "s05",
+            5: "s06",
+            6: "s07",
+            7: "s08",
+            8: "s09",
+            9: "s10",
+            10: "s11",
+            11: "s01",
+        }
         for i in range(12):
             assert i in MOVIE_MAP, f"Missing movie index {i}"
-            assert MOVIE_MAP[i]["name"] == f"s{i:02d}"
-
+            assert MOVIE_MAP[i]["name"] == expected_names[i]
     def test_subbed_flags(self):
         assert MOVIE_MAP[0]["subbed"] is False, "Movie 0 (Opening) should not be subbed"
         for i in range(1, 12):
@@ -123,9 +136,23 @@ class TestMovieStreamMapping:
         assert info0.raw_size_bytes == 13501 * SECTOR_RAW_SIZE
         assert info0.subbed is False
 
+        info1 = get_movie_info(1)
+        assert info1.index == 1
+        assert info1.name == "s02"
+        assert info1.start_lba == 127 + 13501
+        assert info1.sectors == 12800
+        assert info1.subbed is True
+
+        info10 = get_movie_info(10)
+        assert info10.index == 10
+        assert info10.name == "s11"
+        assert info10.start_lba == 127 + 150353
+        assert info10.sectors == 3456
+        assert info10.subbed is True
+
         info11 = get_movie_info(11)
         assert info11.index == 11
-        assert info11.name == "s11"
+        assert info11.name == "s01"
         assert info11.start_lba == 127 + 153809
         assert info11.end_lba == 127 + 184290
         assert info11.sectors == 30481
@@ -445,8 +472,8 @@ class TestEncodeMoviePipeline:
             assert sec0[24:28] == b"\x60\x01\x01\x80"
 
     def test_encode_movie_with_subtitles_and_padding(self, tmp_path: Path):
-        # Movie 10 (s10) has 3,456 sectors (smallest movie: ~8 MB)
-        out_str = tmp_path / "s10_padded.str"
+        # Movie 10 (s11) has 3,456 sectors (smallest movie: ~8 MB)
+        out_str = tmp_path / "s11_padded.str"
         info = get_movie_info(10)
         bytes_written = encode_movie(10, VIDEOS_DIR, out_str, duration=0.5)
 
