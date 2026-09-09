@@ -1,124 +1,246 @@
 {
   "metadata": {
     "title": "Slayers Royal (PS1) - Каталог вывесок и плашек локаций",
-    "description": "Этот файл позволяет редактировать текст вывесок и баннеров в городах (BASYOG.UNT Entry 466).",
+    "description": "Этот файл позволяет настраивать текст и типографику вывесок в городах (BASYOG.UNT Entry 466).",
     "target_entry": "BASYOG.UNT Entry 466 (LBA 240133..240140)",
-    "instructions": "Вы можете изменить поле 'text_ru' на любой желаемый текст. Если фраза длинная (например, 'ПОКИНУТЬ ГОРОД'), скрипт автоматически использует компактный шрифт, чтобы текст не обрезался."
+    "instructions": {
+      "text_ru": "Русский текст надписи.",
+      "font_size": "Кегль шрифта: 8, 7, 6, 5, 4 или 'auto'. Если указан 'auto', кегль подбирается автоматически так, чтобы фраза гарантированно не обрезалась движком.",
+      "align": "Горизонтальное выравнивание внутри окна: 'center' (по центру), 'left' (по левому краю), 'right' (по правому краю).",
+      "offset_x": "Смещение по горизонтали в пикселях (+ вправо, - влево, 0 по умолчанию).",
+      "offset_y": "Смещение по вертикали в пикселях (+ вниз, - вверх, 0 по умолчанию).",
+      "max_hardware_width_px": "Справочное поле: ширина окна движка в пикселях. Текст шире этой границы движок PS1 обрезает."
+    }
   },
   "banners": {
     "MAIN ST": {
       "text_en": "MAIN ST",
       "text_ru": "ГЛАВНАЯ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 70,
       "description": "Главная улица города"
     },
     "PLAZA": {
       "text_en": "PLAZA",
       "text_ru": "ПЛОЩАДЬ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 75,
       "description": "Городская площадь"
     },
     "MAGE GUILD": {
       "text_en": "MAGE GUILD",
       "text_ru": "ГИЛЬДИЯ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 85,
       "description": "Гильдия магов"
     },
     "BAR": {
       "text_en": "BAR",
       "text_ru": "БАР",
+      "font_size": 8,
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 50,
       "description": "Бар"
     },
     "ARMORY": {
       "text_en": "ARMORY",
       "text_ru": "ОРУЖЕЙНАЯ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 75,
       "description": "Оружейная лавка"
     },
     "PORT STALL": {
       "text_en": "PORT STALL",
       "text_ru": "ПРИСТАНЬ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 80,
       "description": "Портовая пристань / прилавок"
     },
     "BACK ST": {
       "text_en": "BACK ST",
       "text_ru": "ЗАКОУЛКИ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 75,
       "description": "Закоулки / переулки города"
     },
     "CHURCH": {
       "text_en": "CHURCH",
       "text_ru": "ЦЕРКОВЬ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 80,
       "description": "Церковь / собор"
     },
     "CLIFF": {
       "text_en": "CLIFF",
       "text_ru": "УТЁС",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 60,
       "description": "Утёс / скалистый обрыв"
     },
     "TAVERN": {
       "text_en": "TAVERN",
       "text_ru": "ТАВЕРНА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 60,
       "description": "Таверна"
     },
     "TEMPLE": {
       "text_en": "TEMPLE",
       "text_ru": "ХРАМ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 44,
       "description": "Храм"
     },
     "LEAVE TOWN": {
       "text_en": "LEAVE TOWN",
       "text_ru": "ПОКИНУТЬ ГОРОД",
-      "description": "Выход из города на глобальную карту"
+      "font_size": 6,
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 91,
+      "description": "Выход из города на глобальную карту (широкое окно 91 px)"
     },
     "ELDER'S HOUSE": {
       "text_en": "ELDER'S HOUSE",
       "text_ru": "СТАРОСТА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 85,
       "description": "Дом старейшины / старосты"
     },
     "LARK'S HOUSE": {
       "text_en": "LARK'S HOUSE",
       "text_ru": "ДОМ ЛАРКА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 110,
       "description": "Дом Ларка"
     },
     "ROYAL PALACE": {
       "text_en": "ROYAL PALACE",
       "text_ru": "ДВОРЕЦ",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 75,
       "description": "Королевский дворец"
     },
     "MAYOR'S HOUSE": {
       "text_en": "MAYOR'S HOUSE",
       "text_ru": "ДОМ МЭРА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 110,
       "description": "Дом мэра города"
     },
     "ROYAL LIBRARY": {
       "text_en": "ROYAL LIBRARY",
       "text_ru": "БИБЛИОТЕКА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 110,
       "description": "Королевская библиотека"
     },
     "MAGIC CLINIC": {
       "text_en": "MAGIC CLINIC",
       "text_ru": "ЛЕЧЕБНИЦА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 110,
       "description": "Магическая клиника / лечебница"
     },
     "MARKET": {
       "text_en": "MARKET",
       "text_ru": "РЫНОК",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 45,
       "description": "Городской рынок"
     },
     "OUTSKIRTS": {
       "text_en": "OUTSKIRTS",
       "text_ru": "ОКРАИНА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 150,
       "description": "Окраина города"
     },
     "INN": {
       "text_en": "INN",
       "text_ru": "ОТЕЛЬ",
-      "description": "Гостиница / отель (окно 44 px, слова до 5 букв пишутся крупно)"
+      "font_size": 8,
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 44,
+      "description": "Гостиница / отель (окно 44 px, 'ОТЕЛЬ' пишется крупно кеглем 8)"
     },
     "ITEM SHOP": {
       "text_en": "ITEM SHOP",
       "text_ru": "ЛАВКА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 60,
       "description": "Лавка предметов"
     },
     "MOUNTAIN CAVE": {
       "text_en": "MOUNTAIN CAVE",
       "text_ru": "ПЕЩЕРА",
+      "font_size": "auto",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 95,
       "description": "Горная пещера"
     }
   }

@@ -2,8 +2,8 @@
 
 **Проект:** Инструментарий ромхакинга, реверс-инжиниринга и полного русского перевода игры *Slayers Royal* (Sony PlayStation 1, 1997).  
 **Дата обновления:** 2026-09-09  
-**Статус тестов:** 172 passed (162 `pytest tools/` + 10 `pytest patch_repo/localization/tests`, 100% green)  
-**Готовый образ диска:** `localization-output/ru/slayers_royal_ru.bin` (712 300 848 байт, MD5: `3e0c8ee933d5fa77696ef1118bb9321b`, SHA-256: `0a331dfecc831af8f057afa9be396399d6e9091ee627028be8be4870d48cb096`)  
+**Статус тестов:** 174 passed (164 `pytest tools/` + 10 `pytest patch_repo/localization/tests`, 100% green)  
+**Готовый образ диска:** `localization-output/ru/slayers_royal_ru.bin` (712 300 848 байт, MD5: `c0d4d548ce63c6928a680caa4b452eed`, SHA-256: `dd1fa55f59176ee91025f0133a7c779f06e154cce31c0109a58ef18d24a929cd`)  
 **CUE-файл:** `localization-output/ru/slayers_royal_ru.cue` (82 байта, MD5: `f8c921583fbe4862d9bd6abb967a1b2b`, SHA-256: `3a454ac6b531be0698342b37615e1ccfd7126038b9223a9910140ea2ec6d9f42`)  
 
 ---
@@ -201,7 +201,7 @@ dddd/
 ./build.sh --validate      # Валидация каталогов диалогов, комнат, карты, плашек и боевки
 ### Запуск тестов:
 ```bash
-python3 -m pytest tools/ -q                                                              # 162 теста тулчейна
+python3 -m pytest tools/ -q                                                              # 164 теста тулчейна
 cd patch_repo && SLAYERS_ROYAL_BIN="$(realpath ../downloads/sr.bin)" python3 -m pytest localization/tests -q  # 10 тестов интеграции
 ```
-*(Всего 172 теста — все проходят со 100% успехом).*
+*(Всего 174 теста — все проходят со 100% успехом).*

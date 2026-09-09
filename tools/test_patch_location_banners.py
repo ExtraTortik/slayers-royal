@@ -15,6 +15,7 @@ Validates:
 from __future__ import annotations
 
 import struct
+import json
 import sys
 import tempfile
 from pathlib import Path
@@ -267,3 +268,39 @@ class TestDiscPatchAndVerification:
     def test_cli_verify_mode(self):
         exit_code = main(["--verify"])
         assert exit_code == 0
+
+    def test_load_banner_translations_catalog(self, tmp_path: Path):
+        from tools.patch_location_banners import load_banner_translations, DEFAULT_TRANSLATIONS
+        # Test loading default catalog
+        cat = load_banner_translations(DEFAULT_TRANSLATIONS)
+        assert "LEAVE TOWN" in cat
+        assert cat["LEAVE TOWN"]["text_ru"] == "ПОКИНУТЬ ГОРОД"
+        assert cat["LEAVE TOWN"]["font_size"] == 6
+        assert cat["INN"]["text_ru"] == "ОТЕЛЬ"
+
+        # Test loading custom catalog override
+        custom_json = tmp_path / "custom_banners.json"
+        custom_json.write_text(json.dumps({
+            "banners": {
+                "LEAVE TOWN": {"text_ru": "ВЫЙТИ ИЗ ГОРОДА", "font_size": 5, "align": "left", "offset_x": 2, "offset_y": -1},
+                "INN": "НОЧЛЕГ"
+            }
+        }, ensure_ascii=False), encoding="utf-8")
+
+        custom_cat = load_banner_translations(custom_json)
+        assert custom_cat["LEAVE TOWN"]["text_ru"] == "ВЫЙТИ ИЗ ГОРОДА"
+        assert custom_cat["LEAVE TOWN"]["font_size"] == 5
+        assert custom_cat["LEAVE TOWN"]["align"] == "left"
+        assert custom_cat["LEAVE TOWN"]["offset_x"] == 2
+        assert custom_cat["INN"]["text_ru"] == "НОЧЛЕГ"
+
+    def test_custom_font_size_and_align_rendering(self):
+        from tools.patch_location_banners import get_base_image, render_cyrillic_banners
+        base = get_base_image()
+        custom_specs = {
+            "MAIN ST": {"text_ru": "ГЛАВНАЯ", "font_size": 8, "align": "center", "offset_x": 0, "offset_y": 0},
+            "LEAVE TOWN": {"text_ru": "ПОКИНУТЬ ГОРОД", "font_size": 6, "align": "center", "offset_x": 1, "offset_y": 1},
+            "INN": {"text_ru": "ОТЕЛЬ", "font_size": 7, "align": "left", "offset_x": 0, "offset_y": 0},
+        }
+        rendered = render_cyrillic_banners(base, translations=custom_specs)
+        assert rendered.size == (256, 224)

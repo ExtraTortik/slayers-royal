@@ -78,20 +78,46 @@ TIM_HEADER = b"\x10\x00\x00\x00\x08\x00\x00\x00"
 DEFAULT_TRANSLATIONS = REPO_ROOT / "translations" / "location_banners_ru.json"
 
 
-def load_banner_translations(path: Path | str | None = None) -> dict[str, str]:
-    """Load banner translations from JSON catalog with fallback to defaults."""
+def load_banner_translations(path: Path | str | None = None) -> dict[str, dict[str, Any]]:
+    """Load banner translations and typography specs from JSON catalog with fallback to defaults."""
     target_path = Path(path) if path else DEFAULT_TRANSLATIONS
-    res = dict(BANNER_TRANSLATIONS)
+    res: dict[str, dict[str, Any]] = {
+        k: {
+            "text_ru": v,
+            "font_size": "auto",
+            "align": "center",
+            "offset_x": 0,
+            "offset_y": 0,
+        }
+        for k, v in BANNER_TRANSLATIONS.items()
+    }
     if not target_path.is_file():
         return res
     try:
         doc = json.loads(target_path.read_text(encoding="utf-8"))
         banners_dict = doc.get("banners", doc)
         for key, val in banners_dict.items():
-            if isinstance(val, dict) and "text_ru" in val:
-                res[key] = str(val["text_ru"]).strip()
+            if isinstance(val, dict):
+                text = str(val.get("text_ru", BANNER_TRANSLATIONS.get(key, ""))).strip()
+                fs = val.get("font_size", "auto")
+                al = str(val.get("align", "center")).strip().lower()
+                ox = int(val.get("offset_x", 0))
+                oy = int(val.get("offset_y", 0))
+                res[key] = {
+                    "text_ru": text,
+                    "font_size": fs,
+                    "align": al,
+                    "offset_x": ox,
+                    "offset_y": oy,
+                }
             elif isinstance(val, str):
-                res[key] = val.strip()
+                res[key] = {
+                    "text_ru": val.strip(),
+                    "font_size": "auto",
+                    "align": "center",
+                    "offset_x": 0,
+                    "offset_y": 0,
+                }
     except Exception as exc:
         print(f"Warning: Failed to parse {target_path} ({exc}), using defaults", file=sys.stderr)
     return res
@@ -245,9 +271,9 @@ def get_base_image() -> Image.Image:
 def render_cyrillic_banners(
     base_img: Image.Image,
     font_path: Path | str | None = None,
-    translations: dict[str, str] | None = None,
+    translations: dict[str, Any] | None = None,
 ) -> Image.Image:
-    """Render Cyrillic location banners onto base image template with auto-sizing."""
+    """Render Cyrillic location banners onto base image template with auto-sizing and custom typography."""
     fpath = find_font_path(font_path)
     fonts = {sz: ImageFont.truetype(str(fpath), sz) for sz in (8, 7, 6, 5, 4)}
     trans_map = translations or load_banner_translations()
@@ -255,45 +281,71 @@ def render_cyrillic_banners(
     draw = ImageDraw.Draw(patched_img)
 
     for banner_key, trans_key, (cx0, cy0, cx1, cy1), (dx, dy) in BANNER_LAYOUT:
-        text = trans_map.get(trans_key)
+        spec = trans_map.get(trans_key)
+        if not spec:
+            continue
+        if isinstance(spec, str):
+            spec = {"text_ru": spec, "font_size": "auto", "align": "center", "offset_x": 0, "offset_y": 0}
+
+        text = spec.get("text_ru", "")
         if not text:
             continue
+
+        box_w = cx1 - cx0
+        box_h = cy1 - cy0
+        req_fs = spec.get("font_size", "auto")
+        align = spec.get("align", "center")
+        off_x = int(spec.get("offset_x", 0))
+        off_y = int(spec.get("offset_y", 0))
 
         # 1. Clear target bounding box (transparent)
         draw.rectangle([cx0, cy0, cx1, cy1], fill=(0, 0, 0, 0))
 
-        # 2. Automatically find best font size (8 -> 7 -> 6 -> 5 -> 4) to fit box without clipping
-        box_w = cx1 - cx0
-        box_h = cy1 - cy0
-        chosen_font = fonts[4]
-        tw, th = 0, 0
-        max_sz = 6 if banner_key == "LEAVE TOWN" else 8
-        for sz in (8, 7, 6, 5, 4):
-            if sz > max_sz:
-                continue
-            f = fonts[sz]
-            bb = draw.textbbox((0, 0), text, font=f)
-            cand_w = bb[2] - bb[0]
-            cand_h = bb[3] - bb[1]
-            if cand_w <= box_w - 4:
-                chosen_font = f
-                tw = cand_w
-                th = cand_h
-                break
-        else:
+        # 2. Determine font size: explicit size or auto-sizing
+        if isinstance(req_fs, int) and req_fs in fonts:
+            chosen_font = fonts[req_fs]
             bb = draw.textbbox((0, 0), text, font=chosen_font)
             tw = bb[2] - bb[0]
             th = bb[3] - bb[1]
+        else:
+            # Auto-size (8 -> 7 -> 6 -> 5 -> 4)
+            max_sz = 6 if banner_key == "LEAVE TOWN" else 8
+            for sz in (8, 7, 6, 5, 4):
+                if sz > max_sz:
+                    continue
+                f = fonts[sz]
+                bb = draw.textbbox((0, 0), text, font=f)
+                cand_w = bb[2] - bb[0]
+                cand_h = bb[3] - bb[1]
+                if cand_w <= box_w - 4:
+                    chosen_font = f
+                    tw = cand_w
+                    th = cand_h
+                    break
+            else:
+                chosen_font = fonts[4]
+                bb = draw.textbbox((0, 0), text, font=chosen_font)
+                tw = bb[2] - bb[0]
+                th = bb[3] - bb[1]
 
-        # Center text inside target bounding box
-        draw_x = cx0 + max(2, (box_w - tw) // 2)
-        draw_y = cy0 + max(2, (box_h - th) // 2) - 1
+        # 3. Calculate position with alignment and manual offsets
+        if align == "left":
+            base_x = cx0 + 2
+        elif align == "right":
+            base_x = cx1 - tw - 2
+        else:  # center
+            base_x = cx0 + max(2, (box_w - tw) // 2)
 
-        # 3. Draw 1px 8-way dark outline
+        base_y = cy0 + max(2, (box_h - th) // 2) - 1
+
+        draw_x = base_x + off_x
+        draw_y = base_y + off_y
+
+        # 4. Draw 1px 8-way dark outline
         for ox, oy in [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]:
             draw.text((draw_x + ox, draw_y + oy), text, font=chosen_font, fill=OUTLINE_COLOR_RGBA)
 
-        # 4. Draw bright cyan text core
+        # 5. Draw bright cyan text core
         draw.text((draw_x, draw_y), text, font=chosen_font, fill=CORE_COLOR_RGBA)
     return patched_img
 
