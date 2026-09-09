@@ -31,6 +31,7 @@ This tool patches the English location banners with Cyrillic translations:
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import struct
 import sys
@@ -74,6 +75,26 @@ UNCOMPRESSED_TIM_SIZE = 28736  # 8 + 44 + 12 + 28,672 bytes
 TIM_WIDTH = 256
 TIM_HEIGHT = 224
 TIM_HEADER = b"\x10\x00\x00\x00\x08\x00\x00\x00"
+DEFAULT_TRANSLATIONS = REPO_ROOT / "translations" / "location_banners_ru.json"
+
+
+def load_banner_translations(path: Path | str | None = None) -> dict[str, str]:
+    """Load banner translations from JSON catalog with fallback to defaults."""
+    target_path = Path(path) if path else DEFAULT_TRANSLATIONS
+    res = dict(BANNER_TRANSLATIONS)
+    if not target_path.is_file():
+        return res
+    try:
+        doc = json.loads(target_path.read_text(encoding="utf-8"))
+        banners_dict = doc.get("banners", doc)
+        for key, val in banners_dict.items():
+            if isinstance(val, dict) and "text_ru" in val:
+                res[key] = str(val["text_ru"]).strip()
+            elif isinstance(val, str):
+                res[key] = val.strip()
+    except Exception as exc:
+        print(f"Warning: Failed to parse {target_path} ({exc}), using defaults", file=sys.stderr)
+    return res
 
 # Original 16-color CLUT halfwords from Entry 466
 LOCATION_BANNER_CLUT: list[int] = [
@@ -221,17 +242,15 @@ def get_base_image() -> Image.Image:
     # Create empty transparent canvas
     return Image.new("RGBA", (TIM_WIDTH, TIM_HEIGHT), (0, 0, 0, 0))
 
-
 def render_cyrillic_banners(
     base_img: Image.Image,
     font_path: Path | str | None = None,
     translations: dict[str, str] | None = None,
 ) -> Image.Image:
-    """Render Cyrillic location banners onto base image template."""
+    """Render Cyrillic location banners onto base image template with auto-sizing."""
     fpath = find_font_path(font_path)
-    font_8 = ImageFont.truetype(str(fpath), 8)
-    font_6 = ImageFont.truetype(str(fpath), 6)
-    trans_map = translations or BANNER_TRANSLATIONS
+    fonts = {sz: ImageFont.truetype(str(fpath), sz) for sz in (8, 7, 6, 5, 4)}
+    trans_map = translations or load_banner_translations()
     patched_img = base_img.copy().convert("RGBA")
     draw = ImageDraw.Draw(patched_img)
 
@@ -242,14 +261,40 @@ def render_cyrillic_banners(
 
         # 1. Clear target bounding box (transparent)
         draw.rectangle([cx0, cy0, cx1, cy1], fill=(0, 0, 0, 0))
-        current_font = font_6 if banner_key == "LEAVE TOWN" else font_8
 
-        # 2. Draw 1px 8-way dark outline
+        # 2. Automatically find best font size (8 -> 7 -> 6 -> 5 -> 4) to fit box without clipping
+        box_w = cx1 - cx0
+        box_h = cy1 - cy0
+        chosen_font = fonts[4]
+        tw, th = 0, 0
+        max_sz = 6 if banner_key == "LEAVE TOWN" else 8
+        for sz in (8, 7, 6, 5, 4):
+            if sz > max_sz:
+                continue
+            f = fonts[sz]
+            bb = draw.textbbox((0, 0), text, font=f)
+            cand_w = bb[2] - bb[0]
+            cand_h = bb[3] - bb[1]
+            if cand_w <= box_w - 4:
+                chosen_font = f
+                tw = cand_w
+                th = cand_h
+                break
+        else:
+            bb = draw.textbbox((0, 0), text, font=chosen_font)
+            tw = bb[2] - bb[0]
+            th = bb[3] - bb[1]
+
+        # Center text inside target bounding box
+        draw_x = cx0 + max(2, (box_w - tw) // 2)
+        draw_y = cy0 + max(2, (box_h - th) // 2) - 1
+
+        # 3. Draw 1px 8-way dark outline
         for ox, oy in [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]:
-            draw.text((dx + ox, dy + oy), text, font=current_font, fill=OUTLINE_COLOR_RGBA)
+            draw.text((draw_x + ox, draw_y + oy), text, font=chosen_font, fill=OUTLINE_COLOR_RGBA)
 
-        # 3. Draw bright cyan text core
-        draw.text((dx, dy), text, font=current_font, fill=CORE_COLOR_RGBA)
+        # 4. Draw bright cyan text core
+        draw.text((draw_x, draw_y), text, font=chosen_font, fill=CORE_COLOR_RGBA)
     return patched_img
 
 
@@ -394,15 +439,12 @@ def generate_patched_entry_466(
     base_image: Image.Image | None = None,
     font_path: Path | str | None = None,
     preview_out: Path | str | None = None,
+    translations_path: Path | str | None = None,
 ) -> tuple[bytes, bytes]:
-    """Generate uncompressed TIM and compressed 16KB disc payload.
-
-    Returns:
-        tuple of (uncompressed_tim_bytes, sector_padded_compressed_bytes)
-    """
+    """Generate uncompressed TIM and compressed 16KB disc payload."""
     img = base_image or get_base_image()
-    patched_img = render_cyrillic_banners(img, font_path=font_path)
-
+    trans = load_banner_translations(translations_path)
+    patched_img = render_cyrillic_banners(img, font_path=font_path, translations=trans)
     if preview_out:
         p_out = Path(preview_out)
         p_out.parent.mkdir(parents=True, exist_ok=True)
@@ -414,29 +456,37 @@ def generate_patched_entry_466(
     return tim_data, compressed_payload
 
 
-def patch_disc_image(
+def patch_location_banners_disc(
     disc_path: Path | str,
-    compressed_payload: bytes | None = None,
     font_path: Path | str | None = None,
     preview_out: Path | str | None = None,
-) -> None:
-    """Inject patched Entry 466 into PS1 disc BIN image at LBA 240133 with EDC/ECC recalculation."""
+    translations_path: Path | str | None = None,
+) -> tuple[int, int]:
+    """Patch Entry 466 directly in PS1 CD-ROM BIN disc image.
+
+    Returns:
+        (uncompressed_size, compressed_size)
+    """
     target = Path(disc_path)
     if not target.is_file():
-        raise FileNotFoundError(f"Disc image not found: {disc_path}")
+        raise FileNotFoundError(f"Target disc image not found: {disc_path}")
 
-    if compressed_payload is None:
-        _, compressed_payload = generate_patched_entry_466(
-            font_path=font_path,
-            preview_out=preview_out,
-        )
-
+    tim_data, compressed_payload = generate_patched_entry_466(
+        font_path=font_path,
+        preview_out=preview_out,
+        translations_path=translations_path,
+    )
     if len(compressed_payload) != ENTRY_466_BUDGET_BYTES:
         raise ValueError(
             f"Payload size {len(compressed_payload)} must be exactly {ENTRY_466_BUDGET_BYTES} bytes"
         )
 
     replace_extent_in_place(target, ENTRY_466_LBA, compressed_payload)
+    return len(tim_data), len(compressed_payload)
+
+
+# Alias for backwards compatibility with tests
+patch_disc_image = patch_location_banners_disc
 
 
 def verify_disc_image(disc_path: Path | str) -> bool:
@@ -499,15 +549,14 @@ def verify_disc_image(disc_path: Path | str) -> bool:
         byte = pixel_data[y * (TIM_WIDTH // 2) + (x // 2)]
         return (byte >> 4) & 0x0F if (x % 2 != 0) else (byte & 0x0F)
 
-    # In 'БАР' (dx=22, dy=31), check character pixels:
-    # Character 'Б' at x=22..29, y=31..38 should contain non-zero pixels
-    bar_indices = [get_index(x, 31) for x in range(22, 45)]
+    # In 'БАР', check character pixels in range x=20..48, y=28..38
+    bar_indices = [get_index(x, y) for y in range(28, 38) for x in range(20, 48)]
     if not any(idx in (13, 14, 15) for idx in bar_indices):
         print("[VERIFY FAILED] Cyrillic banner 'БАР' not found in Entry 466")
         return False
 
-    # Check 'ПЛОЩАДЬ' at Band 0 (x=100..156, y=6..14)
-    plaza_indices = [get_index(x, 6) for x in range(100, 156)]
+    # Check 'ПЛОЩАДЬ' at Band 0 (x=96..160, y=5..15)
+    plaza_indices = [get_index(x, y) for y in range(5, 15) for x in range(96, 160)]
     if not any(idx in (13, 14, 15) for idx in plaza_indices):
         print("[VERIFY FAILED] Cyrillic banner 'ПЛОЩАДЬ' not found in Entry 466")
         return False
@@ -558,6 +607,14 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         default=None,
         help="Export patched uncompressed TIM file to path",
     )
+    parser.add_argument(
+        "--translations",
+        "--catalog",
+        dest="translations",
+        type=Path,
+        default=DEFAULT_TRANSLATIONS,
+        help=f"Path to translations JSON catalog (default: {DEFAULT_TRANSLATIONS})",
+    )
     return parser.parse_args(argv)
 
 
@@ -576,6 +633,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     tim_data, compressed_payload = generate_patched_entry_466(
         font_path=args.font,
         preview_out=args.preview_out,
+        translations_path=args.translations,
     )
     print(f"Uncompressed TIM: {len(tim_data):,} bytes")
     print(f"Compressed size: {len(compressed_payload.rstrip(b'\x00')):,} bytes (budget: {ENTRY_466_BUDGET_BYTES:,} bytes)")
@@ -594,13 +652,13 @@ def main(argv: Sequence[str] | None = None) -> int:
         return 0
 
     print(f"Injecting into disc {args.bin} at LBA {ENTRY_466_LBA}..{ENTRY_466_LBA+7}...")
-    patch_disc_image(args.bin, compressed_payload=compressed_payload)
+    replace_extent_in_place(args.bin, ENTRY_466_LBA, compressed_payload)
 
     # Also update secondary copy if present
     alt_bin = REPO_ROOT / "patch_repo" / "localization-output" / "ru" / "slayers_royal_ru.bin"
     if alt_bin.is_file() and alt_bin.resolve() != args.bin.resolve():
         try:
-            patch_disc_image(alt_bin, compressed_payload=compressed_payload)
+            replace_extent_in_place(alt_bin, ENTRY_466_LBA, compressed_payload)
             print(f"Also injected into secondary disc: {alt_bin}")
         except Exception as e:
             print(f"Warning: Could not update {alt_bin}: {e}", file=sys.stderr)

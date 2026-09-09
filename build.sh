@@ -12,6 +12,7 @@ INSPECTION_JSON="$SCRIPT_DIR/translations/room_inspection_ru.json"
 CARDS_JSON="$SCRIPT_DIR/data/lore_cards_ru.json"
 COMBAT_JSON="$SCRIPT_DIR/translations/combat_ru.json"
 MAP_JSON="$SCRIPT_DIR/translations/world_map_ru.json"
+BANNERS_JSON="$SCRIPT_DIR/translations/location_banners_ru.json"
 PATCH_REPO_DIR="$SCRIPT_DIR/patch_repo"
 
 echo "==========================================================="
@@ -100,8 +101,8 @@ if [[ "$1" == "--banners" ]]; then
         exit 1
     fi
     python3 "$SCRIPT_DIR/tools/patch_location_banners.py" \
-        --bin "$RU_BIN"
-    cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
+        --bin "$RU_BIN" \
+        --catalog "$BANNERS_JSON"
     echo "[✓] Графические плашки локаций успешно обновлены!"
     exit 0
 fi
@@ -159,8 +160,8 @@ python3 "$SCRIPT_DIR/tools/patch_world_map.py" \
 
 echo "[6/6] Внедрение графических плашек-баннеров локаций (BASYOG.UNT 466)..."
 python3 "$SCRIPT_DIR/tools/patch_location_banners.py" \
-    --bin "$RU_BIN"
-cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
+    --bin "$RU_BIN" \
+    --catalog "$BANNERS_JSON"
 
 echo "==========================================================="
 echo "[✓] Полная сборка успешно завершена!"
