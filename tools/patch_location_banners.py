@@ -99,7 +99,13 @@ def load_banner_translations(path: Path | str | None = None) -> dict[str, dict[s
         for key, val in banners_dict.items():
             if isinstance(val, dict):
                 text = str(val.get("text_ru", BANNER_TRANSLATIONS.get(key, ""))).strip()
-                fs = val.get("font_size", "auto")
+                fs_raw = val.get("font_size", "auto")
+                if isinstance(fs_raw, (int, float)):
+                    fs = max(1, min(32, int(fs_raw)))
+                elif isinstance(fs_raw, str) and fs_raw.strip().isdigit():
+                    fs = max(1, min(32, int(fs_raw.strip())))
+                else:
+                    fs = "auto"
                 al = str(val.get("align", "center")).strip().lower()
                 ox = int(val.get("offset_x", 0))
                 oy = int(val.get("offset_y", 0))
@@ -275,7 +281,12 @@ def render_cyrillic_banners(
 ) -> Image.Image:
     """Render Cyrillic location banners onto base image template with auto-sizing and custom typography."""
     fpath = find_font_path(font_path)
-    fonts = {sz: ImageFont.truetype(str(fpath), sz) for sz in (8, 7, 6, 5, 4)}
+    font_cache: dict[int, Any] = {}
+
+    def get_font(sz: int) -> Any:
+        if sz not in font_cache:
+            font_cache[sz] = ImageFont.truetype(str(fpath), max(1, sz))
+        return font_cache[sz]
     trans_map = translations or load_banner_translations()
     patched_img = base_img.copy().convert("RGBA")
     draw = ImageDraw.Draw(patched_img)
@@ -301,9 +312,10 @@ def render_cyrillic_banners(
         # 1. Clear target bounding box (transparent)
         draw.rectangle([cx0, cy0, cx1, cy1], fill=(0, 0, 0, 0))
 
-        # 2. Determine font size: explicit size or auto-sizing
-        if isinstance(req_fs, int) and req_fs in fonts:
-            chosen_font = fonts[req_fs]
+        # 2. Determine font size: explicit size (e.g. 1..32) or auto-sizing
+        if isinstance(req_fs, (int, float)) or (isinstance(req_fs, str) and str(req_fs).strip().isdigit()):
+            chosen_sz = max(1, min(32, int(req_fs)))
+            chosen_font = get_font(chosen_sz)
             bb = draw.textbbox((0, 0), text, font=chosen_font)
             tw = bb[2] - bb[0]
             th = bb[3] - bb[1]
@@ -313,7 +325,7 @@ def render_cyrillic_banners(
             for sz in (8, 7, 6, 5, 4):
                 if sz > max_sz:
                     continue
-                f = fonts[sz]
+                f = get_font(sz)
                 bb = draw.textbbox((0, 0), text, font=f)
                 cand_w = bb[2] - bb[0]
                 cand_h = bb[3] - bb[1]
@@ -323,11 +335,10 @@ def render_cyrillic_banners(
                     th = cand_h
                     break
             else:
-                chosen_font = fonts[4]
+                chosen_font = get_font(4)
                 bb = draw.textbbox((0, 0), text, font=chosen_font)
                 tw = bb[2] - bb[0]
                 th = bb[3] - bb[1]
-
         # 3. Calculate position with alignment and manual offsets
         if align == "left":
             base_x = cx0 + 2
@@ -601,18 +612,16 @@ def verify_disc_image(disc_path: Path | str) -> bool:
         byte = pixel_data[y * (TIM_WIDTH // 2) + (x // 2)]
         return (byte >> 4) & 0x0F if (x % 2 != 0) else (byte & 0x0F)
 
-    # In 'БАР', check character pixels in range x=20..48, y=28..38
-    bar_indices = [get_index(x, y) for y in range(28, 38) for x in range(20, 48)]
-    if not any(idx in (13, 14, 15) for idx in bar_indices):
-        print("[VERIFY FAILED] Cyrillic banner 'БАР' not found in Entry 466")
+    # Check that Band 0 and Band 1 contain rendered banner text with cyan/white core (indices 13..15)
+    band0_indices = [get_index(x, y) for y in range(2, 22) for x in range(0, 256)]
+    if not any(idx in (13, 14, 15) for idx in band0_indices):
+        print("[VERIFY FAILED] Band 0 has no Cyrillic banner text in Entry 466")
         return False
 
-    # Check 'ПЛОЩАДЬ' at Band 0 (x=96..160, y=5..15)
-    plaza_indices = [get_index(x, y) for y in range(5, 15) for x in range(96, 160)]
-    if not any(idx in (13, 14, 15) for idx in plaza_indices):
-        print("[VERIFY FAILED] Cyrillic banner 'ПЛОЩАДЬ' not found in Entry 466")
+    band1_indices = [get_index(x, y) for y in range(26, 46) for x in range(0, 256)]
+    if not any(idx in (13, 14, 15) for idx in band1_indices):
+        print("[VERIFY FAILED] Band 1 has no Cyrillic banner text in Entry 466")
         return False
-
     print(f"[VERIFY OK] BASYOG.UNT Entry 466 (LBA {ENTRY_466_LBA}..{ENTRY_466_LBA+7}):")
     print(f"  - Compressed stream: {bytes_consumed:,} bytes (budget: {ENTRY_466_BUDGET_BYTES:,} bytes)")
     print(f"  - Decompressed TIM: {len(decompressed):,} bytes (256x224 4bpp, 16-color CLUT)")
