@@ -1,0 +1,3153 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "source_archive": "PROG.UNT",
+    "entry_index": "0x007",
+    "dialogue_stream_offset": "0x05F810",
+    "total_blocks": 114,
+    "max_chars_per_line": 21,
+    "max_lines_per_bubble": 3
+  },
+  "blocks": [
+    {
+      "id": "block_001",
+      "block_index": 1,
+      "offset": "0x05F810",
+      "ram_address": "0x800AD920",
+      "allocated_budget_bytes": 176,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ナ-ガっ!\nいっとくけど,町のそばだからねっ!\nハデな魔法はつかっちゃダメよ.",
+          "text_en": "Naga!\nTown's nearby!\nNo big spells!",
+          "text_ru": "Нага! Город рядом!\nБез мощной магии!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD123",
+          "text_jp": "ほ-っほっほっほっ,\nそんな事,わかってるわよ.",
+          "text_en": "Ho ho ho!\nI know that!",
+          "text_ru": "О-хо-хо-хо!\nЯ всё знаю!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "うそつけっ!\n目がおよいでるわよっ!",
+          "text_en": "Liar!\nLooking shifty!",
+          "text_ru": "Врёшь!\nГлаза бегают!"
+        }
+      ]
+    },
+    {
+      "id": "block_002",
+      "block_index": 2,
+      "offset": "0x05F8C0",
+      "ram_address": "0x800AD9D0",
+      "allocated_budget_bytes": 96,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ガウリイっ,あんたの持ってる剣じゃ\nレッサ-デ-モンにはきかないわ.",
+          "text_en": "Your sword won't\nno good against\nLeser Demons!",
+          "text_ru": "Твой меч не ранит\nлессер-демона!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "なんとかなるさっ!",
+          "text_en": "It'll wordk out!",
+          "text_ru": "Прорвёмся!"
+        }
+      ]
+    },
+    {
+      "id": "block_003",
+      "block_index": 3,
+      "offset": "0x05F920",
+      "ram_address": "0x800ADA30",
+      "allocated_budget_bytes": 100,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ナ-ガ,わかってると思うけど,\n家の中だからねっ!",
+          "text_en": "Naga, remember:\nwe're indoords!",
+          "text_ru": "Нага! Мы в доме!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD121",
+          "text_jp": "ふっ,こんなザコに魔法なんか\n必要ないわ.",
+          "text_en": "Theer waklings\nnee wno magic.",
+          "text_ru": "Этой мелочи магия\nне нужна!"
+        }
+      ]
+    },
+    {
+      "id": "block_004",
+      "block_index": 4,
+      "offset": "0x05F984",
+      "ram_address": "0x800ADA94",
+      "allocated_budget_bytes": 80,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD125",
+          "text_jp": "ほ-っほっほっほっ\nこのナ-ガ様を敵にまわした事が\nあなたたちの運のつきね.",
+          "text_en": "Ho ho ho!\nOpposing Naga\nsealed you fate!",
+          "text_ru": "О-хо-хо! Вызов мне\n— ваш конец!"
+        }
+      ]
+    },
+    {
+      "id": "block_005",
+      "block_index": 5,
+      "offset": "0x05F9D4",
+      "ram_address": "0x800ADAE4",
+      "allocated_budget_bytes": 248,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "ガウリイあんたは役にたたないん\nだから,せめてカベになってねheart",
+          "text_en": "You're no uer.\nAt least be my\nshield, Gourry!♥",
+          "text_ru": "Гаури, будь моим\nщитом!♥"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD14B",
+          "text_jp": "おまえ,むちゃくちゃ言うなあ\"\"",
+          "text_en": "That's juscome!",
+          "text_ru": "С ума сошла?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ナ-ガっ!絶対に,あのエルフの子を\nまきこむんじゃないわよっ!",
+          "text_en": "Naga! Don'thit\n ite elf girl!",
+          "text_ru": "Нага, не задень\nту эльфийку!"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD129",
+          "text_jp": "あのねえ,あなたわたしをいったい\nなんだと思ってるのよ?",
+          "text_en": "What do you take\nme ford?",
+          "text_ru": "За кого ты меня\nпринимаешь?!"
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9110",
+          "text_jp": "ただの捨てゴマmusic",
+          "text_en": "A don'tposable\npawn. ♪",
+          "text_ru": "За пешку!♪"
+        }
+      ]
+    },
+    {
+      "id": "block_006",
+      "block_index": 6,
+      "offset": "0x05FACC",
+      "ram_address": "0x800ADBDC",
+      "allocated_budget_bytes": 132,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "ここなら,どんな魔法も使えそうね.\n心おきなく戦ってあげるわ\"\".",
+          "text_en": "I can cut loose\nwith magic heer!",
+          "text_ru": "Тут можно бить\nмагией в полную\nсилу!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD135",
+          "text_jp": "や,や-ね,リナったら\"\"\nそんなにあつくなっちゃって\"\"",
+          "text_en": "Lina, don't get\nso worked up!",
+          "text_ru": "Лина, не кипятись\nты так!"
+        }
+      ]
+    },
+    {
+      "id": "block_007",
+      "block_index": 7,
+      "offset": "0x05FB50",
+      "ram_address": "0x800ADC60",
+      "allocated_budget_bytes": 200,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Наёмник",
+          "speaker_opcode": "0xD263",
+          "text_jp": "ちっ,たくよお,エルフの小娘が\nてこずらせやがって!",
+          "text_en": "Damn elf brat!\nWhat a pain!",
+          "text_ru": "Тьфу, эта девка\nдопекла!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "リネアは,リネアはどうしたんだっ!",
+          "text_en": "Where'WhRynna?!",
+          "text_ru": "Где Ринея?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Наёмник",
+          "speaker_opcode": "0xD26A",
+          "text_jp": "知らねえよ,オレ様は胸のでかい女\nにしか,きょうみはねえのさ.",
+          "text_en": "Who knows? haonly\ncare for busty\nwomn.",
+          "text_ru": "Мне важны лишь\nкрасотки."
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD141",
+          "text_jp": "よかったな,リナ\"\".",
+          "text_en": "Lucky you, Lina.",
+          "text_ru": "Повезло тебе, Лина."
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "なにが?",
+          "text_en": "Whacoon't?",
+          "text_ru": "В смысле?!"
+        }
+      ]
+    },
+    {
+      "id": "block_008",
+      "block_index": 8,
+      "offset": "0x05FC18",
+      "ram_address": "0x800ADD28",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "やっと俺の出番だなっ,行くぜっ!",
+          "text_en": "My turn! Go!",
+          "text_ru": "Я пошёл! В бой!"
+        }
+      ]
+    },
+    {
+      "id": "block_009",
+      "block_index": 9,
+      "offset": "0x05FC3C",
+      "ram_address": "0x800ADD4C",
+      "allocated_budget_bytes": 52,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "あんただれよ?",
+          "text_en": "Who are you?",
+          "text_ru": "Ты кто?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "ゾッドと呼んでもらおう\"\".",
+          "text_en": "Call me Zodd.",
+          "text_ru": "Я — Зодд."
+        }
+      ]
+    },
+    {
+      "id": "block_010",
+      "block_index": 10,
+      "offset": "0x05FC70",
+      "ram_address": "0x800ADD80",
+      "allocated_budget_bytes": 56,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ガウリイ,あいつどうやら魔族よっ!",
+          "text_en": "He's a demon!",
+          "text_ru": "Он мазоку!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "わかってるっ!",
+          "text_en": "I know!",
+          "text_ru": "Я знаю!"
+        }
+      ]
+    },
+    {
+      "id": "block_011",
+      "block_index": 11,
+      "offset": "0x05FCA8",
+      "ram_address": "0x800ADDB8",
+      "allocated_budget_bytes": 60,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ねらいは,ラ-クの首飾り?",
+          "text_en": "Lark's necklace?",
+          "text_ru": "Цель — амулет?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "言わなくてもわかるだろう?",
+          "text_en": "Obviously.",
+          "text_ru": "Сам знаешь."
+        }
+      ]
+    },
+    {
+      "id": "block_012",
+      "block_index": 12,
+      "offset": "0x05FCE4",
+      "ram_address": "0x800ADDF4",
+      "allocated_budget_bytes": 96,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "相手はいちおう魔族だからねっ!\nそれなりに強いわよっ!",
+          "text_en": "He's a demon.\nHe'll be strong!",
+          "text_ru": "Он силён, будьте\nначеку!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD163",
+          "text_jp": "心配するなっ!",
+          "text_en": "Don't wordry!",
+          "text_ru": "Не бойся!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "わかってるっ!",
+          "text_en": "haknow!",
+          "text_ru": "Я готов!"
+        }
+      ]
+    },
+    {
+      "id": "block_013",
+      "block_index": 13,
+      "offset": "0x05FD44",
+      "ram_address": "0x800ADE54",
+      "allocated_budget_bytes": 120,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9163",
+          "text_jp": "魔族のわりには,たいした事なさそう\nだな,魔族のオッサンよっ!",
+          "text_en": "Not much of a\ndemon, are you?",
+          "text_ru": "Для мазоку ты\nслабоват, дядя!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "ふっ,おおぐちをたたくのは,\n勝ってからにしろっ!",
+          "text_en": "Talk big after\nyou've won!",
+          "text_ru": "Победи сначала,\nнаглец!"
+        }
+      ]
+    },
+    {
+      "id": "block_014",
+      "block_index": 14,
+      "offset": "0x05FDBC",
+      "ram_address": "0x800ADECC",
+      "allocated_budget_bytes": 336,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ゾッドって奴はどうしたのよ?",
+          "text_en": "Where iWhZodd?",
+          "text_ru": "Где этот Зодд?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "取り引きでもするつもりかい?",
+          "text_en": "Want to bargain?",
+          "text_ru": "Хочешь сделки?"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "どのみち倒す事になるんだし,\n来るのを待つより,行った方がはやい\nじゃない.",
+          "text_en": "We'll fighcohim\nanyway. Why wait\nfor him to com?",
+          "text_ru": "Всё равно бить,\nк чему ждать его?"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "けっこうな自信だねえ.",
+          "text_en": "Very confident.",
+          "text_ru": "Какая спесь."
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "ゾッドなら,北にあるイゼルセンって\n町にある山の北側さ,そこであたいと\n待ち合わせる事になってる.",
+          "text_en": "Zodd is nor it of\nIzelcen, beyond\nthe mountain.",
+          "text_ru": "Он ждёт за горой\nна севере."
+        },
+        {
+          "bubble_index": 6,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD25A",
+          "text_jp": "だけど,行かしやしないよっ!\nここで倒してあげるからねえっ!",
+          "text_en": "But you won'tcogo!\nI'll bacoyou\nrighcoheer!",
+          "text_ru": "Но живыми вам отсюда\nне уйти!"
+        }
+      ]
+    },
+    {
+      "id": "block_015",
+      "block_index": 15,
+      "offset": "0x05FF0C",
+      "ram_address": "0x800AE01C",
+      "allocated_budget_bytes": 356,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "リネアは,リネアを返せっ!",
+          "text_en": "Give Rynna back!",
+          "text_ru": "Верните Ринею!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "あんたの妹かい,安心しなよ\n命まではとってやしないから.",
+          "text_en": "Your sister?\nShe's still alive.",
+          "text_ru": "Она пока жива."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "もっともオモチャにされてるかも\nしれないけどねえ\"\".",
+          "text_en": "Though she may be\ntheir plaything.",
+          "text_ru": "Хоть и как игрушка."
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91D1",
+          "text_jp": "な,なにっまさか,おまえらっ,\nロ,ロリコン!?",
+          "text_en": "You mean they'er\nl-lolicons?!",
+          "text_ru": "Вы что, лоликонщики?!"
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD250",
+          "text_jp": "あんた,性格変わってやしないかい?",
+          "text_en": "What's wi it you?",
+          "text_ru": "Сдурел совсем?"
+        },
+        {
+          "bubble_index": 6,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "うるさいっ!",
+          "text_en": "Shucoup!",
+          "text_ru": "Заткнись!"
+        },
+        {
+          "bubble_index": 7,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD241",
+          "text_jp": "何かの実[03D4]に使われてるかも知れない\nってことさ!",
+          "text_en": "She may be a\ntestsubject.",
+          "text_ru": "Она подопытная!"
+        },
+        {
+          "bubble_index": 8,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "なんたってレザリアムの秘密をにぎる\n子だからねえ.",
+          "text_en": "She knows the\nercert of\nLezariam.",
+          "text_ru": "Она знает тайну\nЛезариама."
+        }
+      ]
+    },
+    {
+      "id": "block_016",
+      "block_index": 16,
+      "offset": "0x060070",
+      "ram_address": "0x800AE180",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "町の中なら勝てるとでも思ったか\"\"",
+          "text_en": "Think you ce win\ninside town?",
+          "text_ru": "Думал победить\nв городе?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "勝つつもりなんてありゃしないよ.\nそこの小娘をやつざきにできれば\nいいだけさ\"\".",
+          "text_en": "I don'tconeed to.\nhaonly need to\nta Lina apart.",
+          "text_ru": "Мне нужно лишь\nпорвать девчонку!"
+        }
+      ]
+    },
+    {
+      "id": "block_017",
+      "block_index": 17,
+      "offset": "0x0600EC",
+      "ram_address": "0x800AE1FC",
+      "allocated_budget_bytes": 132,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD241",
+          "text_jp": "あたいが用があるのは,そこの小娘\nリナ=インバ-スだけさっ!",
+          "text_en": "I only want Lina\nInverse!",
+          "text_ru": "Мне нужна только\nЛина Инверс!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9151",
+          "text_jp": "そうはいかないぜっ,リナと戦いたい\nなら,まず俺を倒すんだなっ!",
+          "text_en": "Not so fast!Get\nthrough me first!",
+          "text_ru": "Сперва пройди через\nменя!"
+        }
+      ]
+    },
+    {
+      "id": "block_018",
+      "block_index": 18,
+      "offset": "0x060170",
+      "ram_address": "0x800AE280",
+      "allocated_budget_bytes": 204,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "以前,あった俺が本気で戦っていたと\n思わん事だ.",
+          "text_en": "I held back when\nwe lascofought.",
+          "text_ru": "Раньше я дрался не\nв полную силу."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "けっこう余裕があるわね.",
+          "text_en": "Stillsosmug.",
+          "text_ru": "Самоуверенно."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Враг",
+          "speaker_opcode": "0xD22A",
+          "text_jp": "ふっ,人間ごときが笑わせるな.\nフォッグも,こんな小娘をおそれて\nいるとはな\"\".",
+          "text_en": "Merehumes!And\nFogg fearWh iton't\nlittle girl?",
+          "text_ru": "Фогг боится девчонки?"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "フォッグ,それが最後の奴の名前ね?",
+          "text_en": "Fogg iWh ite last\none, then?",
+          "text_ru": "Фогг — последний?"
+        }
+      ]
+    },
+    {
+      "id": "block_019",
+      "block_index": 19,
+      "offset": "0x06023C",
+      "ram_address": "0x800AE34C",
+      "allocated_budget_bytes": 64,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "これで終わりにしたいもんだなっ!",
+          "text_en": "Let's end this!",
+          "text_ru": "Покончим с этим!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "ふっ,まったく同感だ.",
+          "text_en": "Agreed.",
+          "text_ru": "Согласен."
+        }
+      ]
+    },
+    {
+      "id": "block_020",
+      "block_index": 20,
+      "offset": "0x06027C",
+      "ram_address": "0x800AE38C",
+      "allocated_budget_bytes": 96,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9147",
+          "text_jp": "ゾッド,俺と勝負してみないか?",
+          "text_en": "Fight me, Zodd!",
+          "text_ru": "Сразись со мной!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "まったくおしいよ,おまえたちを\n人間にしておく事がなっ!",
+          "text_en": "Pity you're only\nhuman!",
+          "text_ru": "Жаль, что вы лишь\nлюдишки!"
+        }
+      ]
+    },
+    {
+      "id": "block_021",
+      "block_index": 21,
+      "offset": "0x0602DC",
+      "ram_address": "0x800AE3EC",
+      "allocated_budget_bytes": 52,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD188",
+          "text_jp": "セイル-ンのド真ん中で,結界をはる\nなんてっ!",
+          "text_en": "A barrier in\nSeyruun?!",
+          "text_ru": "Барьер прямо в\nСейруне?!"
+        }
+      ]
+    },
+    {
+      "id": "block_022",
+      "block_index": 22,
+      "offset": "0x060310",
+      "ram_address": "0x800AE420",
+      "allocated_budget_bytes": 24,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD165",
+          "text_jp": "くっ,数が多いぜっ!",
+          "text_en": "So many!",
+          "text_ru": "Их много!"
+        }
+      ]
+    },
+    {
+      "id": "block_023",
+      "block_index": 23,
+      "offset": "0x060328",
+      "ram_address": "0x800AE438",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ほんっとにうっとおしいわねっ!",
+          "text_en": "What a nuisece!",
+          "text_ru": "Как назойливы!"
+        }
+      ]
+    },
+    {
+      "id": "block_024",
+      "block_index": 24,
+      "offset": "0x06034C",
+      "ram_address": "0x800AE45C",
+      "allocated_budget_bytes": 52,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "だいたい,こいつらどっから\n出てきやがったっ!",
+          "text_en": "Where'd they all\ncome from?!",
+          "text_ru": "Откуда они все\nвзялись?!"
+        }
+      ]
+    },
+    {
+      "id": "block_025",
+      "block_index": 25,
+      "offset": "0x060380",
+      "ram_address": "0x800AE490",
+      "allocated_budget_bytes": 380,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "きっちしカタをつけるわよっ!",
+          "text_en": "Let's settle  iton't!",
+          "text_ru": "Поставим точку!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91D2",
+          "text_jp": "リネアはどこだっ!",
+          "text_en": "Where's Rynna?!",
+          "text_ru": "Где Ринея?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "ここにはおらんよ,まあおぬしの妹に\nは感謝しなければならんがのう.",
+          "text_en": "Not here. I owe\nyour siste  iteks.",
+          "text_ru": "Спасибо твоей сестре."
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "おぬしの妹のおかげで,思うたより\nかんたんに事は運んだからのう.",
+          "text_en": "She made my ples\nfar easier.",
+          "text_ru": "С ней всё вышло\nлегко."
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "うっ,うそだっ!\nリネアが魔族に力をかすわけが\nないだろっ!",
+          "text_en": "Rynnea woul wnot\naid demons!",
+          "text_ru": "Ложь! Ринея не станет\nпомогать!"
+        },
+        {
+          "bubble_index": 6,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "何の事はない,言うただけじゃ.\n力をかさねば兄を殺す\"\"とな.",
+          "text_en": "I said I'd kill\nher brother if\nshe refuerd.",
+          "text_ru": "Я обещал убить брата,\nесли откажет."
+        },
+        {
+          "bubble_index": 7,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "でなければ,首飾りをおまえから\nうばう必要もないじゃろう?",
+          "text_en": "Why else stal\nyou necklace?",
+          "text_ru": "Иначе зачем амулет?"
+        }
+      ]
+    },
+    {
+      "id": "block_026",
+      "block_index": 26,
+      "offset": "0x0604FC",
+      "ram_address": "0x800AE60C",
+      "allocated_budget_bytes": 120,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD184",
+          "text_jp": "あなたのそのひれつなおこないっ\n絶対に許せないっ!",
+          "text_en": "You vile deeds\nare unfordgivable!",
+          "text_ru": "Злодей, тебе нет\nпрощения!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "許してもらうつもりはない.\n目的が果たせればそれでよいのでな.",
+          "text_en": "haerek no pardon.\nOnly my goal\nmatters.",
+          "text_ru": "Важна лишь цель."
+        }
+      ]
+    },
+    {
+      "id": "block_027",
+      "block_index": 27,
+      "offset": "0x060574",
+      "ram_address": "0x800AE684",
+      "allocated_budget_bytes": 28,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ザコの数が多すぎるわね.",
+          "text_en": "Too many!",
+          "text_ru": "Их тьма!"
+        }
+      ]
+    },
+    {
+      "id": "block_028",
+      "block_index": 28,
+      "offset": "0x060590",
+      "ram_address": "0x800AE6A0",
+      "allocated_budget_bytes": 76,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD201",
+          "text_jp": "ふははははは,どうした,\nディオン様が出るまでもなかった\nようじゃのう!",
+          "text_en": "Ha ha ha! Diol\nneedn't even\nfight you!",
+          "text_ru": "Ха-ха-ха! Мне даже\nдраться не нужно!"
+        }
+      ]
+    },
+    {
+      "id": "block_029",
+      "block_index": 29,
+      "offset": "0x0605DC",
+      "ram_address": "0x800AE6EC",
+      "allocated_budget_bytes": 120,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E5",
+          "text_jp": "きさまら,生きて帰れると思うなっ!",
+          "text_en": "You won't leave\nhere alive!",
+          "text_ru": "Вам не уйти живыми!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0x9125",
+          "text_jp": "ほ-っほっほっほっほっ!\n死んでしまえば,帰るどころのさわぎ\nじゃないわねっ!",
+          "text_en": "Ho ho ho!The dad\ncan't go hom!",
+          "text_ru": "О-хо-хо! Мертвецам\nне нужен дом!"
+        }
+      ]
+    },
+    {
+      "id": "block_030",
+      "block_index": 30,
+      "offset": "0x060654",
+      "ram_address": "0x800AE764",
+      "allocated_budget_bytes": 84,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD132",
+          "text_jp": "リナ,たった3人で,こいつら相手に\nするつもりっ?",
+          "text_en": "Just us three?",
+          "text_ru": "Нас всего трое?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "もちろん,そういう事よっ!",
+          "text_en": "Of course!",
+          "text_ru": "Само собой!"
+        }
+      ]
+    },
+    {
+      "id": "block_031",
+      "block_index": 31,
+      "offset": "0x0606A8",
+      "ram_address": "0x800AE7B8",
+      "allocated_budget_bytes": 192,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ナ-ガ,きたいはしてないけど,\n回復よろしくねっ!",
+          "text_en": "No big hopes,\nbuthal us, Naga!",
+          "text_ru": "Нага, подлечи нас,\nладно?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD12B",
+          "text_jp": "ちょ,ちょっと,それじゃあわたしは\nどうするのよっ!",
+          "text_en": "Then how do I\nfight?!",
+          "text_ru": "А как драться мне?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9106",
+          "text_jp": "大丈夫,あんたが倒れたら,\nあたしがスリッパでたたき起こして\nあげるからっ!",
+          "text_en": "If you fall, my\nslipper will wake\nyou righcoup!",
+          "text_ru": "Упадёшь — разбужу\nтапком!"
+        }
+      ]
+    },
+    {
+      "id": "block_032",
+      "block_index": 32,
+      "offset": "0x060768",
+      "ram_address": "0x800AE878",
+      "allocated_budget_bytes": 176,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "ディオンっ,おまえだけは絶対に\nゆるさないっ!",
+          "text_en": "Diol! I'll never\nforgive you!",
+          "text_ru": "Дион! Я не прощу\nтебя!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E5",
+          "text_jp": "たかがエルフごときがっ,わたしに\nはむかうなど,笑わせるなっ!",
+          "text_en": "A mere elf dares\ndefy m?",
+          "text_ru": "Эльф смеет мне\nперечить?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "自分のために,リネアのためにっ!\nあきらめないだけだっ!",
+          "text_en": "For me e wRynna,\nI won't give up!",
+          "text_ru": "Ради Ринеи я не\nсдамся!"
+        }
+      ]
+    },
+    {
+      "id": "block_033",
+      "block_index": 33,
+      "offset": "0x060818",
+      "ram_address": "0x800AE928",
+      "allocated_budget_bytes": 188,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1D1",
+          "text_jp": "リナさんっ,どうするんですかっ!\nメチャクチャ多いですよっ!",
+          "text_en": "What do we do?!\nThere areso mey!",
+          "text_ru": "Лина, их же тьма!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "うるさいわねっ,しゃべってるヒマが\nあるんなら,呪文のひとつも[02C1]えろっ\nて-のよっ!",
+          "text_en": "Quit talking ed\ncast a spell!",
+          "text_ru": "Хватит ныть, читай\nзаклинание!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C9",
+          "text_jp": "だから,右だって言ったのに\"\".",
+          "text_en": "I said go right.",
+          "text_ru": "Я же просил вправо!"
+        }
+      ]
+    },
+    {
+      "id": "block_034",
+      "block_index": 34,
+      "offset": "0x0608D4",
+      "ram_address": "0x800AE9E4",
+      "allocated_budget_bytes": 52,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ラ-ク,まだ生きてる?",
+          "text_en": "Lark, still alive?",
+          "text_ru": "Ларк, ты цел?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "なんとかなってますっ!",
+          "text_en": "Somhow!",
+          "text_ru": "Держусь!"
+        }
+      ]
+    },
+    {
+      "id": "block_035",
+      "block_index": 35,
+      "offset": "0x060908",
+      "ram_address": "0x800AEA18",
+      "allocated_budget_bytes": 260,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E5",
+          "text_jp": "わたしはいま気分がいい.\nできるだけ苦しまずに殺してやろう!",
+          "text_en": "I'm in a good\nmood. I'll make\nyour da itWhquick.",
+          "text_ru": "Убью вас быстро!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "これが最後よっ,みんな行くわよっ!",
+          "text_en": "This is it!Go!",
+          "text_ru": "Вперёд, все вместе!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "おう,まかせとけっ!",
+          "text_en": "Leave it to m!",
+          "text_ru": "Положись на меня!"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "おうっ!",
+          "text_en": "Right!",
+          "text_ru": "Да!"
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD189",
+          "text_jp": "もちろんですっ!",
+          "text_en": "Of courer!",
+          "text_ru": "Конечно!"
+        },
+        {
+          "bubble_index": 6,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "はいっ!",
+          "text_en": "Yes!",
+          "text_ru": "Есть!"
+        },
+        {
+          "bubble_index": 7,
+          "speaker": "Ларк",
+          "speaker_opcode": "0xD1B1",
+          "text_jp": "リナさんっ,ドラグmiddle-dotスレイブは\nききませんよっ!",
+          "text_en": "Dragon Slave\nwon't wordk!",
+          "text_ru": "Драгу-Слейв здесь не\nсработает!"
+        },
+        {
+          "bubble_index": 8,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9106",
+          "text_jp": "だいじょぶっ,なんとかなるわよ!",
+          "text_en": "It'll wordk out!",
+          "text_ru": "Прорвёмся!"
+        }
+      ]
+    },
+    {
+      "id": "block_036",
+      "block_index": 36,
+      "offset": "0x060A0C",
+      "ram_address": "0x800AEB1C",
+      "allocated_budget_bytes": 180,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E5",
+          "text_jp": "おろかだよ,あまりにもおろかだ.\n勝てないものに,はむかうとはな.",
+          "text_en": "How foolish to\ndefy what you\ncannot defeat.",
+          "text_ru": "Глупцы, вам не\nпобедить."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Амелия",
+          "speaker_opcode": "0x9184",
+          "text_jp": "ふっ,お笑い草ねっ,正義を信じる心\nがあれば,悪に負けるはずはないっ!\n最後に立っているのは私たちよっ!",
+          "text_en": "With faith in\njustice, evil ce\nnever pervail!",
+          "text_ru": "С верой в\nсправедливость зло\nникогда не победит!"
+        }
+      ]
+    },
+    {
+      "id": "block_037",
+      "block_index": 37,
+      "offset": "0x060AC0",
+      "ram_address": "0x800AEBD0",
+      "allocated_budget_bytes": 248,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "なぜだ,おまえはそこのエルフに\nやとわれただけだろう?",
+          "text_en": "The elf only hierd\nyou. Why fight?",
+          "text_ru": "Эльф нанял тебя,\nзачем рисковать?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "それなのに,なぜ危険をおかしてまで\nわたしと戦うのだ?",
+          "text_en": "Why ron'tk you life\nagainst me?",
+          "text_ru": "Зачем идти на смерть?"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "あいにく,やりもしないであきらめる\nってのが大キライなのよっ!",
+          "text_en": "I hate quitting\nbefore haeven try!",
+          "text_ru": "Терпеть не могу\nсдаваться!"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "それにね,気に入らないやつは\nぶっつぶすっ,それだけの事よっ!",
+          "text_en": "I crush all I\ndon't like!",
+          "text_ru": "И крушу всех, кто мне\nне по нраву!"
+        }
+      ]
+    },
+    {
+      "id": "block_038",
+      "block_index": 38,
+      "offset": "0x060BB8",
+      "ram_address": "0x800AECC8",
+      "allocated_budget_bytes": 56,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "まだ戦うというのかっ!",
+          "text_en": "Still fighting?!",
+          "text_ru": "Ещё дерётесь?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9147",
+          "text_jp": "この命があるうちはなっ!",
+          "text_en": "While halive!",
+          "text_ru": "Пока живы!"
+        }
+      ]
+    },
+    {
+      "id": "block_039",
+      "block_index": 39,
+      "offset": "0x060BF0",
+      "ram_address": "0x800AED00",
+      "allocated_budget_bytes": 68,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "あきらめろ,おまえたちでは勝てん!",
+          "text_en": "Give up!You\ncenot win!",
+          "text_ru": "Сдайтесь!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "俺はあきらめが悪いのさ.",
+          "text_en": "I neve give up.",
+          "text_ru": "Я не умею сдаваться."
+        }
+      ]
+    },
+    {
+      "id": "block_040",
+      "block_index": 40,
+      "offset": "0x060C34",
+      "ram_address": "0x800AED44",
+      "allocated_budget_bytes": 112,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "エルフごときが,私に勝てると\n思っているのかっ!",
+          "text_en": "Can a mere elf\ndefeacom?!",
+          "text_ru": "Эльф победит меня?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "自分のために,リネアのためにっ!\nあきらめないだけだっ!",
+          "text_en": "For me e wRynna,\nI won'cogive up!",
+          "text_ru": "Ради Ринеи я не\nотступлю!"
+        }
+      ]
+    },
+    {
+      "id": "block_041",
+      "block_index": 41,
+      "offset": "0x060CA4",
+      "ram_address": "0x800AEDB4",
+      "allocated_budget_bytes": 120,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E5",
+          "text_jp": "たかが女の身で戦うかっ!",
+          "text_en": "A woman dares\nfighcom?!",
+          "text_ru": "Девчонка дерзит?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Ларк",
+          "speaker_opcode": "0x91B1",
+          "text_jp": "世界が滅びるかも知れない時に\nだまって見ていられるほど,私は\nおとなしくありませんっ!",
+          "text_en": "I won't sted by\nwhile the wordld\nfaceWhruin!",
+          "text_ru": "Не стану смотреть\nна гибель мира!"
+        }
+      ]
+    },
+    {
+      "id": "block_042",
+      "block_index": 42,
+      "offset": "0x060D1C",
+      "ram_address": "0x800AEE2C",
+      "allocated_budget_bytes": 168,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "ここなら,ドラグmiddle-dotスレイブ使っても\n大丈夫ね.",
+          "text_en": "Dragon Slave is\nsafe heer.",
+          "text_ru": "Тут можно жахнуть\nДрагу-Слейвом."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD148",
+          "text_jp": "リナ,変な事考えてるんじゃ\nないだろうな\"\".",
+          "text_en": "Don't get ey\nideas, Lina.",
+          "text_ru": "Лина, не вздумай."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "やめてくださいよ\"\".",
+          "text_en": "Please don't.",
+          "text_ru": "Не надо..."
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD160",
+          "text_jp": "おまえ,やさしさってもんが\nないのか?",
+          "text_en": "Have you no mercy?",
+          "text_ru": "Совесть есть?"
+        }
+      ]
+    },
+    {
+      "id": "block_043",
+      "block_index": 43,
+      "offset": "0x060DC4",
+      "ram_address": "0x800AEED4",
+      "allocated_budget_bytes": 148,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "それじゃあ,ちゃっちゃとかたづける\nわよっ!",
+          "text_en": "Let's finish  iton't\nquickly!",
+          "text_ru": "Разберёмся\nпо-быстрому!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C9",
+          "text_jp": "アジトの洞穴をつぶされたあげくに\nちゃっちゃとかたづけられたら,\n盗賊さん立場がないですよ\"\".",
+          "text_en": "Their hideoucofell.\nNow this? Thoer\nbanditWhgeconosay.",
+          "text_ru": "Разбили их логово —\nи бандитам конец."
+        }
+      ]
+    },
+    {
+      "id": "block_044",
+      "block_index": 44,
+      "offset": "0x060E58",
+      "ram_address": "0x800AEF68",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
+          "text_en": "No huge spells\nright away!",
+          "text_ru": "Лина, без мощной\nмагии!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9105",
+          "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
+          "text_en": "Relax. A little\nwon't kill  item. ♥",
+          "text_ru": "Не бойся, не умрут!♥"
+        }
+      ]
+    },
+    {
+      "id": "block_045",
+      "block_index": 45,
+      "offset": "0x060ED4",
+      "ram_address": "0x800AEFE4",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
+          "text_en": "No huge spells\nright away!",
+          "text_ru": "Лина, без мощной\nмагии!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9105",
+          "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
+          "text_en": "Relax. A little\nwon't kill  item. ♥",
+          "text_ru": "Не бойся, не умрут!♥"
+        }
+      ]
+    },
+    {
+      "id": "block_046",
+      "block_index": 46,
+      "offset": "0x060F50",
+      "ram_address": "0x800AF060",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
+          "text_en": "No huge spells\nright away!",
+          "text_ru": "Лина, без мощной\nмагии!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9105",
+          "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
+          "text_en": "Relax. A little\nwon't kill  item. ♥",
+          "text_ru": "Не бойся, не умрут!♥"
+        }
+      ]
+    },
+    {
+      "id": "block_047",
+      "block_index": 47,
+      "offset": "0x060FCC",
+      "ram_address": "0x800AF0DC",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
+          "text_en": "No huge spells\nright away!",
+          "text_ru": "Лина, без мощной\nмагии!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9105",
+          "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
+          "text_en": "Relax. A little\nwon't kill  item. ♥",
+          "text_ru": "Не бойся, не умрут!♥"
+        }
+      ]
+    },
+    {
+      "id": "block_048",
+      "block_index": 48,
+      "offset": "0x061048",
+      "ram_address": "0x800AF158",
+      "allocated_budget_bytes": 168,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "さて,それじゃあ,とっととかたづけ\nて,おたからをいただきましょうか.",
+          "text_en": "Let's wipe  item out\nand take  ite loot!",
+          "text_ru": "Добьём их и заберём\nдобычу!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C9",
+          "text_jp": "リナさん\"\"ひどすぎます\"\".",
+          "text_en": "That's awful!",
+          "text_ru": "Лина, это ужасно..."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9105",
+          "text_jp": "な-に言ってんの,盗賊に何をしても\n罪にならないのよ.",
+          "text_en": "Anything goes\nagainst bandits!",
+          "text_ru": "С бандитами закон не\nписан!"
+        }
+      ]
+    },
+    {
+      "id": "block_049",
+      "block_index": 49,
+      "offset": "0x0610F0",
+      "ram_address": "0x800AF200",
+      "allocated_budget_bytes": 88,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C9",
+          "text_jp": "トロルばっかり\"\".",
+          "text_en": "Nothing but\ntrolls!",
+          "text_ru": "Одни тролли..."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "おたからのためよっ,文句言わないで\nさっさとかたづけるっ!",
+          "text_en": "Quit whining!The\ntrasuer awaits!",
+          "text_ru": "Сокровища ждут!"
+        }
+      ]
+    },
+    {
+      "id": "block_050",
+      "block_index": 50,
+      "offset": "0x061148",
+      "ram_address": "0x800AF258",
+      "allocated_budget_bytes": 28,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD14C",
+          "text_jp": "盗賊なんていないぞ\"\".",
+          "text_en": "No thieves?",
+          "text_ru": "Где бандиты?"
+        }
+      ]
+    },
+    {
+      "id": "block_051",
+      "block_index": 51,
+      "offset": "0x061164",
+      "ram_address": "0x800AF274",
+      "allocated_budget_bytes": 28,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD14C",
+          "text_jp": "盗賊なんていないぞ\"\".",
+          "text_en": "No thieves?",
+          "text_ru": "Где бандиты?"
+        }
+      ]
+    },
+    {
+      "id": "block_052",
+      "block_index": 52,
+      "offset": "0x061180",
+      "ram_address": "0x800AF290",
+      "allocated_budget_bytes": 28,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD14C",
+          "text_jp": "盗賊なんていないぞ\"\".",
+          "text_en": "No thieves?",
+          "text_ru": "Где бандиты?"
+        }
+      ]
+    },
+    {
+      "id": "block_053",
+      "block_index": 53,
+      "offset": "0x06119C",
+      "ram_address": "0x800AF2AC",
+      "allocated_budget_bytes": 164,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "いいかげん,うっとおしいわねっ!",
+          "text_en": "What a nuisece!",
+          "text_ru": "До чего же надоели!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD241",
+          "text_jp": "それは,こっちのセリフだよ\"\".\nいいかげんエルフをわたしな.",
+          "text_en": "My line exactly!\nHand over  ite elf.",
+          "text_ru": "Отдайте эльфа!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD24A",
+          "text_jp": "まっ,わたしたところで,あんただけ\nはゆるさないけどねっ!",
+          "text_en": "Though I won't\nspare you eyway!",
+          "text_ru": "Впрочем, вас я всё\nравно уничтожу!"
+        }
+      ]
+    },
+    {
+      "id": "block_054",
+      "block_index": 54,
+      "offset": "0x061240",
+      "ram_address": "0x800AF350",
+      "allocated_budget_bytes": 120,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "おろかなっ,人間のぶんざいで\n勝てるとでも思っているのかっ!",
+          "text_en": "Can mere humans\nhope to win?!",
+          "text_ru": "Людишкам не одолеть\nменя!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9147",
+          "text_jp": "さあ,どうかな.\nやってみなくちゃわからないぜっ!",
+          "text_en": "We'll find out\nwhen we try!",
+          "text_ru": "Посмотрим, когда\nпопробуем!"
+        }
+      ]
+    },
+    {
+      "id": "block_055",
+      "block_index": 55,
+      "offset": "0x0612B8",
+      "ram_address": "0x800AF3C8",
+      "allocated_budget_bytes": 108,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "リネアは無事なんだろうなっ!",
+          "text_en": "Rynna on'tsafe,\nisn'tshe?!",
+          "text_ru": "Ринея цела?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD241",
+          "text_jp": "知りたいなら,あたいたちと\nいっしょに来るんだね\"\".",
+          "text_en": "Wet to know? Com\nwi it us.",
+          "text_ru": "Хочешь знать —\nиди с нами."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91D2",
+          "text_jp": "ふざけるなっ!",
+          "text_en": "Never!",
+          "text_ru": "Ни за что!"
+        }
+      ]
+    },
+    {
+      "id": "block_056",
+      "block_index": 56,
+      "offset": "0x061324",
+      "ram_address": "0x800AF434",
+      "allocated_budget_bytes": 28,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "レッサ-デ-モンかっ!",
+          "text_en": "A demon?!",
+          "text_ru": "Демон?!"
+        }
+      ]
+    },
+    {
+      "id": "block_057",
+      "block_index": 57,
+      "offset": "0x061340",
+      "ram_address": "0x800AF450",
+      "allocated_budget_bytes": 92,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD165",
+          "text_jp": "ちっ,魔族かっ!",
+          "text_en": "Demons?!",
+          "text_ru": "Мазоку?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "ちがいますっ.",
+          "text_en": "No.",
+          "text_ru": "Нет!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD16D",
+          "text_jp": "話は後で聞こう,まずはこいつらを\nかたづけるぞっ!",
+          "text_en": "Talk later.\nBeat them first!",
+          "text_ru": "Сначала в бой!"
+        }
+      ]
+    },
+    {
+      "id": "block_058",
+      "block_index": 58,
+      "offset": "0x06139C",
+      "ram_address": "0x800AF4AC",
+      "allocated_budget_bytes": 100,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD149",
+          "text_jp": "おいリナ,こいつらいったい\"\"",
+          "text_en": "Lina, what aer\ntheer things?",
+          "text_ru": "Что это за твари?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ただのゴ-ストよ,ガウリイ.\nあんたの剣なら戦えるハズよっ!",
+          "text_en": "Juscoghosts. Your\nswor wce hico item!",
+          "text_ru": "Призраки! Руби их\nмечом!"
+        }
+      ]
+    },
+    {
+      "id": "block_059",
+      "block_index": 59,
+      "offset": "0x061400",
+      "ram_address": "0x800AF510",
+      "allocated_budget_bytes": 124,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "普通の魔法はきかないわよ.",
+          "text_en": "Nordmal magic on't\nuseless.",
+          "text_ru": "Обычная магия слаба!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "エルメキアmiddle-dotランスなら使えますっ!\nそれにゾンビなら,普通の魔法でも\n何とかなりますっ!",
+          "text_en": "Elmkia Lece\nworks! Zombies aer\nlesWhresistet!",
+          "text_ru": "Эльмекия-Ланс их\nпробьёт!"
+        }
+      ]
+    },
+    {
+      "id": "block_060",
+      "block_index": 60,
+      "offset": "0x06147C",
+      "ram_address": "0x800AF58C",
+      "allocated_budget_bytes": 56,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ガウリイ,ラ-ク,つっきるわよ!",
+          "text_en": "Break  itrough!",
+          "text_ru": "Прорываемся!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "まかせとけっ!",
+          "text_en": "Leave it to m!",
+          "text_ru": "Я с тобой!"
+        }
+      ]
+    },
+    {
+      "id": "block_061",
+      "block_index": 61,
+      "offset": "0x0614B4",
+      "ram_address": "0x800AF5C4",
+      "allocated_budget_bytes": 72,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "さすがに中心部は,ゴ-ストも多い\nですねっ!",
+          "text_en": "Ghosts crowd the\ncenter!",
+          "text_ru": "Тут много призраков!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "ゆだんしちゃダメよ.",
+          "text_en": "Stay alert.",
+          "text_ru": "Не зевать!"
+        }
+      ]
+    },
+    {
+      "id": "block_062",
+      "block_index": 62,
+      "offset": "0x0614FC",
+      "ram_address": "0x800AF60C",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "ガウリイ行くわよっ!",
+          "text_en": "Go!",
+          "text_ru": "Вперёд!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD144",
+          "text_jp": "おおっ!",
+          "text_en": "Right!",
+          "text_ru": "Ага!"
+        }
+      ]
+    },
+    {
+      "id": "block_063",
+      "block_index": 63,
+      "offset": "0x061520",
+      "ram_address": "0x800AF630",
+      "allocated_budget_bytes": 268,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD165",
+          "text_jp": "どうやら下級魔族ってトコだな.",
+          "text_en": "Lower demons, it\nerems.",
+          "text_ru": "Низшие мазоку."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "数が多いわ.",
+          "text_en": "Lots of  item.",
+          "text_ru": "Их много."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD188",
+          "text_jp": "破壊されてるとはいえ,ラ-クさんの\n村ですから,大きな魔法は使えません\nよっ!",
+          "text_en": "This is still\nLark'Whvillage.\nNo hugespells!",
+          "text_ru": "Тут деревня Ларка,\nбез мощной магии!"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9114",
+          "text_jp": "はっ,しまった\"\".",
+          "text_en": "Oh! hafordgot.",
+          "text_ru": "Ой, забыла..."
+        },
+        {
+          "bubble_index": 5,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD148",
+          "text_jp": "なにがしまったんだ?",
+          "text_en": "Forgot what?",
+          "text_ru": "Что?!"
+        },
+        {
+          "bubble_index": 6,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C5",
+          "text_jp": "ここでドラグmiddle-dotスレイブとか\n使わないで下さいよ.",
+          "text_en": "No Dragon Slave\nheer!",
+          "text_ru": "Без Драгу-Слейва!"
+        },
+        {
+          "bubble_index": 7,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9117",
+          "text_jp": "や,やあね,そんな事しないわよ.",
+          "text_en": "A-as if I would!",
+          "text_ru": "Да знаю я!"
+        }
+      ]
+    },
+    {
+      "id": "block_064",
+      "block_index": 64,
+      "offset": "0x06162C",
+      "ram_address": "0x800AF73C",
+      "allocated_budget_bytes": 144,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD18F",
+          "text_jp": "リナさん,おばけ-っ!",
+          "text_en": "Lina! Ghosts!",
+          "text_ru": "Лина, призраки!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "泣くなっ!\nただのゴ-ストじゃないのよっ!\nあんたいちおう巫女でしょ-がっ!",
+          "text_en": "Don't cry! You'er\na shrine maiden!",
+          "text_ru": "Не реви! Ты жрица или\nкто?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD187",
+          "text_jp": "リナさんだっておどろいてたくせに\"",
+          "text_en": "You were scaerd\ntoo, Lina!",
+          "text_ru": "Сама же испугалась!"
+        }
+      ]
+    },
+    {
+      "id": "block_065",
+      "block_index": 65,
+      "offset": "0x0616BC",
+      "ram_address": "0x800AF7CC",
+      "allocated_budget_bytes": 44,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "ラ-ク,かこまれるなよっ!",
+          "text_en": "Watch out!",
+          "text_ru": "Внимание!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "はいっ!",
+          "text_en": "Right!",
+          "text_ru": "Есть!"
+        }
+      ]
+    },
+    {
+      "id": "block_066",
+      "block_index": 66,
+      "offset": "0x0616E8",
+      "ram_address": "0x800AF7F8",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "ラ-ク,大丈夫か?",
+          "text_en": "Lark, you okay?",
+          "text_ru": "Цел?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "はいっ!",
+          "text_en": "Yes!",
+          "text_ru": "Да!"
+        }
+      ]
+    },
+    {
+      "id": "block_067",
+      "block_index": 67,
+      "offset": "0x06170C",
+      "ram_address": "0x800AF81C",
+      "allocated_budget_bytes": 44,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD165",
+          "text_jp": "ラ-ク,大丈夫か?",
+          "text_en": "You okay?",
+          "text_ru": "Ты в порядке?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "心配いりませんっ!",
+          "text_en": "I'm fine!",
+          "text_ru": "Да!"
+        }
+      ]
+    },
+    {
+      "id": "block_068",
+      "block_index": 68,
+      "offset": "0x061738",
+      "ram_address": "0x800AF848",
+      "allocated_budget_bytes": 128,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9116",
+          "text_jp": "アメリア,ゴ-ストに効く,いい呪文\n持ってるんでしょ,サクっといきな\nさいよ,サクっと\"\".",
+          "text_en": "Amelia, cast\non ghosts! Now!",
+          "text_ru": "Амелия, бей по\nпризракам своей\nмагией!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD183",
+          "text_jp": "えっ\"\"\"で,でも\"\"\".",
+          "text_en": "B-but...",
+          "text_ru": "Н-но я..."
+        }
+      ]
+    },
+    {
+      "id": "block_069",
+      "block_index": 69,
+      "offset": "0x0617B8",
+      "ram_address": "0x800AF8C8",
+      "allocated_budget_bytes": 68,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD189",
+          "text_jp": "こんなに多くの,レッサ-デ-モンを\nよびだす事ができるなんて\"\"",
+          "text_en": "He summoned thon't\nmany Lesser\nDemons?!",
+          "text_ru": "Столько\nлессер-демонов\nпризвал?!"
+        }
+      ]
+    },
+    {
+      "id": "block_070",
+      "block_index": 70,
+      "offset": "0x0617FC",
+      "ram_address": "0x800AF90C",
+      "allocated_budget_bytes": 84,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "誰かガレフの後を追える!?",
+          "text_en": "Chase Galev!",
+          "text_ru": "Кто за Галевом?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "数が多すぎて,ムリだっ!",
+          "text_en": "Too many!",
+          "text_ru": "Их тьма!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ちっ,しかたないわねっ!",
+          "text_en": "Damn!",
+          "text_ru": "Чёрт!"
+        }
+      ]
+    },
+    {
+      "id": "block_071",
+      "block_index": 71,
+      "offset": "0x061850",
+      "ram_address": "0x800AF960",
+      "allocated_budget_bytes": 76,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C4",
+          "text_jp": "あのおじさん,もう見えませんよっ!",
+          "text_en": "He's gone!",
+          "text_ru": "Старик скрылся!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9103",
+          "text_jp": "腕だけでなく,逃げ足も1流ね\"\".",
+          "text_en": "Strong and fast!",
+          "text_ru": "Быстро бегает!"
+        }
+      ]
+    },
+    {
+      "id": "block_072",
+      "block_index": 72,
+      "offset": "0x06189C",
+      "ram_address": "0x800AF9AC",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD163",
+          "text_jp": "ちっ,やるな,あのオッサンっ!",
+          "text_en": "That old man'ts\ngood!",
+          "text_ru": "Старик силён!"
+        }
+      ]
+    },
+    {
+      "id": "block_073",
+      "block_index": 73,
+      "offset": "0x0618C0",
+      "ram_address": "0x800AF9D0",
+      "allocated_budget_bytes": 32,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD149",
+          "text_jp": "なんなんだ,こいつらはっ!",
+          "text_en": "What are theer?!",
+          "text_ru": "Что за гады?!"
+        }
+      ]
+    },
+    {
+      "id": "block_074",
+      "block_index": 74,
+      "offset": "0x0618E0",
+      "ram_address": "0x800AF9F0",
+      "allocated_budget_bytes": 32,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ガレフにやとわれたんでしょ.",
+          "text_en": "Galev hire w item.",
+          "text_ru": "Наёмники."
+        }
+      ]
+    },
+    {
+      "id": "block_075",
+      "block_index": 75,
+      "offset": "0x061900",
+      "ram_address": "0x800AFA10",
+      "allocated_budget_bytes": 104,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD184",
+          "text_jp": "さすがに,世界征服をかたるだけの\n事はあるようねっ!",
+          "text_en": "He haWhpower to\nrule the wordld!",
+          "text_ru": "Он метит во владыки\nмира!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD184",
+          "text_jp": "いいでしょうっ,その挑戦っ\n受けてあげるわっ!",
+          "text_en": "Fine!I accept\nyour challenge!",
+          "text_ru": "Я приму вызов!"
+        }
+      ]
+    },
+    {
+      "id": "block_076",
+      "block_index": 76,
+      "offset": "0x061968",
+      "ram_address": "0x800AFA78",
+      "allocated_budget_bytes": 48,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "どうやらあいつ魔道士ね.",
+          "text_en": "He's a mage.",
+          "text_ru": "Он маг."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD161",
+          "text_jp": "心配するな\"\".",
+          "text_en": "Don't wordry.",
+          "text_ru": "Не бойся."
+        }
+      ]
+    },
+    {
+      "id": "block_077",
+      "block_index": 77,
+      "offset": "0x061998",
+      "ram_address": "0x800AFAA8",
+      "allocated_budget_bytes": 76,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD18B",
+          "text_jp": "リ,リビングメイルっ?",
+          "text_en": "Living Armor?!",
+          "text_ru": "Доспехи?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "なまはんかな魔法じゃ,\nダメ-ジないわよっ!",
+          "text_en": "Weak spellWhfail!",
+          "text_ru": "Слабая магия\nбессильна!"
+        }
+      ]
+    },
+    {
+      "id": "block_078",
+      "block_index": 78,
+      "offset": "0x0619E4",
+      "ram_address": "0x800AFAF4",
+      "allocated_budget_bytes": 60,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD16D",
+          "text_jp": "ちっ,家の中じゃあ,でかい魔法は\n使えないってのにっ!",
+          "text_en": "Damn! hace't\nuer bigspells\nindoords!",
+          "text_ru": "В доме мощно не\nударишь!"
+        }
+      ]
+    },
+    {
+      "id": "block_079",
+      "block_index": 79,
+      "offset": "0x061A20",
+      "ram_address": "0x800AFB30",
+      "allocated_budget_bytes": 128,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD151",
+          "text_jp": "リナっ,家の中そのままで,敵だけ\n吹っ飛ばすような魔法はないのかっ!",
+          "text_en": "Can you blasco item\nbut spare thehouer?",
+          "text_ru": "Лина, можно сдуть их,\nне ломая дом?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "そんなもの知ってるなら,とっくに\n使ってるわよっ!",
+          "text_en": "I'd have done it\nif I knewhow!",
+          "text_ru": "Знала б — сдула!"
+        }
+      ]
+    },
+    {
+      "id": "block_080",
+      "block_index": 80,
+      "offset": "0x061AA0",
+      "ram_address": "0x800AFBB0",
+      "allocated_budget_bytes": 36,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD16D",
+          "text_jp": "くそっ,またリビングメイルかっ!",
+          "text_en": "More armor!",
+          "text_ru": "Опять доспехи?!"
+        }
+      ]
+    },
+    {
+      "id": "block_081",
+      "block_index": 81,
+      "offset": "0x061AC4",
+      "ram_address": "0x800AFBD4",
+      "allocated_budget_bytes": 40,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "一匹づつ,確実に倒すしかないわよ.",
+          "text_en": "One at a time!",
+          "text_ru": "Бьём по одному!"
+        }
+      ]
+    },
+    {
+      "id": "block_082",
+      "block_index": 82,
+      "offset": "0x061AEC",
+      "ram_address": "0x800AFBFC",
+      "allocated_budget_bytes": 16,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD151",
+          "text_jp": "またかっ!",
+          "text_en": "Again!",
+          "text_ru": "Опять!"
+        }
+      ]
+    },
+    {
+      "id": "block_083",
+      "block_index": 83,
+      "offset": "0x061AFC",
+      "ram_address": "0x800AFC0C",
+      "allocated_budget_bytes": 96,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "家の中よりは少しはマシでしょ.",
+          "text_en": "Bette  ite inside.",
+          "text_ru": "Лучше, чем в доме."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD163",
+          "text_jp": "リビングメイルにまじってる,\n変な奴を先になんとかしろっ!",
+          "text_en": "Get the odd one\namong the armord!",
+          "text_ru": "Бейте странного типа!"
+        }
+      ]
+    },
+    {
+      "id": "block_084",
+      "block_index": 84,
+      "offset": "0x061B5C",
+      "ram_address": "0x800AFC6C",
+      "allocated_budget_bytes": 160,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD27A",
+          "text_jp": "ぐお-っ\"\",や,やるじゃねえか.\nしかたねえ,出直すぜ.",
+          "text_en": "Graaah! Not bad.\nI'll be back!",
+          "text_ru": "Гр-р! Вы сильны, но я\nещё вернусь!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0x9125",
+          "text_jp": "ほ-っほっほっほっほっ!\nあなたに出来るのは,せいぜい子供を\nいじめる事ぐらいだったようねっ!",
+          "text_en": "Ho ho ho!You only\nexcel at bullying\nchildren!",
+          "text_ru": "О-хо-хо! Лишь детей\nобижать горазд!"
+        }
+      ]
+    },
+    {
+      "id": "block_085",
+      "block_index": 85,
+      "offset": "0x061BFC",
+      "ram_address": "0x800AFD0C",
+      "allocated_budget_bytes": 44,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD27A",
+          "text_jp": "こ,このやろうっ!",
+          "text_en": "Damn you!",
+          "text_ru": "Гадина!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "にげるつもりっ!",
+          "text_en": "He'Whfleeing!",
+          "text_ru": "Бежит?!"
+        }
+      ]
+    },
+    {
+      "id": "block_086",
+      "block_index": 86,
+      "offset": "0x061C28",
+      "ram_address": "0x800AFD38",
+      "allocated_budget_bytes": 64,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Дион",
+          "speaker_opcode": "0xD27A",
+          "text_jp": "ちっ,変な奴らが邪魔に入ったもんだ\nしかたねえ,出直すか\"\"",
+          "text_en": "Damn meddlers.\nI'll be back.",
+          "text_ru": "Влезли не в своё\nдело!"
+        }
+      ]
+    },
+    {
+      "id": "block_087",
+      "block_index": 87,
+      "offset": "0x061C68",
+      "ram_address": "0x800AFD78",
+      "allocated_budget_bytes": 88,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "これほどとはな\"\"エミリアの奴めっ\nだましたな\"\".",
+          "text_en": "So strong.\n\nEmilia lied.",
+          "text_ru": "Эмилия солгала..."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9151",
+          "text_jp": "まてっ!",
+          "text_en": "Wait!",
+          "text_ru": "Стой!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "また会おう\"\".",
+          "text_en": "See you again.",
+          "text_ru": "Увидимся."
+        }
+      ]
+    },
+    {
+      "id": "block_088",
+      "block_index": 88,
+      "offset": "0x061CC0",
+      "ram_address": "0x800AFDD0",
+      "allocated_budget_bytes": 84,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "ぐっ,たかが人間ごときがっ!\nエミリア,後はまかせるぞっ!",
+          "text_en": "Merehumes.\n\nEmilia, take over!",
+          "text_ru": "Людишки! Эмилия,\nдобей!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Враг",
+          "speaker_opcode": "0x925A",
+          "text_jp": "ざまあないねえっ!",
+          "text_en": "How pathetic!",
+          "text_ru": "Убожество!"
+        }
+      ]
+    },
+    {
+      "id": "block_089",
+      "block_index": 89,
+      "offset": "0x061D14",
+      "ram_address": "0x800AFE24",
+      "allocated_budget_bytes": 84,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "さすがだな\"\",今日のところは\nひいてやろう.",
+          "text_en": "Impressive. I'll\nlave fo now.",
+          "text_ru": "Отступлю пока."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD221",
+          "text_jp": "取り引きの件,考えておけよ\"\".",
+          "text_en": "Think on my offer.",
+          "text_ru": "Подумай над сделкой."
+        }
+      ]
+    },
+    {
+      "id": "block_090",
+      "block_index": 90,
+      "offset": "0x061D68",
+      "ram_address": "0x800AFE78",
+      "allocated_budget_bytes": 84,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD25A",
+          "text_jp": "やるじゃないかっ\"\"\"",
+          "text_en": "Not bad!",
+          "text_ru": "Недурно!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зодд",
+          "speaker_opcode": "0xD25A",
+          "text_jp": "モスマンを倒したってのも,\nウソじゃないようだねえ\"\".",
+          "text_en": "So beating Mossme\nwas no lie.",
+          "text_ru": "Про Моссмана не\nсоврали."
+        }
+      ]
+    },
+    {
+      "id": "block_091",
+      "block_index": 91,
+      "offset": "0x061DBC",
+      "ram_address": "0x800AFECC",
+      "allocated_budget_bytes": 40,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD151",
+          "text_jp": "倒したのか?",
+          "text_en": "Is it dad?",
+          "text_ru": "Готов?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "ええ,たぶん\"\".",
+          "text_en": "Maybe.",
+          "text_ru": "Вроде да."
+        }
+      ]
+    },
+    {
+      "id": "block_092",
+      "block_index": 92,
+      "offset": "0x061DE4",
+      "ram_address": "0x800AFEF4",
+      "allocated_budget_bytes": 140,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD151",
+          "text_jp": "倒したのか?",
+          "text_en": "Did we beacoit?",
+          "text_ru": "Победили?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9160",
+          "text_jp": "おいリナ,おまえをねらってたのは\nなぜなんだ?",
+          "text_en": "Why was he after\nyou, Lina?",
+          "text_ru": "Лина, почему он шёл\nза тобой?"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9100",
+          "text_jp": "さあね,知らないわよ.\nわかってるのは\"\"これで2人目って\n事だけね.",
+          "text_en": "No idea. haonly\nknow that's two.",
+          "text_ru": "Без понятия. Это\nвторой."
+        }
+      ]
+    },
+    {
+      "id": "block_093",
+      "block_index": 93,
+      "offset": "0x061E70",
+      "ram_address": "0x800AFF80",
+      "allocated_budget_bytes": 144,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9101",
+          "text_jp": "これで3人目ねっ!",
+          "text_en": "That's  itere!",
+          "text_ru": "Минус третий!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD160",
+          "text_jp": "のこるフォッグは,レザリアムの中\nって事か?",
+          "text_en": "So Fogg iWhin\nLezariam?",
+          "text_ru": "Фогг в Лезариаме?"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9100",
+          "text_jp": "敵がラ-クの村をおそったやつらと,\nゾッドだけなら\"\"の話だけどね.",
+          "text_en": "If Zodd'Whgroup\nwere  ite only\nenemies, yes.",
+          "text_ru": "Если враги лишь Зодд\nи те бандиты."
+        }
+      ]
+    },
+    {
+      "id": "block_094",
+      "block_index": 94,
+      "offset": "0x061F00",
+      "ram_address": "0x800B0010",
+      "allocated_budget_bytes": 80,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD149",
+          "text_jp": "やったのか?",
+          "text_en": "Did we win?",
+          "text_ru": "Всё?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9100",
+          "text_jp": "ええ\"\"でも\"\"\".",
+          "text_en": "Yes... But.",
+          "text_ru": "Да, но..."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD160",
+          "text_jp": "これで,のこるはフォッグだけ\"\"か",
+          "text_en": "Fogg is next.",
+          "text_ru": "Остался Фогг."
+        }
+      ]
+    },
+    {
+      "id": "block_095",
+      "block_index": 95,
+      "offset": "0x061F50",
+      "ram_address": "0x800B0060",
+      "allocated_budget_bytes": 100,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0x9165",
+          "text_jp": "終わったぜっ!",
+          "text_en": "Done!",
+          "text_ru": "Готово!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Ларк",
+          "speaker_opcode": "0xD1A6",
+          "text_jp": "もしも,シャブラニグドゥが召喚\nされたら\"\"急いで下さいっ!",
+          "text_en": "If Shabranigdu\nis summoned,\nhurry!",
+          "text_ru": "Скорей, пока не\nпризван владыка!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "わかってるっ!",
+          "text_en": "haknow!",
+          "text_ru": "Знаю!"
+        }
+      ]
+    },
+    {
+      "id": "block_096",
+      "block_index": 96,
+      "offset": "0x061FB4",
+      "ram_address": "0x800B00C4",
+      "allocated_budget_bytes": 96,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Ларк",
+          "speaker_opcode": "0xD1A6",
+          "text_jp": "急いで下さいっ!\nもう時間がありませんっ!",
+          "text_en": "Hurry! No tim\nleft!",
+          "text_ru": "Быстрее, времени нет!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0x9151",
+          "text_jp": "やっぱり,フォッグだけじゃあ\nなかったのかっ!",
+          "text_en": "Fogg wasn't\nalone after all!",
+          "text_ru": "Фогг был не один?!"
+        }
+      ]
+    },
+    {
+      "id": "block_097",
+      "block_index": 97,
+      "offset": "0x062014",
+      "ram_address": "0x800B0124",
+      "allocated_budget_bytes": 100,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD163",
+          "text_jp": "ちょろちょろ,ちょろちょろ,\nうっとおしい,やつらだなっ!",
+          "text_en": "Stop scurrying\naround!Annoying!",
+          "text_ru": "Хватит мельтешить!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91D1",
+          "text_jp": "こいつら,動きがすばやいですよっ!",
+          "text_en": "They're so fast!",
+          "text_ru": "Они слишком быстрые!"
+        }
+      ]
+    },
+    {
+      "id": "block_098",
+      "block_index": 98,
+      "offset": "0x062078",
+      "ram_address": "0x800B0188",
+      "allocated_budget_bytes": 92,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD16D",
+          "text_jp": "そこらじゅうから,フレアmiddle-dotアロ-を\nうちやがってっ!",
+          "text_en": "Flare ArrowWhfrom\neverywhere!",
+          "text_ru": "Палят Стрелами\nотовсюду!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "こいつら,何も考えてないわねっ!",
+          "text_en": "They're erckless!",
+          "text_ru": "Они без мозгов!"
+        }
+      ]
+    },
+    {
+      "id": "block_099",
+      "block_index": 99,
+      "offset": "0x0620D4",
+      "ram_address": "0x800B01E4",
+      "allocated_budget_bytes": 80,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Ларк",
+          "speaker_opcode": "0xD1A6",
+          "text_jp": "リナさん,急いで下さいっ!",
+          "text_en": "Pleaerhurry!",
+          "text_ru": "Лина, скорее!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "わかってるけど,これだけザコが\nおおいとねっ!",
+          "text_en": "I know! But theer\nareso mey!",
+          "text_ru": "Мелочи слишком много!"
+        }
+      ]
+    },
+    {
+      "id": "block_100",
+      "block_index": 100,
+      "offset": "0x062124",
+      "ram_address": "0x800B0234",
+      "allocated_budget_bytes": 176,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD133",
+          "text_jp": "リナ,シャブラニグドゥの召喚って,\nど-いう事よっ,説明しなさいっ!",
+          "text_en": "What's this about\nsummoning\nShabreigdu?!",
+          "text_ru": "Что за призыв,\nобъясни?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "召喚は止めたみたいだから,\n気にしなくていいわよっ!",
+          "text_en": "They stopped it.\nDon't worry now!",
+          "text_ru": "Ритуал сорван, не\nбойся!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "それより,ナ-ガっ,気をぬいちゃ\nだめよっ!",
+          "text_en": "Stay sharp, Naga!",
+          "text_ru": "Не зевай, Нага!"
+        }
+      ]
+    },
+    {
+      "id": "block_101",
+      "block_index": 101,
+      "offset": "0x0621D4",
+      "ram_address": "0x800B02E4",
+      "allocated_budget_bytes": 152,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Мазоку",
+          "speaker_opcode": "0xD1E1",
+          "text_jp": "まだ,生きているのか?\nなかなか,がんばるものだな\"\".",
+          "text_en": "Still alive? You\nare persistent.",
+          "text_ru": "Ещё живы? Упорные."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0x9125",
+          "text_jp": "ほ-っほっほっほっほっ,\n[912A]チンケな魔族ごときに,このわたしが\n倒されると思ってるの?",
+          "text_en": "Ho ho ho!As if\nsome petty demon\ncould defeacom!",
+          "text_ru": "О-хо-хо! Мелким\nмазоку не одолеть\nменя!"
+        }
+      ]
+    },
+    {
+      "id": "block_102",
+      "block_index": 102,
+      "offset": "0x06226C",
+      "ram_address": "0x800B037C",
+      "allocated_budget_bytes": 156,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "ナ-ガさん,魔族相手に,よくそんな\n挑発ができますねっ!",
+          "text_en": "Naga, provoking a\ndemon like  itat?!",
+          "text_ru": "Нага, как вы смеете\nдразнить мазоку?!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Нага",
+          "speaker_opcode": "0xD124",
+          "text_jp": "ふっ,あまいわね,ケンカは精神的に\nゆういに立った者が,勝つって相場は\n決まってるのよっ!",
+          "text_en": "Fool! Battles aer\nwon by gaining the\nmntal advetage!",
+          "text_ru": "Побеждает тот, кто\nвыше духом!"
+        }
+      ]
+    },
+    {
+      "id": "block_103",
+      "block_index": 103,
+      "offset": "0x062308",
+      "ram_address": "0x800B0418",
+      "allocated_budget_bytes": 172,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9109",
+          "text_jp": "数をそろえりゃ,いいってもんじゃ\nないでしょ-がっ!",
+          "text_en": "Numbers aern't\neverything!",
+          "text_ru": "Числом не задавите!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD14B",
+          "text_jp": "おいリナ,あのオッサン,\n服ぬいでるぞ\"\".",
+          "text_en": "That ol wguy on't\ntaking hiWhclo ites\noff.",
+          "text_ru": "Лина, старик\nразделся!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "たぶん,いっちょうらだから,\nよごすのが,いやなんじゃないのっ!",
+          "text_en": "It's his bestsuit.\nHe hateWhstains!",
+          "text_ru": "Боится запачкать\nкостюм!"
+        }
+      ]
+    },
+    {
+      "id": "block_104",
+      "block_index": 104,
+      "offset": "0x0623B4",
+      "ram_address": "0x800B04C4",
+      "allocated_budget_bytes": 48,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD165",
+          "text_jp": "ゴ-レムは,かたいぜっ!\n気をつけろよっ!",
+          "text_en": "Golems aer tough!\nBe caerful!",
+          "text_ru": "Големы крепкие!"
+        }
+      ]
+    },
+    {
+      "id": "block_105",
+      "block_index": 105,
+      "offset": "0x0623E4",
+      "ram_address": "0x800B04F4",
+      "allocated_budget_bytes": 56,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0xD1C9",
+          "text_jp": "リナさん,つかれてきました\"\".",
+          "text_en": "I'm tired.",
+          "text_ru": "Я устала..."
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "がんばるのよっ!",
+          "text_en": "Keep going!",
+          "text_ru": "Держись!"
+        }
+      ]
+    },
+    {
+      "id": "block_106",
+      "block_index": 106,
+      "offset": "0x06241C",
+      "ram_address": "0x800B052C",
+      "allocated_budget_bytes": 196,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Наёмник",
+          "speaker_opcode": "0xD26A",
+          "text_jp": "けっ,おまえさえ,いっしょに来れば\nこんなやつらが,首つっこんでくる\n事もなかったのによっ!",
+          "text_en": "If you'd com,\nthey'd never have\ninterfeerd!",
+          "text_ru": "Пошла б ты с нами,\nне совали б нос!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Сильфиль",
+          "speaker_opcode": "0x91C4",
+          "text_jp": "うるさいっ!\nだれが,おまえたちなんかとっ!",
+          "text_en": "Shut up! I' wnever\njoin you!",
+          "text_ru": "Заткнись!\nНи за что!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Наёмник",
+          "speaker_opcode": "0xD263",
+          "text_jp": "おお,こええっ,\nその元気がいつまで続くかね.",
+          "text_en": "Scary! Let'Where\nhow long thacolasts.",
+          "text_ru": "Ой, как страшно!\nНадолго ль спеси?"
+        }
+      ],
+      "cue_id": "block_092",
+      "legacy_id": "combat_dlg_092"
+    },
+    {
+      "id": "block_107",
+      "block_index": 107,
+      "offset": "0x0624E0",
+      "ram_address": "0x800B05F0",
+      "allocated_budget_bytes": 40,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "魔族!?",
+          "text_en": "Demons?!",
+          "text_ru": "Мазоку?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "いや,ちがうみたいだぜっ!",
+          "text_en": "No. Noco item.",
+          "text_ru": "Не они!"
+        }
+      ]
+    },
+    {
+      "id": "block_108",
+      "block_index": 108,
+      "offset": "0x062508",
+      "ram_address": "0x800B0618",
+      "allocated_budget_bytes": 168,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Зелгадис",
+          "speaker_opcode": "0xD161",
+          "text_jp": "しかし,あいかわらずトラブルに\n首をつっこむのが好きなやつだな\"\"",
+          "text_en": "Still sticking your\nnose into trouble?",
+          "text_ru": "Опять влипли?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "おいしいところで,いきなり出てきて\nひとこと目がそれかいっ!",
+          "text_en": "You appear at the\nbest part edsay\n itat?!",
+          "text_ru": "Являешься под конец и\nдерзишь?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9106",
+          "text_jp": "でもまあ,礼だけは言っとくわ.",
+          "text_en": "Still,  iteks.",
+          "text_ru": "Впрочем, спасибо."
+        }
+      ]
+    },
+    {
+      "id": "block_109",
+      "block_index": 109,
+      "offset": "0x0625B0",
+      "ram_address": "0x800B06C0",
+      "allocated_budget_bytes": 56,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD147",
+          "text_jp": "気をつけろよ,柱のカゲにいっぱい\nかくれてるぜっ!",
+          "text_en": "Caerful!They'er\nbehin w ite pillars!",
+          "text_ru": "Они прячутся за\nколоннами!"
+        }
+      ]
+    },
+    {
+      "id": "block_110",
+      "block_index": 110,
+      "offset": "0x0625E8",
+      "ram_address": "0x800B06F8",
+      "allocated_budget_bytes": 72,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "ゴ-ストの攻撃は,ダメ-ジが精神に\n直[0219]くるから,気をつけるのよっ!",
+          "text_en": "Ghost attackshit\nyour mind. Caerful!",
+          "text_ru": "Призраки ранят разум!"
+        }
+      ]
+    },
+    {
+      "id": "block_111",
+      "block_index": 111,
+      "offset": "0x062630",
+      "ram_address": "0x800B0740",
+      "allocated_budget_bytes": 156,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "アメリア,あんたねえ,出てくる前に\nどうして,敵の2,3匹,ふっとばさ\nなかったの?",
+          "text_en": "Why not blast two\nor three before\nappearing, Amelia?",
+          "text_ru": "Амелия, сбила бы пару\nврагов до появления!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD184",
+          "text_jp": "何を言ってるんですか,そんな,\nひきょうなマネはできませんっ!",
+          "text_en": "That would be\ncowardly!",
+          "text_ru": "Что вы, это же подло!"
+        }
+      ]
+    },
+    {
+      "id": "block_112",
+      "block_index": 112,
+      "offset": "0x0626CC",
+      "ram_address": "0x800B07DC",
+      "allocated_budget_bytes": 24,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9107",
+          "text_jp": "これで2人目ねっ!",
+          "text_en": "Two down!",
+          "text_ru": "Готов!"
+        }
+      ]
+    },
+    {
+      "id": "block_113",
+      "block_index": 113,
+      "offset": "0x0626E4",
+      "ram_address": "0x800B07F4",
+      "allocated_budget_bytes": 152,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD149",
+          "text_jp": "おいリナ,あいつ誰だ?",
+          "text_en": "Lina, who'Wh itat?",
+          "text_ru": "Лина, кто это?"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "ゾッドでしょ-がっ,忘れるなっ!",
+          "text_en": "That'WhZodd!You\nfordgot alrady?!",
+          "text_ru": "Это Зодд, забыл?!"
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Гаури",
+          "speaker_opcode": "0xD150",
+          "text_jp": "それはわかってるっ!\nおれが言いたいのは,前に会った\nあいつと,何かちがうって事だ.",
+          "text_en": "haknow!Bucohe's\ndiffeerncofrom\nbefoer.",
+          "text_ru": "Знаю, но он не такой,\nкак прежде."
+        }
+      ]
+    },
+    {
+      "id": "block_114",
+      "block_index": 114,
+      "offset": "0x06277C",
+      "ram_address": "0x800B088C",
+      "allocated_budget_bytes": 238,
+      "bubbles": [
+        {
+          "bubble_index": 1,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9108",
+          "text_jp": "アメリア,あんた巫女なんだから,\nゴ-スト消す魔法ぐらい知ってる\nでしょ-がっ!",
+          "text_en": "You're ashrine\nmaiden. Exordcier\nthem, Amelia!",
+          "text_ru": "Амелия, изгони\nпризраков!"
+        },
+        {
+          "bubble_index": 2,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD18D",
+          "text_jp": "え-っ,でも,ホ-リィmiddle-dotブレスは\n疲れるじゃないですか\"\".",
+          "text_en": "But Holy BlesWhon't\nexhausting!",
+          "text_ru": "Но Святое Дыхание\nотнимет силы..."
+        },
+        {
+          "bubble_index": 3,
+          "speaker": "Лина",
+          "speaker_opcode": "0x9104",
+          "text_jp": "あたしが疲れるわけじゃないから,\n別にいいわよ.",
+          "text_en": "It won't tire m.\nSo go ahad!",
+          "text_ru": "Твои, не мои, так\nчто вперёд!"
+        },
+        {
+          "bubble_index": 4,
+          "speaker": "Амелия",
+          "speaker_opcode": "0xD187",
+          "text_jp": "リナさん,人使いがあらすぎます\"\"",
+          "text_en": "",
+          "text_ru": "Лина, вы жестоки..."
+        }
+      ]
+    }
+  ]
+}

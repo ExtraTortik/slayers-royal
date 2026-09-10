@@ -49,6 +49,8 @@ BYTES_PER_TILE = 128
 # Character sets for combat charmap
 CYRILLIC_UPPER = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
 CYRILLIC_LOWER = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
+CYRILLIC_UPPER_BASE = 0x0150
+CYRILLIC_LOWER_BASE = 0x0171
 CYRILLIC_UNIQUE_UPPER = "БГДЖЗИЙЛПФЦЧШЩЪЫЬЭЮЯЁ"
 CYRILLIC_UNIQUE_LOWER = "бвгджзийклмнптфцчшщъыьэюяё"
 CYRILLIC_PUNCT = "«»—…„“"
@@ -261,6 +263,119 @@ def put_tile(tim_buf: bytearray, tile_id: int, tile_bytes: bytes) -> None:
         off = TIM_HEADER_SIZE + (ty * 16 + y) * 128 + tx * 8
         tim_buf[off : off + 8] = tile_bytes[y * 8 : (y + 1) * 8]
 
+
+def get_hw_tile_2bpp(tim_buf: bytes | bytearray, code: int) -> bytes:
+    bank = (code >> 8) & 3
+    row = (code >> 4) & 0xF
+    col = code & 0xF
+    data = bytearray()
+    for y in range(16):
+        off = 544 + bank * 16384 + (row * 16 + y) * 64 + col * 4
+        data.extend(tim_buf[off : off + 4])
+    return bytes(data)
+
+
+def put_hw_tile_2bpp(tim_buf: bytearray, code: int, tile_bytes: bytes) -> None:
+    bank = (code >> 8) & 3
+    row = (code >> 4) & 0xF
+    col = code & 0xF
+    for y in range(16):
+        off = 544 + bank * 16384 + (row * 16 + y) * 64 + col * 4
+        tim_buf[off : off + 4] = tile_bytes[y * 4 : (y + 1) * 4]
+
+
+def render_cyrillic_glyph_2bpp(char: str, font_path: Path) -> bytes:
+    """Render a single character into a 16x16 2BPP tile using PressStart2P (size 11).
+
+    Pixel values in 2BPP:
+    - 0 = transparent
+    - 1 = dark shadow/outline
+    - 3 = text body core (white)
+
+    4 pixels per byte:
+    b = (p0 & 3) | ((p1 & 3) << 2) | ((p2 & 3) << 4) | ((p3 & 3) << 6)
+    """
+    canvas_core = Image.new("L", (16, 16), 0)
+    canvas_shadow = Image.new("L", (16, 16), 0)
+    draw_core = ImageDraw.Draw(canvas_core)
+    draw_shadow = ImageDraw.Draw(canvas_shadow)
+
+    font = ImageFont.truetype(str(font_path), 11)
+    bbox = draw_core.textbbox((0, 0), char, font=font)
+    w = bbox[2] - bbox[0]
+    h = bbox[3] - bbox[1]
+
+    # Center horizontally and vertically within 16x16 tile, leaving margin for shadow
+    x = max(0, min(14, (15 - w) // 2))
+    y = max(0, min(14, (15 - h) // 2))
+
+    draw_core.text((x - bbox[0], y - bbox[1]), char, font=font, fill=255)
+    draw_shadow.text((x - bbox[0] + 1, y - bbox[1] + 1), char, font=font, fill=255)
+
+    pix_c = canvas_core.load()
+    pix_s = canvas_shadow.load()
+
+    tile_bytes = bytearray()
+    for py in range(16):
+        for col_byte in range(4):
+            px_base = col_byte * 4
+            p0 = 3 if pix_c[px_base + 0, py] >= 80 else (1 if pix_s[px_base + 0, py] >= 80 else 0)
+            p1 = 3 if pix_c[px_base + 1, py] >= 80 else (1 if pix_s[px_base + 1, py] >= 80 else 0)
+            p2 = 3 if pix_c[px_base + 2, py] >= 80 else (1 if pix_s[px_base + 2, py] >= 80 else 0)
+            p3 = 3 if pix_c[px_base + 3, py] >= 80 else (1 if pix_s[px_base + 3, py] >= 80 else 0)
+            b = (p0 & 3) | ((p1 & 3) << 2) | ((p2 & 3) << 4) | ((p3 & 3) << 6)
+            tile_bytes.append(b)
+
+    return bytes(tile_bytes)
+
+
+def build_patched_combat_font(
+    tim_decompressed: bytes,
+    font_path: Path | None = None,
+) -> tuple[bytes, bytes]:
+    """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
+
+    Renders all 66 characters in CYRILLIC_UPPER (0x0150..0x0170) and
+    CYRILLIC_LOWER (0x0171..0x0191) using put_hw_tile_2bpp.
+
+    Returns:
+        (patched_tim_decompressed, compressed_bytes)
+
+    Raises:
+        ValueError if compressed font exceeds 23 sectors (47,104 bytes).
+    """
+    if len(tim_decompressed) != TIM_DECOMPRESSED_SIZE:
+        raise ValueError(f"Invalid TIM size: {len(tim_decompressed)} bytes (expected {TIM_DECOMPRESSED_SIZE})")
+
+    fp = font_path or find_press_start_font()
+    if not fp.is_file():
+        raise FileNotFoundError(f"Font file not found: {fp}")
+
+    patched_tim = bytearray(tim_decompressed)
+
+    # Render 33 uppercase Russian glyphs into 0x0150..0x0170
+    for idx, ch in enumerate(CYRILLIC_UPPER):
+        code = CYRILLIC_UPPER_BASE + idx
+        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
+        put_hw_tile_2bpp(patched_tim, code, tile_bytes)
+
+    # Render 33 lowercase Russian glyphs into 0x0171..0x0191
+    for idx, ch in enumerate(CYRILLIC_LOWER):
+        code = CYRILLIC_LOWER_BASE + idx
+        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
+        put_hw_tile_2bpp(patched_tim, code, tile_bytes)
+
+    patched_bytes = bytes(patched_tim)
+
+    # Compress with unt_lz mode 1
+    compressed = unt_lz.compress(patched_bytes)
+    if len(compressed) > COMBAT_FONT_MAX_SIZE:
+        raise ValueError(
+            f"Compressed font size ({len(compressed)} bytes) exceeds budget of "
+            f"{COMBAT_FONT_MAX_SIZE} bytes ({COMBAT_FONT_SECTORS} sectors)"
+        )
+
+    return patched_bytes, compressed
 
 def render_cyrillic_glyph(char: str, font_path: Path, base_size: int = 12) -> bytes:
     """Render a character into a 16x16 4bpp tile.

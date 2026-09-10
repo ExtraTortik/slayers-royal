@@ -11,6 +11,7 @@ RU_CUE="$RU_DIR/slayers_royal_ru.cue"
 INSPECTION_JSON="$SCRIPT_DIR/translations/room_inspection_ru.json"
 CARDS_JSON="$SCRIPT_DIR/data/lore_cards_ru.json"
 COMBAT_JSON="$SCRIPT_DIR/translations/combat_ru.json"
+COMBAT_DIALOGUES_JSON="$SCRIPT_DIR/translations/combat_dialogues_ru.json"
 MAP_JSON="$SCRIPT_DIR/translations/world_map_ru.json"
 BANNERS_JSON="$SCRIPT_DIR/translations/location_banners_ru.json"
 PATCH_REPO_DIR="$SCRIPT_DIR/patch_repo"
@@ -23,13 +24,13 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     echo "Использование: ./build.sh [опция]"
     echo ""
     echo "Опции:"
-    echo "  (без опций)  Полная сборка: сюжет + FMV + 149 комнат + карточки + карта + плашки (~35 сек)"
+    echo "  (без опций)  Полная сборка: сюжет + FMV + 149 комнат + карточки + карта + плашки + боевой режим (~35 сек)"
     echo "  --quick, -q  Быстрая сборка: обновить ТОЛЬКО описания предметов из"
     echo "               translations/room_inspection_ru.json (~1.5 сек)"
     echo "  --map        Обновить ТОЛЬКО названия локаций на карте мира"
     echo "  --banners    Обновить ТОЛЬКО графические плашки-баннеры локаций"
     echo "  --cards      Обновить ТОЛЬКО энциклопедические карточки персонажей"
-    echo "  --combat     (Опционально) Экспериментальный перевод боевого режима"
+    echo "  --combat, --combat-dialogues  Обновить боевые диалоги из translations/combat_dialogues_ru.json"
     echo "  --validate   Проверить каталоги диалогов, комнат, карты и плашек на ошибки"
     echo "  --help, -h   Показать эту справку"
     exit 0
@@ -46,6 +47,8 @@ if [[ "$1" == "--validate" ]]; then
     echo "[✓] Все файлы перевода корректны и не содержат ошибок!"
     echo "[*] Валидация боевого режима..."
     python3 "$SCRIPT_DIR/tools/combat_text.py" --verify
+    echo "[*] Валидация боевых диалогов..."
+    python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" --verify
     echo "[*] Валидация названий карты мира..."
     python3 "$SCRIPT_DIR/tools/patch_world_map.py" --verify
     echo "[*] Валидация графических плашек локаций..."
@@ -106,17 +109,17 @@ if [[ "$1" == "--banners" ]]; then
     echo "[✓] Графические плашки локаций успешно обновлены!"
     exit 0
 fi
-if [[ "$1" == "--combat" ]]; then
-    echo "[1/1] Обновление боевого режима из translations/combat_ru.json..."
+if [[ "$1" == "--combat" || "$1" == "--combat-dialogues" ]]; then
+    echo "[1/1] Обновление боевых диалогов из translations/combat_dialogues_ru.json..."
     if [[ ! -f "$RU_BIN" ]]; then
         echo "Ошибка: базовый образ $RU_BIN не найден. Запустите сначала полную сборку ./build.sh" >&2
         exit 1
     fi
-    python3 "$SCRIPT_DIR/tools/patch_combat.py" \
+    python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" \
         --bin "$RU_BIN" \
-        --catalog "$COMBAT_JSON"
+        --catalog "$COMBAT_DIALOGUES_JSON"
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
-    echo "[✓] Боевой режим успешно обновлен!"
+    echo "[✓] Боевые диалоги успешно обновлены!"
     exit 0
 fi
 
@@ -129,7 +132,7 @@ fi
 
 mkdir -p "$RU_DIR"
 
-echo "[1/6] Сборка сюжетных диалогов (PROG.UNT)..."
+echo "[1/7] Сборка сюжетных диалогов (PROG.UNT)..."
 python3 "$PATCH_REPO_DIR/localize.py" build \
     --bin "$BIN_ORIG" \
     --workspace "$PATCH_REPO_DIR/localization-work/ru" \
@@ -137,32 +140,39 @@ python3 "$PATCH_REPO_DIR/localize.py" build \
     --output-dir "$RU_DIR" \
     --force
 
-echo "[2/6] Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
+echo "[2/7] Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
 python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
     --inject-disc "$RU_BIN" \
     --movies-dir "$SCRIPT_DIR/build/movies"
 
-echo "[3/6] Внедрение описаний интерактивных объектов во все 149 комнат..."
+echo "[3/7] Внедрение описаний интерактивных объектов во все 149 комнат..."
 python3 "$SCRIPT_DIR/tools/patch_inspection.py" \
     --bin "$RU_BIN" \
     --translations "$INSPECTION_JSON" \
     --all-rooms
 
-echo "[4/6] Внедрение энциклопедических карточек персонажей..."
+echo "[4/7] Внедрение энциклопедических карточек персонажей..."
 python3 "$SCRIPT_DIR/tools/patch_lore_cards.py" \
     --disc "$RU_BIN" \
     --cards "$CARDS_JSON"
 
-echo "[5/6] Внедрение названий локаций на карте мира (PROG.UNT 0x001)..."
+echo "[5/7] Внедрение названий локаций на карте мира (PROG.UNT 0x001)..."
 python3 "$SCRIPT_DIR/tools/patch_world_map.py" \
     --bin "$RU_BIN" \
     --catalog "$MAP_JSON"
 
-echo "[6/6] Внедрение графических плашек-баннеров локаций (BASYOG.UNT 466)..."
+echo "[6/7] Внедрение графических плашек-баннеров локаций (BASYOG.UNT 466)..."
 python3 "$SCRIPT_DIR/tools/patch_location_banners.py" \
     --bin "$RU_BIN" \
     --catalog "$BANNERS_JSON"
 
+echo "[7/7] Внедрение боевых диалогов и шрифта (PROG.UNT 0x007, 0x142)..."
+python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" \
+    --bin "$RU_BIN" \
+    --catalog "$COMBAT_DIALOGUES_JSON"
+
+mkdir -p "$PATCH_REPO_DIR/localization-output/ru"
+cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
 echo "==========================================================="
 echo "[✓] Полная сборка успешно завершена!"
 echo "    Образ диска: $RU_BIN"

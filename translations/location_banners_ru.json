@@ -16,7 +16,7 @@
     "MAIN ST": {
       "text_en": "MAIN ST",
       "text_ru": "ГЛ.УЛИЦА",
-      "font_size": "2",
+      "font_size": "auto",
       "align": "center",
       "offset_x": -5,
       "offset_y": 0,
@@ -26,7 +26,7 @@
     "PLAZA": {
       "text_en": "PLAZA",
       "text_ru": "ПЛОЩАДЬ",
-      "font_size": "1",
+      "font_size": "auto",
       "align": "center",
       "offset_x": -25,
       "offset_y": 0,
