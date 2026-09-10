@@ -15,10 +15,10 @@
   "banners": {
     "MAIN ST": {
       "text_en": "MAIN ST",
-      "text_ru": "ГЛАВНАЯ",
-      "font_size": "auto",
+      "text_ru": "ГЛ.УЛИЦА",
+      "font_size": "2",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -5,
       "offset_y": 0,
       "max_hardware_width_px": 70,
       "description": "Главная улица города"
@@ -26,9 +26,9 @@
     "PLAZA": {
       "text_en": "PLAZA",
       "text_ru": "ПЛОЩАДЬ",
-      "font_size": "auto",
+      "font_size": "1",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -25,
       "offset_y": 0,
       "max_hardware_width_px": 75,
       "description": "Городская площадь"
@@ -78,7 +78,7 @@
       "text_ru": "ЗАКОУЛКИ",
       "font_size": "auto",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -5,
       "offset_y": 0,
       "max_hardware_width_px": 75,
       "description": "Закоулки / переулки города"
@@ -218,7 +218,7 @@
       "text_ru": "ОТЕЛЬ",
       "font_size": 8,
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -15,
       "offset_y": 0,
       "max_hardware_width_px": 44,
       "description": "Гостиница / отель (окно 44 px, 'ОТЕЛЬ' пишется крупно кеглем 8)"
