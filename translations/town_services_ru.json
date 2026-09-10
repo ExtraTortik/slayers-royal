@@ -1,0 +1,417 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "meta": {
+    "target_archive": "PROG.UNT",
+    "entry_index": "0x003",
+    "entry_lba": 229219,
+    "entry_sectors": 296,
+    "ram_base": "0x8004E5B0",
+    "encoding": "uint16_le",
+    "delimiter": "0x00FF"
+  },
+  "currency_config": {
+    "mips_suffix_patch": {
+      "offset_hex": "0x0221F8",
+      "ram_addr_hex": "0x800707A8",
+      "original_jp_hex": "24 02 9B 02",
+      "english_hex": "24 02 FD 01",
+      "patched_ru_hex": "24 02 7D 00",
+      "comment": "Replaces 'X' suffix with space (0x007D) to render clean 'СЕРЕБРО 5'"
+    },
+    "mips_suffix_patches": {
+      "tavern": {
+        "offset_hex": "0x0180B0",
+        "ram_addr_hex": "0x80066660",
+        "original_jp_hex": "24 02 9B 02",
+        "english_hex": "24 02 FD 01",
+        "patched_ru_hex": "24 02 7D 00",
+        "comment": "Tavern price suffix: replaces 'X' with space (0x007D)"
+      },
+      "inn_and_shops": {
+        "offset_hex": "0x0221F8",
+        "ram_addr_hex": "0x800707A8",
+        "original_jp_hex": "24 02 9B 02",
+        "english_hex": "24 02 FD 01",
+        "patched_ru_hex": "24 02 7D 00",
+        "comment": "Inn and shops price suffix: replaces 'X' with space (0x007D)"
+      }
+    },
+    "currency_tiles_layout": {
+      "0x0242": {
+        "text": "СЕР",
+        "pad_left": 1
+      },
+      "0x0244": {
+        "text": "ЕБРО",
+        "pad_left": 0
+      },
+      "0x024A": {
+        "text": "ЗОЛ",
+        "pad_left": 2
+      },
+      "0x024B": {
+        "text": "ОТО",
+        "pad_left": 0
+      },
+      "0x0254": {
+        "text": "МЕД",
+        "pad_left": 0
+      },
+      "0x0259": {
+        "text": "Ь",
+        "pad_left": 1
+      }
+    },
+    "headers": {
+      "bronze": {
+        "offset_hex": "0x000BC8",
+        "max_bytes": 6,
+        "composite_tiles": ["0x0254", "0x0259"],
+        "comment": "BRONZE coin header: 2 glyphs + 0x00FF"
+      },
+      "silver": {
+        "offset_hex": "0x000BD0",
+        "max_bytes": 6,
+        "composite_tiles": ["0x0242", "0x0244"],
+        "comment": "SILVER coin header: 2 glyphs + 0x00FF"
+      },
+      "gold": {
+        "offset_hex": "0x000BD8",
+        "max_bytes": 6,
+        "composite_tiles": ["0x024A", "0x024B"],
+        "comment": "GOLD coin header: 2 glyphs + 0x00FF"
+      }
+    }
+  },
+  "currency_tiles_layout": {
+    "0x0242": {
+      "text": "СЕР",
+      "pad_left": 1
+    },
+    "0x0244": {
+      "text": "ЕБРО",
+      "pad_left": 0
+    },
+    "0x024A": {
+      "text": "ЗОЛ",
+      "pad_left": 2
+    },
+    "0x024B": {
+      "text": "ОТО",
+      "pad_left": 0
+    },
+    "0x0254": {
+      "text": "МЕД",
+      "pad_left": 0
+    },
+    "0x0259": {
+      "text": "Ь",
+      "pad_left": 1
+    }
+  },
+  "menu_typography": {
+    "tavern_box_width": 160,
+    "tavern_box_x_offset": -50,
+    "inn_box_width": 240,
+    "inn_box_x_offset": -90
+  },
+  "tavern_services": {
+    "full_meal": {
+      "offset_hex": "0x02D414",
+      "pointer_offset_hex": "0x02D524",
+      "max_bytes": 24,
+      "en": "FULL MEAL",
+      "jp": "お腹いっぱい食べる",
+      "ru": "ОБЕД"
+    },
+    "snack": {
+      "offset_hex": "0x02D510",
+      "pointer_offset_hex": "0x02D528",
+      "max_bytes": 20,
+      "en": "SNACK",
+      "jp": "かるく食べる",
+      "ru": "ПЕРЕКУС"
+    },
+    "status_no_money": {
+      "offset_hex": "0x02D490",
+      "speaker_code_hex": "0x910B",
+      "max_bytes": 28,
+      "en": "No money...",
+      "jp": "…お金が足りないわ",
+      "ru": "Нет денег..."
+    },
+    "status_just_ate": {
+      "offset_hex": "0x02D4AC",
+      "speaker_code_hex": "0x910C",
+      "max_bytes": 34,
+      "en": "You just ate.",
+      "jp": "さっき食べたじゃない……。",
+      "ru": "Мы только поели"
+    }
+  },
+  "inn_services": {
+    "rest_night": {
+      "offset_hex": "0x02DF8C",
+      "pointer_offset_hex": "0x02DFD4",
+      "max_bytes": 28,
+      "en": "REST NIGHT",
+      "jp": "夜になるまで休む",
+      "ru": "ОТДЫХ ДО НОЧИ"
+    },
+    "sleep_morning": {
+      "offset_hex": "0x02DFA8",
+      "pointer_offset_hex": "0x02DFD8",
+      "max_bytes": 24,
+      "en": "SLEEP MORN",
+      "jp": "朝までおやすみ",
+      "ru": "СОН ДО УТРА"
+    },
+    "dialogue_rest_night": {
+      "offset_hex": "0x02DFDE",
+      "prefix_hex": "0100010001000191",
+      "max_bytes": 42,
+      "jp": "日が暮れるまで\\n休んでいきましょ",
+      "ru": "<0001><0001><0001><9101>Отдых\\nдо вечера!"
+    },
+    "dialogue_sleep_morning": {
+      "offset_hex": "0x02E008",
+      "speaker_code_hex": "0x9101",
+      "max_bytes": 24,
+      "jp": "それじゃ\\nおやすみー",
+      "ru": "<9101>Всем\\nпока!"
+    },
+    "rejection_scene": {
+      "offset_hex": "0x02DE28",
+      "max_bytes": 328,
+      "dialogue_cues": [
+        {
+          "speaker_hex": "0x9117",
+          "ru": "Ой, денег нет?"
+        },
+        {
+          "speaker_hex": "0xD1CF",
+          "ru": "Лина...\\nУ меня есть монеты."
+        },
+        {
+          "speaker_hex": "0x910C",
+          "ru": "А откуда они?"
+        },
+        {
+          "speaker_hex": "0x9116",
+          "ru": "Ларк, попрыгай\\nна месте!"
+        },
+        {
+          "speaker_hex": "0xD1C6",
+          "ru": "Ой... Зачем это?"
+        },
+        {
+          "speaker_hex": "0x9105",
+          "ru": "Да ты звенишь!"
+        },
+        {
+          "speaker_hex": "0x9102",
+          "ru": "Одолжи парочку!"
+        },
+        {
+          "speaker_hex": "0xD1CE",
+          "ru": "Зря я сказал..."
+        }
+      ]
+    }
+  },
+  "town_system_icons": {
+    "pack_region": {
+      "start_offset_hex": "0x030BD8",
+      "end_offset_hex": "0x030F20",
+      "max_bytes": 840
+    },
+    "icons": {
+      "exit": {
+        "ptr_hex": "0x030F40",
+        "ru": "ВЫХОД"
+      },
+      "buy": {
+        "ptr_hex": "0x030F44",
+        "ru": "КУПИТЬ……Купить снаряжение."
+      },
+      "sell": {
+        "ptr_hex": "0x030F48",
+        "ru": "ПРОДАТЬ……Продать вещи."
+      },
+      "move": {
+        "ptr_hex": "0x030F4C",
+        "ru": "КАРТА……Перейти в другой район.\\p……Выйти на карту мира."
+      },
+      "inn": {
+        "ptr_hex": "0x030F50",
+        "ru": "ОТЕЛЬ……Отдохнуть в гостинице.\\p……Восстановить силы отряда."
+      },
+      "eat": {
+        "ptr_hex": "0x030F54",
+        "ru": "ЗАКАЗ……Заказать еду в таверне.\\p……Подкрепиться перед боем."
+      },
+      "save": {
+        "ptr_hex": "0x030F58",
+        "ru": "СОХРАНЕНИЕ……Запись игры.\\p……Не выключайте питание."
+      },
+      "load": {
+        "ptr_hex": "0x030F5C",
+        "ru": "ЗАГРУЗКА……Загрузить игру.\\p……Выбрать файл сохранения."
+      },
+      "setup": {
+        "ptr_hex": "0x030F60",
+        "ru": "ОПЦИИ……Настройки игры.\\n……Звук и управление."
+      },
+      "enter": {
+        "ptr_hex": "0x030F64",
+        "ru": "ВОЙТИ……Войти в город."
+      }
+    }
+  },
+  "shop_dialogue": {
+    "prompt_who": {
+      "offset_hex": "0x030F68",
+      "pointer_offsets_hex": ["0x031F14", "0x031F18"],
+      "max_bytes": 16,
+      "ru": "КОМУ?"
+    },
+    "prompt_item": {
+      "offset_hex": "0x030F78",
+      "pointer_offsets_hex": ["0x031F1C"],
+      "max_bytes": 14,
+      "ru": "ЧТО?"
+    },
+    "merchant_1": {
+      "offset_hex": "0x030F88",
+      "pointer_offsets_hex": ["0x031F20"],
+      "max_bytes": 32,
+      "ru": "<D9A1>Что нужно?"
+    },
+    "merchant_2": {
+      "offset_hex": "0x03107C",
+      "pointer_offsets_hex": ["0x031F34"],
+      "max_bytes": 32,
+      "ru": "<D9C1>Ищешь что-то?"
+    },
+    "merchant_3": {
+      "offset_hex": "0x0311CC",
+      "pointer_offsets_hex": ["0x031F48"],
+      "max_bytes": 28,
+      "ru": "<D9E1>Что вам угодно?"
+    },
+    "menu_price_cancel": {
+      "offset_hex": "0x0315A0",
+      "pointer_offsets_hex": ["0x031F8C"],
+      "max_bytes": 28,
+      "ru": "ЦЕНА\\nОТМЕНА"
+    },
+    "menu_buy_haggle_cancel": {
+      "offset_hex": "0x0315BC",
+      "pointer_offsets_hex": ["0x031F90"],
+      "max_bytes": 38,
+      "ru": "КУПИТЬ\\nТОРГ\\nОТМЕНА"
+    },
+    "haggle_lina": {
+      "offset_hex": "0x0315E4",
+      "pointer_offsets_hex": ["0x031F94"],
+      "max_bytes": 50,
+      "ru": "<9101>Ну и цены!\\nСбавь цену!"
+    },
+    "haggle_gourry": {
+      "offset_hex": "0x031618",
+      "pointer_offsets_hex": ["0x031F98"],
+      "max_bytes": 46,
+      "ru": "<9141>Эй, ну сбавь\\nнемного."
+    },
+    "haggle_zelgadis": {
+      "offset_hex": "0x031648",
+      "pointer_offsets_hex": ["0x031F9C"],
+      "max_bytes": 32,
+      "ru": "<9161>Какова цена?"
+    },
+    "haggle_amelia": {
+      "offset_hex": "0x031668",
+      "pointer_offsets_hex": ["0x031FA4"],
+      "max_bytes": 46,
+      "ru": "<9181>А подешевле\\nникак?"
+    },
+    "haggle_sylphiel": {
+      "offset_hex": "0x031698",
+      "pointer_offsets_hex": ["0x031FAC"],
+      "max_bytes": 58,
+      "ru": "<91A1>Нельзя ли сделать\\nскидку?.."
+    },
+    "haggle_lark": {
+      "offset_hex": "0x0316D4",
+      "pointer_offsets_hex": ["0x031FB8"],
+      "max_bytes": 50,
+      "ru": "<91C1>Налог эльфу?\\nБросьте!"
+    },
+    "sell_greet_1": {
+      "offset_hex": "0x032064",
+      "pointer_offsets_hex": ["0x0322B0", "0x0322B4"],
+      "max_bytes": 32,
+      "ru": "<D9C1>Что продаёшь?"
+    },
+    "sell_greet_2": {
+      "offset_hex": "0x032084",
+      "pointer_offsets_hex": ["0x0322B8"],
+      "max_bytes": 38,
+      "ru": "<D9E1>Хотите продать?"
+    },
+    "sell_offer_1": {
+      "offset_hex": "0x0320AC",
+      "pointer_offsets_hex": ["0x0322BC"],
+      "max_bytes": 52,
+      "ru": "<D9C1>D?\\nДам А монет.\\nПойдёт?"
+    },
+    "sell_offer_2": {
+      "offset_hex": "0x0320E0",
+      "pointer_offsets_hex": ["0x0322C0"],
+      "max_bytes": 66,
+      "ru": "<D9E1>D?\\nМогу дать А монет.\\nИдёт?"
+    },
+    "menu_sell_cancel": {
+      "offset_hex": "0x032124",
+      "pointer_offsets_hex": ["0x0322C4"],
+      "max_bytes": 14,
+      "ru": "ПРОДАТЬ\\nНАЗАД"
+    },
+    "sell_refuse_1": {
+      "offset_hex": "0x032134",
+      "pointer_offsets_hex": ["0x0322C8"],
+      "max_bytes": 28,
+      "ru": "<D9C1>Не возьму."
+    },
+    "sell_refuse_2": {
+      "offset_hex": "0x032150",
+      "pointer_offsets_hex": ["0x0322CC"],
+      "max_bytes": 36,
+      "ru": "<D9E1>Не могу купить."
+    },
+    "sell_done_1": {
+      "offset_hex": "0x032174",
+      "pointer_offsets_hex": ["0x0322D0"],
+      "max_bytes": 52,
+      "ru": "<D9C1>Вот деньги.\\nЕщё что-то?"
+    },
+    "sell_done_2": {
+      "offset_hex": "0x0321A8",
+      "pointer_offsets_hex": ["0x0322D4"],
+      "max_bytes": 58,
+      "ru": "<D9E1>Вот ваша плата.\\nЧто-то ещё?"
+    },
+    "sell_thanks_1": {
+      "offset_hex": "0x032230",
+      "pointer_offsets_hex": ["0x0322E0"],
+      "max_bytes": 28,
+      "ru": "<D9C1>Спасибо."
+    },
+    "sell_thanks_2": {
+      "offset_hex": "0x03224C",
+      "pointer_offsets_hex": ["0x0322E4"],
+      "max_bytes": 38,
+      "ru": "<D9E1>Заходите ещё."
+    }
+  }
+}
