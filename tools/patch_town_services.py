@@ -112,6 +112,18 @@ ENTRY_03A_LBA = PROG_LBA + ENTRY_03A_SECTOR  # 232094
 ENTRY_03A_SECTORS = 27
 ENTRY_03A_SIZE = ENTRY_03A_SECTORS * USER_DATA_SIZE  # 55,296 bytes
 
+def get_entry_03a_location(disc_path: Path | str) -> tuple[int, int, int]:
+    """Retrieve (lba, sector_count, byte_size) of Entry 0x03A dynamically from PROG.UNT TOC."""
+    p = Path(disc_path)
+    try:
+        toc_raw = read_extent(p, PROG_LBA, USER_DATA_SIZE)
+        off, cnt = struct.unpack_from("<HH", toc_raw, 0x03A * 4)
+        if off > 0 and cnt > 0:
+            return PROG_LBA + off, cnt, cnt * USER_DATA_SIZE
+    except Exception:
+        pass
+    return ENTRY_03A_LBA, ENTRY_03A_SECTORS, ENTRY_03A_SIZE
+
 # MIPS Menu Typography offsets in Entry 3
 TAVERN_BOX_WIDTH_OFFSET = 0x017094   # addiu $v0, $zero, width  (2402XXXX)
 TAVERN_BOX_X_OFFSET = 0x017088       # addiu $v0, $zero, x_off  (2402XXXX)
@@ -442,7 +454,8 @@ def patch_entry_03a_currency_tiles(
     if not p.is_file():
         raise FileNotFoundError(f"BIN image not found: {p}")
 
-    extent = bytearray(read_extent(p, ENTRY_03A_LBA, ENTRY_03A_SIZE))
+    entry_03a_lba, entry_03a_sectors, entry_03a_size = get_entry_03a_location(p)
+    extent = bytearray(read_extent(p, entry_03a_lba, entry_03a_size))
     decomp_bytes, _ = unt_lz.decompress(extent)
     tim = bytearray(decomp_bytes)
 
@@ -456,14 +469,14 @@ def patch_entry_03a_currency_tiles(
                 set_font_pixel(tim, gx + px, gy + py, val)
 
     compressed = unt_lz.compress(bytes(tim))
-    if len(compressed) > ENTRY_03A_SIZE:
+    if len(compressed) > entry_03a_size:
         raise ValueError(
             f"Compressed Entry 0x03A size ({len(compressed)} B) exceeds budget of "
-            f"{ENTRY_03A_SIZE} B ({ENTRY_03A_SECTORS} sectors)"
+            f"{entry_03a_size} B ({entry_03a_sectors} sectors)"
         )
 
-    packed = compressed.ljust(ENTRY_03A_SIZE, b"\x00")
-    replace_extent_in_place(p, ENTRY_03A_LBA, packed)
+    packed = compressed.ljust(entry_03a_size, b"\x00")
+    replace_extent_in_place(p, entry_03a_lba, packed)
     return len(tiles)
 
 def patch_font_currency_tiles(
@@ -1254,7 +1267,8 @@ def verify_town_services(
     # 9. Verify Entry 0x03A decompressed currency tiles and EDC/ECC (only in full mode)
     verified_03a_sectors = 0
     if not is_shops_mode:
-        extent_03a = read_extent(p, ENTRY_03A_LBA, ENTRY_03A_SIZE)
+        entry_03a_lba, entry_03a_sectors, entry_03a_size = get_entry_03a_location(p)
+        extent_03a = read_extent(p, entry_03a_lba, entry_03a_size)
         decomp_03a, _ = unt_lz.decompress(extent_03a)
         layout_cfg = catalog.get("currency_tiles_layout") or catalog.get("currency_config", {}).get("currency_tiles_layout")
         tiles = render_currency_tiles(layout_cfg)
@@ -1273,8 +1287,8 @@ def verify_town_services(
                         )
 
         with p.open("rb") as f:
-            for i in range(ENTRY_03A_SECTORS):
-                lba = ENTRY_03A_LBA + i
+            for i in range(entry_03a_sectors):
+                lba = entry_03a_lba + i
                 f.seek(lba * RAW_SECTOR_SIZE)
                 sec = f.read(RAW_SECTOR_SIZE)
                 edc_ok = sec[0x818:0x81C] == checksums.compute_edc(sec[0x10:0x818])

@@ -18,7 +18,7 @@
       "text_ru": "ГЛАВНАЯ",
       "font_size": "auto",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -10,
       "offset_y": 0,
       "max_hardware_width_px": 70,
       "description": "Главная улица города"
@@ -58,7 +58,7 @@
       "text_ru": "ОРУЖЕЙНАЯ",
       "font_size": "7",
       "align": "center",
-      "offset_x":-5,
+      "offset_x": -5,
       "offset_y": 0,
       "max_hardware_width_px": 75,
       "description": "Оружейная лавка"
@@ -66,7 +66,7 @@
     "PORT STALL": {
       "text_en": "PORT STALL",
       "text_ru": "ПРИСТАНЬ",
-      "font_size": "auto",
+      "font_size": "4",
       "align": "center",
       "offset_x": 0,
       "offset_y": 0,
@@ -218,10 +218,10 @@
       "text_ru": "ОТЕЛЬ",
       "font_size": 8,
       "align": "center",
-      "offset_x": -15,
+      "offset_x": -17,
       "offset_y": 0,
       "max_hardware_width_px": 44,
-      "description": "Гостиница / отель (окно 44 px, 'ОТЕЛЬ' пишется крупно кеглем 8)"
+      "description": "Гостиница / отель (окно 44 px, 'ГОСТИНИЦА' пишется крупно кеглем 8)"
     },
     "ITEM SHOP": {
       "text_en": "ITEM SHOP",
