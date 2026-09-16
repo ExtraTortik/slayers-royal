@@ -98,9 +98,9 @@ def test_user_reported_location_banners_mapping(room_names_doc: dict[str, str]):
     # 1. BAR (0x05D Lakewood Diner / Bar)
     assert get_room_name_translation(0x05D, room_names_doc) == "БАР"
     # 2. MAIN ST (0x059 Lakewood Main Street)
-    assert get_room_name_translation(0x059, room_names_doc) == "ГЛАВНАЯ"
+    assert get_room_name_translation(0x059, room_names_doc) == "ГЛ.УЛИЦА"
     # 3. INN (0x05C Lakewood Inn)
-    assert get_room_name_translation(0x05C, room_names_doc) == "ОТЕЛЬ"
+    assert get_room_name_translation(0x05C, room_names_doc) == "ГОСТИНИЦА"
     # 4. BACK ST (0x05A Lakewood Backstreet)
     assert get_room_name_translation(0x05A, room_names_doc) == "ЗАКОУЛКИ"
 

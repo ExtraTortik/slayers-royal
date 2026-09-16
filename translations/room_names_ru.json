@@ -15,11 +15,11 @@
       "en": "BAR"
     },
     "表通り": {
-      "ru": "ГЛАВНАЯ",
+      "ru": "ГЛ.УЛИЦА",
       "en": "MAIN"
     },
     "宿屋": {
-      "ru": "ОТЕЛЬ",
+      "ru": "ГОСТИНИЦА",
       "en": "IN"
     },
     "裏通り": {
@@ -27,7 +27,7 @@
       "en": "BACK"
     },
     "あやしい宿屋": {
-      "ru": "НОЧЛЕЖКА",
+      "ru": "СТРН.ГОСТ.",
       "en": "ODD IN"
     },
     "イゼルセン北の森": {
@@ -208,7 +208,7 @@
       "entry_index": 89,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x05A": {
@@ -229,7 +229,7 @@
       "entry_index": 92,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x05D": {
@@ -257,7 +257,7 @@
       "entry_index": 96,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x061": {
@@ -271,14 +271,14 @@
       "entry_index": 98,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x063": {
       "entry_index": 99,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x064": {
@@ -418,7 +418,7 @@
       "entry_index": 119,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x078": {
@@ -460,7 +460,7 @@
       "entry_index": 125,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x07E": {
@@ -481,14 +481,14 @@
       "entry_index": 128,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x081": {
       "entry_index": 129,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x082": {
@@ -593,7 +593,7 @@
       "entry_index": 144,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x091": {
@@ -607,42 +607,42 @@
       "entry_index": 146,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x093": {
       "entry_index": 147,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x094": {
       "entry_index": 148,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x095": {
       "entry_index": 149,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "НОЧЛЕЖКА",
+      "name_ru": "СТРН.ГОСТ.",
       "description": "Подозрительная гостиница"
     },
     "0x096": {
       "entry_index": 150,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "НОЧЛЕЖКА",
+      "name_ru": "СТРН.ГОСТ.",
       "description": "Подозрительная гостиница"
     },
     "0x097": {
       "entry_index": 151,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "НОЧЛЕЖКА",
+      "name_ru": "СТРН.ГОСТ.",
       "description": "Подозрительная гостиница"
     },
     "0x098": {
@@ -663,7 +663,7 @@
       "entry_index": 154,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "НОЧЛЕЖКА",
+      "name_ru": "СТРН.ГОСТ.",
       "description": "Подозрительная гостиница"
     },
     "0x09B": {
@@ -677,7 +677,7 @@
       "entry_index": 156,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x09D": {
@@ -705,14 +705,14 @@
       "entry_index": 160,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0A1": {
       "entry_index": 161,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0A2": {
@@ -747,14 +747,14 @@
       "entry_index": 166,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x0A7": {
       "entry_index": 167,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x0A8": {
@@ -775,35 +775,35 @@
       "entry_index": 170,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0AB": {
       "entry_index": 171,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0AC": {
       "entry_index": 172,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0AD": {
       "entry_index": 173,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0AE": {
       "entry_index": 174,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0AF": {
@@ -866,7 +866,7 @@
       "entry_index": 183,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x0B8": {
@@ -887,14 +887,14 @@
       "entry_index": 186,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0BB": {
       "entry_index": 187,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0BC": {
@@ -936,7 +936,7 @@
       "entry_index": 193,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x0C2": {
@@ -950,7 +950,7 @@
       "entry_index": 195,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0C4": {
@@ -978,7 +978,7 @@
       "entry_index": 199,
       "name_jp": "表通り",
       "name_en": "MAIN",
-      "name_ru": "ГЛАВНАЯ",
+      "name_ru": "ГЛ.УЛИЦА",
       "description": "Главная улица города"
     },
     "0x0C8": {
@@ -992,7 +992,7 @@
       "entry_index": 201,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0CA": {
@@ -1048,7 +1048,7 @@
       "entry_index": 209,
       "name_jp": "宿屋",
       "name_en": "IN",
-      "name_ru": "ОТЕЛЬ",
+      "name_ru": "ГОСТИНИЦА",
       "description": "Гостиница / отель"
     },
     "0x0D2": {

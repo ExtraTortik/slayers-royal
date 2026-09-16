@@ -15,7 +15,7 @@
   "banners": {
     "MAIN ST": {
       "text_en": "MAIN ST",
-      "text_ru": "ГЛАВНАЯ",
+      "text_ru": "ГЛ.УЛИЦА",
       "font_size": "auto",
       "align": "center",
       "offset_x": -10,
@@ -215,8 +215,8 @@
     },
     "INN": {
       "text_en": "INN",
-      "text_ru": "ОТЕЛЬ",
-      "font_size": 8,
+      "text_ru": "ГОСТИНИЦА",
+      "font_size": 5,
       "align": "center",
       "offset_x": -17,
       "offset_y": 0,

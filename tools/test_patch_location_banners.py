@@ -276,7 +276,7 @@ class TestDiscPatchAndVerification:
         assert "LEAVE TOWN" in cat
         assert cat["LEAVE TOWN"]["text_ru"] == "ПОКИНУТЬ ГОРОД"
         assert cat["LEAVE TOWN"]["font_size"] == 6
-        assert cat["INN"]["text_ru"] == "ОТЕЛЬ"
+        assert cat["INN"]["text_ru"] == "ГОСТИНИЦА"
 
         # Test loading custom catalog override
         custom_json = tmp_path / "custom_banners.json"
