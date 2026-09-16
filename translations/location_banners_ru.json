@@ -15,10 +15,10 @@
   "banners": {
     "MAIN ST": {
       "text_en": "MAIN ST",
-      "text_ru": "ГЛ.УЛИЦА",
+      "text_ru": "ГЛАВНАЯ",
       "font_size": "auto",
       "align": "center",
-      "offset_x": -5,
+      "offset_x": 0,
       "offset_y": 0,
       "max_hardware_width_px": 70,
       "description": "Главная улица города"

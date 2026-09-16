@@ -183,8 +183,8 @@ BANNER_TRANSLATIONS: dict[str, str] = {
 BANNER_LAYOUT: list[tuple[str, str, tuple[int, int, int, int], tuple[int, int]]] = [
     # Band 0 (Row 0): Y=0..24
     # MAIN ST sprite window is ~70px wide; "ГЛАВНАЯ" is 56px wide, perfectly centered without cutoff
-    ("MAIN ST", "MAIN ST", (0, 0, 85, 24), (8, 6)),
-    ("PLAZA", "PLAZA", (86, 0, 165, 24), (96, 6)),
+    ("MAIN ST", "MAIN ST", (0, 0, 95, 24), (8, 6)),
+    ("PLAZA", "PLAZA", (96, 0, 165, 24), (96, 6)),
     ("MAGE GUILD", "MAGE GUILD", (166, 0, 255, 24), (175, 6)),
 
     # Band 1 (Row 1): Y=24..48
@@ -290,6 +290,8 @@ def render_cyrillic_banners(
     trans_map = translations or load_banner_translations()
     patched_img = base_img.copy().convert("RGBA")
     draw = ImageDraw.Draw(patched_img)
+    # Fully clear all banner bands (Y=0..216, X=0..256) to ensure 0% leftover Japanese/English pixels
+    draw.rectangle([0, 0, TIM_WIDTH, 216], fill=(0, 0, 0, 0))
 
     for banner_key, trans_key, (cx0, cy0, cx1, cy1), (dx, dy) in BANNER_LAYOUT:
         spec = trans_map.get(trans_key)

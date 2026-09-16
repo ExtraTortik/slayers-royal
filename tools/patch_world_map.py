@@ -43,7 +43,10 @@ from patch_repo.localization.glyphs import (
     RAW_FONT_PIXEL_OFFSET,
     glyph_xy,
 )
-from tools.patch_inspection import DEFAULT_CHARMAP
+from tools.patch_town_services import build_authoritative_vram_charmap
+
+# Authoritative VRAM Cyrillic charmap synchronized with PROG.UNT 0x03A / glyph_map.json
+DEFAULT_CHARMAP: dict[str, int] = build_authoritative_vram_charmap()
 
 # Default paths
 DEFAULT_TRANSLATIONS = REPO_ROOT / "translations" / "world_map_ru.json"
@@ -380,49 +383,99 @@ def patch_world_map_font_glyphs(bin_path: Path | str, ttf_path: Path | None = No
 def patch_world_map_sector_1606(bin_path: Path | str) -> int:
     """Patch Sector 1606 (LBA 230626) in PROG.UNT to write full Russian names for world map banners.
 
-    - Slot 0 (0x150, Table 1) and Table 2 (0x6C4): ЛЕЙКВУД (full-size 16x16 chars across the top ribbon banner!)
-    - Slot 1 (0x160, Table 1) and Table 2 (0x6D4): БАРКЛЕНД (full-size 16x16 chars with НД ligature!)
-    - Slot 2 (0x170): ФРИГРАНТ (with НТ ligature!)
-    - Slot 3 (0x180): ГРАМСТОК (with ОК ligature!)
-    - Slot 4 (0x190): СЕЙРУН
-    - Offset 0x368: РЕГИОН (0x028B, 0x029C)
+    - Table 1 (0x150..0x20F, 12 slots of 16B) and Table 2 (0x6C4..0x783, 12 slots of 16B):
+        Slot 0: ЛЕЙКВУД
+        Slot 1: БАРКЛЕНД (with НД ligature 0x028A)
+        Slot 2: ГРАМСТОК (with ОК ligature 0x028D)
+        Slot 3: СОНИЯ
+        Slot 4: МАРК-УЭЛЛС (0x02C7)
+        Slot 5: ИЗЕЛЬСЕН (ИЗЕЛЬС.)
+        Slot 6: ФРИГРАНТ (with НТ ligature 0x028C)
+        Slot 7: КЬЮЗАК
+        Slot 8: СЕЙРУН
+        Slot 9: САНБУРГ
+        Slot 10: ТУР-СИТИ (0x02B6)
+        Slot 11: ЛЕЗАРИАМ (0x02D3)
+    - Road and area location labels (0x204..0x380, 21 fixed-offset slots).
     """
     p = Path(bin_path)
     sec1606_lba = PROG_LBA + 1606
     sec1606 = bytearray(read_extent(p, sec1606_lba, USER_DATA_SIZE))
 
-    def make_slot(words: list[int]) -> bytes:
-        b = bytearray()
-        for w in words:
-            b.extend(struct.pack("<H", w))
-        b.extend(struct.pack("<H", DELIMITER))
+    CM = DEFAULT_CHARMAP
+
+    def make_slot(chars: list[str | int]) -> bytes:
+        words = [CM[c] if isinstance(c, str) else c for c in chars]
+        words.append(DELIMITER)
+        b = bytearray(struct.pack(f"<{len(words)}H", *words))
         pad = 16 - len(b)
         if pad > 0:
             b.extend(b"\x00" * pad)
         return bytes(b[:16])
 
-    CM = DEFAULT_CHARMAP
-    slot_lakewood = make_slot([CM["Л"], CM["Е"], CM["Й"], CM["К"], CM["В"], CM["У"], CM["Д"]])
-    slot_barkland = make_slot([CM["Б"], CM["А"], CM["Р"], CM["К"], CM["Л"], CM["Е"], 0x028A])
-    slot_freeground = make_slot([CM["Ф"], CM["Р"], CM["И"], CM["Г"], CM["Р"], CM["А"], 0x028C])
-    slot_grumstock = make_slot([CM["Г"], CM["Р"], CM["А"], CM["М"], CM["С"], CM["Т"], 0x028D])
-    slot_saillune = make_slot([CM["С"], CM["Е"], CM["Й"], CM["Р"], CM["У"], CM["Н"]])
+    # 12 Town slots for Table 1 and Table 2
+    town_slots_data = [
+        (0, ["Л", "Е", "Й", "К", "В", "У", "Д"]),
+        (1, ["Б", "А", "Р", "К", "Л", "Е", 0x028A]),
+        (2, ["Г", "Р", "А", "М", "С", "Т", 0x028D]),
+        (3, ["С", "О", "Н", "И", "Я"]),
+        (4, [0x02C7]),
+        (5, ["И", "З", "Е", "Л", "Ь", "С", "."]),
+        (6, ["Ф", "Р", "И", "Г", "Р", "А", 0x028C]),
+        (7, ["К", "Ь", "Ю", "З", "А", "К"]),
+        (8, ["С", "Е", "Й", "Р", "У", "Н"]),
+        (9, ["С", "А", "Н", "Б", "У", "Р", "Г"]),
+        (10, [0x02B6]),
+        (11, [0x02D3]),
+    ]
 
-    sec1606[0x150 : 0x150 + 16] = slot_lakewood
-    sec1606[0x160 : 0x160 + 16] = slot_barkland
-    sec1606[0x170 : 0x170 + 16] = slot_freeground
-    sec1606[0x180 : 0x180 + 16] = slot_grumstock
-    sec1606[0x190 : 0x190 + 16] = slot_saillune
+    for idx, chars in town_slots_data:
+        slot_bytes = make_slot(chars)
+        t1_off = 0x150 + idx * 16
+        t2_off = 0x6C4 + idx * 16
+        t1_len = 4 if idx == 11 else 16
+        sec1606[t1_off : t1_off + t1_len] = slot_bytes[:t1_len]
+        sec1606[t2_off : t2_off + 16] = slot_bytes
 
-    sec1606[0x6C4 : 0x6C4 + 16] = slot_lakewood
-    sec1606[0x6D4 : 0x6D4 + 16] = slot_barkland
+    # 21 Road/area slots between 0x204 and 0x380
+    road_slots = [
+        (0x204, 20, "ВОСТ.БАРК"),
+        (0x218, 20, "ЗАП. БАРК"),
+        (0x22C, 20, "ВОСТ.ГРАМ"),
+        (0x240, 20, "ШОССЕ СОН"),
+        (0x254, 24, "ТРОПА СОНИИ"),
+        (0x26C, 24, "ТРОПА СОНИИ"),
+        (0x284, 20, "ЮЖН. БАРК"),
+        (0x298, 20, "ВОСТ.БАРК"),
+        (0x2AC, 20, "СЕВ.ИЗЕЛЬ"),
+        (0x2C0, 20, "ГР.СЕЙРУН"),
+        (0x2D4, 16, "З.КЬЮЗ."),
+        (0x2E4, 24, "СЕВ.ФРИГР."),
+        (0x2FC, 16, "ЮГ СЕЙР"),
+        (0x30C, 16, "С.КЬЮЗ."),
+        (0x31C, 16, "В.СЕЙР."),
+        (0x32C, 24, "ГР.РАЛЬТИГ"),
+        (0x344, 16, "В.САНБ."),
+        (0x354, 20, "С.ТУР-СИТ"),
+        (0x368, 8, [0x028B, 0x029C]),
+        (0x370, 12, "ДОРОГ"),
+        (0x37C, 4, [0x028B]),
+    ]
 
-    # At 0x368: РЕГИОН
-    reg_bytes = struct.pack("<HHHH", 0x028B, 0x029C, DELIMITER, 0x0000)
-    sec1606[0x368 : 0x368 + 8] = reg_bytes
+    for off, max_b, item in road_slots:
+        if isinstance(item, list):
+            words = list(item)
+        else:
+            words = [CM[c] for c in item]
+        words.append(DELIMITER)
+        b = bytearray(struct.pack(f"<{len(words)}H", *words))
+        pad = max_b - len(b)
+        if pad > 0:
+            b.extend(b"\x00" * pad)
+        sec1606[off : off + max_b] = b[:max_b]
 
     replace_extent_in_place(p, sec1606_lba, bytes(sec1606))
-    return 5
+    return len(town_slots_data) + len(road_slots)
 
 
 def verify_world_map_bin(

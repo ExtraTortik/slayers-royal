@@ -15,8 +15,8 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from patch_repo.localization.disc import USER_DATA_SIZE
-from tools.patch_inspection import DEFAULT_CHARMAP
 from tools.patch_world_map import (
+    DEFAULT_CHARMAP,
     DEFAULT_TARGET_BIN,
     DEFAULT_TRANSLATIONS,
     DELIMITER,
