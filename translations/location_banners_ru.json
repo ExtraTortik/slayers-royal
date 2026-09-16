@@ -66,9 +66,9 @@
     "PORT STALL": {
       "text_en": "PORT STALL",
       "text_ru": "ПРИСТАНЬ",
-      "font_size": "4",
+      "font_size": "5",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -15,
       "offset_y": 0,
       "max_hardware_width_px": 80,
       "description": "Портовая пристань / прилавок"
@@ -105,7 +105,7 @@
     },
     "TAVERN": {
       "text_en": "TAVERN",
-      "text_ru": "ТАВЕРНА",
+      "text_ru": "БАР",
       "font_size": 7,
       "align": "center",
       "offset_x": 0,
@@ -166,9 +166,9 @@
     "MAYOR'S HOUSE": {
       "text_en": "MAYOR'S HOUSE",
       "text_ru": "ДОМ МЭРА",
-      "font_size": "auto",
+      "font_size": "7",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -40,
       "offset_y": 0,
       "max_hardware_width_px": 110,
       "description": "Дом мэра города"
@@ -206,9 +206,9 @@
     "OUTSKIRTS": {
       "text_en": "OUTSKIRTS",
       "text_ru": "ОКРАИНА",
-      "font_size": "auto",
+      "font_size": "6",
       "align": "center",
-      "offset_x": 0,
+      "offset_x": -20,
       "offset_y": 0,
       "max_hardware_width_px": 150,
       "description": "Окраина города"

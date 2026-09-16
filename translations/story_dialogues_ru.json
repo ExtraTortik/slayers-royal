@@ -43614,7 +43614,7 @@
             "9101"
           ],
           "text_jp": "トゥ-ルmiddle-dotシティね\"\"",
-          "text_ru": "Тул-Сити,\nзначит..."
+          "text_ru": "Тур-Сити,\nзначит..."
         },
         {
           "context": "dialogue/045/U045-S001/000",
@@ -54057,7 +54057,7 @@
           "allow_page_break": false,
           "controls": [],
           "text_jp": "森の奥にすすむ\nやめる",
-          "text_ru": "Друзья\nпродолжили идти\nвглубь леса."
+          "text_ru": "Идти вглубь\nНазад"
         },
         {
           "context": "dialogue/053/U053-S015/000",
@@ -54120,7 +54120,7 @@
           "allow_page_break": false,
           "controls": [],
           "text_jp": "右に行く\n左に行く",
-          "text_ru": "Идём направо!"
+          "text_ru": "Идём направо!\nИдём налево!"
         },
         {
           "context": "dialogue/053/U053-S020/000",
@@ -54502,7 +54502,7 @@
           "allow_page_break": false,
           "controls": [],
           "text_jp": "2階に上がってみる\n奥のドアへ行く\n外に出る",
-          "text_ru": "Давайте\nпроверим второй\nэтаж."
+          "text_ru": "На 2-й этаж\nК двери\nВыйти наружу"
         },
         {
           "context": "dialogue/053/U053-S050/000",

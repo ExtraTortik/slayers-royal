@@ -3,7 +3,7 @@
 **Проект:** Инструментарий ромхакинга, реверс-инжиниринга и полного русского перевода игры *Slayers Royal* (Sony PlayStation 1, 1997).  
 **Дата обновления:** 2026-09-16  
 **Статус тестов:** 332 passed (100% green: 321 `pytest tools/` + 11 `pytest patch_repo/localization/tests`)  
-**Готовый образ диска:** `localization-output/ru/slayers_royal_ru.bin` (712 300 848 байт, MD5: `31a0516572044458c335414117111415`, SHA-256: `4dfb4a32bd0318d9dcf1a8ad1f38cd7554a98539b32a8e8aa486a90e8b012c50`)  
+**Готовый образ диска:** `localization-output/ru/slayers_royal_ru.bin` (712 300 848 байт, MD5: `6cb3cae9cbbe274a065cb8fee34d5a04`, SHA-256: `41f65c2b16f661d4d950d36d189bd7031cfcee466043f72b0ea452f78875a5ee`)  
 **CUE-файл:** `localization-output/ru/slayers_royal_ru.cue` (82 байта, MD5: `f8c921583fbe4862d9bd6abb967a1b2b`, SHA-256: `3a454ac6b531be0698342b37615e1ccfd7126038b9223a9910140ea2ec6d9f42`)  
 
 ---
