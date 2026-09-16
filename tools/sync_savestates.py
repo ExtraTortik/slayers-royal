@@ -48,11 +48,11 @@ from patch_repo.localization.glyphs import BASE_CHAR_TO_GLYPH
 from tools.patch_inspection import (
     DEFAULT_ROOM_NAMES,
     HDR_ROOM_NAME_PTR,
+    decode_string as decode_inspection_string,
     encode_string,
     load_charmap,
     load_room_names,
 )
-
 DEFAULT_BIN = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
 DEFAULT_SAVESTATES_DIR = Path(os.path.expanduser("~/.local/share/duckstation/savestates"))
 
@@ -117,7 +117,7 @@ def find_entry3_in_payload(decompressed: bytes, entry3_header: bytes) -> int | N
 
     return None
 def build_room_lookup_to_ru(room_names_doc: dict[str, Any]) -> dict[str, str]:
-    """Build mapping from any known room name (JP or EN) to Russian translated name."""
+    """Build mapping from any known room name (JP, EN, or legacy RU) to canonical Russian name."""
     lookup: dict[str, str] = {}
     for e_key, e_val in room_names_doc.items():
         if isinstance(e_val, dict):
@@ -125,10 +125,36 @@ def build_room_lookup_to_ru(room_names_doc: dict[str, Any]) -> dict[str, str]:
             en = e_val.get("name_en")
             jp = e_val.get("name_jp")
             if ru:
+                lookup[ru] = ru
                 if en:
                     lookup[en] = ru
                 if jp:
                     lookup[jp] = ru
+    # Also handle previous long Russian translations that needed shortening
+    legacy_ru_shorten = {
+        'З. ЛЕС БАРКЛЕНДА': 'З.БАРКЛЕНД',
+        'В. ЛЕС БАРКЛЕНДА': 'В.БАРКЛЕНД',
+        'Ю. ЛЕС БАРКЛЕНДА': 'Ю.БАРКЛЕНД',
+        'С. ЛЕС ИЗЕЛЬСЕНА': 'С.ИЗЕЛЬСЕН',
+        'ГРАНИЦА РАЛЬТИГА': 'ГР.РАЛЬТИГ',
+        'ГРАНИЦА СЕЙРУНА': 'ГР.СЕЙРУН',
+        'С. ЛЕС КЬЮЗАКА': 'С. КЬЮЗАК',
+        'ЗАКОУЛКИ СОНИИ': 'ОБХОД',
+        'ЗАМОК ЛЕЗАРИАМ': 'ЛЕЗАРИАМ',
+        'СТАРЫЙ ОСОБНЯК': 'ОСОБНЯК',
+        'ЛОГОВО ГАЛЕФА': 'ДОМ ГАЛЕФА',
+        'ЗАПАД КЬЮЗАКА': 'З. КЬЮЗАК',
+        'КОРИДОР ЗАМКА': 'КОРИДОР',
+        'ГИЛЬДИЯ МАГОВ': 'ГИЛЬДИЯ',
+        'ТЁМНЫЙ ОТЕЛЬ': 'НОЧЛЕЖКА',
+        'СОКРОВИЩНИЦА': 'СОКРОВИЩА',
+        'В. ГРАМСТОК': 'В.ГРАМСТОК',
+        'ТРАКТ СОНИИ': 'ТРАКТ',
+        'С. ТУР-СИТИ': 'С.ТУР-СИТИ',
+        'КАНАЛИЗАЦИЯ': 'КОЛЛЕКТОР',
+        'ГЛАВНЫЙ ЗАЛ': 'ЗАЛ',
+    }
+    lookup.update(legacy_ru_shorten)
     return lookup
 
 
@@ -143,8 +169,8 @@ def sync_room_names_in_payload(
     pos = 0
     jp_cm = sr_charmap.build_charmap()
     glyph_to_char = {v: k for k, v in BASE_CHAR_TO_GLYPH.items()}
+    rev_cm = {v: k for k, v in cm.items()}
     ROOM_RAM_BASE = 0x00200000
-
     while True:
         p = decomp.find(pattern, pos)
         if p == -1:
@@ -164,8 +190,9 @@ def sync_room_names_in_payload(
                     words.append(w)
                 txt_en = "".join(glyph_to_char.get(w, f"[{hex(w)}]") for w in words)
                 txt_jp = "".join(jp_cm.get(w, f"[{hex(w)}]") for w in words)
-                ru_text = room_lookup.get(txt_en) or room_lookup.get(txt_jp)
-                if ru_text:
+                txt_ru = decode_inspection_string(words, rev_cm)
+                ru_text = room_lookup.get(txt_en) or room_lookup.get(txt_jp) or room_lookup.get(txt_ru)
+                if ru_text and ru_text != txt_ru:
                     enc = encode_string(ru_text, cm)
                     rel_3c = p3c - ROOM_RAM_BASE
                     rel_08 = p08 - ROOM_RAM_BASE

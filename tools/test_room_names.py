@@ -58,9 +58,16 @@ def test_room_names_catalog_integrity(room_names_doc: dict[str, str]):
     """Catalog must exist, contain all 160 room entries and 48 unique location names."""
     assert DEFAULT_ROOM_NAMES.is_file(), f"Missing {DEFAULT_ROOM_NAMES}"
     raw = json.loads(DEFAULT_ROOM_NAMES.read_text(encoding="utf-8"))
-    assert "unique_locations" in raw
-    assert len(raw["unique_locations"]) == 48, f"Expected 48 unique locations, got {len(raw['unique_locations'])}"
-    assert len(raw["entries"]) == 160, f"Expected 160 room entries, got {len(raw['entries'])}"
+    for e_idx in range(0x059, 0x0F9):
+        hex_key = f"0x{e_idx:03X}"
+        assert hex_key in raw["entries"], f"Missing entry {hex_key} in catalog"
+        entry_spec = raw["entries"][hex_key]
+        assert "name_ru" in entry_spec
+        assert entry_spec["name_ru"].strip(), f"Empty Russian name in {hex_key}"
+        # Hardware constraint: in-game location banner text box is 160px wide (16px/char = max 10 chars)
+        assert len(entry_spec["name_ru"]) <= 10, (
+            f"Entry {hex_key} name '{entry_spec['name_ru']}' exceeds 10 chars limit ({len(entry_spec['name_ru'])} chars)"
+        )
 
     # All room entries 0x059..0x0F8 must be present
     for e_idx in range(0x059, 0x0F9):

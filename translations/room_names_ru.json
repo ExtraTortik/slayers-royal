@@ -5,248 +5,202 @@
     "source_archive": "PROG.UNT",
     "entries_range": "0x059..0x0F8 (89..248)",
     "total_rooms": 160,
-    "unique_locations_count": 48
+    "unique_locations_count": 48,
+    "max_hardware_chars": 10,
+    "hardware_box_width_px": 160
   },
   "unique_locations": {
     "定食屋": {
       "ru": "БАР",
-      "en": "BAR",
-      "desc": "Закусочная / бар"
+      "en": "BAR"
     },
     "表通り": {
       "ru": "ГЛАВНАЯ",
-      "en": "MAIN",
-      "desc": "Главная улица города"
+      "en": "MAIN"
     },
     "宿屋": {
       "ru": "ОТЕЛЬ",
-      "en": "IN",
-      "desc": "Гостиница / отель"
+      "en": "IN"
     },
     "裏通り": {
       "ru": "ЗАКОУЛКИ",
-      "en": "BACK",
-      "desc": "Закоулки / переулки города"
+      "en": "BACK"
     },
     "あやしい宿屋": {
-      "ru": "ТЁМНЫЙ ОТЕЛЬ",
-      "en": "ODD IN",
-      "desc": "Подозрительная гостиница"
+      "ru": "НОЧЛЕЖКА",
+      "en": "ODD IN"
     },
     "イゼルセン北の森": {
-      "ru": "С. ЛЕС ИЗЕЛЬСЕНА",
-      "en": "IZELCEN N FOREST",
-      "desc": "Северный лес Изельсена"
+      "ru": "С.ИЗЕЛЬСЕН",
+      "en": "IZELCEN N FOREST"
     },
     "ガケ": {
       "ru": "УТЁС",
-      "en": "CLIFF",
-      "desc": "Утёс / скалистый обрыв"
+      "en": "CLIFF"
     },
     "ガレフの[0x289]れ家": {
-      "ru": "ЛОГОВО ГАЛЕФА",
-      "en": "GALEV DEN",
-      "desc": "Логово Галефа"
+      "ru": "ДОМ ГАЛЕФА",
+      "en": "GALEV DEN"
     },
     "キュ-ザック北の森": {
-      "ru": "С. ЛЕС КЬЮЗАКА",
-      "en": "KUZACK NORTH",
-      "desc": "Северный лес Кьюзака"
+      "ru": "С. КЬЮЗАК",
+      "en": "KUZACK NORTH"
     },
     "キュ-ザック西": {
-      "ru": "ЗАПАД КЬЮЗАКА",
-      "en": "KUZACK WEST",
-      "desc": "Западная область Кьюзака"
+      "ru": "З. КЬЮЗАК",
+      "en": "KUZACK WEST"
     },
     "グラムストック東": {
-      "ru": "В. ГРАМСТОК",
-      "en": "GRAMSTOCK EAST",
-      "desc": "Восточный Грамсток"
+      "ru": "В.ГРАМСТОК",
+      "en": "GRAMSTOCK EAST"
     },
     "サンブルク東": {
       "ru": "В. САМБУРГ",
-      "en": "SUNBURG EAST",
-      "desc": "Восточный Самбург"
+      "en": "SUNBURG EAST"
     },
     "セイル-ン東": {
       "ru": "В. СЕЙРУН",
-      "en": "SEYRUUN EAST",
-      "desc": "Восточный Сейрун"
+      "en": "SEYRUUN EAST"
     },
     "セイル-ン王国国境": {
-      "ru": "ГРАНИЦА СЕЙРУНА",
-      "en": "SEYRUUN BORDER",
-      "desc": "Граница королевства Сейрун"
+      "ru": "ГР.СЕЙРУН",
+      "en": "SEYRUUN BORDER"
     },
     "ソニアmiddle-dotシティ街道": {
-      "ru": "ТРАКТ СОНИИ",
-      "en": "SONIA HWY",
-      "desc": "Тракт города Сония"
+      "ru": "ТРАКТ",
+      "en": "SONIA HWY"
     },
     "ソニアmiddle-dotシティ裏街道": {
-      "ru": "ЗАКОУЛКИ СОНИИ",
-      "en": "SONIA BACK RD",
-      "desc": "Обходная дорога Сонии"
+      "ru": "ОБХОД",
+      "en": "SONIA BACK RD"
     },
     "トゥ-ルmiddle-dotシティ北": {
-      "ru": "С. ТУР-СИТИ",
-      "en": "TOUL CITY N",
-      "desc": "Север Тур-Сити"
+      "ru": "С.ТУР-СИТИ",
+      "en": "TOUL CITY N"
     },
     "バ-クランド南の森": {
-      "ru": "Ю. ЛЕС БАРКЛЕНДА",
-      "en": "BARK S FOREST",
-      "desc": "Южный лес Баркленда"
+      "ru": "Ю.БАРКЛЕНД",
+      "en": "BARK S FOREST"
     },
     "バ-クランド東の森": {
-      "ru": "В. ЛЕС БАРКЛЕНДА",
-      "en": "BARK E FOREST",
-      "desc": "Восточный лес Баркленда"
+      "ru": "В.БАРКЛЕНД",
+      "en": "BARK E FOREST"
     },
     "バ-クランド西の森": {
-      "ru": "З. ЛЕС БАРКЛЕНДА",
-      "en": "BARK W FOREST",
-      "desc": "Западный лес Баркленда"
+      "ru": "З.БАРКЛЕНД",
+      "en": "BARK W FOREST"
     },
     "バザ-": {
       "ru": "БАЗАР",
-      "en": "BAZ",
-      "desc": "Базар / рынок"
+      "en": "BAZ"
     },
     "ラ-クの家": {
       "ru": "ДОМ ЛАРКА",
-      "en": "LARK",
-      "desc": "Дом Ларка"
+      "en": "LARK"
     },
     "ラルティ-グ王国国境": {
-      "ru": "ГРАНИЦА РАЛЬТИГА",
-      "en": "RALTEAGUE BDR",
-      "desc": "Граница королевства Ральтиг"
+      "ru": "ГР.РАЛЬТИГ",
+      "en": "RALTEAGUE BDR"
     },
     "レザリアム城": {
-      "ru": "ЗАМОК ЛЕЗАРИАМ",
-      "en": "LEZARIAM",
-      "desc": "Замок Лезариам"
+      "ru": "ЛЕЗАРИАМ",
+      "en": "LEZARIAM"
     },
     "倉庫": {
       "ru": "СКЛАД",
-      "en": "STORE",
-      "desc": "Склад / хранилище"
+      "en": "STORE"
     },
     "古びた洋館": {
-      "ru": "СТАРЫЙ ОСОБНЯК",
-      "en": "MANOR",
-      "desc": "Старинный особняк"
+      "ru": "ОСОБНЯК",
+      "en": "MANOR"
     },
     "地下水道": {
-      "ru": "КАНАЛИЗАЦИЯ",
-      "en": "SEWER",
-      "desc": "Подземная канализация"
+      "ru": "КОЛЛЕКТОР",
+      "en": "SEWER"
     },
     "大広間": {
-      "ru": "ГЛАВНЫЙ ЗАЛ",
-      "en": "HALL",
-      "desc": "Большой парадный зал"
+      "ru": "ЗАЛ",
+      "en": "HALL"
     },
     "宝物庫": {
-      "ru": "СОКРОВИЩНИЦА",
-      "en": "VAULT",
-      "desc": "Сокровищница замка"
+      "ru": "СОКРОВИЩА",
+      "en": "VAULT"
     },
     "市場": {
       "ru": "РЫНОК",
-      "en": "MARKET",
-      "desc": "Городской рынок"
+      "en": "MARKET"
     },
     "広場": {
       "ru": "ПЛОЩАДЬ",
-      "en": "PLAZA",
-      "desc": "Городская площадь"
+      "en": "PLAZA"
     },
     "教会": {
       "ru": "ЦЕРКОВЬ",
-      "en": "CHURCH",
-      "desc": "Церковь / собор"
+      "en": "CHURCH"
     },
     "本城通路": {
-      "ru": "КОРИДОР ЗАМКА",
-      "en": "HALL",
-      "desc": "Коридор замка"
+      "ru": "КОРИДОР",
+      "en": "HALL"
     },
     "森": {
       "ru": "ЛЕС",
-      "en": "WOODS",
-      "desc": "Лес / лесная чаща"
+      "en": "WOODS"
     },
     "武器屋": {
       "ru": "ОРУЖЕЙНАЯ",
-      "en": "WPN",
-      "desc": "Оружейная лавка"
+      "en": "WPN"
     },
     "洞穴": {
       "ru": "ПЕЩЕРА",
-      "en": "CAVE",
-      "desc": "Вход в пещеру"
+      "en": "CAVE"
     },
     "洞穴内部": {
       "ru": "В ПЕЩЕРЕ",
-      "en": "CAVE IN",
-      "desc": "Внутренняя часть пещеры"
+      "en": "CAVE IN"
     },
     "海辺": {
       "ru": "ПОБЕРЕЖЬЕ",
-      "en": "SEA",
-      "desc": "Морское побережье"
+      "en": "SEA"
     },
     "港": {
       "ru": "ПРИСТАНЬ",
-      "en": "PORT",
-      "desc": "Портовая пристань"
+      "en": "PORT"
     },
     "王立図書館": {
       "ru": "БИБЛИОТЕКА",
-      "en": "LIBRARY",
-      "desc": "Королевская библиотека"
+      "en": "LIBRARY"
     },
     "町外れ": {
       "ru": "ОКРАИНА",
-      "en": "OUT",
-      "desc": "Окраина города"
+      "en": "OUT"
     },
     "町長の家": {
       "ru": "ДОМ МЭРА",
-      "en": "MAYOR",
-      "desc": "Дом мэра города"
+      "en": "MAYOR"
     },
     "神殿": {
       "ru": "ХРАМ",
-      "en": "TEMPLE",
-      "desc": "Святилище / храм"
+      "en": "TEMPLE"
     },
     "路地裏": {
       "ru": "ПЕРЕУЛОК",
-      "en": "ALLEY",
-      "desc": "Узкий переулок"
+      "en": "ALLEY"
     },
     "道具屋": {
       "ru": "ЛАВКА",
-      "en": "ITEM",
-      "desc": "Лавка предметов и снадобьев"
+      "en": "ITEM"
     },
     "酒場": {
       "ru": "ТАВЕРНА",
-      "en": "TAVERN",
-      "desc": "Таверна"
+      "en": "TAVERN"
     },
     "長老の家": {
       "ru": "СТАРОСТА",
-      "en": "ELDER",
-      "desc": "Дом старейшины / старосты"
+      "en": "ELDER"
     },
     "魔道士協会": {
-      "ru": "ГИЛЬДИЯ МАГОВ",
-      "en": "MAGE GUILD",
-      "desc": "Гильдия магов"
+      "ru": "ГИЛЬДИЯ",
+      "en": "MAGE GUILD"
     }
   },
   "entries": {
@@ -513,14 +467,14 @@
       "entry_index": 126,
       "name_jp": "魔道士協会",
       "name_en": "MAGE GUILD",
-      "name_ru": "ГИЛЬДИЯ МАГОВ",
+      "name_ru": "ГИЛЬДИЯ",
       "description": "Гильдия магов"
     },
     "0x07F": {
       "entry_index": 127,
       "name_jp": "魔道士協会",
       "name_en": "MAGE GUILD",
-      "name_ru": "ГИЛЬДИЯ МАГОВ",
+      "name_ru": "ГИЛЬДИЯ",
       "description": "Гильдия магов"
     },
     "0x080": {
@@ -674,21 +628,21 @@
       "entry_index": 149,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "name_ru": "НОЧЛЕЖКА",
       "description": "Подозрительная гостиница"
     },
     "0x096": {
       "entry_index": 150,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "name_ru": "НОЧЛЕЖКА",
       "description": "Подозрительная гостиница"
     },
     "0x097": {
       "entry_index": 151,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "name_ru": "НОЧЛЕЖКА",
       "description": "Подозрительная гостиница"
     },
     "0x098": {
@@ -709,7 +663,7 @@
       "entry_index": 154,
       "name_jp": "あやしい宿屋",
       "name_en": "ODD IN",
-      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "name_ru": "НОЧЛЕЖКА",
       "description": "Подозрительная гостиница"
     },
     "0x09B": {
@@ -1059,14 +1013,14 @@
       "entry_index": 204,
       "name_jp": "地下水道",
       "name_en": "SEWER",
-      "name_ru": "КАНАЛИЗАЦИЯ",
+      "name_ru": "КОЛЛЕКТОР",
       "description": "Подземная канализация"
     },
     "0x0CD": {
       "entry_index": 205,
       "name_jp": "地下水道",
       "name_en": "SEWER",
-      "name_ru": "КАНАЛИЗАЦИЯ",
+      "name_ru": "КОЛЛЕКТОР",
       "description": "Подземная канализация"
     },
     "0x0CE": {
@@ -1101,28 +1055,28 @@
       "entry_index": 210,
       "name_jp": "レザリアム城",
       "name_en": "LEZARIAM",
-      "name_ru": "ЗАМОК ЛЕЗАРИАМ",
+      "name_ru": "ЛЕЗАРИАМ",
       "description": "Замок Лезариам"
     },
     "0x0D3": {
       "entry_index": 211,
       "name_jp": "本城通路",
       "name_en": "HALL",
-      "name_ru": "КОРИДОР ЗАМКА",
+      "name_ru": "КОРИДОР",
       "description": "Коридор замка"
     },
     "0x0D4": {
       "entry_index": 212,
       "name_jp": "宝物庫",
       "name_en": "VAULT",
-      "name_ru": "СОКРОВИЩНИЦА",
+      "name_ru": "СОКРОВИЩА",
       "description": "Сокровищница замка"
     },
     "0x0D5": {
       "entry_index": 213,
       "name_jp": "大広間",
       "name_en": "HALL",
-      "name_ru": "ГЛАВНЫЙ ЗАЛ",
+      "name_ru": "ЗАЛ",
       "description": "Большой парадный зал"
     },
     "0x0D6": {
@@ -1136,196 +1090,196 @@
       "entry_index": 215,
       "name_jp": "大広間",
       "name_en": "HALL",
-      "name_ru": "ГЛАВНЫЙ ЗАЛ",
+      "name_ru": "ЗАЛ",
       "description": "Большой парадный зал"
     },
     "0x0D8": {
       "entry_index": 216,
       "name_jp": "バ-クランド東の森",
       "name_en": "BARK E FOREST",
-      "name_ru": "В. ЛЕС БАРКЛЕНДА",
+      "name_ru": "В.БАРКЛЕНД",
       "description": "Восточный лес Баркленда"
     },
     "0x0D9": {
       "entry_index": 217,
       "name_jp": "バ-クランド西の森",
       "name_en": "BARK W FOREST",
-      "name_ru": "З. ЛЕС БАРКЛЕНДА",
+      "name_ru": "З.БАРКЛЕНД",
       "description": "Западный лес Баркленда"
     },
     "0x0DA": {
       "entry_index": 218,
       "name_jp": "グラムストック東",
       "name_en": "GRAMSTOCK EAST",
-      "name_ru": "В. ГРАМСТОК",
+      "name_ru": "В.ГРАМСТОК",
       "description": "Восточный Грамсток"
     },
     "0x0DB": {
       "entry_index": 219,
       "name_jp": "ソニアmiddle-dotシティ街道",
       "name_en": "SONIA HWY",
-      "name_ru": "ТРАКТ СОНИИ",
+      "name_ru": "ТРАКТ",
       "description": "Тракт города Сония"
     },
     "0x0DC": {
       "entry_index": 220,
       "name_jp": "ソニアmiddle-dotシティ裏街道",
       "name_en": "SONIA BACK RD",
-      "name_ru": "ЗАКОУЛКИ СОНИИ",
+      "name_ru": "ОБХОД",
       "description": "Обходная дорога Сонии"
     },
     "0x0DD": {
       "entry_index": 221,
       "name_jp": "ソニアmiddle-dotシティ裏街道",
       "name_en": "SONIA BACK RD",
-      "name_ru": "ЗАКОУЛКИ СОНИИ",
+      "name_ru": "ОБХОД",
       "description": "Обходная дорога Сонии"
     },
     "0x0DE": {
       "entry_index": 222,
       "name_jp": "バ-クランド南の森",
       "name_en": "BARK S FOREST",
-      "name_ru": "Ю. ЛЕС БАРКЛЕНДА",
+      "name_ru": "Ю.БАРКЛЕНД",
       "description": "Южный лес Баркленда"
     },
     "0x0DF": {
       "entry_index": 223,
       "name_jp": "イゼルセン北の森",
       "name_en": "IZELCEN N FOREST",
-      "name_ru": "С. ЛЕС ИЗЕЛЬСЕНА",
+      "name_ru": "С.ИЗЕЛЬСЕН",
       "description": "Северный лес Изельсена"
     },
     "0x0E0": {
       "entry_index": 224,
       "name_jp": "イゼルセン北の森",
       "name_en": "IZELCEN N FOREST",
-      "name_ru": "С. ЛЕС ИЗЕЛЬСЕНА",
+      "name_ru": "С.ИЗЕЛЬСЕН",
       "description": "Северный лес Изельсена"
     },
     "0x0E1": {
       "entry_index": 225,
       "name_jp": "セイル-ン王国国境",
       "name_en": "SEYRUUN BORDER",
-      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "name_ru": "ГР.СЕЙРУН",
       "description": "Граница королевства Сейрун"
     },
     "0x0E2": {
       "entry_index": 226,
       "name_jp": "セイル-ン王国国境",
       "name_en": "SEYRUUN BORDER",
-      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "name_ru": "ГР.СЕЙРУН",
       "description": "Граница королевства Сейрун"
     },
     "0x0E3": {
       "entry_index": 227,
       "name_jp": "セイル-ン王国国境",
       "name_en": "SEYRUUN BORDER",
-      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "name_ru": "ГР.СЕЙРУН",
       "description": "Граница королевства Сейрун"
     },
     "0x0E4": {
       "entry_index": 228,
       "name_jp": "キュ-ザック西",
       "name_en": "KUZACK WEST",
-      "name_ru": "ЗАПАД КЬЮЗАКА",
+      "name_ru": "З. КЬЮЗАК",
       "description": "Западная область Кьюзака"
     },
     "0x0E5": {
       "entry_index": 229,
       "name_jp": "グラムストック東",
       "name_en": "GRAMSTOCK EAST",
-      "name_ru": "В. ГРАМСТОК",
+      "name_ru": "В.ГРАМСТОК",
       "description": "Восточный Грамсток"
     },
     "0x0E6": {
       "entry_index": 230,
       "name_jp": "グラムストック東",
       "name_en": "GRAMSTOCK EAST",
-      "name_ru": "В. ГРАМСТОК",
+      "name_ru": "В.ГРАМСТОК",
       "description": "Восточный Грамсток"
     },
     "0x0E7": {
       "entry_index": 231,
       "name_jp": "キュ-ザック北の森",
       "name_en": "KUZACK NORTH",
-      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "name_ru": "С. КЬЮЗАК",
       "description": "Северный лес Кьюзака"
     },
     "0x0E8": {
       "entry_index": 232,
       "name_jp": "キュ-ザック北の森",
       "name_en": "KUZACK NORTH",
-      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "name_ru": "С. КЬЮЗАК",
       "description": "Северный лес Кьюзака"
     },
     "0x0E9": {
       "entry_index": 233,
       "name_jp": "キュ-ザック北の森",
       "name_en": "KUZACK NORTH",
-      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "name_ru": "С. КЬЮЗАК",
       "description": "Северный лес Кьюзака"
     },
     "0x0EA": {
       "entry_index": 234,
       "name_jp": "キュ-ザック北の森",
       "name_en": "KUZACK NORTH",
-      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "name_ru": "С. КЬЮЗАК",
       "description": "Северный лес Кьюзака"
     },
     "0x0EB": {
       "entry_index": 235,
       "name_jp": "キュ-ザック北の森",
       "name_en": "KUZACK NORTH",
-      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "name_ru": "С. КЬЮЗАК",
       "description": "Северный лес Кьюзака"
     },
     "0x0EC": {
       "entry_index": 236,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0ED": {
       "entry_index": 237,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0EE": {
       "entry_index": 238,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0EF": {
       "entry_index": 239,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0F0": {
       "entry_index": 240,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0F1": {
       "entry_index": 241,
       "name_jp": "古びた洋館",
       "name_en": "MANOR",
-      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "name_ru": "ОСОБНЯК",
       "description": "Старинный особняк"
     },
     "0x0F2": {
       "entry_index": 242,
       "name_jp": "ガレフの[0x289]れ家",
       "name_en": "GALEV DEN",
-      "name_ru": "ЛОГОВО ГАЛЕФА",
+      "name_ru": "ДОМ ГАЛЕФА",
       "description": "Логово Галефа"
     },
     "0x0F3": {
@@ -1339,21 +1293,21 @@
       "entry_index": 244,
       "name_jp": "ラルティ-グ王国国境",
       "name_en": "RALTEAGUE BDR",
-      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "name_ru": "ГР.РАЛЬТИГ",
       "description": "Граница королевства Ральтиг"
     },
     "0x0F5": {
       "entry_index": 245,
       "name_jp": "ラルティ-グ王国国境",
       "name_en": "RALTEAGUE BDR",
-      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "name_ru": "ГР.РАЛЬТИГ",
       "description": "Граница королевства Ральтиг"
     },
     "0x0F6": {
       "entry_index": 246,
       "name_jp": "ラルティ-グ王国国境",
       "name_en": "RALTEAGUE BDR",
-      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "name_ru": "ГР.РАЛЬТИГ",
       "description": "Граница королевства Ральтиг"
     },
     "0x0F7": {
@@ -1367,7 +1321,7 @@
       "entry_index": 248,
       "name_jp": "トゥ-ルmiddle-dotシティ北",
       "name_en": "TOUL CITY N",
-      "name_ru": "С. ТУР-СИТИ",
+      "name_ru": "С.ТУР-СИТИ",
       "description": "Север Тур-Сити"
     }
   }
