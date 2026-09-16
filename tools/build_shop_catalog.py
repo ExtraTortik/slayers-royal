@@ -1,0 +1,1968 @@
+#!/usr/bin/env python3
+"""Build and validate translations/shop_dialogues_ru.json.
+
+Creates the full catalog of all 98 shop dialogues and menus covering all 100 pointers
+in PROG.UNT Entry 3 (Table 1: 84 pointers, Table 2: 16 pointers),
+plus the 91 items of the shop items table at 0x030A20.
+"""
+
+import json
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+
+SHOP_ENTRIES = [
+    {
+        "id": "prompt_who",
+        "offset_hex": "0x030F68",
+        "pointer_offsets_hex": [
+            "0x031F14",
+            "0x031F18"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "prompt",
+        "text_jp": "誰のを買うの?",
+        "text_ru": "КОМУ ПОКУПАТЬ?",
+        "max_bytes": 16
+    },
+    {
+        "id": "prompt_item",
+        "offset_hex": "0x030F78",
+        "pointer_offsets_hex": [
+            "0x031F1C"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "prompt",
+        "text_jp": "何を買うの?",
+        "text_ru": "ЧТО ВЫБРАТЬ?",
+        "max_bytes": 16
+    },
+    {
+        "id": "buy_greet_weapon",
+        "offset_hex": "0x030F88",
+        "pointer_offsets_hex": [
+            "0x031F20"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "何かほしいものがあるのかい?",
+        "text_ru": "Что нужно?",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_suggest_weapon",
+        "offset_hex": "0x030FA8",
+        "pointer_offsets_hex": [
+            "0x031F24"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "それよりマシなやつなら\n<00BF>ってのがあるな.\nどうするね?",
+        "text_ru": "Есть получше:\n<00BF>.\nКак тебе?",
+        "max_bytes": 60
+    },
+    {
+        "id": "buy_none_better_weapon",
+        "offset_hex": "0x030FE4",
+        "pointer_offsets_hex": [
+            "0x031F28"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "う-ん,それ以上のものと言っても\nうちの店にはおいてないなあ.",
+        "text_ru": "Хм, лучше этого\nв моей лавке\nне найдётся.",
+        "max_bytes": 68
+    },
+    {
+        "id": "buy_material_weapon",
+        "offset_hex": "0x031028",
+        "pointer_offsets_hex": [
+            "0x031F2C"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "<00BF>なら,\n<00BF>でできてるのが\nあるんだが.",
+        "text_ru": "<00BF>?\n<00BF>\nв наличии есть.",
+        "max_bytes": 44
+    },
+    {
+        "id": "buy_out_of_stock_weapon",
+        "offset_hex": "0x031054",
+        "pointer_offsets_hex": [
+            "0x031F30"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "そういう<00BF>は\nあつかっていないなあ.",
+        "text_ru": "<00BF> у нас\nне водится.\nУвы!",
+        "max_bytes": 40
+    },
+    {
+        "id": "buy_greet_item",
+        "offset_hex": "0x03107C",
+        "pointer_offsets_hex": [
+            "0x031F34"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "何かほしいものがあるのかい?",
+        "text_ru": "Ищешь что-то?",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_suggest_item",
+        "offset_hex": "0x03109C",
+        "pointer_offsets_hex": [
+            "0x031F38"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "この<00BF>ってのは,\nどうだい,その<00BF>と\n似てるが,かなりましだろ.",
+        "text_ru": "<00BF>?\nКак насчёт:\n<00BF>? Лучше!",
+        "max_bytes": 68
+    },
+    {
+        "id": "buy_none_better_item",
+        "offset_hex": "0x0310E0",
+        "pointer_offsets_hex": [
+            "0x031F3C"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "それ以上のものは,うちの店じゃあ\nあつかっていないよ.",
+        "text_ru": "У нас получше\nтовара нет.",
+        "max_bytes": 60
+    },
+    {
+        "id": "buy_material_item",
+        "offset_hex": "0x03111C",
+        "pointer_offsets_hex": [
+            "0x031F40"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "その<00BF>かい?\nう-ん,それ以上のものといったら\nこれなんかどうだい?\f<00BF>でできてるから,\nそれよりはじょうぶなはずさ.",
+        "text_ru": "<00BF> нужен?\nВзгляни сюда:\f<00BF>?\nОно куда\nпрочнее будет!",
+        "max_bytes": 124
+    },
+    {
+        "id": "buy_out_of_stock_item",
+        "offset_hex": "0x031198",
+        "pointer_offsets_hex": [
+            "0x031F44"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "そういう<00BF>は\nあつかっていないねえ,ごめんよ.",
+        "text_ru": "<00BF>?\nТакого товара\nнет. Уж извини!",
+        "max_bytes": 52
+    },
+    {
+        "id": "buy_greet_magic",
+        "offset_hex": "0x0311CC",
+        "pointer_offsets_hex": [
+            "0x031F48"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "何かおさがしですかしら?",
+        "text_ru": "Что вам угодно?",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_suggest_magic",
+        "offset_hex": "0x0311E8",
+        "pointer_offsets_hex": [
+            "0x031F4C"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "うふふ,<00BF>ですね.\nわかりました.\fでは,これなんかいかがでしょう?\n<00BF>というものですが.\f魔力がこもっておりますから,武器の\n攻撃がきかない敵にも,ダメ-ジを\nあたえる事ができますわ.\fとくに,レッサ-デ-モンなどに\nきりつけた時の,きりごたえと言えば\nそれはもう,うふ,うふふふふ.\fそれで,どうなさいます?",
+        "text_ru": "<00BF>?\nХи-хи, ясно.\fКак насчёт\n<00BF>?\fВ нём магия!\nОно разит даже\nнеуязвимых!\fА при ударе\nпо демону...\nХи-хи, восторг!\fНу что, берёте?",
+        "max_bytes": 316
+    },
+    {
+        "id": "buy_none_better_magic",
+        "offset_hex": "0x031324",
+        "pointer_offsets_hex": [
+            "0x031F50"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "あらまあ,ここにはそういうの\nおいてないのよ,ごめんなさいね.",
+        "text_ru": "Увы, такого\nу меня нет.\nПростите!",
+        "max_bytes": 68
+    },
+    {
+        "id": "buy_material_magic",
+        "offset_hex": "0x031368",
+        "pointer_offsets_hex": [
+            "0x031F54"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "その<00BF>ですか.\nそれでしたら,これにかぎりますわ.\fこれならば,少々の魔法に対しては\nそれなりの効果がありますのよ.\fなにせ<00BF>で,つくられ\nておりますから'",
+        "text_ru": "<00BF>?\nВот это нужно!\fЗащитит даже\nот сильных чар.\f<00BF> — вот\nего основа!",
+        "max_bytes": 164
+    },
+    {
+        "id": "buy_out_of_stock_magic",
+        "offset_hex": "0x03140C",
+        "pointer_offsets_hex": [
+            "0x031F58"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "あらまあ,そういう<00BF>\nはありませんの,ごめんなさい.",
+        "text_ru": "<00BF>?\nУвы, такого\nсейчас нет.",
+        "max_bytes": 56
+    },
+    {
+        "id": "buy_want_lina",
+        "offset_hex": "0x031444",
+        "pointer_offsets_hex": [
+            "0x031F5C"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "<00BF>がほしいんだけど.",
+        "text_ru": "<00BF>\nмне нужен!",
+        "max_bytes": 24
+    },
+    {
+        "id": "buy_want_gourry",
+        "offset_hex": "0x03145C",
+        "pointer_offsets_hex": [
+            "0x031F60"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "<00BF>がほしいんだが'",
+        "text_ru": "<00BF> мне бы...",
+        "max_bytes": 24
+    },
+    {
+        "id": "buy_want_zelgadis",
+        "offset_hex": "0x031474",
+        "pointer_offsets_hex": [
+            "0x031F64"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "<00BF>を見せてくれ.",
+        "text_ru": "<00BF>\nпокажи-ка.",
+        "max_bytes": 20
+    },
+    {
+        "id": "buy_want_amelia",
+        "offset_hex": "0x031488",
+        "pointer_offsets_hex": [
+            "0x031F68"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "<00BF>をくださいっ.",
+        "text_ru": "<00BF>\nдайте мне!",
+        "max_bytes": 20
+    },
+    {
+        "id": "buy_want_sylphiel",
+        "offset_hex": "0x03149C",
+        "pointer_offsets_hex": [
+            "0x031F6C"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "あの,<00BF>を\n見せていただきたいのですが.",
+        "text_ru": "<00BF>...\nПокажите,\nпрошу вас.",
+        "max_bytes": 44
+    },
+    {
+        "id": "buy_want_lark",
+        "offset_hex": "0x0314C8",
+        "pointer_offsets_hex": [
+            "0x031F70"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "あの,すみません,\n<00BF>がほしいんですけど.",
+        "text_ru": "<00BF>\nмне нужен,\nесли можно.",
+        "max_bytes": 48
+    },
+    {
+        "id": "buy_accept_lina",
+        "offset_hex": "0x0314F8",
+        "pointer_offsets_hex": [
+            "0x031F74"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "じゃあ,それもらうわ.",
+        "text_ru": "Беру!\nЗаверните.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_accept_gourry",
+        "offset_hex": "0x031514",
+        "pointer_offsets_hex": [
+            "0x031F78"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "じゃあ,それにするよ.",
+        "text_ru": "Ладно,\nя беру это.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_accept_zelgadis",
+        "offset_hex": "0x031530",
+        "pointer_offsets_hex": [
+            "0x031F7C"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "いいだろう,それをくれ.",
+        "text_ru": "Пойдёт.\nБеру.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_accept_amelia",
+        "offset_hex": "0x03154C",
+        "pointer_offsets_hex": [
+            "0x031F80"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "それをくださいっ!",
+        "text_ru": "Я беру это!",
+        "max_bytes": 24
+    },
+    {
+        "id": "buy_accept_sylphiel",
+        "offset_hex": "0x031564",
+        "pointer_offsets_hex": [
+            "0x031F84"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "では,それをいただきます.",
+        "text_ru": "Я куплю это.",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_accept_lark",
+        "offset_hex": "0x031584",
+        "pointer_offsets_hex": [
+            "0x031F88"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "じゃあ,それでいいです.",
+        "text_ru": "Хорошо, беру.",
+        "max_bytes": 28
+    },
+    {
+        "id": "menu_price_cancel",
+        "offset_hex": "0x0315A0",
+        "pointer_offsets_hex": [
+            "0x031F8C"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "値段をきく\n買うのをやめる",
+        "text_ru": "УЗНАТЬ ЦЕНУ\nОТМЕНА",
+        "max_bytes": 28
+    },
+    {
+        "id": "menu_buy_haggle_cancel",
+        "offset_hex": "0x0315BC",
+        "pointer_offsets_hex": [
+            "0x031F90"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "いい値で買う\n値切る\n買うのをやめる",
+        "text_ru": "КУПИТЬ\nТОРГ\nОТМЕНА",
+        "max_bytes": 40
+    },
+    {
+        "id": "haggle_lina",
+        "offset_hex": "0x0315E4",
+        "pointer_offsets_hex": [
+            "0x031F94"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "で,まさかその値段ってワケじゃあ\nないわよね?",
+        "text_ru": "Ты всерьёз\nдумаешь продать\nпо такой цене?!",
+        "max_bytes": 52
+    },
+    {
+        "id": "haggle_gourry",
+        "offset_hex": "0x031618",
+        "pointer_offsets_hex": [
+            "0x031F98"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "その-,なんだ,すこしまけて\nくれないか?",
+        "text_ru": "Э-э... слышь,\nа скинуть\nнельзя?",
+        "max_bytes": 48
+    },
+    {
+        "id": "haggle_zelgadis",
+        "offset_hex": "0x031648",
+        "pointer_offsets_hex": [
+            "0x031F9C"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "で,それがいくらになるんだ?",
+        "text_ru": "И сколько\nс меня выйдет?",
+        "max_bytes": 32
+    },
+    {
+        "id": "haggle_amelia",
+        "offset_hex": "0x031668",
+        "pointer_offsets_hex": [
+            "0x031FA0"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "う-ん,もうちょっとやすく\nなりませんか?",
+        "text_ru": "А нельзя ли\nсделать\nскидочку?",
+        "max_bytes": 48
+    },
+    {
+        "id": "haggle_sylphiel",
+        "offset_hex": "0x031698",
+        "pointer_offsets_hex": [
+            "0x031FA4"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "あの,すこしまけていただけると\nうれしいんですが'?",
+        "text_ru": "А нельзя ли\nнемного\nуступить?..",
+        "max_bytes": 60
+    },
+    {
+        "id": "haggle_lark",
+        "offset_hex": "0x0316D4",
+        "pointer_offsets_hex": [
+            "0x031FA8"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "ぼくをエルフだと思って,\nふっかけてませんか?",
+        "text_ru": "Задрали цену,\nраз я эльф —\nзначит, богач?!",
+        "max_bytes": 52
+    },
+    {
+        "id": "haggle_ask_weapon",
+        "offset_hex": "0x031708",
+        "pointer_offsets_hex": [
+            "0x031FAC"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "わかった,わかった.\nそれじゃあ,いくらなら買うんだ?",
+        "text_ru": "Ладно, ладно.\nЗа сколько\nвозьмёшь?",
+        "max_bytes": 60
+    },
+    {
+        "id": "haggle_ask_item",
+        "offset_hex": "0x031744",
+        "pointer_offsets_hex": [
+            "0x031FB0"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "いくらなら買うんだね,場合によって\nは,話にのってもいいよ.",
+        "text_ru": "Ну и сколько?\nМожет,\nи сойдёмся.",
+        "max_bytes": 64
+    },
+    {
+        "id": "haggle_ask_magic",
+        "offset_hex": "0x031784",
+        "pointer_offsets_hex": [
+            "0x031FB4"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "では,いくらでなら買っていただけ\nますかしら?",
+        "text_ru": "И какую же цену\nвы готовы\nпредложить?",
+        "max_bytes": 52
+    },
+    {
+        "id": "menu_discount_quarters",
+        "offset_hex": "0x0317B8",
+        "pointer_offsets_hex": [
+            "0x031FB8"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "4分の1値切る\n半額にしてもらう\n4分の3値切る",
+        "text_ru": "Скинуть 1/4\nСкинуть 1/2\nСкинуть 3/4",
+        "max_bytes": 52
+    },
+    {
+        "id": "menu_discount_fifths",
+        "offset_hex": "0x0317EC",
+        "pointer_offsets_hex": [
+            "0x031FBC"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "5分の1値切る\n4分の1値切る\n3分の1値切る",
+        "text_ru": "Скинуть 1/5\nСкинуть 1/4\nСкинуть 1/3",
+        "max_bytes": 48
+    },
+    {
+        "id": "menu_discount_tenths",
+        "offset_hex": "0x03181C",
+        "pointer_offsets_hex": [
+            "0x031FC0"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "10分の1値切る\n10分の2値切る\n10分の3値切る",
+        "text_ru": "Скинуть 1/10\nСкинуть 2/10\nСкинуть 3/10",
+        "max_bytes": 56
+    },
+    {
+        "id": "haggle_deal_weapon",
+        "offset_hex": "0x031854",
+        "pointer_offsets_hex": [
+            "0x031FC4"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "ああ,その値段にしといてやるよ.",
+        "text_ru": "По рукам!\nОтдам по этой\nцене.",
+        "max_bytes": 36
+    },
+    {
+        "id": "haggle_deal_item",
+        "offset_hex": "0x031878",
+        "pointer_offsets_hex": [
+            "0x031FC8"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "しかたないねえ,その値段に\nまけとくよ.",
+        "text_ru": "Делать нечего,\nуступлю тебе!",
+        "max_bytes": 44
+    },
+    {
+        "id": "haggle_deal_magic",
+        "offset_hex": "0x0318A4",
+        "pointer_offsets_hex": [
+            "0x031FCC"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "わかりました,その値段で\nお売りいたしましょう.",
+        "text_ru": "Договорились.\nПродам по этой\nцене.",
+        "max_bytes": 52
+    },
+    {
+        "id": "haggle_counter_weapon_1",
+        "offset_hex": "0x0318D8",
+        "pointer_offsets_hex": [
+            "0x031FD0"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "おいおい,それはないだろう.\nせめて金貨<00BE>枚ぐらいなら\n考えてもいいが'",
+        "text_ru": "Эй, это грабёж!\nВот золотых:\n<00BE> — пойдёт?",
+        "max_bytes": 80
+    },
+    {
+        "id": "haggle_counter_item_1",
+        "offset_hex": "0x031928",
+        "pointer_offsets_hex": [
+            "0x031FD4"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "あんた,こっちも商売なんだから\n値切ればいいってもんじゃないよ.\fう-ん,そうだね.\n金貨<00BE>枚ならどうだい?",
+        "text_ru": "Мы же торгуем,\nа не дарим!\fХм... Ну ладно.\nЗолотых: <00BE>.\nПойдёт?",
+        "max_bytes": 112
+    },
+    {
+        "id": "haggle_counter_magic_1",
+        "offset_hex": "0x031998",
+        "pointer_offsets_hex": [
+            "0x031FD8"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "あらまあ,そのような値段では\nお売りできませんわ.\fせめて,金貨<00BE>枚ではいかが\nでしょう?",
+        "text_ru": "Помилуйте,\nза такие гроши\nне продам.\fХотя бы <00BE>\nзолотых дадите?",
+        "max_bytes": 96
+    },
+    {
+        "id": "haggle_counter_weapon_2",
+        "offset_hex": "0x0319F8",
+        "pointer_offsets_hex": [
+            "0x031FDC"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "わかった,わかった,\n金貨<00BE>枚ならどうだ?",
+        "text_ru": "Ладно уж,\nзолотых: <00BE>.\nБерёшь?",
+        "max_bytes": 48
+    },
+    {
+        "id": "haggle_counter_item_2",
+        "offset_hex": "0x031A28",
+        "pointer_offsets_hex": [
+            "0x031FE0"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "しかたないねえ.\nそれじゃあ,金貨<00BE>枚!\nこれでどうだね?",
+        "text_ru": "Ну и упрямец!\nЗолотых: <00BE>!\nИ точка!",
+        "max_bytes": 64
+    },
+    {
+        "id": "haggle_counter_magic_2",
+        "offset_hex": "0x031A68",
+        "pointer_offsets_hex": [
+            "0x031FE4"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "あなたなかなかしっかりして\nいますわね.\f金貨<00BE>枚,\nこれならいかがでしょう?",
+        "text_ru": "А вы умеете\nторговаться!\fЗолотых: <00BE>.\nЧто скажете?",
+        "max_bytes": 84
+    },
+    {
+        "id": "menu_counteroffer_haggle",
+        "offset_hex": "0x031ABC",
+        "pointer_offsets_hex": [
+            "0x031FE8"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "その値段で買う\nさらに値切る\n買うのをあきらめる",
+        "text_ru": "Купить по цене\nЕщё поторговать\nОтказаться",
+        "max_bytes": 52
+    },
+    {
+        "id": "menu_counteroffer_final",
+        "offset_hex": "0x031AF0",
+        "pointer_offsets_hex": [
+            "0x031FEC"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "その値段で買う\n買うのをあきらめる",
+        "text_ru": "Купить по цене\nОтказаться",
+        "max_bytes": 36
+    },
+    {
+        "id": "haggle_offer_lina",
+        "offset_hex": "0x031B14",
+        "pointer_offsets_hex": [
+            "0x031FF0"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "それじゃあ,金貨<00BE>枚ってとこ\nでとう?",
+        "text_ru": "Как насчёт цены\nв <00BE> золотых?",
+        "max_bytes": 44
+    },
+    {
+        "id": "haggle_offer_gourry",
+        "offset_hex": "0x031B40",
+        "pointer_offsets_hex": [
+            "0x031FF4"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "なんとか,<00BE>枚くらいに\nならないか?",
+        "text_ru": "Может,\nуступишь за\n<00BE> монет?",
+        "max_bytes": 40
+    },
+    {
+        "id": "haggle_offer_zelgadis",
+        "offset_hex": "0x031B68",
+        "pointer_offsets_hex": [
+            "0x031FF8"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "<00BE>枚でどうだ?",
+        "text_ru": "<00BE> монет.\nИдёт?",
+        "max_bytes": 20
+    },
+    {
+        "id": "haggle_offer_amelia",
+        "offset_hex": "0x031B7C",
+        "pointer_offsets_hex": [
+            "0x031FFC"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "金貨<00BE>枚にしてくださいっ!",
+        "text_ru": "За <00BE> золотых,\nпожалуйста!",
+        "max_bytes": 32
+    },
+    {
+        "id": "haggle_offer_sylphiel",
+        "offset_hex": "0x031B9C",
+        "pointer_offsets_hex": [
+            "0x032000"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "あの,<00BE>枚ぐらいにして\nいただけると,うれしいんですが'",
+        "text_ru": "А можно ли\nза <00BE> монет?..",
+        "max_bytes": 64
+    },
+    {
+        "id": "haggle_offer_lark",
+        "offset_hex": "0x031BDC",
+        "pointer_offsets_hex": [
+            "0x032004"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "まさか,金貨<00BE>枚以上なんて\nいいませんよね?",
+        "text_ru": "Не просите же\nбольше <00BE>\nзолотых?",
+        "max_bytes": 48
+    },
+    {
+        "id": "haggle_push_lina",
+        "offset_hex": "0x031C0C",
+        "pointer_offsets_hex": [
+            "0x032008"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "もうひとこえっ!",
+        "text_ru": "Ещё разок\nсбавь!",
+        "max_bytes": 20
+    },
+    {
+        "id": "haggle_push_gourry",
+        "offset_hex": "0x031C20",
+        "pointer_offsets_hex": [
+            "0x03200C"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "う-ん,もう少しなんとか'",
+        "text_ru": "Ну сбавь ещё\nчуток...",
+        "max_bytes": 32
+    },
+    {
+        "id": "haggle_push_zelgadis",
+        "offset_hex": "0x031C40",
+        "pointer_offsets_hex": [
+            "0x032010"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "もう少し,なんとかなるんだろう?",
+        "text_ru": "Ты же можешь\nсбросить ещё?",
+        "max_bytes": 36
+    },
+    {
+        "id": "haggle_push_amelia",
+        "offset_hex": "0x031C64",
+        "pointer_offsets_hex": [
+            "0x032014"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "え-っ,ほんとにその値段?",
+        "text_ru": "Э-э?! И это\nвся скидка?!",
+        "max_bytes": 32
+    },
+    {
+        "id": "haggle_push_sylphiel",
+        "offset_hex": "0x031C84",
+        "pointer_offsets_hex": [
+            "0x032018"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "あの,もう少しやすくして\nいただけると'",
+        "text_ru": "А если ещё\nкапельку\nподешевле?..",
+        "max_bytes": 48
+    },
+    {
+        "id": "haggle_push_lark",
+        "offset_hex": "0x031CB4",
+        "pointer_offsets_hex": [
+            "0x03201C"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "まさか,ぼくがエルフだからって\nだまそうとしてませんよね?",
+        "text_ru": "Вы точно не\nдурите меня,\nведь я эльф?",
+        "max_bytes": 64
+    },
+    {
+        "id": "haggle_broke_lina",
+        "offset_hex": "0x031CF4",
+        "pointer_offsets_hex": [
+            "0x032020"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "う-ん,旅をつづける分のお金を\n引くと足りないわね.\f金貨<00BE>枚とかってならない?",
+        "text_ru": "Если вычесть\nна дорогу,\nденег нет!\fСторгуемся на\n<00BE> золотых?",
+        "max_bytes": 88
+    },
+    {
+        "id": "haggle_refuse_weapon",
+        "offset_hex": "0x031D4C",
+        "pointer_offsets_hex": [
+            "0x032024"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "他をあたってくれ'",
+        "text_ru": "Ищи в другом\nместе...",
+        "max_bytes": 24
+    },
+    {
+        "id": "haggle_refuse_item",
+        "offset_hex": "0x031D64",
+        "pointer_offsets_hex": [
+            "0x032028"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "う-ん,ちょっと無理だねえ.",
+        "text_ru": "Ну нет,\nэто грабёж.",
+        "max_bytes": 32
+    },
+    {
+        "id": "haggle_refuse_magic",
+        "offset_hex": "0x031D84",
+        "pointer_offsets_hex": [
+            "0x03202C"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "それは,できませんわ.",
+        "text_ru": "Увы,\nисключено.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_anymore_weapon",
+        "offset_hex": "0x031DA0",
+        "pointer_offsets_hex": [
+            "0x032030"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "他には何かいるのかい?",
+        "text_ru": "Ещё что-то\nнужно?",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_anymore_item",
+        "offset_hex": "0x031DBC",
+        "pointer_offsets_hex": [
+            "0x032034"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "他にも何かあるのかい?",
+        "text_ru": "Что-то ещё\nнужно?",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_anymore_magic",
+        "offset_hex": "0x031DD8",
+        "pointer_offsets_hex": [
+            "0x032038"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "まだ何かおありですか?",
+        "text_ru": "Желаете что-то\nещё?",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_price_quote_weapon",
+        "offset_hex": "0x031DF4",
+        "pointer_offsets_hex": [
+            "0x03203C"
+        ],
+        "speaker_code_hex": "0xD9A1",
+        "speaker": "Оружейник",
+        "category": "buy",
+        "text_jp": "金貨<00BE>枚ってところだな.",
+        "text_ru": "С тебя <00BE>\nзолотых.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_price_quote_item",
+        "offset_hex": "0x031E10",
+        "pointer_offsets_hex": [
+            "0x032040"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "buy",
+        "text_jp": "金貨<00BE>枚ってところだねえ.",
+        "text_ru": "С тебя <00BE>\nзолотых.",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_price_quote_magic",
+        "offset_hex": "0x031E30",
+        "pointer_offsets_hex": [
+            "0x032044"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "buy",
+        "text_jp": "金貨<00BE>枚でいかがですか?",
+        "text_ru": "Цена — <00BE>\nзолотых.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_cancel_lina",
+        "offset_hex": "0x031E4C",
+        "pointer_offsets_hex": [
+            "0x032048"
+        ],
+        "speaker_code_hex": "0x9101",
+        "speaker": "Лина",
+        "category": "buy",
+        "text_jp": "やっぱし,やめとく.",
+        "text_ru": "Не, я\nпередумала.",
+        "max_bytes": 24
+    },
+    {
+        "id": "buy_cancel_gourry",
+        "offset_hex": "0x031E64",
+        "pointer_offsets_hex": [
+            "0x03204C"
+        ],
+        "speaker_code_hex": "0x9141",
+        "speaker": "Гаури",
+        "category": "buy",
+        "text_jp": "う-ん,やっぱりやめとくよ.",
+        "text_ru": "Да ну, не буду\nбрать.",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_cancel_zelgadis",
+        "offset_hex": "0x031E84",
+        "pointer_offsets_hex": [
+            "0x032050"
+        ],
+        "speaker_code_hex": "0x9161",
+        "speaker": "Зелгадис",
+        "category": "buy",
+        "text_jp": "また,こんどにしよう.",
+        "text_ru": "Как-нибудь\nпотом.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_cancel_amelia",
+        "offset_hex": "0x031EA0",
+        "pointer_offsets_hex": [
+            "0x032054"
+        ],
+        "speaker_code_hex": "0x9181",
+        "speaker": "Амелия",
+        "category": "buy",
+        "text_jp": "やっぱり,やめときます.",
+        "text_ru": "Я, пожалуй,\nоткажусь.",
+        "max_bytes": 28
+    },
+    {
+        "id": "buy_cancel_sylphiel",
+        "offset_hex": "0x031EBC",
+        "pointer_offsets_hex": [
+            "0x032058"
+        ],
+        "speaker_code_hex": "0x91A1",
+        "speaker": "Сильфиль",
+        "category": "buy",
+        "text_jp": "また,次のきかいにします.",
+        "text_ru": "В другой раз.",
+        "max_bytes": 32
+    },
+    {
+        "id": "buy_cancel_lark",
+        "offset_hex": "0x031EDC",
+        "pointer_offsets_hex": [
+            "0x03205C"
+        ],
+        "speaker_code_hex": "0x91C1",
+        "speaker": "Ларк",
+        "category": "buy",
+        "text_jp": "う-ん,やっぱりいいです.",
+        "text_ru": "Пожалуй,\nобойдусь.",
+        "max_bytes": 32
+    },
+    {
+        "id": "menu_buy_confirm_cancel",
+        "offset_hex": "0x031EFC",
+        "pointer_offsets_hex": [
+            "0x032060"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "買う\n買うのをやめる",
+        "text_ru": "КУПИТЬ\nОТМЕНА",
+        "max_bytes": 24
+    },
+    {
+        "id": "sell_greet_item",
+        "offset_hex": "0x032064",
+        "pointer_offsets_hex": [
+            "0x0322B0",
+            "0x0322B4"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "何か引き取ってほしいのかい?",
+        "text_ru": "Что продаёшь?",
+        "max_bytes": 32
+    },
+    {
+        "id": "sell_greet_magic",
+        "offset_hex": "0x032084",
+        "pointer_offsets_hex": [
+            "0x0322B8"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "引き取るようなものがあるのですか?",
+        "text_ru": "Хотите продать?",
+        "max_bytes": 40
+    },
+    {
+        "id": "sell_offer_item",
+        "offset_hex": "0x0320AC",
+        "pointer_offsets_hex": [
+            "0x0322BC"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "<00BF>かい?\nそうだね,金貨<00BE>枚って\nところだねえ.",
+        "text_ru": "<00BF>?\nДам <00BE> золотых.\nПойдёт?",
+        "max_bytes": 52
+    },
+    {
+        "id": "sell_offer_magic",
+        "offset_hex": "0x0320E0",
+        "pointer_offsets_hex": [
+            "0x0322C0"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "<00BF>ですか?\n金貨<00BE>枚でなら,お引き取り\nしてもよろしいですわ.",
+        "text_ru": "<00BF>?\nВозьму за <00BE>\nзолотых. Идёт?",
+        "max_bytes": 68
+    },
+    {
+        "id": "menu_sell_cancel",
+        "offset_hex": "0x032124",
+        "pointer_offsets_hex": [
+            "0x0322C4"
+        ],
+        "speaker_code_hex": None,
+        "speaker": None,
+        "category": "menu",
+        "text_jp": "売る\nやめる",
+        "text_ru": "ПРОДАТЬ\nНАЗАД",
+        "max_bytes": 16
+    },
+    {
+        "id": "sell_refuse_item",
+        "offset_hex": "0x032134",
+        "pointer_offsets_hex": [
+            "0x0322C8"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "それは,引き取れないよ.",
+        "text_ru": "Такое\nне возьму.",
+        "max_bytes": 28
+    },
+    {
+        "id": "sell_refuse_magic",
+        "offset_hex": "0x032150",
+        "pointer_offsets_hex": [
+            "0x0322CC"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "そんなものは,引き取れませんわ.",
+        "text_ru": "Такое я купить\nне могу.",
+        "max_bytes": 36
+    },
+    {
+        "id": "sell_done_item",
+        "offset_hex": "0x032174",
+        "pointer_offsets_hex": [
+            "0x0322D0"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "それじゃあ,これが代金だ.\n他に何かあるのかい?",
+        "text_ru": "Вот деньги.\nЕщё что-то\nесть?",
+        "max_bytes": 52
+    },
+    {
+        "id": "sell_done_magic",
+        "offset_hex": "0x0321A8",
+        "pointer_offsets_hex": [
+            "0x0322D4"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "それじゃあ,これが代金です.\n他にも何かおありですか?",
+        "text_ru": "Вот ваша плата.\nЧто-то ещё\nпродадите?",
+        "max_bytes": 60
+    },
+    {
+        "id": "sell_cancel_item",
+        "offset_hex": "0x0321E4",
+        "pointer_offsets_hex": [
+            "0x0322D8"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "ざんねんだねえ.",
+        "text_ru": "Жаль, очень\nжаль.",
+        "max_bytes": 20
+    },
+    {
+        "id": "sell_cancel_magic",
+        "offset_hex": "0x0321F8",
+        "pointer_offsets_hex": [
+            "0x0322DC"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "そうですか次はよろしく\nおねがいいたしますわ.",
+        "text_ru": "Что ж...\nЗаходите ещё!",
+        "max_bytes": 56
+    },
+    {
+        "id": "sell_thanks_item",
+        "offset_hex": "0x032230",
+        "pointer_offsets_hex": [
+            "0x0322E0"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "そうかい,ありがとうよ.",
+        "text_ru": "Что ж,\nспасибо!",
+        "max_bytes": 28
+    },
+    {
+        "id": "sell_thanks_magic",
+        "offset_hex": "0x03224C",
+        "pointer_offsets_hex": [
+            "0x0322E4"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "またのご利用を,お待ちしてますわ.",
+        "text_ru": "Буду рада\nвидеть вас!",
+        "max_bytes": 40
+    },
+    {
+        "id": "sell_empty_item",
+        "offset_hex": "0x032274",
+        "pointer_offsets_hex": [
+            "0x0322E8"
+        ],
+        "speaker_code_hex": "0xD9C1",
+        "speaker": "Торговка предметами",
+        "category": "sell",
+        "text_jp": "なにも無いみたいだねえ.",
+        "text_ru": "У тебя же\nничего нет!",
+        "max_bytes": 28
+    },
+    {
+        "id": "sell_empty_magic",
+        "offset_hex": "0x032290",
+        "pointer_offsets_hex": [
+            "0x0322EC"
+        ],
+        "speaker_code_hex": "0xD9E1",
+        "speaker": "Торговец магией",
+        "category": "sell",
+        "text_jp": "あら,何も無いようですね.",
+        "text_ru": "Ой, а у вас\nже пусто!",
+        "max_bytes": 32
+    }
+]
+
+SHOP_ITEMS_DATA = [
+    {
+        "index": 0,
+        "pointer_offset_hex": "0x030A20",
+        "offset_hex": "0x03054C",
+        "text_jp": "リナ",
+        "text_ru": "Лина"
+    },
+    {
+        "index": 1,
+        "pointer_offset_hex": "0x030A24",
+        "offset_hex": "0x030554",
+        "text_jp": "ナ-ガ",
+        "text_ru": "Нага"
+    },
+    {
+        "index": 2,
+        "pointer_offset_hex": "0x030A28",
+        "offset_hex": "0x03055C",
+        "text_jp": "ガウリイ",
+        "text_ru": "Гаури"
+    },
+    {
+        "index": 3,
+        "pointer_offset_hex": "0x030A2C",
+        "offset_hex": "0x030568",
+        "text_jp": "ゼルガディス",
+        "text_ru": "Зелгадис"
+    },
+    {
+        "index": 4,
+        "pointer_offset_hex": "0x030A30",
+        "offset_hex": "0x030578",
+        "text_jp": "アメリア",
+        "text_ru": "Амелия"
+    },
+    {
+        "index": 5,
+        "pointer_offset_hex": "0x030A34",
+        "offset_hex": "0x030584",
+        "text_jp": "シルフィ-ル",
+        "text_ru": "Сильфиль"
+    },
+    {
+        "index": 6,
+        "pointer_offset_hex": "0x030A38",
+        "offset_hex": "0x030594",
+        "text_jp": "ラ-ク",
+        "text_ru": "Ларк"
+    },
+    {
+        "index": 7,
+        "pointer_offset_hex": "0x030A3C",
+        "offset_hex": "0x03059C",
+        "text_jp": "物理攻撃力",
+        "text_ru": "Ф.Атк"
+    },
+    {
+        "index": 8,
+        "pointer_offset_hex": "0x030A40",
+        "offset_hex": "0x0305A8",
+        "text_jp": "物理防御力",
+        "text_ru": "Ф.Защ"
+    },
+    {
+        "index": 9,
+        "pointer_offset_hex": "0x030A44",
+        "offset_hex": "0x0305B4",
+        "text_jp": "精神攻撃力",
+        "text_ru": "М.Атк"
+    },
+    {
+        "index": 10,
+        "pointer_offset_hex": "0x030A48",
+        "offset_hex": "0x0305C0",
+        "text_jp": "精神防御力",
+        "text_ru": "М.Защ"
+    },
+    {
+        "index": 11,
+        "pointer_offset_hex": "0x030A4C",
+        "offset_hex": "0x0305CC",
+        "text_jp": "命中率",
+        "text_ru": "Точн."
+    },
+    {
+        "index": 12,
+        "pointer_offset_hex": "0x030A50",
+        "offset_hex": "0x0305D4",
+        "text_jp": "回避率",
+        "text_ru": "Уклон"
+    },
+    {
+        "index": 13,
+        "pointer_offset_hex": "0x030A54",
+        "offset_hex": "0x0305DC",
+        "text_jp": "知力",
+        "text_ru": "Интеллект"
+    },
+    {
+        "index": 14,
+        "pointer_offset_hex": "0x030A58",
+        "offset_hex": "0x0305E4",
+        "text_jp": "洞察力",
+        "text_ru": "Интуиция"
+    },
+    {
+        "index": 15,
+        "pointer_offset_hex": "0x030A5C",
+        "offset_hex": "0x0305EC",
+        "text_jp": "やる気",
+        "text_ru": "Боевой дух"
+    },
+    {
+        "index": 16,
+        "pointer_offset_hex": "0x030A60",
+        "offset_hex": "0x0305F4",
+        "text_jp": "アップ",
+        "text_ru": "Вверх"
+    },
+    {
+        "index": 17,
+        "pointer_offset_hex": "0x030A64",
+        "offset_hex": "0x0305FC",
+        "text_jp": "ダウン",
+        "text_ru": "Вниз"
+    },
+    {
+        "index": 18,
+        "pointer_offset_hex": "0x030A68",
+        "offset_hex": "0x030604",
+        "text_jp": "チェ-ンリング",
+        "text_ru": "Кольчуга"
+    },
+    {
+        "index": 19,
+        "pointer_offset_hex": "0x030A6C",
+        "offset_hex": "0x030604",
+        "text_jp": "チェ-ンリング",
+        "text_ru": "Кольчуга"
+    },
+    {
+        "index": 20,
+        "pointer_offset_hex": "0x030A70",
+        "offset_hex": "0x030604",
+        "text_jp": "チェ-ンリング",
+        "text_ru": "Кольчуга"
+    },
+    {
+        "index": 21,
+        "pointer_offset_hex": "0x030A74",
+        "offset_hex": "0x030614",
+        "text_jp": "ライトスチ-ル",
+        "text_ru": "Лёгкая сталь"
+    },
+    {
+        "index": 22,
+        "pointer_offset_hex": "0x030A78",
+        "offset_hex": "0x030624",
+        "text_jp": "ドラゴンのうろこ",
+        "text_ru": "Чешуя дракона"
+    },
+    {
+        "index": 23,
+        "pointer_offset_hex": "0x030A7C",
+        "offset_hex": "0x030638",
+        "text_jp": "マジックコットン",
+        "text_ru": "Магический хлопок"
+    },
+    {
+        "index": 24,
+        "pointer_offset_hex": "0x030A80",
+        "offset_hex": "0x03064C",
+        "text_jp": "サ-ペントのひげ",
+        "text_ru": "Ус змея"
+    },
+    {
+        "index": 25,
+        "pointer_offset_hex": "0x030A84",
+        "offset_hex": "0x030660",
+        "text_jp": "クリスタルシルク",
+        "text_ru": "Кристальный шёлк"
+    },
+    {
+        "index": 26,
+        "pointer_offset_hex": "0x030A88",
+        "offset_hex": "0x030674",
+        "text_jp": "大ガメのこうら",
+        "text_ru": "Панцирь черепахи"
+    },
+    {
+        "index": 27,
+        "pointer_offset_hex": "0x030A8C",
+        "offset_hex": "0x030684",
+        "text_jp": "ワイバ-ンのはね",
+        "text_ru": "Крыло виверны"
+    },
+    {
+        "index": 28,
+        "pointer_offset_hex": "0x030A90",
+        "offset_hex": "0x030698",
+        "text_jp": "ラ-ジャドラゴン",
+        "text_ru": "Раджа-дракон"
+    },
+    {
+        "index": 29,
+        "pointer_offset_hex": "0x030A94",
+        "offset_hex": "0x0306AC",
+        "text_jp": "魔法石",
+        "text_ru": "Магический камень"
+    },
+    {
+        "index": 30,
+        "pointer_offset_hex": "0x030A98",
+        "offset_hex": "0x0306B4",
+        "text_jp": "アミュレット",
+        "text_ru": "Амулет"
+    },
+    {
+        "index": 31,
+        "pointer_offset_hex": "0x030A9C",
+        "offset_hex": "0x0306C4",
+        "text_jp": "オリハルコン",
+        "text_ru": "Орихалк"
+    },
+    {
+        "index": 32,
+        "pointer_offset_hex": "0x030AA0",
+        "offset_hex": "0x0306D4",
+        "text_jp": "ライトソ-ド",
+        "text_ru": "Меч Света"
+    },
+    {
+        "index": 33,
+        "pointer_offset_hex": "0x030AA4",
+        "offset_hex": "0x0306E4",
+        "text_jp": "クレイソ-ド",
+        "text_ru": "Глиняный меч"
+    },
+    {
+        "index": 34,
+        "pointer_offset_hex": "0x030AA8",
+        "offset_hex": "0x0306F4",
+        "text_jp": "マスタ-ソ-ド",
+        "text_ru": "Мастер-меч"
+    },
+    {
+        "index": 35,
+        "pointer_offset_hex": "0x030AAC",
+        "offset_hex": "0x030704",
+        "text_jp": "高そうな剣",
+        "text_ru": "Дорогой меч"
+    },
+    {
+        "index": 36,
+        "pointer_offset_hex": "0x030AB0",
+        "offset_hex": "0x030710",
+        "text_jp": "ロングソ-ド",
+        "text_ru": "Длинный меч"
+    },
+    {
+        "index": 37,
+        "pointer_offset_hex": "0x030AB4",
+        "offset_hex": "0x030720",
+        "text_jp": "エルフの魔法剣",
+        "text_ru": "Эльфийский меч"
+    },
+    {
+        "index": 38,
+        "pointer_offset_hex": "0x030AB8",
+        "offset_hex": "0x030730",
+        "text_jp": "エルメキアソ-ド",
+        "text_ru": "Меч Эльмеки"
+    },
+    {
+        "index": 39,
+        "pointer_offset_hex": "0x030ABC",
+        "offset_hex": "0x030744",
+        "text_jp": "ライトソ-ド",
+        "text_ru": "Меч Света"
+    },
+    {
+        "index": 40,
+        "pointer_offset_hex": "0x030AC0",
+        "offset_hex": "0x030754",
+        "text_jp": "ヘビ-ソ-ド",
+        "text_ru": "Тяжёлый меч"
+    },
+    {
+        "index": 41,
+        "pointer_offset_hex": "0x030AC4",
+        "offset_hex": "0x030764",
+        "text_jp": "バスタ-ソ-ド",
+        "text_ru": "Меч-бастард"
+    },
+    {
+        "index": 42,
+        "pointer_offset_hex": "0x030AC8",
+        "offset_hex": "0x030774",
+        "text_jp": "こぶし",
+        "text_ru": "Кулак"
+    },
+    {
+        "index": 43,
+        "pointer_offset_hex": "0x030ACC",
+        "offset_hex": "0x03077C",
+        "text_jp": "おやじのかたみ",
+        "text_ru": "Память об отце"
+    },
+    {
+        "index": 44,
+        "pointer_offset_hex": "0x030AD0",
+        "offset_hex": "0x03078C",
+        "text_jp": "ナイフ",
+        "text_ru": "Нож"
+    },
+    {
+        "index": 45,
+        "pointer_offset_hex": "0x030AD4",
+        "offset_hex": "0x030794",
+        "text_jp": "ダガ-",
+        "text_ru": "Кинжал"
+    },
+    {
+        "index": 46,
+        "pointer_offset_hex": "0x030AD8",
+        "offset_hex": "0x03079C",
+        "text_jp": "ミラ-ジュナイフ",
+        "text_ru": "Миражный кинжал"
+    },
+    {
+        "index": 47,
+        "pointer_offset_hex": "0x030ADC",
+        "offset_hex": "0x0307B0",
+        "text_jp": "ショ-トソ-ド",
+        "text_ru": "Короткий меч"
+    },
+    {
+        "index": 48,
+        "pointer_offset_hex": "0x030AE0",
+        "offset_hex": "0x0307C0",
+        "text_jp": "ダミ-",
+        "text_ru": "Пустышка"
+    },
+    {
+        "index": 49,
+        "pointer_offset_hex": "0x030AE4",
+        "offset_hex": "0x0307C8",
+        "text_jp": "ダミ-",
+        "text_ru": "Пустышка"
+    },
+    {
+        "index": 50,
+        "pointer_offset_hex": "0x030AE8",
+        "offset_hex": "0x0307D0",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 51,
+        "pointer_offset_hex": "0x030AEC",
+        "offset_hex": "0x0307E4",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 52,
+        "pointer_offset_hex": "0x030AF0",
+        "offset_hex": "0x0307F8",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 53,
+        "pointer_offset_hex": "0x030AF4",
+        "offset_hex": "0x03080C",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 54,
+        "pointer_offset_hex": "0x030AF8",
+        "offset_hex": "0x030814",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 55,
+        "pointer_offset_hex": "0x030AFC",
+        "offset_hex": "0x03081C",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 56,
+        "pointer_offset_hex": "0x030B00",
+        "offset_hex": "0x030824",
+        "text_jp": "とげのマント",
+        "text_ru": "Шипастый плащ"
+    },
+    {
+        "index": 57,
+        "pointer_offset_hex": "0x030B04",
+        "offset_hex": "0x030834",
+        "text_jp": "どくろの首飾り",
+        "text_ru": "Ожерелье с черепом"
+    },
+    {
+        "index": 58,
+        "pointer_offset_hex": "0x030B08",
+        "offset_hex": "0x030844",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 59,
+        "pointer_offset_hex": "0x030B0C",
+        "offset_hex": "0x030858",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 60,
+        "pointer_offset_hex": "0x030B10",
+        "offset_hex": "0x03086C",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 61,
+        "pointer_offset_hex": "0x030B14",
+        "offset_hex": "0x030880",
+        "text_jp": "ブレストプレ-ト",
+        "text_ru": "Кираса"
+    },
+    {
+        "index": 62,
+        "pointer_offset_hex": "0x030B18",
+        "offset_hex": "0x030894",
+        "text_jp": "ブレストプレ-ト",
+        "text_ru": "Кираса"
+    },
+    {
+        "index": 63,
+        "pointer_offset_hex": "0x030B1C",
+        "offset_hex": "0x0308A8",
+        "text_jp": "ブレストプレ-ト",
+        "text_ru": "Кираса"
+    },
+    {
+        "index": 64,
+        "pointer_offset_hex": "0x030B20",
+        "offset_hex": "0x0308BC",
+        "text_jp": "白いほうい",
+        "text_ru": "Белое одеяние"
+    },
+    {
+        "index": 65,
+        "pointer_offset_hex": "0x030B24",
+        "offset_hex": "0x0308C8",
+        "text_jp": "白いほうい",
+        "text_ru": "Белое одеяние"
+    },
+    {
+        "index": 66,
+        "pointer_offset_hex": "0x030B28",
+        "offset_hex": "0x0308D4",
+        "text_jp": "白いほうい",
+        "text_ru": "Белое одеяние"
+    },
+    {
+        "index": 67,
+        "pointer_offset_hex": "0x030B2C",
+        "offset_hex": "0x0308E0",
+        "text_jp": "白いマント",
+        "text_ru": "Белый плащ"
+    },
+    {
+        "index": 68,
+        "pointer_offset_hex": "0x030B30",
+        "offset_hex": "0x0308EC",
+        "text_jp": "白いマント",
+        "text_ru": "Белый плащ"
+    },
+    {
+        "index": 69,
+        "pointer_offset_hex": "0x030B34",
+        "offset_hex": "0x0308F8",
+        "text_jp": "白いマント",
+        "text_ru": "Белый плащ"
+    },
+    {
+        "index": 70,
+        "pointer_offset_hex": "0x030B38",
+        "offset_hex": "0x030904",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 71,
+        "pointer_offset_hex": "0x030B3C",
+        "offset_hex": "0x03090C",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 72,
+        "pointer_offset_hex": "0x030B40",
+        "offset_hex": "0x030914",
+        "text_jp": "マント",
+        "text_ru": "Плащ"
+    },
+    {
+        "index": 73,
+        "pointer_offset_hex": "0x030B44",
+        "offset_hex": "0x03091C",
+        "text_jp": "ほしのリング",
+        "text_ru": "Звёздное кольцо"
+    },
+    {
+        "index": 74,
+        "pointer_offset_hex": "0x030B48",
+        "offset_hex": "0x03092C",
+        "text_jp": "ほしのリング",
+        "text_ru": "Звёздное кольцо"
+    },
+    {
+        "index": 75,
+        "pointer_offset_hex": "0x030B4C",
+        "offset_hex": "0x03093C",
+        "text_jp": "ほしのリング",
+        "text_ru": "Звёздное кольцо"
+    },
+    {
+        "index": 76,
+        "pointer_offset_hex": "0x030B50",
+        "offset_hex": "0x03094C",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 77,
+        "pointer_offset_hex": "0x030B54",
+        "offset_hex": "0x030960",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 78,
+        "pointer_offset_hex": "0x030B58",
+        "offset_hex": "0x030974",
+        "text_jp": "ショルダ-ガ-ド",
+        "text_ru": "Наплечники"
+    },
+    {
+        "index": 79,
+        "pointer_offset_hex": "0x030B5C",
+        "offset_hex": "0x030988",
+        "text_jp": "神官のマント",
+        "text_ru": "Плащ жреца"
+    },
+    {
+        "index": 80,
+        "pointer_offset_hex": "0x030B60",
+        "offset_hex": "0x030998",
+        "text_jp": "神官のマント",
+        "text_ru": "Плащ жреца"
+    },
+    {
+        "index": 81,
+        "pointer_offset_hex": "0x030B64",
+        "offset_hex": "0x0309A8",
+        "text_jp": "神官のマント",
+        "text_ru": "Плащ жреца"
+    },
+    {
+        "index": 82,
+        "pointer_offset_hex": "0x030B68",
+        "offset_hex": "0x0309B8",
+        "text_jp": "服",
+        "text_ru": "Одежда"
+    },
+    {
+        "index": 83,
+        "pointer_offset_hex": "0x030B6C",
+        "offset_hex": "0x0309BC",
+        "text_jp": "服",
+        "text_ru": "Одежда"
+    },
+    {
+        "index": 84,
+        "pointer_offset_hex": "0x030B70",
+        "offset_hex": "0x0309C0",
+        "text_jp": "服",
+        "text_ru": "Одежда"
+    },
+    {
+        "index": 85,
+        "pointer_offset_hex": "0x030B74",
+        "offset_hex": "0x0309C4",
+        "text_jp": "リストバンド",
+        "text_ru": "Браслеты"
+    },
+    {
+        "index": 86,
+        "pointer_offset_hex": "0x030B78",
+        "offset_hex": "0x0309D4",
+        "text_jp": "リストバンド",
+        "text_ru": "Браслеты"
+    },
+    {
+        "index": 87,
+        "pointer_offset_hex": "0x030B7C",
+        "offset_hex": "0x0309E4",
+        "text_jp": "リストバンド",
+        "text_ru": "Браслеты"
+    },
+    {
+        "index": 88,
+        "pointer_offset_hex": "0x030B80",
+        "offset_hex": "0x0309F4",
+        "text_jp": "宿屋のチップ",
+        "text_ru": "Жетон гостиницы"
+    },
+    {
+        "index": 89,
+        "pointer_offset_hex": "0x030B84",
+        "offset_hex": "0x030A04",
+        "text_jp": "高そうな像",
+        "text_ru": "Дорогая статуэтка"
+    },
+    {
+        "index": 90,
+        "pointer_offset_hex": "0x030B88",
+        "offset_hex": "0x030A10",
+        "text_jp": "魔道士協会の本",
+        "text_ru": "Книга Гильдии магов"
+    }
+]
+
+
+def build_catalog():
+    dialogues_dict = {}
+    total_pointers = 0
+    for e in SHOP_ENTRIES:
+        total_pointers += len(e["pointer_offsets_hex"])
+        dialogues_dict[e["id"]] = e
+
+    catalog = {
+        "meta": {
+            "title": "Slayers Royal (PS1) — Диалоги и меню магазинов и лавок",
+            "description": "Полный каталог реплик торговцев, торга персонажей, покупки и продажи предметов, а также названий товаров (PROG.UNT 0x003)",
+            "entry_index": 3,
+            "entry_lba": 229219,
+            "entry_sectors": 296,
+            "ram_base": "0x8004E5B0",
+            "total_dialogues": len(SHOP_ENTRIES),
+            "total_pointers": total_pointers,
+            "total_items": len(SHOP_ITEMS_DATA),
+        },
+        "dialogues": dialogues_dict,
+        "shop_items": SHOP_ITEMS_DATA,
+    }
+
+    out_path = REPO_ROOT / "translations" / "shop_dialogues_ru.json"
+    out_path.write_text(
+        json.dumps(catalog, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    print(
+        f"Written {len(SHOP_ENTRIES)} dialogues ({total_pointers} pointers) and {len(SHOP_ITEMS_DATA)} shop items to {out_path}"
+    )
+
+
+if __name__ == "__main__":
+    build_catalog()

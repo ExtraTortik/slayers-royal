@@ -32,6 +32,7 @@ from tools.combat_dialogue_charmap import (
     CYRILLIC_LOWER_BASE,
     OPCODE_NEWLINE,
     OPCODE_BUBBLE_ADVANCE,
+    OPCODE_PAGE_BREAK,
     OPCODE_BLOCK_END,
     COMBAT_CHARMAP,
     REVERSE_COMBAT_CHARMAP,
@@ -63,6 +64,9 @@ from tools.patch_combat_dialogues import (
     put_hw_tile_2bpp,
     render_cyrillic_glyph_2bpp,
     encode_conversation_block,
+    decode_conversation_block,
+    decode_conversation_bubbles,
+    validate_dialogue_formatting,
     patch_dialogue_blocks,
     verify_entry_7_invariants,
     patch_combat_dialogues,
@@ -118,6 +122,23 @@ class TestCombatDialogueCharmap(unittest.TestCase):
         self.assertIn(OPCODE_NEWLINE, words)
         self.assertIn(OPCODE_BUBBLE_ADVANCE, words)
 
+
+    def test_opcode_page_break_constant(self):
+        """Test OPCODE_PAGE_BREAK constant and alias to OPCODE_BUBBLE_ADVANCE (0x00FD)."""
+        self.assertEqual(OPCODE_PAGE_BREAK, 0x00FD)
+        self.assertEqual(OPCODE_PAGE_BREAK, OPCODE_BUBBLE_ADVANCE)
+
+    def test_form_feed_page_break_roundtrip(self):
+        """Test encoding and decoding of \\f (form-feed) as page break delimiter."""
+        sample = "Лина:\nПервая страница!\fВторая страница!\fТретья страница!"
+        encoded = encode_combat_dialogue_string(sample)
+        words = [struct.unpack_from("<H", encoded, i)[0] for i in range(0, len(encoded), 2)]
+
+        # Must contain OPCODE_PAGE_BREAK (0x00FD) exactly twice
+        self.assertEqual(words.count(OPCODE_PAGE_BREAK), 2)
+        # Must decode back cleanly to original string
+        decoded = decode_combat_dialogue_string(encoded)
+        self.assertEqual(decoded, sample)
 
 class TestCombatFontGeneration(unittest.TestCase):
     """Test combat font TIM modification and compression within 23-sector budget."""
@@ -238,6 +259,245 @@ class TestInPlaceDialoguePatching(unittest.TestCase):
 
         self.assertLessEqual(len(encoded), 176)
 
+    def test_intra_bubble_pagination_encoding(self):
+        """Test intra-bubble pagination: bubble with 2 pages encodes as [Speaker] [P1] [0x00FD] [P2] [0x00FF]."""
+        # Format a: "pages" list
+        block_pages = {
+            "id": "block_pages",
+            "offset": "0x05F810",
+            "allocated_budget_bytes": 176,
+            "bubbles": [
+                {
+                    "bubble_index": 1,
+                    "speaker": "Лина",
+                    "speaker_opcode": "0x9109",
+                    "pages": ["Первая стр.", "Вторая стр."],
+                }
+            ],
+        }
+        encoded_pages = encode_conversation_block(block_pages)
+        words_pages = [struct.unpack_from("<H", encoded_pages, i)[0] for i in range(0, len(encoded_pages), 2)]
+
+        # Format b: "text_ru" with \f
+        block_formfeed = {
+            "id": "block_ff",
+            "offset": "0x05F810",
+            "allocated_budget_bytes": 176,
+            "bubbles": [
+                {
+                    "bubble_index": 1,
+                    "speaker": "Лина",
+                    "speaker_opcode": "0x9109",
+                    "text_ru": "Первая стр.\fВторая стр.",
+                }
+            ],
+        }
+        encoded_ff = encode_conversation_block(block_formfeed)
+        words_ff = [struct.unpack_from("<H", encoded_ff, i)[0] for i in range(0, len(encoded_ff), 2)]
+
+        # Both formats must yield identical binary streams
+        self.assertEqual(encoded_pages, encoded_ff)
+
+        # First word is Speaker Opcode (0x9109)
+        self.assertEqual(words_pages[0], 0x9109)
+
+        # Last word is OPCODE_BLOCK_END (0x00FF)
+        self.assertEqual(words_pages[-1], OPCODE_BLOCK_END)
+
+        # Must have exactly one 0x00FD delimiter
+        self.assertEqual(words_pages.count(OPCODE_BUBBLE_ADVANCE), 1)
+
+        fd_idx = words_pages.index(OPCODE_BUBBLE_ADVANCE)
+        # Word following 0x00FD must be the first glyph of page 2 (< 0x9000), NOT a speaker opcode
+        next_word = words_pages[fd_idx + 1]
+        self.assertLess(next_word, 0x9000, f"Expected glyph code < 0x9000 after 0x00FD, got 0x{next_word:04X}")
+        self.assertEqual(next_word, COMBAT_CHARMAP["В"])
+
+    def test_multi_bubble_with_pagination_encoding(self):
+        """Test multi-bubble with pagination:
+        Bubble 1 (2 pages) + Bubble 2 (1 page) encodes as:
+        [Spk1] [P1] [0x00FD] [P2] [0x00FD] [Spk2] [B2] [0x00FF].
+        """
+        block = {
+            "id": "block_multi_paginated",
+            "offset": "0x05F810",
+            "allocated_budget_bytes": 256,
+            "bubbles": [
+                {
+                    "bubble_index": 1,
+                    "speaker": "Лина",
+                    "speaker_opcode": "0x9109",
+                    "pages": ["Лина: Стр 1", "Лина: Стр 2"],
+                },
+                {
+                    "bubble_index": 2,
+                    "speaker": "Нага",
+                    "speaker_opcode": "0xD123",
+                    "pages": ["Нага: Ответ"],
+                },
+            ],
+        }
+        encoded = encode_conversation_block(block)
+        words = [struct.unpack_from("<H", encoded, i)[0] for i in range(0, len(encoded), 2)]
+
+        # Word 0: Spk1 (0x9109)
+        self.assertEqual(words[0], 0x9109)
+
+        # Last word: 0x00FF
+        self.assertEqual(words[-1], OPCODE_BLOCK_END)
+
+        # Exactly two 0x00FD occurrences
+        fd_indices = [idx for idx, w in enumerate(words) if w == OPCODE_BUBBLE_ADVANCE]
+        self.assertEqual(len(fd_indices), 2)
+
+        # First 0x00FD is followed by Page 2 of Bubble 1 (glyph code < 0x9000, 'Л')
+        first_fd = fd_indices[0]
+        word_after_fd1 = words[first_fd + 1]
+        self.assertLess(word_after_fd1, 0x9000)
+        self.assertEqual(word_after_fd1, COMBAT_CHARMAP["Л"])
+
+        # Second 0x00FD is followed by Spk2 (0xD123 >= 0x9000)
+        second_fd = fd_indices[1]
+        word_after_fd2 = words[second_fd + 1]
+        self.assertEqual(word_after_fd2, 0xD123)
+
+    def test_decoding_paginated_streams(self):
+        """Test that decoding paginated streams reconstructs pages correctly:
+        - 0x00FD followed by glyph (< 0x9000) is recognized as page advance for current speaker.
+        - 0x00FD followed by speaker opcode (>= 0x9000) is recognized as a new bubble.
+        """
+        block = {
+            "id": "block_decode_test",
+            "bubbles": [
+                {
+                    "bubble_index": 1,
+                    "speaker_opcode": "0x9109",
+                    "pages": ["Страница 1\nСтрока 2", "Страница 2"],
+                },
+                {
+                    "bubble_index": 2,
+                    "speaker_opcode": "0xD123",
+                    "pages": ["Реплика Наги"],
+                },
+            ],
+        }
+        encoded = encode_conversation_block(block)
+
+        # Decode via decode_conversation_block and decode_conversation_bubbles
+        decoded_block = decode_conversation_block(encoded)
+        self.assertIn("bubbles", decoded_block)
+        bubbles = decoded_block["bubbles"]
+        self.assertEqual(len(bubbles), 2)
+
+        # Direct decode_conversation_bubbles matches
+        bubbles_direct = decode_conversation_bubbles(encoded)
+        self.assertEqual(bubbles, bubbles_direct)
+
+        # Bubble 1 checks
+        b1 = bubbles[0]
+        self.assertEqual(b1["bubble_index"], 1)
+        self.assertEqual(b1["speaker_opcode"], "0x9109")
+        self.assertEqual(b1["pages"], ["Страница 1\nСтрока 2", "Страница 2"])
+        self.assertEqual(b1["text_ru"], "Страница 1\nСтрока 2\fСтраница 2")
+
+        # Bubble 2 checks
+        b2 = bubbles[1]
+        self.assertEqual(b2["bubble_index"], 2)
+        self.assertEqual(b2["speaker_opcode"], "0xD123")
+        self.assertEqual(b2["pages"], ["Реплика Наги"])
+        self.assertEqual(b2["text_ru"], "Реплика Наги")
+
+        # Roundtrip re-encoding matches original byte-exact
+        re_encoded = encode_conversation_block(decoded_block)
+        self.assertEqual(re_encoded, encoded)
+
+    def test_validation_multi_page_bubbles(self):
+        """Test that validation passes for multi-page bubbles where each page has <= 3 lines
+        and <= 21 chars, even though total lines across pages > 3.
+        """
+        # Valid catalog: Bubble with 2 pages, 3 lines each (total 6 lines > 3)
+        valid_cat_pages = {
+            "blocks": [
+                {
+                    "id": "block_valid_p",
+                    "bubbles": [
+                        {
+                            "bubble_index": 1,
+                            "speaker_opcode": "0x9109",
+                            "pages": [
+                                "Строка 1\nСтрока 2\nСтрока 3",
+                                "Вторая 1\nВторая 2\nВторая 3",
+                            ],
+                        }
+                    ],
+                }
+            ]
+        }
+        issues = validate_dialogue_formatting(valid_cat_pages)
+        self.assertEqual(issues, [], f"Valid multi-page bubble should have no issues, got: {issues}")
+
+        # Also valid when specified via text_ru with \f
+        valid_cat_ff = {
+            "blocks": [
+                {
+                    "id": "block_valid_ff",
+                    "bubbles": [
+                        {
+                            "bubble_index": 1,
+                            "speaker_opcode": "0x9109",
+                            "text_ru": "Строка 1\nСтрока 2\nСтрока 3\fВторая 1\nВторая 2\nВторая 3",
+                        }
+                    ],
+                }
+            ]
+        }
+        issues_ff = validate_dialogue_formatting(valid_cat_ff)
+        self.assertEqual(issues_ff, [], f"Valid multi-page bubble with \\f should have no issues, got: {issues_ff}")
+
+        # Invalid catalog: Page 1 has 4 lines (> 3)
+        invalid_cat_lines = {
+            "blocks": [
+                {
+                    "id": "block_inv_lines",
+                    "bubbles": [
+                        {
+                            "bubble_index": 1,
+                            "speaker_opcode": "0x9109",
+                            "pages": [
+                                "Стр 1\nСтр 2\nСтр 3\nСтр 4",
+                                "Стр 1\nСтр 2",
+                            ],
+                        }
+                    ],
+                }
+            ]
+        }
+        issues_lines = validate_dialogue_formatting(invalid_cat_lines)
+        self.assertEqual(len(issues_lines), 1)
+        self.assertIn("exceeds max 3", issues_lines[0])
+
+        # Invalid catalog: Page 2 line 1 exceeds 21 chars
+        invalid_cat_chars = {
+            "blocks": [
+                {
+                    "id": "block_inv_chars",
+                    "bubbles": [
+                        {
+                            "bubble_index": 1,
+                            "speaker_opcode": "0x9109",
+                            "pages": [
+                                "Короткая строка",
+                                "Эта строка намеренно длиннее двадцати одного символа!",
+                            ],
+                        }
+                    ],
+                }
+            ]
+        }
+        issues_chars = validate_dialogue_formatting(invalid_cat_chars)
+        self.assertEqual(len(issues_chars), 1)
+        self.assertIn("exceeds max 21", issues_chars[0])
+
     def test_budget_overflow_detected(self):
         """Test that exceeding allocated budget raises ValueError."""
         block = {
@@ -321,20 +581,25 @@ class TestInPlaceDialoguePatching(unittest.TestCase):
                 found_mercenary_block = True
 
             for bub in b.get("bubbles", []):
-                text_ru = bub.get("text_ru", "")
-                lines = text_ru.split("\n")
-                self.assertLessEqual(
-                    len(lines),
-                    3,
-                    f"Block {block_id} bubble {bub.get('bubble_index')} has {len(lines)} lines > 3: {text_ru!r}",
-                )
-                for l in lines:
+                if "pages" in bub and bub["pages"] is not None:
+                    pages = []
+                    for p in bub["pages"]:
+                        pages.extend(p.split("\f"))
+                else:
+                    pages = bub.get("text_ru", "").split("\f")
+                for page_idx, page in enumerate(pages, 1):
+                    lines = page.split("\n")
                     self.assertLessEqual(
-                        len(l),
-                        21,
-                        f"Block {block_id} bubble {bub.get('bubble_index')} line exceeds 21 chars ({len(l)}): {l!r}",
+                        len(lines),
+                        3,
+                        f"Block {block_id} bubble {bub.get('bubble_index')} page {page_idx} has {len(lines)} lines > 3: {page!r}",
                     )
-
+                    for l in lines:
+                        self.assertLessEqual(
+                            len(l),
+                            21,
+                            f"Block {block_id} bubble {bub.get('bubble_index')} page {page_idx} line exceeds 21 chars ({len(l)}): {l!r}",
+                        )
         self.assertTrue(found_mercenary_block, "Dialogue block at 0x06241C not found in catalog!")
 
 

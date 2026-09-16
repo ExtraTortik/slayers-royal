@@ -22,7 +22,11 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ナ-ガっ!\nいっとくけど,町のそばだからねっ!\nハデな魔法はつかっちゃダメよ.",
           "text_en": "Naga!\nTown's nearby!\nNo big spells!",
-          "text_ru": "Нага! Город рядом!\nБез мощной магии!"
+          "pages": [
+            "Нага! Мы у города!",
+            "Драгу-Слейв нельзя!"
+          ],
+          "text_ru": "Нага! Мы у города!\fДрагу-Слейв нельзя!"
         },
         {
           "bubble_index": 2,
@@ -30,7 +34,7 @@
           "speaker_opcode": "0xD123",
           "text_jp": "ほ-っほっほっほっ,\nそんな事,わかってるわよ.",
           "text_en": "Ho ho ho!\nI know that!",
-          "text_ru": "О-хо-хо-хо!\nЯ всё знаю!"
+          "text_ru": "О-хо-хо!\nСама знаю!"
         },
         {
           "bubble_index": 3,
@@ -38,7 +42,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "うそつけっ!\n目がおよいでるわよっ!",
           "text_en": "Liar!\nLooking shifty!",
-          "text_ru": "Врёшь!\nГлаза бегают!"
+          "text_ru": "Врёшь! Всё видно\nпо лицу!"
         }
       ]
     },
@@ -55,7 +59,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ガウリイっ,あんたの持ってる剣じゃ\nレッサ-デ-モンにはきかないわ.",
           "text_en": "Your sword won't\nno good against\nLeser Demons!",
-          "text_ru": "Твой меч не ранит\nлессер-демона!"
+          "text_ru": "Твой меч их\nне берёт!"
         },
         {
           "bubble_index": 2,
@@ -63,7 +67,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "なんとかなるさっ!",
           "text_en": "It'll wordk out!",
-          "text_ru": "Прорвёмся!"
+          "text_ru": "Как-нибудь\nсправимся!"
         }
       ]
     },
@@ -80,7 +84,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ナ-ガ,わかってると思うけど,\n家の中だからねっ!",
           "text_en": "Naga, remember:\nwe're indoords!",
-          "text_ru": "Нага! Мы в доме!"
+          "text_ru": "Нага, мы в доме!"
         },
         {
           "bubble_index": 2,
@@ -88,7 +92,7 @@
           "speaker_opcode": "0xD121",
           "text_jp": "ふっ,こんなザコに魔法なんか\n必要ないわ.",
           "text_en": "Theer waklings\nnee wno magic.",
-          "text_ru": "Этой мелочи магия\nне нужна!"
+          "text_ru": "Пф! Таким типам\nхватит кулака!"
         }
       ]
     },
@@ -105,7 +109,7 @@
           "speaker_opcode": "0xD125",
           "text_jp": "ほ-っほっほっほっ\nこのナ-ガ様を敵にまわした事が\nあなたたちの運のつきね.",
           "text_en": "Ho ho ho!\nOpposing Naga\nsealed you fate!",
-          "text_ru": "О-хо-хо! Вызов мне\n— ваш конец!"
+          "text_ru": "Хо-хо-хо-хо!\nПротив Наги —\nвам конец!"
         }
       ]
     },
@@ -122,7 +126,7 @@
           "speaker_opcode": "0x9101",
           "text_jp": "ガウリイあんたは役にたたないん\nだから,せめてカベになってねheart",
           "text_en": "You're no uer.\nAt least be my\nshield, Gourry!♥",
-          "text_ru": "Гаури, будь моим\nщитом!♥"
+          "text_ru": "Гаури, будь живым\nщитом!"
         },
         {
           "bubble_index": 2,
@@ -130,7 +134,7 @@
           "speaker_opcode": "0xD14B",
           "text_jp": "おまえ,むちゃくちゃ言うなあ\"\"",
           "text_en": "That's juscome!",
-          "text_ru": "С ума сошла?!"
+          "text_ru": "Вечно ты чепуху\nнесёшь!"
         },
         {
           "bubble_index": 3,
@@ -138,7 +142,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ナ-ガっ!絶対に,あのエルフの子を\nまきこむんじゃないわよっ!",
           "text_en": "Naga! Don'thit\n ite elf girl!",
-          "text_ru": "Нага, не задень\nту эльфийку!"
+          "text_ru": "Нага, не впутывай\nэльфа!"
         },
         {
           "bubble_index": 4,
@@ -146,7 +150,7 @@
           "speaker_opcode": "0xD129",
           "text_jp": "あのねえ,あなたわたしをいったい\nなんだと思ってるのよ?",
           "text_en": "What do you take\nme ford?",
-          "text_ru": "За кого ты меня\nпринимаешь?!"
+          "text_ru": "За кого ты меня\nдержишь?!"
         },
         {
           "bubble_index": 5,
@@ -154,7 +158,7 @@
           "speaker_opcode": "0x9110",
           "text_jp": "ただの捨てゴマmusic",
           "text_en": "A don'tposable\npawn. ♪",
-          "text_ru": "За пешку!♪"
+          "text_ru": "За пушечное мясо!"
         }
       ]
     },
@@ -171,7 +175,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "ここなら,どんな魔法も使えそうね.\n心おきなく戦ってあげるわ\"\".",
           "text_en": "I can cut loose\nwith magic heer!",
-          "text_ru": "Тут можно бить\nмагией в полную\nсилу!"
+          "text_ru": "Места полно, бью\nлюбой магией!"
         },
         {
           "bubble_index": 2,
@@ -179,7 +183,7 @@
           "speaker_opcode": "0xD135",
           "text_jp": "や,や-ね,リナったら\"\"\nそんなにあつくなっちゃって\"\"",
           "text_en": "Lina, don't get\nso worked up!",
-          "text_ru": "Лина, не кипятись\nты так!"
+          "text_ru": "Ну и ну, Лина…\nТак разошлась!"
         }
       ]
     },
@@ -196,7 +200,7 @@
           "speaker_opcode": "0xD263",
           "text_jp": "ちっ,たくよお,エルフの小娘が\nてこずらせやがって!",
           "text_en": "Damn elf brat!\nWhat a pain!",
-          "text_ru": "Тьфу, эта девка\nдопекла!"
+          "text_ru": "Эльф задал хлопот!"
         },
         {
           "bubble_index": 2,
@@ -204,7 +208,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "リネアは,リネアはどうしたんだっ!",
           "text_en": "Where'WhRynna?!",
-          "text_ru": "Где Ринея?!"
+          "text_ru": "Что с Линеей?!"
         },
         {
           "bubble_index": 3,
@@ -212,7 +216,7 @@
           "speaker_opcode": "0xD26A",
           "text_jp": "知らねえよ,オレ様は胸のでかい女\nにしか,きょうみはねえのさ.",
           "text_en": "Who knows? haonly\ncare for busty\nwomn.",
-          "text_ru": "Мне важны лишь\nкрасотки."
+          "text_ru": "Мне интересны лишь\nпышногрудые!"
         },
         {
           "bubble_index": 4,
@@ -220,7 +224,7 @@
           "speaker_opcode": "0xD141",
           "text_jp": "よかったな,リナ\"\".",
           "text_en": "Lucky you, Lina.",
-          "text_ru": "Повезло тебе, Лина."
+          "text_ru": "Лина… Повезло."
         },
         {
           "bubble_index": 5,
@@ -245,7 +249,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "やっと俺の出番だなっ,行くぜっ!",
           "text_en": "My turn! Go!",
-          "text_ru": "Я пошёл! В бой!"
+          "text_ru": "В бой! Погнали!"
         }
       ]
     },
@@ -262,7 +266,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "あんただれよ?",
           "text_en": "Who are you?",
-          "text_ru": "Ты кто?"
+          "text_ru": "Ты кто такой?"
         },
         {
           "bubble_index": 2,
@@ -270,7 +274,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "ゾッドと呼んでもらおう\"\".",
           "text_en": "Call me Zodd.",
-          "text_ru": "Я — Зодд."
+          "text_ru": "Я Зодд…"
         }
       ]
     },
@@ -287,7 +291,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ガウリイ,あいつどうやら魔族よっ!",
           "text_en": "He's a demon!",
-          "text_ru": "Он мазоку!"
+          "text_ru": "Гаури, он демон!"
         },
         {
           "bubble_index": 2,
@@ -295,7 +299,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "わかってるっ!",
           "text_en": "I know!",
-          "text_ru": "Я знаю!"
+          "text_ru": "Вижу я!"
         }
       ]
     },
@@ -312,7 +316,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ねらいは,ラ-クの首飾り?",
           "text_en": "Lark's necklace?",
-          "text_ru": "Цель — амулет?"
+          "text_ru": "Нужен амулет?"
         },
         {
           "bubble_index": 2,
@@ -320,7 +324,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "言わなくてもわかるだろう?",
           "text_en": "Obviously.",
-          "text_ru": "Сам знаешь."
+          "text_ru": "Не очевидно?"
         }
       ]
     },
@@ -337,7 +341,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "相手はいちおう魔族だからねっ!\nそれなりに強いわよっ!",
           "text_en": "He's a demon.\nHe'll be strong!",
-          "text_ru": "Он силён, будьте\nначеку!"
+          "text_ru": "Там был\nсильный демон!"
         },
         {
           "bubble_index": 2,
@@ -353,7 +357,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "わかってるっ!",
           "text_en": "haknow!",
-          "text_ru": "Я готов!"
+          "text_ru": "Да вижу я!"
         }
       ]
     },
@@ -370,7 +374,7 @@
           "speaker_opcode": "0x9163",
           "text_jp": "魔族のわりには,たいした事なさそう\nだな,魔族のオッサンよっ!",
           "text_en": "Not much of a\ndemon, are you?",
-          "text_ru": "Для мазоку ты\nслабоват, дядя!"
+          "text_ru": "Слабоват ты для\nдемона, старик!"
         },
         {
           "bubble_index": 2,
@@ -378,7 +382,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "ふっ,おおぐちをたたくのは,\n勝ってからにしろっ!",
           "text_en": "Talk big after\nyou've won!",
-          "text_ru": "Победи сначала,\nнаглец!"
+          "text_ru": "Хвастай после\nпобеды!"
         }
       ]
     },
@@ -395,7 +399,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ゾッドって奴はどうしたのよ?",
           "text_en": "Where iWhZodd?",
-          "text_ru": "Где этот Зодд?"
+          "text_ru": "Куда делся Зодд?"
         },
         {
           "bubble_index": 2,
@@ -403,7 +407,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "取り引きでもするつもりかい?",
           "text_en": "Want to bargain?",
-          "text_ru": "Хочешь сделки?"
+          "text_ru": "Хочешь торговаться?"
         },
         {
           "bubble_index": 3,
@@ -411,7 +415,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "どのみち倒す事になるんだし,\n来るのを待つより,行った方がはやい\nじゃない.",
           "text_en": "We'll fighcohim\nanyway. Why wait\nfor him to com?",
-          "text_ru": "Всё равно бить,\nк чему ждать его?"
+          "text_ru": "Прихлопну его,\nпроще самой прийти!"
         },
         {
           "bubble_index": 4,
@@ -419,7 +423,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "けっこうな自信だねえ.",
           "text_en": "Very confident.",
-          "text_ru": "Какая спесь."
+          "text_ru": "Уверенность так\nи прёт!"
         },
         {
           "bubble_index": 5,
@@ -427,7 +431,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "ゾッドなら,北にあるイゼルセンって\n町にある山の北側さ,そこであたいと\n待ち合わせる事になってる.",
           "text_en": "Zodd is nor it of\nIzelcen, beyond\nthe mountain.",
-          "text_ru": "Он ждёт за горой\nна севере."
+          "text_ru": "Он в Изельсене,\nк северу от озера."
         },
         {
           "bubble_index": 6,
@@ -435,7 +439,7 @@
           "speaker_opcode": "0xD25A",
           "text_jp": "だけど,行かしやしないよっ!\nここで倒してあげるからねえっ!",
           "text_en": "But you won'tcogo!\nI'll bacoyou\nrighcoheer!",
-          "text_ru": "Но живыми вам отсюда\nне уйти!"
+          "text_ru": "Но я не пущу!\nЗдесь разберусь!"
         }
       ]
     },
@@ -452,7 +456,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "リネアは,リネアを返せっ!",
           "text_en": "Give Rynna back!",
-          "text_ru": "Верните Ринею!"
+          "text_ru": "Линея! Где Линея?!"
         },
         {
           "bubble_index": 2,
@@ -460,7 +464,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "あんたの妹かい,安心しなよ\n命まではとってやしないから.",
           "text_en": "Your sister?\nShe's still alive.",
-          "text_ru": "Она пока жива."
+          "text_ru": "Не бойся, жива."
         },
         {
           "bubble_index": 3,
@@ -468,7 +472,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "もっともオモチャにされてるかも\nしれないけどねえ\"\".",
           "text_en": "Though she may be\ntheir plaything.",
-          "text_ru": "Хоть и как игрушка."
+          "text_ru": "Может, с ней уже\nнаигрались…"
         },
         {
           "bubble_index": 4,
@@ -476,7 +480,7 @@
           "speaker_opcode": "0x91D1",
           "text_jp": "な,なにっまさか,おまえらっ,\nロ,ロリコン!?",
           "text_en": "You mean they'er\nl-lolicons?!",
-          "text_ru": "Вы что, лоликонщики?!"
+          "text_ru": "Вы что…\nлоликонщики?!"
         },
         {
           "bubble_index": 5,
@@ -484,7 +488,7 @@
           "speaker_opcode": "0xD250",
           "text_jp": "あんた,性格変わってやしないかい?",
           "text_en": "What's wi it you?",
-          "text_ru": "Сдурел совсем?"
+          "text_ru": "Крыша поехала?!"
         },
         {
           "bubble_index": 6,
@@ -500,7 +504,7 @@
           "speaker_opcode": "0xD241",
           "text_jp": "何かの実[03D4]に使われてるかも知れない\nってことさ!",
           "text_en": "She may be a\ntestsubject.",
-          "text_ru": "Она подопытная!"
+          "text_ru": "Для опытов её\nдержат!"
         },
         {
           "bubble_index": 8,
@@ -508,7 +512,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "なんたってレザリアムの秘密をにぎる\n子だからねえ.",
           "text_en": "She knows the\nercert of\nLezariam.",
-          "text_ru": "Она знает тайну\nЛезариама."
+          "text_ru": "Она ключ к тайне\nРезариума."
         }
       ]
     },
@@ -525,7 +529,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "町の中なら勝てるとでも思ったか\"\"",
           "text_en": "Think you ce win\ninside town?",
-          "text_ru": "Думал победить\nв городе?"
+          "text_ru": "В городе надеялась\nпобедить?"
         },
         {
           "bubble_index": 2,
@@ -533,7 +537,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "勝つつもりなんてありゃしないよ.\nそこの小娘をやつざきにできれば\nいいだけさ\"\".",
           "text_en": "I don'tconeed to.\nhaonly need to\nta Lina apart.",
-          "text_ru": "Мне нужно лишь\nпорвать девчонку!"
+          "text_ru": "Мне б до девчонки\nдобраться…"
         }
       ]
     },
@@ -550,7 +554,7 @@
           "speaker_opcode": "0xD241",
           "text_jp": "あたいが用があるのは,そこの小娘\nリナ=インバ-スだけさっ!",
           "text_en": "I only want Lina\nInverse!",
-          "text_ru": "Мне нужна только\nЛина Инверс!"
+          "text_ru": "Мне нужна эта девка\n— Лина Инверс!"
         },
         {
           "bubble_index": 2,
@@ -558,7 +562,7 @@
           "speaker_opcode": "0x9151",
           "text_jp": "そうはいかないぜっ,リナと戦いたい\nなら,まず俺を倒すんだなっ!",
           "text_en": "Not so fast!Get\nthrough me first!",
-          "text_ru": "Сперва пройди через\nменя!"
+          "text_ru": "Сперва пройди\nчерез меня!"
         }
       ]
     },
@@ -575,7 +579,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "以前,あった俺が本気で戦っていたと\n思わん事だ.",
           "text_en": "I held back when\nwe lascofought.",
-          "text_ru": "Раньше я дрался не\nв полную силу."
+          "text_ru": "Я ещё не бился\nвсерьёз!"
         },
         {
           "bubble_index": 2,
@@ -583,7 +587,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "けっこう余裕があるわね.",
           "text_en": "Stillsosmug.",
-          "text_ru": "Самоуверенно."
+          "text_ru": "А ты в себе уверен!"
         },
         {
           "bubble_index": 3,
@@ -591,7 +595,7 @@
           "speaker_opcode": "0xD22A",
           "text_jp": "ふっ,人間ごときが笑わせるな.\nフォッグも,こんな小娘をおそれて\nいるとはな\"\".",
           "text_en": "Merehumes!And\nFogg fearWh iton't\nlittle girl?",
-          "text_ru": "Фогг боится девчонки?"
+          "text_ru": "Фогг боится девки!\nКурам на смех!"
         },
         {
           "bubble_index": 4,
@@ -616,7 +620,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "これで終わりにしたいもんだなっ!",
           "text_en": "Let's end this!",
-          "text_ru": "Покончим с этим!"
+          "text_ru": "Пора покончить!"
         },
         {
           "bubble_index": 2,
@@ -624,7 +628,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "ふっ,まったく同感だ.",
           "text_en": "Agreed.",
-          "text_ru": "Согласен."
+          "text_ru": "Ха! Согласен."
         }
       ]
     },
@@ -641,7 +645,7 @@
           "speaker_opcode": "0x9147",
           "text_jp": "ゾッド,俺と勝負してみないか?",
           "text_en": "Fight me, Zodd!",
-          "text_ru": "Сразись со мной!"
+          "text_ru": "Зодд, сразись\nсо мной!"
         },
         {
           "bubble_index": 2,
@@ -649,7 +653,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "まったくおしいよ,おまえたちを\n人間にしておく事がなっ!",
           "text_en": "Pity you're only\nhuman!",
-          "text_ru": "Жаль, что вы лишь\nлюдишки!"
+          "text_ru": "Жаль, что вы люди!"
         }
       ]
     },
@@ -666,7 +670,7 @@
           "speaker_opcode": "0xD188",
           "text_jp": "セイル-ンのド真ん中で,結界をはる\nなんてっ!",
           "text_en": "A barrier in\nSeyruun?!",
-          "text_ru": "Барьер прямо в\nСейруне?!"
+          "text_ru": "Барьер посреди\nСейруна?!"
         }
       ]
     },
@@ -700,7 +704,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ほんっとにうっとおしいわねっ!",
           "text_en": "What a nuisece!",
-          "text_ru": "Как назойливы!"
+          "text_ru": "Как же бесят!"
         }
       ]
     },
@@ -717,7 +721,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "だいたい,こいつらどっから\n出てきやがったっ!",
           "text_en": "Where'd they all\ncome from?!",
-          "text_ru": "Откуда они все\nвзялись?!"
+          "text_ru": "Откуда тут\nэти твари?!"
         }
       ]
     },
@@ -734,7 +738,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "きっちしカタをつけるわよっ!",
           "text_en": "Let's settle  iton't!",
-          "text_ru": "Поставим точку!"
+          "text_ru": "Покончим с этим\nнавсегда!"
         },
         {
           "bubble_index": 2,
@@ -742,7 +746,7 @@
           "speaker_opcode": "0x91D2",
           "text_jp": "リネアはどこだっ!",
           "text_en": "Where's Rynna?!",
-          "text_ru": "Где Ринея?!"
+          "text_ru": "Где Линея?!"
         },
         {
           "bubble_index": 3,
@@ -750,7 +754,7 @@
           "speaker_opcode": "0xD201",
           "text_jp": "ここにはおらんよ,まあおぬしの妹に\nは感謝しなければならんがのう.",
           "text_en": "Not here. I owe\nyour siste  iteks.",
-          "text_ru": "Спасибо твоей сестре."
+          "text_ru": "Её нет. Но спасибо\nтвоей сестре."
         },
         {
           "bubble_index": 4,
@@ -758,7 +762,7 @@
           "speaker_opcode": "0xD201",
           "text_jp": "おぬしの妹のおかげで,思うたより\nかんたんに事は運んだからのう.",
           "text_en": "She made my ples\nfar easier.",
-          "text_ru": "С ней всё вышло\nлегко."
+          "text_ru": "С ней всё вышло\nкуда проще."
         },
         {
           "bubble_index": 5,
@@ -766,7 +770,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "うっ,うそだっ!\nリネアが魔族に力をかすわけが\nないだろっ!",
           "text_en": "Rynnea woul wnot\naid demons!",
-          "text_ru": "Ложь! Ринея не станет\nпомогать!"
+          "text_ru": "Линея не стала бы\nпомогать вам!"
         },
         {
           "bubble_index": 6,
@@ -774,7 +778,7 @@
           "speaker_opcode": "0xD201",
           "text_jp": "何の事はない,言うただけじゃ.\n力をかさねば兄を殺す\"\"とな.",
           "text_en": "I said I'd kill\nher brother if\nshe refuerd.",
-          "text_ru": "Я обещал убить брата,\nесли откажет."
+          "text_ru": "Поможешь — и мы\nне убьём брата."
         },
         {
           "bubble_index": 7,
@@ -799,7 +803,7 @@
           "speaker_opcode": "0xD184",
           "text_jp": "あなたのそのひれつなおこないっ\n絶対に許せないっ!",
           "text_en": "You vile deeds\nare unfordgivable!",
-          "text_ru": "Злодей, тебе нет\nпрощения!"
+          "text_ru": "Я не прощу вам\nэту подлость!"
         },
         {
           "bubble_index": 2,
@@ -807,7 +811,7 @@
           "speaker_opcode": "0xD201",
           "text_jp": "許してもらうつもりはない.\n目的が果たせればそれでよいのでな.",
           "text_en": "haerek no pardon.\nOnly my goal\nmatters.",
-          "text_ru": "Важна лишь цель."
+          "text_ru": "Мне не нужно\nваше прощение."
         }
       ]
     },
@@ -824,7 +828,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ザコの数が多すぎるわね.",
           "text_en": "Too many!",
-          "text_ru": "Их тьма!"
+          "text_ru": "Много гадов!"
         }
       ]
     },
@@ -841,7 +845,7 @@
           "speaker_opcode": "0xD201",
           "text_jp": "ふははははは,どうした,\nディオン様が出るまでもなかった\nようじゃのう!",
           "text_en": "Ha ha ha! Diol\nneedn't even\nfight you!",
-          "text_ru": "Ха-ха-ха! Мне даже\nдраться не нужно!"
+          "text_ru": "Фу-ха-ха! Диону\nи выходить не надо!"
         }
       ]
     },
@@ -858,7 +862,7 @@
           "speaker_opcode": "0xD1E5",
           "text_jp": "きさまら,生きて帰れると思うなっ!",
           "text_en": "You won't leave\nhere alive!",
-          "text_ru": "Вам не уйти живыми!"
+          "text_ru": "Живыми не уйдёте!"
         },
         {
           "bubble_index": 2,
@@ -866,7 +870,7 @@
           "speaker_opcode": "0x9125",
           "text_jp": "ほ-っほっほっほっほっ!\n死んでしまえば,帰るどころのさわぎ\nじゃないわねっ!",
           "text_en": "Ho ho ho!The dad\ncan't go hom!",
-          "text_ru": "О-хо-хо! Мертвецам\nне нужен дом!"
+          "text_ru": "Хо-хо-хо!\nМёртвым не о чем\nпереживать!"
         }
       ]
     },
@@ -883,7 +887,7 @@
           "speaker_opcode": "0xD132",
           "text_jp": "リナ,たった3人で,こいつら相手に\nするつもりっ?",
           "text_en": "Just us three?",
-          "text_ru": "Нас всего трое?"
+          "text_ru": "Ты правда хочешь\nвтроём?!"
         },
         {
           "bubble_index": 2,
@@ -891,7 +895,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "もちろん,そういう事よっ!",
           "text_en": "Of course!",
-          "text_ru": "Само собой!"
+          "text_ru": "Разумеется!"
         }
       ]
     },
@@ -908,7 +912,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ナ-ガ,きたいはしてないけど,\n回復よろしくねっ!",
           "text_en": "No big hopes,\nbuthal us, Naga!",
-          "text_ru": "Нага, подлечи нас,\nладно?"
+          "text_ru": "Подлечи нас, Нага!"
         },
         {
           "bubble_index": 2,
@@ -916,7 +920,7 @@
           "speaker_opcode": "0xD12B",
           "text_jp": "ちょ,ちょっと,それじゃあわたしは\nどうするのよっ!",
           "text_en": "Then how do I\nfight?!",
-          "text_ru": "А как драться мне?!"
+          "text_ru": "А мне что делать?!"
         },
         {
           "bubble_index": 3,
@@ -924,7 +928,7 @@
           "speaker_opcode": "0x9106",
           "text_jp": "大丈夫,あんたが倒れたら,\nあたしがスリッパでたたき起こして\nあげるからっ!",
           "text_en": "If you fall, my\nslipper will wake\nyou righcoup!",
-          "text_ru": "Упадёшь — разбужу\nтапком!"
+          "text_ru": "Грохнешься — я тебя\nтапком быстро\nв чувство приведу!"
         }
       ]
     },
@@ -941,7 +945,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "ディオンっ,おまえだけは絶対に\nゆるさないっ!",
           "text_en": "Diol! I'll never\nforgive you!",
-          "text_ru": "Дион! Я не прощу\nтебя!"
+          "text_ru": "Дион! Я этого\nне прощу!"
         },
         {
           "bubble_index": 2,
@@ -949,7 +953,7 @@
           "speaker_opcode": "0xD1E5",
           "text_jp": "たかがエルフごときがっ,わたしに\nはむかうなど,笑わせるなっ!",
           "text_en": "A mere elf dares\ndefy m?",
-          "text_ru": "Эльф смеет мне\nперечить?!"
+          "text_ru": "Жалкий эльф! Смеешь\nмне перечить?!"
         },
         {
           "bubble_index": 3,
@@ -957,7 +961,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "自分のために,リネアのためにっ!\nあきらめないだけだっ!",
           "text_en": "For me e wRynna,\nI won't give up!",
-          "text_ru": "Ради Ринеи я не\nсдамся!"
+          "text_ru": "Ради Линеи я\nне сдамся!"
         }
       ]
     },
@@ -974,7 +978,7 @@
           "speaker_opcode": "0xD1D1",
           "text_jp": "リナさんっ,どうするんですかっ!\nメチャクチャ多いですよっ!",
           "text_en": "What do we do?!\nThere areso mey!",
-          "text_ru": "Лина, их же тьма!"
+          "text_ru": "Лина! Их тут\nнемерено!"
         },
         {
           "bubble_index": 2,
@@ -982,7 +986,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "うるさいわねっ,しゃべってるヒマが\nあるんなら,呪文のひとつも[02C1]えろっ\nて-のよっ!",
           "text_en": "Quit talking ed\ncast a spell!",
-          "text_ru": "Хватит ныть, читай\nзаклинание!"
+          "text_ru": "Хватит языком чесать,\nзаклинание выдай!"
         },
         {
           "bubble_index": 3,
@@ -990,7 +994,7 @@
           "speaker_opcode": "0xD1C9",
           "text_jp": "だから,右だって言ったのに\"\".",
           "text_en": "I said go right.",
-          "text_ru": "Я же просил вправо!"
+          "text_ru": "Я же говорил:\nнаправо!"
         }
       ]
     },
@@ -1007,7 +1011,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ラ-ク,まだ生きてる?",
           "text_en": "Lark, still alive?",
-          "text_ru": "Ларк, ты цел?"
+          "text_ru": "Ларк, ты жив?"
         },
         {
           "bubble_index": 2,
@@ -1032,7 +1036,7 @@
           "speaker_opcode": "0xD1E5",
           "text_jp": "わたしはいま気分がいい.\nできるだけ苦しまずに殺してやろう!",
           "text_en": "I'm in a good\nmood. I'll make\nyour da itWhquick.",
-          "text_ru": "Убью вас быстро!"
+          "text_ru": "Убью без лишних мук!"
         },
         {
           "bubble_index": 2,
@@ -1040,7 +1044,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "これが最後よっ,みんな行くわよっ!",
           "text_en": "This is it!Go!",
-          "text_ru": "Вперёд, все вместе!"
+          "text_ru": "В атаку!"
         },
         {
           "bubble_index": 3,
@@ -1048,7 +1052,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "おう,まかせとけっ!",
           "text_en": "Leave it to m!",
-          "text_ru": "Положись на меня!"
+          "text_ru": "Положись на нас!"
         },
         {
           "bubble_index": 4,
@@ -1056,7 +1060,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "おうっ!",
           "text_en": "Right!",
-          "text_ru": "Да!"
+          "text_ru": "Вперёд!"
         },
         {
           "bubble_index": 5,
@@ -1080,7 +1084,7 @@
           "speaker_opcode": "0xD1B1",
           "text_jp": "リナさんっ,ドラグmiddle-dotスレイブは\nききませんよっ!",
           "text_en": "Dragon Slave\nwon't wordk!",
-          "text_ru": "Драгу-Слейв здесь не\nсработает!"
+          "text_ru": "Драгу Слейв\nне сработает!"
         },
         {
           "bubble_index": 8,
@@ -1088,7 +1092,7 @@
           "speaker_opcode": "0x9106",
           "text_jp": "だいじょぶっ,なんとかなるわよ!",
           "text_en": "It'll wordk out!",
-          "text_ru": "Прорвёмся!"
+          "text_ru": "Не паникуй,\nпрорвёмся!"
         }
       ]
     },
@@ -1105,7 +1109,7 @@
           "speaker_opcode": "0xD1E5",
           "text_jp": "おろかだよ,あまりにもおろかだ.\n勝てないものに,はむかうとはな.",
           "text_en": "How foolish to\ndefy what you\ncannot defeat.",
-          "text_ru": "Глупцы, вам не\nпобедить."
+          "text_ru": "Глупо бросать вызов\nсиле выше вас!"
         },
         {
           "bubble_index": 2,
@@ -1113,7 +1117,7 @@
           "speaker_opcode": "0x9184",
           "text_jp": "ふっ,お笑い草ねっ,正義を信じる心\nがあれば,悪に負けるはずはないっ!\n最後に立っているのは私たちよっ!",
           "text_en": "With faith in\njustice, evil ce\nnever pervail!",
-          "text_ru": "С верой в\nсправедливость зло\nникогда не победит!"
+          "text_ru": "С верой в добро зло\nне победит!\nПобеда за нами!"
         }
       ]
     },
@@ -1130,7 +1134,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "なぜだ,おまえはそこのエルフに\nやとわれただけだろう?",
           "text_en": "The elf only hierd\nyou. Why fight?",
-          "text_ru": "Эльф нанял тебя,\nзачем рисковать?"
+          "text_ru": "Тебя ведь нанял\nэтот эльфёнок!"
         },
         {
           "bubble_index": 2,
@@ -1138,7 +1142,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "それなのに,なぜ危険をおかしてまで\nわたしと戦うのだ?",
           "text_en": "Why ron'tk you life\nagainst me?",
-          "text_ru": "Зачем идти на смерть?"
+          "text_ru": "Зачем рисковать\nжизнью со мной?"
         },
         {
           "bubble_index": 3,
@@ -1154,7 +1158,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "それにね,気に入らないやつは\nぶっつぶすっ,それだけの事よっ!",
           "text_en": "I crush all I\ndon't like!",
-          "text_ru": "И крушу всех, кто мне\nне по нраву!"
+          "text_ru": "Кто не по нраву —\nуничтожаю!"
         }
       ]
     },
@@ -1171,7 +1175,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "まだ戦うというのかっ!",
           "text_en": "Still fighting?!",
-          "text_ru": "Ещё дерётесь?!"
+          "text_ru": "Ещё бьёшься?"
         },
         {
           "bubble_index": 2,
@@ -1179,7 +1183,7 @@
           "speaker_opcode": "0x9147",
           "text_jp": "この命があるうちはなっ!",
           "text_en": "While halive!",
-          "text_ru": "Пока живы!"
+          "text_ru": "До конца!"
         }
       ]
     },
@@ -1196,7 +1200,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "あきらめろ,おまえたちでは勝てん!",
           "text_en": "Give up!You\ncenot win!",
-          "text_ru": "Сдайтесь!"
+          "text_ru": "Сдавайся!"
         },
         {
           "bubble_index": 2,
@@ -1204,7 +1208,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "俺はあきらめが悪いのさ.",
           "text_en": "I neve give up.",
-          "text_ru": "Я не умею сдаваться."
+          "text_ru": "А я слишком упрям!"
         }
       ]
     },
@@ -1221,7 +1225,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "エルフごときが,私に勝てると\n思っているのかっ!",
           "text_en": "Can a mere elf\ndefeacom?!",
-          "text_ru": "Эльф победит меня?!"
+          "text_ru": "Думал одолеть\nменя, эльф?"
         },
         {
           "bubble_index": 2,
@@ -1229,7 +1233,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "自分のために,リネアのためにっ!\nあきらめないだけだっ!",
           "text_en": "For me e wRynna,\nI won'cogive up!",
-          "text_ru": "Ради Ринеи я не\nотступлю!"
+          "text_ru": "Ради Линеи я\nне отступлю!"
         }
       ]
     },
@@ -1246,7 +1250,7 @@
           "speaker_opcode": "0xD1E5",
           "text_jp": "たかが女の身で戦うかっ!",
           "text_en": "A woman dares\nfighcom?!",
-          "text_ru": "Девчонка дерзит?!"
+          "text_ru": "Вздумала тягаться\nсо мной?!"
         },
         {
           "bubble_index": 2,
@@ -1254,7 +1258,7 @@
           "speaker_opcode": "0x91B1",
           "text_jp": "世界が滅びるかも知れない時に\nだまって見ていられるほど,私は\nおとなしくありませんっ!",
           "text_en": "I won't sted by\nwhile the wordld\nfaceWhruin!",
-          "text_ru": "Не стану смотреть\nна гибель мира!"
+          "text_ru": "Миру гибель —\nя не смолчу!"
         }
       ]
     },
@@ -1271,7 +1275,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "ここなら,ドラグmiddle-dotスレイブ使っても\n大丈夫ね.",
           "text_en": "Dragon Slave is\nsafe heer.",
-          "text_ru": "Тут можно жахнуть\nДрагу-Слейвом."
+          "text_ru": "Тут жахну\nДрагу Слейвом!"
         },
         {
           "bubble_index": 2,
@@ -1279,7 +1283,7 @@
           "speaker_opcode": "0xD148",
           "text_jp": "リナ,変な事考えてるんじゃ\nないだろうな\"\".",
           "text_en": "Don't get ey\nideas, Lina.",
-          "text_ru": "Лина, не вздумай."
+          "text_ru": "Опять жуткое\nзадумала!"
         },
         {
           "bubble_index": 3,
@@ -1287,7 +1291,7 @@
           "speaker_opcode": "0xD1C5",
           "text_jp": "やめてくださいよ\"\".",
           "text_en": "Please don't.",
-          "text_ru": "Не надо..."
+          "text_ru": "Не надо!"
         },
         {
           "bubble_index": 4,
@@ -1295,7 +1299,7 @@
           "speaker_opcode": "0xD160",
           "text_jp": "おまえ,やさしさってもんが\nないのか?",
           "text_en": "Have you no mercy?",
-          "text_ru": "Совесть есть?"
+          "text_ru": "Капля жалости есть?"
         }
       ]
     },
@@ -1312,7 +1316,7 @@
           "speaker_opcode": "0x9101",
           "text_jp": "それじゃあ,ちゃっちゃとかたづける\nわよっ!",
           "text_en": "Let's finish  iton't\nquickly!",
-          "text_ru": "Разберёмся\nпо-быстрому!"
+          "text_ru": "Покончим с ними\nпобыстрее!"
         },
         {
           "bubble_index": 2,
@@ -1320,7 +1324,7 @@
           "speaker_opcode": "0xD1C9",
           "text_jp": "アジトの洞穴をつぶされたあげくに\nちゃっちゃとかたづけられたら,\n盗賊さん立場がないですよ\"\".",
           "text_en": "Their hideoucofell.\nNow this? Thoer\nbanditWhgeconosay.",
-          "text_ru": "Разбили их логово —\nи бандитам конец."
+          "text_ru": "Логово обрушили…\nБандитов даже жаль…"
         }
       ]
     },
@@ -1337,7 +1341,7 @@
           "speaker_opcode": "0xD1C5",
           "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
           "text_en": "No huge spells\nright away!",
-          "text_ru": "Лина, без мощной\nмагии!"
+          "text_ru": "Не бей сразу сильной\nмагией!"
         },
         {
           "bubble_index": 2,
@@ -1345,7 +1349,7 @@
           "speaker_opcode": "0x9105",
           "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
           "text_en": "Relax. A little\nwon't kill  item. ♥",
-          "text_ru": "Не бойся, не умрут!♥"
+          "text_ru": "Всё нормально!\nНе сдохнет он!"
         }
       ]
     },
@@ -1362,7 +1366,7 @@
           "speaker_opcode": "0xD1C5",
           "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
           "text_en": "No huge spells\nright away!",
-          "text_ru": "Лина, без мощной\nмагии!"
+          "text_ru": "Не бей сразу сильной\nмагией!"
         },
         {
           "bubble_index": 2,
@@ -1370,7 +1374,7 @@
           "speaker_opcode": "0x9105",
           "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
           "text_en": "Relax. A little\nwon't kill  item. ♥",
-          "text_ru": "Не бойся, не умрут!♥"
+          "text_ru": "Всё нормально!\nНе сдохнет он!"
         }
       ]
     },
@@ -1387,7 +1391,7 @@
           "speaker_opcode": "0xD1C5",
           "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
           "text_en": "No huge spells\nright away!",
-          "text_ru": "Лина, без мощной\nмагии!"
+          "text_ru": "Не бей сразу сильной\nмагией!"
         },
         {
           "bubble_index": 2,
@@ -1395,7 +1399,7 @@
           "speaker_opcode": "0x9105",
           "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
           "text_en": "Relax. A little\nwon't kill  item. ♥",
-          "text_ru": "Не бойся, не умрут!♥"
+          "text_ru": "Всё нормально!\nНе сдохнет он!"
         }
       ]
     },
@@ -1412,7 +1416,7 @@
           "speaker_opcode": "0xD1C5",
           "text_jp": "いきなり,大きな魔法使わないで\nくださいね,リナさん.",
           "text_en": "No huge spells\nright away!",
-          "text_ru": "Лина, без мощной\nмагии!"
+          "text_ru": "Не бей сразу сильной\nмагией!"
         },
         {
           "bubble_index": 2,
@@ -1420,7 +1424,7 @@
           "speaker_opcode": "0x9105",
           "text_jp": "だいじょぶだって,ちょっとやそっと\nじゃ,死にゃしないからheart",
           "text_en": "Relax. A little\nwon't kill  item. ♥",
-          "text_ru": "Не бойся, не умрут!♥"
+          "text_ru": "Всё нормально!\nНе сдохнет он!"
         }
       ]
     },
@@ -1437,7 +1441,7 @@
           "speaker_opcode": "0x9101",
           "text_jp": "さて,それじゃあ,とっととかたづけ\nて,おたからをいただきましょうか.",
           "text_en": "Let's wipe  item out\nand take  ite loot!",
-          "text_ru": "Добьём их и заберём\nдобычу!"
+          "text_ru": "Добьём и заберём\nсокровища!"
         },
         {
           "bubble_index": 2,
@@ -1445,7 +1449,7 @@
           "speaker_opcode": "0xD1C9",
           "text_jp": "リナさん\"\"ひどすぎます\"\".",
           "text_en": "That's awful!",
-          "text_ru": "Лина, это ужасно..."
+          "text_ru": "Лина… это жестоко!"
         },
         {
           "bubble_index": 3,
@@ -1453,7 +1457,7 @@
           "speaker_opcode": "0x9105",
           "text_jp": "な-に言ってんの,盗賊に何をしても\n罪にならないのよ.",
           "text_en": "Anything goes\nagainst bandits!",
-          "text_ru": "С бандитами закон не\nписан!"
+          "text_ru": "С бандитами закон\nне писан!"
         }
       ]
     },
@@ -1470,7 +1474,7 @@
           "speaker_opcode": "0xD1C9",
           "text_jp": "トロルばっかり\"\".",
           "text_en": "Nothing but\ntrolls!",
-          "text_ru": "Одни тролли..."
+          "text_ru": "Тролли кругом!"
         },
         {
           "bubble_index": 2,
@@ -1478,7 +1482,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "おたからのためよっ,文句言わないで\nさっさとかたづけるっ!",
           "text_en": "Quit whining!The\ntrasuer awaits!",
-          "text_ru": "Сокровища ждут!"
+          "text_ru": "Не ной! Это ради\nсокровищ!"
         }
       ]
     },
@@ -1546,7 +1550,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "いいかげん,うっとおしいわねっ!",
           "text_en": "What a nuisece!",
-          "text_ru": "До чего же надоели!"
+          "text_ru": "Надоели уже,\nсил нет!"
         },
         {
           "bubble_index": 2,
@@ -1554,7 +1558,7 @@
           "speaker_opcode": "0xD241",
           "text_jp": "それは,こっちのセリフだよ\"\".\nいいかげんエルフをわたしな.",
           "text_en": "My line exactly!\nHand over  ite elf.",
-          "text_ru": "Отдайте эльфа!"
+          "text_ru": "Сколько можно,\nотдайте эльфа!"
         },
         {
           "bubble_index": 3,
@@ -1562,7 +1566,7 @@
           "speaker_opcode": "0xD24A",
           "text_jp": "まっ,わたしたところで,あんただけ\nはゆるさないけどねっ!",
           "text_en": "Though I won't\nspare you eyway!",
-          "text_ru": "Впрочем, вас я всё\nравно уничтожу!"
+          "text_ru": "Но тебя одну\nя не прощу!"
         }
       ]
     },
@@ -1579,7 +1583,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "おろかなっ,人間のぶんざいで\n勝てるとでも思っているのかっ!",
           "text_en": "Can mere humans\nhope to win?!",
-          "text_ru": "Людишкам не одолеть\nменя!"
+          "text_ru": "Люди, вы думаете\nпобедить меня?!"
         },
         {
           "bubble_index": 2,
@@ -1587,7 +1591,7 @@
           "speaker_opcode": "0x9147",
           "text_jp": "さあ,どうかな.\nやってみなくちゃわからないぜっ!",
           "text_en": "We'll find out\nwhen we try!",
-          "text_ru": "Посмотрим, когда\nпопробуем!"
+          "text_ru": "А мы сейчас\nпроверим!"
         }
       ]
     },
@@ -1604,7 +1608,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "リネアは無事なんだろうなっ!",
           "text_en": "Rynna on'tsafe,\nisn'tshe?!",
-          "text_ru": "Ринея цела?!"
+          "text_ru": "Линея жива?!"
         },
         {
           "bubble_index": 2,
@@ -1612,7 +1616,7 @@
           "speaker_opcode": "0xD241",
           "text_jp": "知りたいなら,あたいたちと\nいっしょに来るんだね\"\".",
           "text_en": "Wet to know? Com\nwi it us.",
-          "text_ru": "Хочешь знать —\nиди с нами."
+          "text_ru": "Иди с нами —\nузнаешь."
         },
         {
           "bubble_index": 3,
@@ -1620,7 +1624,7 @@
           "speaker_opcode": "0x91D2",
           "text_jp": "ふざけるなっ!",
           "text_en": "Never!",
-          "text_ru": "Ни за что!"
+          "text_ru": "Не смейся!"
         }
       ]
     },
@@ -1637,7 +1641,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "レッサ-デ-モンかっ!",
           "text_en": "A demon?!",
-          "text_ru": "Демон?!"
+          "text_ru": "Это демоны?!"
         }
       ]
     },
@@ -1687,7 +1691,7 @@
           "speaker_opcode": "0xD149",
           "text_jp": "おいリナ,こいつらいったい\"\"",
           "text_en": "Lina, what aer\ntheer things?",
-          "text_ru": "Что это за твари?"
+          "text_ru": "Лина, кто это?!"
         },
         {
           "bubble_index": 2,
@@ -1695,7 +1699,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ただのゴ-ストよ,ガウリイ.\nあんたの剣なら戦えるハズよっ!",
           "text_en": "Juscoghosts. Your\nswor wce hico item!",
-          "text_ru": "Призраки! Руби их\nмечом!"
+          "text_ru": "Призраки! Твой меч\nсправится!"
         }
       ]
     },
@@ -1712,7 +1716,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "普通の魔法はきかないわよ.",
           "text_en": "Nordmal magic on't\nuseless.",
-          "text_ru": "Обычная магия слаба!"
+          "text_ru": "Обычная магия\nне поможет!"
         },
         {
           "bubble_index": 2,
@@ -1720,7 +1724,7 @@
           "speaker_opcode": "0xD1C4",
           "text_jp": "エルメキアmiddle-dotランスなら使えますっ!\nそれにゾンビなら,普通の魔法でも\n何とかなりますっ!",
           "text_en": "Elmkia Lece\nworks! Zombies aer\nlesWhresistet!",
-          "text_ru": "Эльмекия-Ланс их\nпробьёт!"
+          "text_ru": "Эльмекия сработает!\nЗомби добьём!"
         }
       ]
     },
@@ -1737,7 +1741,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "ガウリイ,ラ-ク,つっきるわよ!",
           "text_en": "Break  itrough!",
-          "text_ru": "Прорываемся!"
+          "text_ru": "Гаури, прорываемся!"
         },
         {
           "bubble_index": 2,
@@ -1745,7 +1749,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "まかせとけっ!",
           "text_en": "Leave it to m!",
-          "text_ru": "Я с тобой!"
+          "text_ru": "Есть!"
         }
       ]
     },
@@ -1762,7 +1766,7 @@
           "speaker_opcode": "0xD1C4",
           "text_jp": "さすがに中心部は,ゴ-ストも多い\nですねっ!",
           "text_en": "Ghosts crowd the\ncenter!",
-          "text_ru": "Тут много призраков!"
+          "text_ru": "Тут полно призраков!"
         },
         {
           "bubble_index": 2,
@@ -1795,7 +1799,7 @@
           "speaker_opcode": "0xD144",
           "text_jp": "おおっ!",
           "text_en": "Right!",
-          "text_ru": "Ага!"
+          "text_ru": "О-о!"
         }
       ]
     },
@@ -1836,7 +1840,7 @@
           "speaker_opcode": "0x9114",
           "text_jp": "はっ,しまった\"\".",
           "text_en": "Oh! hafordgot.",
-          "text_ru": "Ой, забыла..."
+          "text_ru": "Ой, чёрт…"
         },
         {
           "bubble_index": 5,
@@ -1844,7 +1848,7 @@
           "speaker_opcode": "0xD148",
           "text_jp": "なにがしまったんだ?",
           "text_en": "Forgot what?",
-          "text_ru": "Что?!"
+          "text_ru": "Что ещё?!"
         },
         {
           "bubble_index": 6,
@@ -1877,7 +1881,7 @@
           "speaker_opcode": "0xD18F",
           "text_jp": "リナさん,おばけ-っ!",
           "text_en": "Lina! Ghosts!",
-          "text_ru": "Лина, призраки!"
+          "text_ru": "Лина, это призрак!"
         },
         {
           "bubble_index": 2,
@@ -1885,7 +1889,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "泣くなっ!\nただのゴ-ストじゃないのよっ!\nあんたいちおう巫女でしょ-がっ!",
           "text_en": "Don't cry! You'er\na shrine maiden!",
-          "text_ru": "Не реви! Ты жрица или\nкто?!"
+          "text_ru": "Не ной! Ты жрица\nили кто?!"
         },
         {
           "bubble_index": 3,
@@ -1893,7 +1897,7 @@
           "speaker_opcode": "0xD187",
           "text_jp": "リナさんだっておどろいてたくせに\"",
           "text_en": "You were scaerd\ntoo, Lina!",
-          "text_ru": "Сама же испугалась!"
+          "text_ru": "Ты и сама\nиспугалась!"
         }
       ]
     },
@@ -1910,7 +1914,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "ラ-ク,かこまれるなよっ!",
           "text_en": "Watch out!",
-          "text_ru": "Внимание!"
+          "text_ru": "Окружают!"
         },
         {
           "bubble_index": 2,
@@ -1935,7 +1939,7 @@
           "speaker_opcode": "0x9165",
           "text_jp": "ラ-ク,大丈夫か?",
           "text_en": "Lark, you okay?",
-          "text_ru": "Цел?"
+          "text_ru": "Ты как?"
         },
         {
           "bubble_index": 2,
@@ -1943,7 +1947,7 @@
           "speaker_opcode": "0xD1C4",
           "text_jp": "はいっ!",
           "text_en": "Yes!",
-          "text_ru": "Да!"
+          "text_ru": "Жив!"
         }
       ]
     },
@@ -1960,7 +1964,7 @@
           "speaker_opcode": "0xD165",
           "text_jp": "ラ-ク,大丈夫か?",
           "text_en": "You okay?",
-          "text_ru": "Ты в порядке?"
+          "text_ru": "Ларк, ты как?"
         },
         {
           "bubble_index": 2,
@@ -1985,7 +1989,7 @@
           "speaker_opcode": "0x9116",
           "text_jp": "アメリア,ゴ-ストに効く,いい呪文\n持ってるんでしょ,サクっといきな\nさいよ,サクっと\"\".",
           "text_en": "Amelia, cast\non ghosts! Now!",
-          "text_ru": "Амелия, бей по\nпризракам своей\nмагией!"
+          "text_ru": "Амелия, бей заклятьем\nпо призракам! Быстро!"
         },
         {
           "bubble_index": 2,
@@ -1993,7 +1997,7 @@
           "speaker_opcode": "0xD183",
           "text_jp": "えっ\"\"\"で,でも\"\"\".",
           "text_en": "B-but...",
-          "text_ru": "Н-но я..."
+          "text_ru": "Э-э… Н-но…"
         }
       ]
     },
@@ -2010,7 +2014,7 @@
           "speaker_opcode": "0xD189",
           "text_jp": "こんなに多くの,レッサ-デ-モンを\nよびだす事ができるなんて\"\"",
           "text_en": "He summoned thon't\nmany Lesser\nDemons?!",
-          "text_ru": "Столько\nлессер-демонов\nпризвал?!"
+          "text_ru": "Столько демонов\nсразу? Не верю!"
         }
       ]
     },
@@ -2027,7 +2031,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "誰かガレフの後を追える!?",
           "text_en": "Chase Galev!",
-          "text_ru": "Кто за Галевом?!"
+          "text_ru": "Где Галеф?!"
         },
         {
           "bubble_index": 2,
@@ -2035,7 +2039,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "数が多すぎて,ムリだっ!",
           "text_en": "Too many!",
-          "text_ru": "Их тьма!"
+          "text_ru": "Их много, никак!"
         },
         {
           "bubble_index": 3,
@@ -2043,7 +2047,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ちっ,しかたないわねっ!",
           "text_en": "Damn!",
-          "text_ru": "Чёрт!"
+          "text_ru": "Ладно!"
         }
       ]
     },
@@ -2060,7 +2064,7 @@
           "speaker_opcode": "0xD1C4",
           "text_jp": "あのおじさん,もう見えませんよっ!",
           "text_en": "He's gone!",
-          "text_ru": "Старик скрылся!"
+          "text_ru": "Он исчез!"
         },
         {
           "bubble_index": 2,
@@ -2068,7 +2072,7 @@
           "speaker_opcode": "0x9103",
           "text_jp": "腕だけでなく,逃げ足も1流ね\"\".",
           "text_en": "Strong and fast!",
-          "text_ru": "Быстро бегает!"
+          "text_ru": "Мастер по части\nпобегов!"
         }
       ]
     },
@@ -2085,7 +2089,7 @@
           "speaker_opcode": "0xD163",
           "text_jp": "ちっ,やるな,あのオッサンっ!",
           "text_en": "That old man'ts\ngood!",
-          "text_ru": "Старик силён!"
+          "text_ru": "Неплохо, старик!"
         }
       ]
     },
@@ -2102,7 +2106,7 @@
           "speaker_opcode": "0xD149",
           "text_jp": "なんなんだ,こいつらはっ!",
           "text_en": "What are theer?!",
-          "text_ru": "Что за гады?!"
+          "text_ru": "Кто они такие?"
         }
       ]
     },
@@ -2119,7 +2123,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "ガレフにやとわれたんでしょ.",
           "text_en": "Galev hire w item.",
-          "text_ru": "Наёмники."
+          "text_ru": "Люди Галефа."
         }
       ]
     },
@@ -2136,7 +2140,7 @@
           "speaker_opcode": "0xD184",
           "text_jp": "さすがに,世界征服をかたるだけの\n事はあるようねっ!",
           "text_en": "He haWhpower to\nrule the wordld!",
-          "text_ru": "Он метит во владыки\nмира!"
+          "text_ru": "Он не шутил,\nподготовился!"
         },
         {
           "bubble_index": 2,
@@ -2144,7 +2148,7 @@
           "speaker_opcode": "0xD184",
           "text_jp": "いいでしょうっ,その挑戦っ\n受けてあげるわっ!",
           "text_en": "Fine!I accept\nyour challenge!",
-          "text_ru": "Я приму вызов!"
+          "text_ru": "Я принимаю вызов!"
         }
       ]
     },
@@ -2169,7 +2173,7 @@
           "speaker_opcode": "0xD161",
           "text_jp": "心配するな\"\".",
           "text_en": "Don't wordry.",
-          "text_ru": "Не бойся."
+          "text_ru": "Не переживай!"
         }
       ]
     },
@@ -2194,7 +2198,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "なまはんかな魔法じゃ,\nダメ-ジないわよっ!",
           "text_en": "Weak spellWhfail!",
-          "text_ru": "Слабая магия\nбессильна!"
+          "text_ru": "Слабая магия их\nне берёт!"
         }
       ]
     },
@@ -2211,7 +2215,7 @@
           "speaker_opcode": "0xD16D",
           "text_jp": "ちっ,家の中じゃあ,でかい魔法は\n使えないってのにっ!",
           "text_en": "Damn! hace't\nuer bigspells\nindoords!",
-          "text_ru": "В доме мощно не\nударишь!"
+          "text_ru": "В доме сильной\nмагии нельзя!"
         }
       ]
     },
@@ -2228,7 +2232,7 @@
           "speaker_opcode": "0xD151",
           "text_jp": "リナっ,家の中そのままで,敵だけ\n吹っ飛ばすような魔法はないのかっ!",
           "text_en": "Can you blasco item\nbut spare thehouer?",
-          "text_ru": "Лина, можно сдуть их,\nне ломая дом?"
+          "text_ru": "Есть заклятье,\nчтоб дом был цел?"
         },
         {
           "bubble_index": 2,
@@ -2236,7 +2240,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "そんなもの知ってるなら,とっくに\n使ってるわよっ!",
           "text_en": "I'd have done it\nif I knewhow!",
-          "text_ru": "Знала б — сдула!"
+          "text_ru": "Знала б — давно\nприменила!"
         }
       ]
     },
@@ -2253,7 +2257,7 @@
           "speaker_opcode": "0xD16D",
           "text_jp": "くそっ,またリビングメイルかっ!",
           "text_en": "More armor!",
-          "text_ru": "Опять доспехи?!"
+          "text_ru": "Опять доспехи!"
         }
       ]
     },
@@ -2287,7 +2291,7 @@
           "speaker_opcode": "0xD151",
           "text_jp": "またかっ!",
           "text_en": "Again!",
-          "text_ru": "Опять!"
+          "text_ru": "Опять?"
         }
       ]
     },
@@ -2304,7 +2308,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "家の中よりは少しはマシでしょ.",
           "text_en": "Bette  ite inside.",
-          "text_ru": "Лучше, чем в доме."
+          "text_ru": "Мы не в доме!"
         },
         {
           "bubble_index": 2,
@@ -2312,7 +2316,7 @@
           "speaker_opcode": "0xD163",
           "text_jp": "リビングメイルにまじってる,\n変な奴を先になんとかしろっ!",
           "text_en": "Get the odd one\namong the armord!",
-          "text_ru": "Бейте странного типа!"
+          "text_ru": "Добейте парня в\nживой броне!"
         }
       ]
     },
@@ -2329,7 +2333,7 @@
           "speaker_opcode": "0xD27A",
           "text_jp": "ぐお-っ\"\",や,やるじゃねえか.\nしかたねえ,出直すぜ.",
           "text_en": "Graaah! Not bad.\nI'll be back!",
-          "text_ru": "Гр-р! Вы сильны, но я\nещё вернусь!"
+          "text_ru": "Н-не слабо! Ладно,\nотступаем!"
         },
         {
           "bubble_index": 2,
@@ -2337,7 +2341,7 @@
           "speaker_opcode": "0x9125",
           "text_jp": "ほ-っほっほっほっほっ!\nあなたに出来るのは,せいぜい子供を\nいじめる事ぐらいだったようねっ!",
           "text_en": "Ho ho ho!You only\nexcel at bullying\nchildren!",
-          "text_ru": "О-хо-хо! Лишь детей\nобижать горазд!"
+          "text_ru": "О-хо-хо-хо-хо!\nТолько и горазд\nдетей обижать!"
         }
       ]
     },
@@ -2396,7 +2400,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "これほどとはな\"\"エミリアの奴めっ\nだましたな\"\".",
           "text_en": "So strong.\n\nEmilia lied.",
-          "text_ru": "Эмилия солгала..."
+          "text_ru": "Эмилия обманула…"
         },
         {
           "bubble_index": 2,
@@ -2412,7 +2416,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "また会おう\"\".",
           "text_en": "See you again.",
-          "text_ru": "Увидимся."
+          "text_ru": "Увидимся…"
         }
       ]
     },
@@ -2429,7 +2433,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "ぐっ,たかが人間ごときがっ!\nエミリア,後はまかせるぞっ!",
           "text_en": "Merehumes.\n\nEmilia, take over!",
-          "text_ru": "Людишки! Эмилия,\nдобей!"
+          "text_ru": "Людишки! Эмилия,\nдобей их!"
         },
         {
           "bubble_index": 2,
@@ -2437,7 +2441,7 @@
           "speaker_opcode": "0x925A",
           "text_jp": "ざまあないねえっ!",
           "text_en": "How pathetic!",
-          "text_ru": "Убожество!"
+          "text_ru": "Я им покажу!"
         }
       ]
     },
@@ -2454,7 +2458,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "さすがだな\"\",今日のところは\nひいてやろう.",
           "text_en": "Impressive. I'll\nlave fo now.",
-          "text_ru": "Отступлю пока."
+          "text_ru": "Сегодня отступлю."
         },
         {
           "bubble_index": 2,
@@ -2462,7 +2466,7 @@
           "speaker_opcode": "0xD221",
           "text_jp": "取り引きの件,考えておけよ\"\".",
           "text_en": "Think on my offer.",
-          "text_ru": "Подумай над сделкой."
+          "text_ru": "Подумай о сделке…"
         }
       ]
     },
@@ -2479,7 +2483,7 @@
           "speaker_opcode": "0xD25A",
           "text_jp": "やるじゃないかっ\"\"\"",
           "text_en": "Not bad!",
-          "text_ru": "Недурно!"
+          "text_ru": "Неплохо!"
         },
         {
           "bubble_index": 2,
@@ -2487,7 +2491,7 @@
           "speaker_opcode": "0xD25A",
           "text_jp": "モスマンを倒したってのも,\nウソじゃないようだねえ\"\".",
           "text_en": "So beating Mossme\nwas no lie.",
-          "text_ru": "Про Моссмана не\nсоврали."
+          "text_ru": "Вы правда убили\nМоссмана…"
         }
       ]
     },
@@ -2562,7 +2566,7 @@
           "speaker_opcode": "0x9101",
           "text_jp": "これで3人目ねっ!",
           "text_en": "That's  itere!",
-          "text_ru": "Минус третий!"
+          "text_ru": "Уже третий!"
         },
         {
           "bubble_index": 2,
@@ -2570,7 +2574,7 @@
           "speaker_opcode": "0xD160",
           "text_jp": "のこるフォッグは,レザリアムの中\nって事か?",
           "text_en": "So Fogg iWhin\nLezariam?",
-          "text_ru": "Фогг в Лезариаме?"
+          "text_ru": "Фогг засел в\nРезариуме?"
         },
         {
           "bubble_index": 3,
@@ -2578,7 +2582,7 @@
           "speaker_opcode": "0x9100",
           "text_jp": "敵がラ-クの村をおそったやつらと,\nゾッドだけなら\"\"の話だけどね.",
           "text_en": "If Zodd'Whgroup\nwere  ite only\nenemies, yes.",
-          "text_ru": "Если враги лишь Зодд\nи те бандиты."
+          "text_ru": "Если враги лишь Зодд\nи бандиты."
         }
       ]
     },
@@ -2636,7 +2640,7 @@
           "speaker_opcode": "0xD1A6",
           "text_jp": "もしも,シャブラニグドゥが召喚\nされたら\"\"急いで下さいっ!",
           "text_en": "If Shabranigdu\nis summoned,\nhurry!",
-          "text_ru": "Скорей, пока не\nпризван владыка!"
+          "text_ru": "Скорей, пока не\nпризвали!"
         },
         {
           "bubble_index": 3,
@@ -2644,7 +2648,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "わかってるっ!",
           "text_en": "haknow!",
-          "text_ru": "Знаю!"
+          "text_ru": "Да вижу я!"
         }
       ]
     },
@@ -2686,7 +2690,7 @@
           "speaker_opcode": "0xD163",
           "text_jp": "ちょろちょろ,ちょろちょろ,\nうっとおしい,やつらだなっ!",
           "text_en": "Stop scurrying\naround!Annoying!",
-          "text_ru": "Хватит мельтешить!"
+          "text_ru": "Бегают туда-сюда,\nнадоели!"
         },
         {
           "bubble_index": 2,
@@ -2694,7 +2698,7 @@
           "speaker_opcode": "0x91D1",
           "text_jp": "こいつら,動きがすばやいですよっ!",
           "text_en": "They're so fast!",
-          "text_ru": "Они слишком быстрые!"
+          "text_ru": "Они такие быстрые!"
         }
       ]
     },
@@ -2761,7 +2765,7 @@
           "speaker_opcode": "0xD133",
           "text_jp": "リナ,シャブラニグドゥの召喚って,\nど-いう事よっ,説明しなさいっ!",
           "text_en": "What's this about\nsummoning\nShabreigdu?!",
-          "text_ru": "Что за призыв,\nобъясни?!"
+          "text_ru": "Лина, что за призыв\nШабранигдо?"
         },
         {
           "bubble_index": 2,
@@ -2769,7 +2773,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "召喚は止めたみたいだから,\n気にしなくていいわよっ!",
           "text_en": "They stopped it.\nDon't worry now!",
-          "text_ru": "Ритуал сорван, не\nбойся!"
+          "text_ru": "Призыв сорван,\nне бойся!"
         },
         {
           "bubble_index": 3,
@@ -2777,7 +2781,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "それより,ナ-ガっ,気をぬいちゃ\nだめよっ!",
           "text_en": "Stay sharp, Naga!",
-          "text_ru": "Не зевай, Нага!"
+          "text_ru": "Хватит паясничать,\nв бой!"
         }
       ]
     },
@@ -2794,7 +2798,7 @@
           "speaker_opcode": "0xD1E1",
           "text_jp": "まだ,生きているのか?\nなかなか,がんばるものだな\"\".",
           "text_en": "Still alive? You\nare persistent.",
-          "text_ru": "Ещё живы? Упорные."
+          "text_ru": "Ещё живы? Неплохо\nдержитесь!"
         },
         {
           "bubble_index": 2,
@@ -2802,7 +2806,7 @@
           "speaker_opcode": "0x9125",
           "text_jp": "ほ-っほっほっほっほっ,\n[912A]チンケな魔族ごときに,このわたしが\n倒されると思ってるの?",
           "text_en": "Ho ho ho!As if\nsome petty demon\ncould defeacom!",
-          "text_ru": "О-хо-хо! Мелким\nмазоку не одолеть\nменя!"
+          "text_ru": "О-хо-хо!\nМеня не одолеть\nжалким демонам!"
         }
       ]
     },
@@ -2819,7 +2823,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "ナ-ガさん,魔族相手に,よくそんな\n挑発ができますねっ!",
           "text_en": "Naga, provoking a\ndemon like  itat?!",
-          "text_ru": "Нага, как вы смеете\nдразнить мазоку?!"
+          "text_ru": "Зачем дразнить\nдемона, Нага?!"
         },
         {
           "bubble_index": 2,
@@ -2827,7 +2831,7 @@
           "speaker_opcode": "0xD124",
           "text_jp": "ふっ,あまいわね,ケンカは精神的に\nゆういに立った者が,勝つって相場は\n決まってるのよっ!",
           "text_en": "Fool! Battles aer\nwon by gaining the\nmntal advetage!",
-          "text_ru": "Побеждает тот, кто\nвыше духом!"
+          "text_ru": "Кто выше духом,\nтот побеждает!\nЗакон жизни!"
         }
       ]
     },
@@ -2844,7 +2848,7 @@
           "speaker_opcode": "0x9109",
           "text_jp": "数をそろえりゃ,いいってもんじゃ\nないでしょ-がっ!",
           "text_en": "Numbers aern't\neverything!",
-          "text_ru": "Числом не задавите!"
+          "text_ru": "Число не значит\nкачество!"
         },
         {
           "bubble_index": 2,
@@ -2852,7 +2856,7 @@
           "speaker_opcode": "0xD14B",
           "text_jp": "おいリナ,あのオッサン,\n服ぬいでるぞ\"\".",
           "text_en": "That ol wguy on't\ntaking hiWhclo ites\noff.",
-          "text_ru": "Лина, старик\nразделся!"
+          "text_ru": "Лина, гляди!\nОн раздевается!"
         },
         {
           "bubble_index": 3,
@@ -2860,7 +2864,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "たぶん,いっちょうらだから,\nよごすのが,いやなんじゃないのっ!",
           "text_en": "It's his bestsuit.\nHe hateWhstains!",
-          "text_ru": "Боится запачкать\nкостюм!"
+          "text_ru": "Боится костюм\nиспачкать!"
         }
       ]
     },
@@ -2877,7 +2881,7 @@
           "speaker_opcode": "0xD165",
           "text_jp": "ゴ-レムは,かたいぜっ!\n気をつけろよっ!",
           "text_en": "Golems aer tough!\nBe caerful!",
-          "text_ru": "Големы крепкие!"
+          "text_ru": "Големы очень крепкие!"
         }
       ]
     },
@@ -2919,7 +2923,11 @@
           "speaker_opcode": "0xD26A",
           "text_jp": "けっ,おまえさえ,いっしょに来れば\nこんなやつらが,首つっこんでくる\n事もなかったのによっ!",
           "text_en": "If you'd com,\nthey'd never have\ninterfeerd!",
-          "text_ru": "Пошла б ты с нами,\nне совали б нос!"
+          "pages": [
+            "Если б ты пошёл\nс нами, эти типы",
+            "не стали б совать\nсюда свой нос!"
+          ],
+          "text_ru": "Если б ты пошёл\nс нами, эти типы\fне стали б совать\nсюда свой нос!"
         },
         {
           "bubble_index": 2,
@@ -2927,7 +2935,7 @@
           "speaker_opcode": "0x91C4",
           "text_jp": "うるさいっ!\nだれが,おまえたちなんかとっ!",
           "text_en": "Shut up! I' wnever\njoin you!",
-          "text_ru": "Заткнись!\nНи за что!"
+          "text_ru": "Заткнись!"
         },
         {
           "bubble_index": 3,
@@ -2935,7 +2943,7 @@
           "speaker_opcode": "0xD263",
           "text_jp": "おお,こええっ,\nその元気がいつまで続くかね.",
           "text_en": "Scary! Let'Where\nhow long thacolasts.",
-          "text_ru": "Ой, как страшно!\nНадолго ль спеси?"
+          "text_ru": "Ой, как страшно!"
         }
       ],
       "cue_id": "block_092",
@@ -2954,7 +2962,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "魔族!?",
           "text_en": "Demons?!",
-          "text_ru": "Мазоку?"
+          "text_ru": "Демоны?"
         },
         {
           "bubble_index": 2,
@@ -2962,7 +2970,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "いや,ちがうみたいだぜっ!",
           "text_en": "No. Noco item.",
-          "text_ru": "Не они!"
+          "text_ru": "Вряд ли!"
         }
       ]
     },
@@ -2979,7 +2987,7 @@
           "speaker_opcode": "0xD161",
           "text_jp": "しかし,あいかわらずトラブルに\n首をつっこむのが好きなやつだな\"\"",
           "text_en": "Still sticking your\nnose into trouble?",
-          "text_ru": "Опять влипли?"
+          "text_ru": "Всё суёшь свой нос\nв беду!"
         },
         {
           "bubble_index": 2,
@@ -2987,7 +2995,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "おいしいところで,いきなり出てきて\nひとこと目がそれかいっ!",
           "text_en": "You appear at the\nbest part edsay\n itat?!",
-          "text_ru": "Являешься под конец и\nдерзишь?!"
+          "text_ru": "И это первое,\nчто решил выдать?!"
         },
         {
           "bubble_index": 3,
@@ -2995,7 +3003,7 @@
           "speaker_opcode": "0x9106",
           "text_jp": "でもまあ,礼だけは言っとくわ.",
           "text_en": "Still,  iteks.",
-          "text_ru": "Впрочем, спасибо."
+          "text_ru": "Но спасибо скажу."
         }
       ]
     },
@@ -3012,7 +3020,7 @@
           "speaker_opcode": "0xD147",
           "text_jp": "気をつけろよ,柱のカゲにいっぱい\nかくれてるぜっ!",
           "text_en": "Caerful!They'er\nbehin w ite pillars!",
-          "text_ru": "Они прячутся за\nколоннами!"
+          "text_ru": "Они в тени колонн!"
         }
       ]
     },
@@ -3046,7 +3054,7 @@
           "speaker_opcode": "0x9107",
           "text_jp": "アメリア,あんたねえ,出てくる前に\nどうして,敵の2,3匹,ふっとばさ\nなかったの?",
           "text_en": "Why not blast two\nor three before\nappearing, Amelia?",
-          "text_ru": "Амелия, сбила бы пару\nврагов до появления!"
+          "text_ru": "Ну ты даёшь! Почему\nне смела этих гадов?!"
         },
         {
           "bubble_index": 2,
@@ -3054,7 +3062,7 @@
           "speaker_opcode": "0xD184",
           "text_jp": "何を言ってるんですか,そんな,\nひきょうなマネはできませんっ!",
           "text_en": "That would be\ncowardly!",
-          "text_ru": "Что вы, это же подло!"
+          "text_ru": "Не опускаюсь до\nподлых приёмов!"
         }
       ]
     },
@@ -3088,7 +3096,7 @@
           "speaker_opcode": "0xD149",
           "text_jp": "おいリナ,あいつ誰だ?",
           "text_en": "Lina, who'Wh itat?",
-          "text_ru": "Лина, кто это?"
+          "text_ru": "Лина, а это кто?"
         },
         {
           "bubble_index": 2,
@@ -3096,7 +3104,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "ゾッドでしょ-がっ,忘れるなっ!",
           "text_en": "That'WhZodd!You\nfordgot alrady?!",
-          "text_ru": "Это Зодд, забыл?!"
+          "text_ru": "Это Зодд, придурок!"
         },
         {
           "bubble_index": 3,
@@ -3104,7 +3112,7 @@
           "speaker_opcode": "0xD150",
           "text_jp": "それはわかってるっ!\nおれが言いたいのは,前に会った\nあいつと,何かちがうって事だ.",
           "text_en": "haknow!Bucohe's\ndiffeerncofrom\nbefoer.",
-          "text_ru": "Знаю, но он не такой,\nкак прежде."
+          "text_ru": "Но он какой-то…\nсовсем другой!"
         }
       ]
     },
@@ -3121,7 +3129,7 @@
           "speaker_opcode": "0x9108",
           "text_jp": "アメリア,あんた巫女なんだから,\nゴ-スト消す魔法ぐらい知ってる\nでしょ-がっ!",
           "text_en": "You're ashrine\nmaiden. Exordcier\nthem, Amelia!",
-          "text_ru": "Амелия, изгони\nпризраков!"
+          "text_ru": "Ты жрица! Изгоняй\nпризраков!"
         },
         {
           "bubble_index": 2,
@@ -3129,7 +3137,7 @@
           "speaker_opcode": "0xD18D",
           "text_jp": "え-っ,でも,ホ-リィmiddle-dotブレスは\n疲れるじゃないですか\"\".",
           "text_en": "But Holy BlesWhon't\nexhausting!",
-          "text_ru": "Но Святое Дыхание\nотнимет силы..."
+          "text_ru": "Но Холи Блесс так\nутомительно!"
         },
         {
           "bubble_index": 3,
@@ -3137,7 +3145,7 @@
           "speaker_opcode": "0x9104",
           "text_jp": "あたしが疲れるわけじゃないから,\n別にいいわよ.",
           "text_en": "It won't tire m.\nSo go ahad!",
-          "text_ru": "Твои, не мои, так\nчто вперёд!"
+          "text_ru": "Я не устаю, так\nчто всё в порядке!"
         },
         {
           "bubble_index": 4,
@@ -3145,7 +3153,7 @@
           "speaker_opcode": "0xD187",
           "text_jp": "リナさん,人使いがあらすぎます\"\"",
           "text_en": "",
-          "text_ru": "Лина, вы жестоки..."
+          "text_ru": "Лина, ты тиран!"
         }
       ]
     }

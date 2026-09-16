@@ -38,6 +38,7 @@ from localization.script import (
     read_entries,
     validate_catalog,
 )
+from tools.story_dialogue_overrides import POLISHED_OVERRIDES
 from tools.text_wrapper import shorten_lines, wrap_dialogue
 
 
@@ -108,6 +109,9 @@ def fit_scene_budget(
         source_bin, workspace, locale, allow_incomplete=True
     )
     translations: dict[str, PoEntry] = dict(state["translations"])
+    for ctx, ov_text in POLISHED_OVERRIDES.items():
+        if ctx in translations:
+            translations[ctx] = replace(translations[ctx], translation=ov_text)
     expanded = expand_for_dialogue(source_prog)
     entries = read_entries(expanded)
 
@@ -163,7 +167,7 @@ def fit_scene_budget(
         sc_entries = [
             e
             for e in catalog
-            if e.context.startswith(f"dialogue/{entry_index:03X}/") and e.translation
+            if e.context.startswith(f"dialogue/{entry_index:03X}/") and e.translation and e.context not in POLISHED_OVERRIDES
         ]
 
         if not fits:

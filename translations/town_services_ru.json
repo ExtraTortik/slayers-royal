@@ -143,10 +143,10 @@
     "status_just_ate": {
       "offset_hex": "0x02D4AC",
       "speaker_code_hex": "0x910C",
-      "max_bytes": 34,
+      "max_bytes": 32,
       "en": "You just ate.",
       "jp": "さっき食べたじゃない……。",
-      "ru": "Мы только поели"
+      "ru": "Мы уже поели"
     }
   },
   "inn_services": {

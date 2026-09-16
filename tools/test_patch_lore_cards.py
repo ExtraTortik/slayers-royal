@@ -30,19 +30,23 @@ if str(REPO_ROOT) not in sys.path:
 from tools.patch_lore_cards import (
     BANNER_HEIGHT,
     BANNER_WIDTH,
+    COMBINED_8BPP_ENTRIES,
     DEFAULT_OPT_SPECS,
     DEFAULT_PROG_SPECS,
     OPT_CLUT_WORDS,
     OVERLAY_HEIGHT,
     OVERLAY_WIDTH,
     PROG_CLUT_WORDS,
+    SPLIT_CARD_ENTRIES,
     USER_SIZE,
     build_tim_4bpp,
+    build_tim_8bpp,
     image_to_tim_4bpp,
     patch_lore_cards,
     patch_unt_entry,
     read_unt_index,
     render_banner,
+    render_combined_card_8bpp,
     render_lore_card_text,
     rgba_to_4bpp_indices,
 )
@@ -275,12 +279,15 @@ class TestSectorBudgetsAll13Cards:
     """6. All 13 Russian lore cards budget and sector compliance."""
 
     def test_all_cards_within_sector_limits(self):
-        json_path = REPO_ROOT / "data" / "lore_cards_ru.json"
+        primary_path = REPO_ROOT / "translations" / "lore_cards_ru.json"
+        fallback_path = REPO_ROOT / "data" / "lore_cards_ru.json"
+        json_path = primary_path if primary_path.exists() else fallback_path
         assert json_path.exists(), f"Dataset {json_path} missing"
 
         with json_path.open("r", encoding="utf-8") as f:
-            cards = json.load(f)
+            data = json.load(f)
 
+        cards = data["cards"] if isinstance(data, dict) and "cards" in data else data
         assert len(cards) == 13, f"Expected exactly 13 cards, found {len(cards)}"
 
         for card in cards:
@@ -290,17 +297,24 @@ class TestSectorBudgetsAll13Cards:
 
             spec_p = DEFAULT_PROG_SPECS[pe]
             budget_p = spec_p["sectors"] * USER_SIZE
+            is_combined = pe in COMBINED_8BPP_ENTRIES
 
             # Render, encode, compress
-            im_text = render_lore_card_text(card)
-            tim_p = image_to_tim_4bpp(
-                im_text,
-                clut_words=PROG_CLUT_WORDS,
-                vram_x=spec_p["vram_x"],
-                vram_y=spec_p["vram_y"],
-                clut_x=spec_p["clut_x"],
-                clut_y=spec_p["clut_y"],
-            )
+            if is_combined:
+                tim_p = render_combined_card_8bpp(card)
+                assert len(tim_p) == 72224, f"Combined card {cid} TIM size {len(tim_p)} != 72224"
+            else:
+                im_text = render_lore_card_text(card)
+                tim_p = image_to_tim_4bpp(
+                    im_text,
+                    clut_words=PROG_CLUT_WORDS,
+                    vram_x=spec_p["vram_x"],
+                    vram_y=spec_p["vram_y"],
+                    clut_x=spec_p["clut_x"],
+                    clut_y=spec_p["clut_y"],
+                )
+                assert len(tim_p) == 35904, f"Split card {cid} TIM size {len(tim_p)} != 35904"
+
             comp_p = compress(tim_p)
 
             # Assert compression fits within budget
@@ -330,6 +344,26 @@ class TestSectorBudgetsAll13Cards:
                     f"Card {cid} banner size {len(tim_o)} exceeds budget {budget_o}"
                 )
 
+    def test_banner_185_specs_and_size(self):
+        assert 185 in DEFAULT_OPT_SPECS, "OPT entry 185 missing from DEFAULT_OPT_SPECS"
+        spec = DEFAULT_OPT_SPECS[185]
+        assert spec["id"] == "map_controls"
+        assert spec["sectors"] == 2
+        assert spec["vram_x"] == 576
+        assert spec["vram_y"] == 392
+        assert spec["clut_x"] == 0
+        assert spec["clut_y"] == 507
+
+        im = render_banner("УПРАВЛЕНИЕ")
+        tim = image_to_tim_4bpp(
+            im,
+            clut_words=OPT_CLUT_WORDS,
+            vram_x=spec["vram_x"],
+            vram_y=spec["vram_y"],
+            clut_x=spec["clut_x"],
+            clut_y=spec["clut_y"],
+        )
+        assert len(tim) <= spec["sectors"] * USER_SIZE
 
 class TestArchivePatching:
     """7. UNT archive patching and error handling."""

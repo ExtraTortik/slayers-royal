@@ -31,11 +31,14 @@ try:
     from patch_repo.localization import unt_lz
 except ImportError:
     from localization import unt_lz
-from tools.patch_inspection import DEFAULT_CHARMAP
 from tools.patch_town_services import (
     CURRENCY_TILES_SPEC,
     DEFAULT_CATALOG,
+    DEFAULT_CHARMAP,
+    DEFAULT_SHOP_CATALOG,
     DELIMITER,
+    DYNAMIC_ALLOC_LIMIT,
+    DYNAMIC_ALLOC_START,
     ENTRY3_LBA,
     ENTRY3_SECTORS,
     ENTRY3_SIZE,
@@ -45,18 +48,34 @@ from tools.patch_town_services import (
     INN_BOX_WIDTH_OFFSET,
     INN_BOX_X_OFFSET,
     INN_PRICE_SUFFIX_OFFSET,
+    LEGACY_SHOP_HUD_OFFSET,
     RAM_BASE,
+    REVERSE_CHARMAP,
+    SHOP_ITEMS_COUNT,
+    SHOP_ITEMS_TABLE_END,
+    SHOP_ITEMS_TABLE_START,
+    SHOP_TABLE1_COUNT,
+    SHOP_TABLE1_END,
+    SHOP_TABLE1_START,
+    SHOP_TABLE2_COUNT,
+    SHOP_TABLE2_END,
+    SHOP_TABLE2_START,
     TAVERN_BOX_WIDTH_OFFSET,
     TAVERN_BOX_X_OFFSET,
     TAVERN_PRICE_SUFFIX_OFFSET,
+    TOTAL_SHOP_POINTERS,
+    decode_string,
     encode_rejection_scene,
     encode_string,
     get_font_pixel,
     load_catalog,
     patch_entry3_buffer,
     patch_menu_typography,
+    patch_shop_dialogues_buffer,
+    patch_town_services,
     render_currency_tiles,
     set_font_pixel,
+    verify_town_services,
 )
 
 
@@ -65,6 +84,11 @@ def catalog() -> dict[str, Any]:
     """Load canonical town services Russian translation catalog."""
     return load_catalog(DEFAULT_CATALOG)
 
+
+@pytest.fixture
+def shop_catalog() -> dict[str, Any]:
+    """Load canonical shop dialogues Russian translation catalog."""
+    return load_catalog(DEFAULT_SHOP_CATALOG)
 
 def test_catalog_structure(catalog: dict[str, Any]):
     """Verify JSON structure contains all required sections and valid metadata."""
@@ -152,6 +176,8 @@ def test_tavern_byte_budgets_and_zero_overflow(catalog: dict[str, Any]):
         t_cfg["status_just_ate"]["ru"], speaker_hex=t_cfg["status_just_ate"]["speaker_code_hex"]
     )
     assert len(ja_bytes) <= t_cfg["status_just_ate"]["max_bytes"]
+    assert t_cfg["status_just_ate"]["max_bytes"] <= 32
+    assert int(t_cfg["status_just_ate"]["offset_hex"], 16) + t_cfg["status_just_ate"]["max_bytes"] <= 0x02D4CC
 
 
 def test_inn_byte_budgets_and_zero_overflow(catalog: dict[str, Any]):
@@ -292,6 +318,22 @@ def test_patch_entry3_buffer_pointers():
     assert patched_buf[INN_BOX_WIDTH_OFFSET : INN_BOX_WIDTH_OFFSET + 4] == bytes.fromhex("f0000324")
     assert patched_buf[INN_BOX_X_OFFSET : INN_BOX_X_OFFSET + 4] == bytes.fromhex("a6ff0324")
 
+    # Check that legacy Japanese shop HUD is neutralized at 0x017F48 (jr $ra; nop)
+    assert patched_buf[LEGACY_SHOP_HUD_OFFSET : LEGACY_SHOP_HUD_OFFSET + 8] == bytes.fromhex("0800e00300000000")
+    # Check that Tavern City Cue Table at 0x02D4CC is preserved (not overwritten by status_just_ate)
+    assert patched_buf[0x02D4CC : 0x02D4CE] == b"\x00\x00"
+
+    # Check that Hotel City Cue Table at 0x02DF70..0x02DF88 is preserved
+    # Test with dummy buffer having original hotel cues
+    test_buf = bytearray(ENTRY3_SIZE)
+    hotel_cues = bytes.fromhex("0000 a104 a304 0000 a604 0000 e304 e804 f504 0e06 3506 5306")
+    test_buf[0x02DF70 : 0x02DF70 + len(hotel_cues)] = hotel_cues
+    test_buf[0x02D4CC : 0x02D4CE] = b"\x12\x34"
+    patched_test, _ = patch_entry3_buffer(test_buf, cat)
+    assert patched_test[0x02D4CC : 0x02D4CE] == b"\x12\x34", "Tavern cue table at 0x02D4CC must not be overwritten"
+    assert patched_test[0x02DF70 : 0x02DF70 + len(hotel_cues)] == hotel_cues, "Hotel cue table must be preserved"
+    assert patched_test[0x02DF78 : 0x02DF7A] == b"\xa6\x04", "Sonia hotel cue 0x04A6 must be preserved"
+
 def test_cli_dry_run():
     """Test running tools/patch_town_services.py via CLI with --dry-run."""
     test_bin = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
@@ -385,3 +427,201 @@ def test_entry_03a_decompressed_currency_tiles():
     for py in range(4, 11):
         assert get_font_pixel(decomp_03a, tgx_0259 + 0, tgy_0259 + py) == 0
         assert get_font_pixel(decomp_03a, tgx_0259 + 1, tgy_0259 + py) == 3
+
+
+def test_shop_dialogues_authoritative_encoding(shop_catalog: dict[str, Any]):
+    """Test that all 98 dialogue and menu strings in translations/shop_dialogues_ru.json
+
+    encode cleanly with the authoritative Cyrillic charmap.
+    """
+    assert "dialogues" in shop_catalog
+    dialogues = shop_catalog["dialogues"]
+    assert len(dialogues) == 98, f"Expected 98 dialogue items, got {len(dialogues)}"
+
+    encoded_count = 0
+    total_pointers = 0
+    for d_id, item in dialogues.items():
+        text = item.get("text_ru") or item.get("ru") or ""
+        spk = item.get("speaker_code_hex")
+        if spk and not text.startswith("<"):
+            spk_val = int(str(spk), 16)
+            fmt_text = f"<{spk_val:04X}>{text}"
+        else:
+            fmt_text = text
+
+        encoded = encode_string(fmt_text, DEFAULT_CHARMAP)
+        assert len(encoded) > 0
+        assert encoded.endswith(b"\xff\x00"), f"String '{d_id}' must end with 0x00FF terminator"
+
+        # Verify decoding back
+        decoded = decode_string(encoded)
+        assert len(decoded) > 0
+
+        ptrs = item.get("pointer_offsets_hex", [])
+        total_pointers += len(ptrs)
+        encoded_count += 1
+
+    assert encoded_count == 98
+    assert total_pointers == 100, f"Expected 100 pointers, got {total_pointers}"
+
+
+def test_weapon_shop_greeting_exact_words():
+    """Test that weapon shop merchant greeting '<D9A1>Что нужно?' encodes to the exact expected words
+
+    (0xD9A1, 0x001F, 0x003C, 0x0037, 0x007D, 0x0036, 0x003D, 0x002E, 0x0036, 0x0037, 0x00A7).
+
+    Validates that:
+    - 'Ч' -> 0x001F (NOT obsolete shifted 0x0021 'Щ' or 0x0020 'Ш')
+    - 'т' -> 0x003C (NOT obsolete shifted 0x003E 'ф'/'Ф' or 0x003D)
+    - 'о' -> 0x0037 (NOT obsolete shifted 0x0039 'п'/'Р' or 0x0038)
+    - ' ' -> 0x007D
+    - 'н' -> 0x0036
+    - 'у' -> 0x003D
+    - 'ж' -> 0x002E
+    - '?' -> 0x00A7
+    This strictly eliminates the 'ЩФР ПХИПР?' mojibake bug shown in Image #1.
+    """
+    expected_words = [
+        0xD9A1,  # Speaker code: weapon shop merchant
+        0x001F,  # 'Ч'
+        0x003C,  # 'т'
+        0x0037,  # 'о'
+        0x007D,  # ' '
+        0x0036,  # 'н'
+        0x003D,  # 'у'
+        0x002E,  # 'ж'
+        0x0036,  # 'н'
+        0x0037,  # 'о'
+        0x00A7,  # '?'
+    ]
+
+    # 1. Test encoding with embedded escape
+    enc1 = encode_string("<D9A1>Что нужно?", DEFAULT_CHARMAP)
+    words1 = [struct.unpack_from("<H", enc1, i)[0] for i in range(0, len(enc1) - 2, 2)]
+    assert words1 == expected_words, f"Encoded words mismatch: {words1} != {expected_words}"
+    assert enc1.endswith(b"\xff\x00")
+
+    # 2. Test encoding with speaker_hex parameter
+    enc2 = encode_string("Что нужно?", DEFAULT_CHARMAP, speaker_hex="0xD9A1")
+    words2 = [struct.unpack_from("<H", enc2, i)[0] for i in range(0, len(enc2) - 2, 2)]
+    assert words2 == expected_words, f"Speaker-param encoded words mismatch: {words2} != {expected_words}"
+    assert enc1 == enc2
+
+    # 3. Assert individual glyph codes in authoritative charmap (synchronized with PROG.UNT 0x03A VRAM font)
+    assert DEFAULT_CHARMAP["Ч"] == 0x001F, "Glyph 'Ч' must be 0x001F"
+    assert DEFAULT_CHARMAP["т"] == 0x003C, "Glyph 'т' must be 0x003C"
+    assert DEFAULT_CHARMAP["о"] == 0x0037, "Glyph 'о' must be 0x0037"
+    assert DEFAULT_CHARMAP[" "] == 0x007D, "Glyph ' ' must be 0x007D"
+    assert DEFAULT_CHARMAP["н"] == 0x0036, "Glyph 'н' must be 0x0036"
+    assert DEFAULT_CHARMAP["у"] == 0x003D, "Glyph 'у' must be 0x003D"
+    assert DEFAULT_CHARMAP["ж"] == 0x002E, "Glyph 'ж' must be 0x002E"
+    assert DEFAULT_CHARMAP["?"] == 0x00A7, "Glyph '?' must be 0x00A7"
+
+    # Verify that decoding recovers the exact text
+    dec = decode_string(enc1)
+    assert dec == "<D9A1>Что нужно?"
+
+def test_shop_table1_table2_pointers_and_allocations(shop_catalog: dict[str, Any]):
+    """Test that all pointers in Table 1 (0x031F14..0x032060) and Table 2 (0x0322B0..0x0322EC)
+
+    are correctly updated and point to valid strings within Entry 3.
+    """
+    dummy_buf = bytearray(ENTRY3_SIZE)
+    patched_buf, report, dyn_alloc = patch_shop_dialogues_buffer(dummy_buf, shop_catalog)
+
+    assert report["in_place_count"] + report["relocated_count"] == 98
+    assert len(report["pointer_updates"]) == 191  # 100 dialogue pointers + 91 shop item pointers
+    assert dyn_alloc >= DYNAMIC_ALLOC_START
+    assert dyn_alloc <= DYNAMIC_ALLOC_LIMIT
+
+    # Check Table 1: 84 pointers
+    table1_ptrs = []
+    for off in range(SHOP_TABLE1_START, SHOP_TABLE1_END, 4):
+        ptr_val = struct.unpack("<I", patched_buf[off : off + 4])[0]
+        assert ptr_val >= RAM_BASE, f"Table 1 pointer at 0x{off:06X} invalid: 0x{ptr_val:08X}"
+        rel_off = ptr_val - RAM_BASE
+        assert rel_off < ENTRY3_SIZE, f"Table 1 pointer at 0x{off:06X} out of bounds: rel 0x{rel_off:06X}"
+        table1_ptrs.append((off, ptr_val, rel_off))
+    assert len(table1_ptrs) == SHOP_TABLE1_COUNT == 84
+
+    # Check Table 2: 16 pointers
+    table2_ptrs = []
+    for off in range(SHOP_TABLE2_START, SHOP_TABLE2_END, 4):
+        ptr_val = struct.unpack("<I", patched_buf[off : off + 4])[0]
+        assert ptr_val >= RAM_BASE, f"Table 2 pointer at 0x{off:06X} invalid: 0x{ptr_val:08X}"
+        rel_off = ptr_val - RAM_BASE
+        assert rel_off < ENTRY3_SIZE, f"Table 2 pointer at 0x{off:06X} out of bounds: rel 0x{rel_off:06X}"
+        table2_ptrs.append((off, ptr_val, rel_off))
+    assert len(table2_ptrs) == SHOP_TABLE2_COUNT == 16
+
+    # Verify that prompt_who has 2 pointers pointing to the same offset
+    p1 = struct.unpack("<I", patched_buf[0x031F14 : 0x031F18])[0]
+    p2 = struct.unpack("<I", patched_buf[0x031F18 : 0x031F1C])[0]
+    prompt_who_alloc = report["dialogue_allocations"]["prompt_who"]["offset"]
+    assert p1 == p2 == RAM_BASE + prompt_who_alloc
+    assert decode_string(patched_buf[prompt_who_alloc : prompt_who_alloc + 30]) == "КОМУ ПОКУПАТЬ?"
+    # Verify weapon shop greeting pointer at 0x031F20 points to 0x030F88
+    pw = struct.unpack("<I", patched_buf[0x031F20 : 0x031F24])[0]
+    assert pw == RAM_BASE + 0x030F88
+    greeting_raw = patched_buf[0x030F88 : 0x030F88 + 24]
+    assert decode_string(greeting_raw) == "<D9A1>Что нужно?"
+
+
+
+def test_shop_items_table_030A20(shop_catalog: dict[str, Any]):
+    """Test patching and pointer verification of all 91 shop items in table 0x030A20."""
+    dummy_buf = bytearray(ENTRY3_SIZE)
+    patched_buf, report, dyn_alloc = patch_shop_dialogues_buffer(dummy_buf, shop_catalog)
+
+    assert "shop_items" in report
+    assert report["shop_items"]["count"] == 91
+
+    # Verify all 91 pointers in Table 0
+    table0_ptrs = []
+    for off in range(SHOP_ITEMS_TABLE_START, SHOP_ITEMS_TABLE_END, 4):
+        ptr_val = struct.unpack("<I", patched_buf[off : off + 4])[0]
+        assert ptr_val >= RAM_BASE
+        rel_off = ptr_val - RAM_BASE
+        assert rel_off < ENTRY3_SIZE
+        table0_ptrs.append((off, ptr_val, rel_off))
+    assert len(table0_ptrs) == SHOP_ITEMS_COUNT == 91
+
+    # Verify specific items
+    item_tests = [
+        (0, "Лина"),
+        (7, "Ф.Атк"),
+        (32, "Меч Света"),
+        (36, "Длинный меч"),
+        (47, "Короткий меч"),
+    ]
+    for idx, exp_name in item_tests:
+        p_off = SHOP_ITEMS_TABLE_START + idx * 4
+        ptr_val = struct.unpack("<I", patched_buf[p_off : p_off + 4])[0]
+        rel_off = ptr_val - RAM_BASE
+        decoded_name = decode_string(patched_buf[rel_off : rel_off + 48])
+        assert decoded_name == exp_name, f"Item {idx} decoded {decoded_name!r} != {exp_name!r}"
+
+    # Verify buy_suggest_weapon has <00BF> at start of Line 2
+    ptr_suggest = struct.unpack("<I", patched_buf[0x031F24 : 0x031F28])[0]
+    rel_suggest = ptr_suggest - RAM_BASE
+    raw_suggest = patched_buf[rel_suggest : rel_suggest + 80]
+    suggest_words = [struct.unpack_from("<H", raw_suggest, i)[0] for i in range(0, len(raw_suggest), 2)]
+    first_nl = suggest_words.index(0x00FE)
+    assert suggest_words[first_nl + 1] == 0x00BF, "<00BF> must be at start of Line 2 in buy_suggest_weapon"
+
+def test_entry3_edc_ecc_verification():
+    """Test Mode 2 Form 1 EDC/ECC sector verification for Entry 3 on target disc image."""
+    bin_path = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
+    if not bin_path.is_file():
+        pytest.skip(f"Target disc image not found: {bin_path}")
+
+    res = verify_town_services(bin_path, DEFAULT_CATALOG, DEFAULT_SHOP_CATALOG)
+    assert res["status"] == "valid"
+    assert res["verified_sectors"] == ENTRY3_SECTORS == 296
+    assert res["verified_03a_sectors"] == ENTRY_03A_SECTORS == 27
+    assert res["verified_shop_dialogues"] == 98
+    assert res["verified_shop_pointers"] == 100
+    assert res["verified_shop_items"] == 91
+    assert res["table0_pointers"] == 91
+    assert res["table1_pointers"] == 84
+    assert res["table2_pointers"] == 16

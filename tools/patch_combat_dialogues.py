@@ -65,6 +65,7 @@ from tools.combat_dialogue_charmap import (
     CYRILLIC_LOWER_BASE,
     OPCODE_NEWLINE,
     OPCODE_BUBBLE_ADVANCE,
+    OPCODE_PAGE_BREAK,
     OPCODE_BLOCK_END,
     COMBAT_CHARMAP,
     REVERSE_COMBAT_CHARMAP,
@@ -198,8 +199,10 @@ def encode_conversation_block(
     """Encode a single conversation block into binary format.
 
     Format:
-    [Speaker Opcode 1] [Bubble 1 text]
-    (if bubble 2: [0x00FD] [Speaker Opcode 2] [Bubble 2 text])
+    [Speaker Opcode 1] [Bubble 1 Page 1 text]
+    (if bubble 1 page 2: [0x00FD] [Bubble 1 Page 2 text])
+    ...
+    (if bubble 2: [0x00FD] [Speaker Opcode 2] [Bubble 2 Page 1 text])
     ...
     [0x00FF] (Block terminator)
     """
@@ -209,29 +212,132 @@ def encode_conversation_block(
         raise ValueError(f"Block {block.get('id')} has no bubbles")
 
     data = bytearray()
-    for idx, bubble in enumerate(bubbles):
+    for bubble_idx, bubble in enumerate(bubbles):
         speaker_raw = bubble.get("speaker_opcode", 0)
         if isinstance(speaker_raw, str):
             speaker_op = int(speaker_raw, 16)
         else:
             speaker_op = int(speaker_raw)
 
-        if idx > 0:
-            # Advance delimiter
-            data.extend(struct.pack("<H", OPCODE_BUBBLE_ADVANCE))
+        # Support both "pages": ["p1", "p2"] and "text_ru" with \f
+        if "pages" in bubble and bubble["pages"] is not None:
+            pages: list[str] = []
+            for p in bubble["pages"]:
+                pages.extend(p.split("\f"))
+        else:
+            text_ru = bubble.get("text_ru", "")
+            pages = text_ru.split("\f")
 
-        # Append speaker opcode
-        data.extend(struct.pack("<H", speaker_op))
+        if not pages:
+            pages = [""]
 
-        # Append Russian dialogue text
-        text_ru = bubble.get("text_ru", "")
-        encoded_text = encode_combat_dialogue_string(text_ru, cm)
-        data.extend(encoded_text)
+        for page_idx, page_text in enumerate(pages):
+            if bubble_idx == 0 and page_idx == 0:
+                # First page of first bubble: [Speaker Opcode] [Page 1 text]
+                data.extend(struct.pack("<H", speaker_op))
+            elif page_idx == 0:
+                # First page of subsequent bubble: [0x00FD] [Next Speaker Opcode] [Page 1 text]
+                data.extend(struct.pack("<H", OPCODE_BUBBLE_ADVANCE))
+                data.extend(struct.pack("<H", speaker_op))
+            else:
+                # Subsequent page of SAME bubble: [0x00FD] [Page k text] (NO speaker opcode)
+                data.extend(struct.pack("<H", OPCODE_PAGE_BREAK))
+
+            encoded_page = encode_combat_dialogue_string(page_text, cm)
+            data.extend(encoded_page)
 
     # Terminate conversation block
     data.extend(struct.pack("<H", OPCODE_BLOCK_END))
 
     return bytes(data)
+
+def decode_conversation_bubbles(
+    data: bytes,
+    reverse_charmap: Mapping[int, str] | None = None,
+) -> list[dict[str, Any]]:
+    """Decode raw conversation block bytes into speech bubbles and pages.
+
+    Differentiates 0x00FD opcode behavior:
+    - 0x00FD followed by glyph (< 0x9000): Intra-bubble page advance for current speaker.
+    - 0x00FD followed by speaker opcode (>= 0x9000): Bubble advance starting a new speaker bubble.
+    """
+    rev = reverse_charmap if reverse_charmap is not None else REVERSE_COMBAT_CHARMAP
+    words = [struct.unpack_from("<H", data, i)[0] for i in range(0, len(data) - 1, 2)]
+    if not words or words[0] == OPCODE_BLOCK_END:
+        return []
+
+    bubbles: list[dict[str, Any]] = []
+    i = 0
+    if words[0] >= 0x9000:
+        current_speaker = words[0]
+        i = 1
+    elif words[0] == OPCODE_BUBBLE_ADVANCE and len(words) > 1 and words[1] >= 0x9000:
+        current_speaker = words[1]
+        i = 2
+    else:
+        current_speaker = 0x9109
+        i = 0
+
+    current_bubble_pages: list[list[int]] = []
+    current_page_words: list[int] = []
+
+    def _flush_bubble() -> None:
+        nonlocal current_bubble_pages, current_page_words
+        current_bubble_pages.append(current_page_words)
+        pages_text = [
+            decode_combat_dialogue_string(
+                b"".join(struct.pack("<H", c) for c in p_words),
+                rev,
+            )
+            for p_words in current_bubble_pages
+        ]
+        bubbles.append({
+            "bubble_index": len(bubbles) + 1,
+            "speaker_opcode": f"0x{current_speaker:04X}",
+            "pages": pages_text,
+            "text_ru": "\f".join(pages_text),
+        })
+        current_bubble_pages = []
+        current_page_words = []
+
+    while i < len(words):
+        w = words[i]
+        if w == OPCODE_BLOCK_END:
+            break
+        elif w == OPCODE_BUBBLE_ADVANCE:
+            next_w = words[i + 1] if i + 1 < len(words) else OPCODE_BLOCK_END
+            if next_w == OPCODE_BLOCK_END:
+                break
+            elif next_w >= 0x9000:
+                # Switch speaker and start new bubble
+                _flush_bubble()
+                current_speaker = next_w
+                i += 2
+                continue
+            else:
+                # Next page of same speaker (< 0x9000)
+                current_bubble_pages.append(current_page_words)
+                current_page_words = []
+                i += 1
+                continue
+        else:
+            current_page_words.append(w)
+            i += 1
+
+    if current_speaker is not None:
+        _flush_bubble()
+
+    return bubbles
+
+
+def decode_conversation_block(
+    data: bytes,
+    reverse_charmap: Mapping[int, str] | None = None,
+) -> dict[str, Any]:
+    """Decode binary conversation block into block dictionary containing 'bubbles'."""
+    return {
+        "bubbles": decode_conversation_bubbles(data, reverse_charmap),
+    }
 
 
 def patch_dialogue_blocks(
@@ -282,8 +388,8 @@ def validate_dialogue_formatting(
 ) -> list[str]:
     """Validate dialogue box constraints:
     - Maximum 18-21 characters per line.
-    - Maximum 3 lines per bubble.
-    - Explicit '\\n' for newlines.
+    - Maximum 3 lines per page/bubble.
+    - Explicit '\\n' for newlines, '\\f' for page breaks.
     """
     issues: list[str] = []
     blocks = catalog.get("blocks", [])
@@ -291,19 +397,31 @@ def validate_dialogue_formatting(
         block_id = block.get("id", "unknown")
         for bubble in block.get("bubbles", []):
             bubble_idx = bubble.get("bubble_index", 1)
-            text_ru = bubble.get("text_ru", "")
-            lines = text_ru.split("\n")
-            if len(lines) > max_lines_per_bubble:
-                issues.append(
-                    f"{block_id} bubble {bubble_idx}: {len(lines)} lines exceeds max {max_lines_per_bubble}"
-                )
-            for line_idx, line in enumerate(lines, 1):
-                if len(line) > max_chars_per_line:
-                    issues.append(
-                        f"{block_id} bubble {bubble_idx} line {line_idx}: length {len(line)} exceeds max {max_chars_per_line} ('{line}')"
-                    )
-    return issues
+            if "pages" in bubble and bubble["pages"] is not None:
+                pages: list[str] = []
+                for p in bubble["pages"]:
+                    pages.extend(p.split("\f"))
+            else:
+                text_ru = bubble.get("text_ru", "")
+                pages = text_ru.split("\f")
 
+            for page_idx, page in enumerate(pages, 1):
+                lines = page.split("\n")
+                prefix = (
+                    f"{block_id} bubble {bubble_idx}"
+                    if len(pages) == 1
+                    else f"{block_id} bubble {bubble_idx} page {page_idx}"
+                )
+                if len(lines) > max_lines_per_bubble:
+                    issues.append(
+                        f"{prefix}: {len(lines)} lines exceeds max {max_lines_per_bubble}"
+                    )
+                for line_idx, line in enumerate(lines, 1):
+                    if len(line) > max_chars_per_line:
+                        issues.append(
+                            f"{prefix} line {line_idx}: length {len(line)} exceeds max {max_chars_per_line} ('{line}')"
+                        )
+    return issues
 
 def verify_entry_7_invariants(orig_e7: bytes, patched_e7: bytes) -> None:
     """Verify that all protected regions outside dialogue stream are 100% untouched."""

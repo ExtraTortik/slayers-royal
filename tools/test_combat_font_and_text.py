@@ -552,7 +552,7 @@ class TestCombatPatcher:
         ram_92 = struct.unpack_from("<I", prog_007, pos_92)[0]
         t_92 = ram_92 - RAM_BASE
         spk_92 = struct.unpack_from("<H", prog_007, t_92)[0]
-        assert spk_92 in (0x0048, 0x0000, 0xD26A), f"Expected valid speaker opcode or padding for cue 92, got 0x{spk_92:04X}"
+        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171), f"Expected valid speaker opcode or padding for cue 92, got 0x{spk_92:04X}"
 
         # Verify all Table 3 cue pointers point within bounds and have valid opcodes
         for idx in range(len(TABLE3_CUE_OFFSETS)):

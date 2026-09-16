@@ -21,6 +21,7 @@ if str(REPO_ROOT) not in sys.path:
 from localization.po import PoEntry, read_po, write_po
 from localization.script import parse_target
 from tools.text_wrapper import wrap_dialogue
+from tools.story_dialogue_overrides import POLISHED_OVERRIDES
 
 SPEAKER_MAP = {
     "l": "Lina",
@@ -336,6 +337,20 @@ def align_and_update(
 
     for p in po_data:
         entry = p["entry"]
+        if entry.context in POLISHED_OVERRIDES:
+            text = POLISHED_OVERRIDES[entry.context]
+            allow_cont = p["allow_continuation"]
+            delimiter = 0x00FD if allow_cont else 0x00FF
+            parse_target(text, delimiter, entry.context)
+            updated_entries.append(
+                PoEntry(
+                    context=entry.context,
+                    source=entry.source,
+                    translation=text,
+                    comments=entry.comments,
+                )
+            )
+            continue
         r = p["matched_renpy"]
         if r is not None and r.text:
             allow_cont = p["allow_continuation"]

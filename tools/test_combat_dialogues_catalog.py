@@ -53,24 +53,32 @@ class TestCombatDialoguesCatalog(unittest.TestCase):
             self.assertGreater(len(b["bubbles"]), 0)
 
     def test_bubble_formatting_constraints(self):
-        """Verify max 21 chars per line and max 3 lines per bubble."""
+        """Verify max 21 chars per line and max 3 lines per bubble/page."""
         for b in self.data["blocks"]:
             for bub in b["bubbles"]:
-                text_ru = bub["text_ru"]
-                self.assertTrue(text_ru, f"Empty text_ru in {b['id']}")
-                lines = text_ru.split("\n")
-                self.assertLessEqual(
-                    len(lines),
-                    3,
-                    f"Bubble {bub['bubble_index']} in {b['id']} exceeds 3 lines: {text_ru!r}"
-                )
-                for l in lines:
+                text_ru = bub.get("text_ru", "")
+                self.assertTrue(text_ru or bub.get("pages"), f"Empty text_ru in {b['id']}")
+                pages = bub.get("pages") or text_ru.split("\f")
+                if isinstance(pages, list):
+                    flat_pages: list[str] = []
+                    for p in pages:
+                        flat_pages.extend(p.split("\f"))
+                    pages = flat_pages
+                else:
+                    pages = [str(pages)]
+                for page_idx, page in enumerate(pages, 1):
+                    lines = page.split("\n")
                     self.assertLessEqual(
-                        len(l),
-                        21,
-                        f"Line {l!r} in {b['id']} exceeds 21 chars (len={len(l)})"
+                        len(lines),
+                        3,
+                        f"Bubble {bub['bubble_index']} page {page_idx} in {b['id']} exceeds 3 lines: {page!r}"
                     )
-
+                    for l in lines:
+                        self.assertLessEqual(
+                            len(l),
+                            21,
+                            f"Line {l!r} in {b['id']} exceeds 21 chars (len={len(l)})"
+                        )
     def test_english_reference_text_no_corrupted_kanji(self):
         """Verify that English text contains 0 corrupted kanji or unmapped digraphs."""
         for b in self.data["blocks"]:
@@ -107,7 +115,11 @@ class TestCombatDialoguesCatalog(unittest.TestCase):
         self.assertEqual(bub1["speaker_opcode"], "0xD26A")
         self.assertEqual(bub1["speaker"], "Наёмник")
         self.assertTrue("interfeer" in bub1["text_en"] or "interfer" in bub1["text_en"])
-        self.assertTrue("Пошла б" in bub1["text_ru"] or "Шла бы" in bub1["text_ru"] or "ногами" in bub1["text_ru"] or "нос" in bub1["text_ru"])
+        self.assertIn("pages", bub1)
+        self.assertEqual(len(bub1["pages"]), 2)
+        self.assertIn("пошёл", bub1["pages"][0])
+        self.assertIn("нос", bub1["pages"][1])
+        self.assertIn("\f", bub1["text_ru"])
 
         # Bubble 2: Sylphiel 0x91C4
         bub2 = b_target["bubbles"][1]

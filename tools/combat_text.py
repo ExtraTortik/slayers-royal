@@ -45,8 +45,8 @@ def load_combat_charmap(path: Path | str | None = None) -> dict[str, int]:
     and forbids any code >= 0x0100 for Russian letters.
     """
     cm = dict(DEFAULT_CHARMAP)
-    gm_path = Path(path) if path is not None else GLYPH_MAP_PATH
-    if gm_path.is_file():
+    gm_path = Path(path) if path is not None else None
+    if gm_path is not None and gm_path.is_file():
         gm_data = json.loads(gm_path.read_text(encoding="utf-8"))
         for item in gm_data.get("characters", []):
             cm[item["text"]] = int(item["glyph"], 16)

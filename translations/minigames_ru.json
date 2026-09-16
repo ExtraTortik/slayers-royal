@@ -1,0 +1,3688 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "title": "Slayers Royal (PS1) — Каталог перевода мини-игр и викторины",
+    "description": "Этот файл содержит тексты правил всех 5 мини-игр (PROG.UNT 13..17), описание викторины из Ren'Py, а также все 100 вопросов и вариантов ответов викторины с настраиваемым кеглем (font_size). Заголовок и правила каждой мини-игры объединены в единый непрерывный 16-битный поток текста начиная с title_start_offset без промежуточного терминатора 0x00FF, что восстанавливает полное отображение правил под заголовком.",
+    "target_archive": "PROG.UNT",
+    "stream_architecture": {
+      "format": "[0x0000 (indent)] + encode(title_banner) [без 0x00FF] + [0x00FD, 0x00FD (\\n\\n)] + encode(rules_ru) [с 0x00FF] + [0x00 padding up to budget_end]",
+      "description": "Единый непрерывный поток текста мини-игры исключает преждевременный терминатор 0x00FF после заголовка. Единственный 0x00FF расположен строго в конце блока правил.",
+      "budgets": {
+        "eating_contest": { "entry": 13, "start_hex": "0x07320", "end_hex": "0x07468", "budget_bytes": 328 },
+        "amelia_climb": { "entry": 14, "start_hex": "0x11318", "end_hex": "0x1147A", "budget_bytes": 354 },
+        "naga_laugh": { "entry": 15, "start_hex": "0x07EB4", "end_hex": "0x07FC6", "budget_bytes": 274 },
+        "slayers_quiz": { "entry": 16, "start_hex": "0x08184", "end_hex": "0x08280", "budget_bytes": 252 },
+        "bandit_bullying": { "entry": 17, "start_hex": "0x082B8", "end_hex": "0x08412", "budget_bytes": 346 }
+      }
+    },
+    "typography": {
+      "font_size": "Кегль шрифта для рендеринга текста: 11 (стандартный диалоговый Press Start 2P 16x16) или 'auto'. При значении 'auto' кегль подбирается автоматически.",
+      "minigames_rules_limits": {
+        "max_chars_per_line": 20,
+        "max_lines": 10,
+        "control_codes": {
+          "newline": "\\n (опкод 0x00FD)",
+          "terminator": "0x00FF"
+        }
+      },
+      "naga_dialogues_limits": {
+        "max_chars_per_line": 20,
+        "control_codes": {
+          "newline": "\\n (опкод 0x00FD)",
+          "page_break": "\\f или <PAGE> (опкод 0x00FE)",
+          "terminator": "0x00FF"
+        }
+      },
+      "quiz_questions_limits": {
+        "q_line1_max_chars": 15,
+        "q_line2_max_chars": 15,
+        "option_max_chars": 15,
+        "slot_bytes": 32,
+        "record_bytes": 164,
+        "hardware_screen_width_px": 320,
+        "control_codes": {
+          "terminator": "0x00FF"
+        }
+      }
+    }
+  },
+  "minigames": {
+    "eating_contest": {
+      "id": "eating_contest",
+      "name_ru": "Состязание обжор (Обед в таверне)",
+      "name_en": "Eating Contest",
+      "prog_entry": 13,
+      "offset_hex": "0x07320",
+      "ram_address_hex": "0x800558E2",
+      "allocated_bytes": 328,
+      "font_size": "auto",
+      "title_banner": "Обед:",
+      "title_banner_offset_hex": "0x07320",
+      "title_banner_budget": 328,
+      "rules_end_offset_hex": "0x07468",
+      "rules_ru": "Съешь больше Гаури!\nЖми кнопки блюд.\nНе хватай перец:\nон адски жжётся!\nСпор за тарелку?\nЖми кнопку чаще,\nчтоб не сцапали!",
+      "status_messages": {
+        "lina_morale": "Лина в ударе!\nДух крепчает!\nРвение!",
+        "gourry_satiated": "Гаури сыт!",
+        "combined_status": "Лина в ударе!\nДух и рвение взмыли!\nГаури сыт!"
+      },
+      "description": "Состязание Лины и Гаури в таверне: съесть как можно больше блюд, нажимая кнопки геймпада, избегать острого перца и яростно долбить кнопку при споре за тарелку."
+    },
+    "amelia_climb": {
+      "id": "amelia_climb",
+      "name_ru": "Прыжок Справедливости (Амелия на скале)",
+      "name_en": "Amelia Cliff Jump",
+      "prog_entry": 14,
+      "offset_hex": "0x11318",
+      "ram_address_hex": "0x8005F8DE",
+      "allocated_bytes": 354,
+      "font_size": "auto",
+      "title_banner": "Прыжок:",
+      "title_banner_offset_hex": "0x11318",
+      "title_banner_budget": 354,
+      "rules_end_offset_hex": "0x1147A",
+      "rules_ru": "Амелия сигает вниз!\nВводи комбинации\nкнопок на лету,\nчтоб принять позы\nСправедливости!\nЧем сложнее поза,\nтем больше очков.\nУ тебя 3 попытки!",
+      "dialogues": {
+        "dialogue_1": "«Где есть жизнь —\nсвет и тьма\nнеразлучны!\fГде есть добро,\nбудет и зло!\fУзрите же кару\nАмелии!»",
+        "dialogue_2": "«Довольно зла!\nОдин лишь луч\nчистого света\fв каждом сердце\nрассеет тьму!»",
+        "dialogue_3": "«Лжецы!\nВаш обман никогда\nне сломит мою\nверу в закон!\fЗло сгинет,\nи мы победим!»",
+        "dialogue_4": "«Разбойники!\nЖадность затмила\nваш разум!\fПощады не ждите!\nУзрите пламя\nправосудия!»",
+        "dialogue_5": "«Трепещи, зло!\nМеня не провести!\fЗакон может\nошибиться,\nно я — никогда!»",
+        "justice_up": "Справедливость!"
+      },
+      "combo_window": {
+        "header": "ОК:",
+        "level_a": "УРА:",
+        "level_b": "УРБ:",
+        "level_c": "УРВ:",
+        "level_s": "УРС:"
+      },
+      "description": "Амелия прыгает с высокой скалы во имя Справедливости: игрок вводит комбинации кнопок, чтобы Амелия принимала героические позы в падении."
+    },
+    "naga_laugh": {
+      "id": "naga_laugh",
+      "name_ru": "Битва смеха с Нагой",
+      "name_en": "Naga Laugh Battle",
+      "prog_entry": 15,
+      "offset_hex": "0x07EB4",
+      "ram_address_hex": "0x8005647A",
+      "allocated_bytes": 274,
+      "font_size": "auto",
+      "title_banner": "Смех Наги:",
+      "title_banner_offset_hex": "0x07EB4",
+      "title_banner_budget": 274,
+      "rules_end_offset_hex": "0x07FC6",
+      "rules_ru": "Пусть Нага ржёт\nкак можно дольше!\nВовремя жми стрелки\nпо подсказкам,\nчтоб вдохнуть!\nГлубже вдох —\nдольше хохот!",
+      "dialogues": {
+        "dialogue_1": "«Ну ладно,\nя помогу!\fС великой силой\nНаги враг нам\nнипочём!»",
+        "dialogue_2": "«Жалкое зрелище!\nНеужто думали\nодолеть меня?\fОтдайте награду\nили молите\nо пощаде!»",
+        "dialogue_3": "«Насмехаетесь над\nмоим нарядом?\nКакая дерзость!\fКрасавица верна\nсвоему стилю!»",
+        "dialogue_4": "«Тогда у меня\nне было денег!\nКаждый ошибается!\fНе цепляйся,\nа не то пожалеешь!»",
+        "dialogue_5": "«Подумаешь, толчок!\nЧто за шум?\nКакое ребячество!\fВсякое бывает\nпо воле судьбы!»",
+        "dialogue_6": "Нага довольна!"
+      },
+      "description": "Фирменный высокомерный смех Наги Змеюки: игрок нажимает кнопки направлений по подсказкам, помогая Наге вовремя вдыхать воздух и смеяться без остановки."
+    },
+    "slayers_quiz": {
+      "id": "slayers_quiz",
+      "name_ru": "Слейерс-квиз (Викторина по «Рубакам»)",
+      "name_en": "Slayers Quiz",
+      "prog_entry": 16,
+      "offset_hex": "0x08184",
+      "ram_address_hex": "0x8005674E",
+      "allocated_bytes": 252,
+      "font_size": "auto",
+      "renpy_help_title": "Правила викторины",
+      "renpy_help_desc": "Ответьте правильно на все 100 вопросов по вселенной «Рубак». Вопросы будут идти в случайном порядке.\n\nДопускается не больше двух ошибок. Если не уложитесь по времени, это тоже считается ошибкой.",
+      "title_banner": "Викторина:",
+      "title_banner_offset_hex": "0x08184",
+      "title_banner_budget": 252,
+      "rules_end_offset_hex": "0x08280",
+      "rules_ru": "100 вопросов по\nмиру «Рубак».\nИдут случайно.\nДо 2 ошибок.\nВышло время —\nтоже ошибка.\nКто отвечает?",
+      "contestant_prompt": "Кто играет?",
+      "contestant_prompt_offset_hex": "0x08284",
+      "contestant_prompt_budget": 24,
+      "results_screen": {
+        "header": "Итог:",
+        "header_offset_hex": "0x0829C",
+        "header_budget": 16,
+        "correct_count": "Верно:     в",
+        "correct_count_offset_hex": "0x082AC",
+        "correct_count_budget": 26,
+        "avg_speed": "Ср. время:     с",
+        "avg_speed_offset_hex": "0x082C6",
+        "avg_speed_budget": 34
+      },
+      "description": "Викторина по вселенной «Рубак» из 100 вопросов со случайным порядком и таймером-бомбой. Разрешено сделать не более 2 ошибок."
+    },
+    "bandit_bullying": {
+      "id": "bandit_bullying",
+      "name_ru": "Отстрел бандитов (Защита черты)",
+      "name_en": "Bandit Bullying",
+      "prog_entry": 17,
+      "offset_hex": "0x082B8",
+      "ram_address_hex": "0x80056880",
+      "allocated_bytes": 346,
+      "font_size": "auto",
+      "title_banner": "Отстрел:",
+      "title_banner_offset_hex": "0x082B8",
+      "title_banner_budget": 346,
+      "rules_end_offset_hex": "0x08412",
+      "rules_ru": "Не дай разбойникам\nпрорвать оборону!\nЛина ходит вверх\nи вниз стрелками,\nкнопкой пускает\nФлеа-Эрроу!\nВзрывай бочки,\nчтоб накрыть\nтолпу врагов!",
+      "time_bonus": "Время!",
+      "description": "Лина защищает черту от бегущих разбойников и бочек: перемещается вверх-вниз, стреляет Flare Arrow и взрывает бочки, сметающие толпы врагов."
+    }
+  },
+  "quiz": {
+    "metadata": {
+      "prog_entry": 16,
+      "questions_offset_hex": "0x082E8",
+      "questions_ram_base_hex": "0x80056898",
+      "record_stride_bytes": 164,
+      "total_questions": 100,
+      "font_size": "auto"
+    },
+    "questions": [
+      {
+        "ps1_index": 0,
+        "renpy_id": 83,
+        "font_size": "auto",
+        "q_line1": "Кого одолел",
+        "q_line2": "Меч Света?",
+        "opt1": "Занаффар",
+        "opt2": "Граушерра",
+        "opt3": "Милгазия",
+        "correct": 0,
+        "original_jp": {
+          "q1": "光の剣は何という魔[03E6]を倒した",
+          "q2": "ことで有名?",
+          "opt1": "ザナッファ-",
+          "opt2": "グラウシェラ-",
+          "opt3": "ミルガズィア",
+          "comment": "#Q83 光の剣は何という魔獣を倒したことで有名?   +1. ザナッファー      2. グラウシェラー      3. ミルガズィア"
+        },
+        "renpy_source": {
+          "q_ru": "Убийством какого монстра прославился Меч Света?",
+          "q_en": "Which monster became famous for being defeated by the Sword of Light?",
+          "opts_ru": [
+            "Занаффар",
+            "Граушерра",
+            "Милгазия"
+          ],
+          "opts_en": [
+            "Zanaffar",
+            "Grausherra",
+            "Milgazia"
+          ],
+          "correct_ru": "Занаффар",
+          "correct_en": "Zanaffar"
+        }
+      },
+      {
+        "ps1_index": 1,
+        "renpy_id": 29,
+        "font_size": "auto",
+        "q_line1": "Что скрыто в",
+        "q_line2": "глазах Резо?",
+        "opt1": "Орихалк",
+        "opt2": "Владыка Тьмы",
+        "opt3": "Камень мудреца",
+        "correct": 1,
+        "original_jp": {
+          "q1": "現代の5[03E7]者,赤法師レゾの目に",
+          "q2": "封印されていたものは?",
+          "opt1": "オリハルコン",
+          "opt2": "赤[03A7]の魔王",
+          "opt3": "[03E7]者の石",
+          "comment": "#Q29 現代の5賢者、赤法師レゾの目に封印されていたものは?  1. オリハルコン   +2.赤眼の魔王    3. 賢者の石"
+        },
+        "renpy_source": {
+          "q_ru": "Что было запечатано в глазах Красного Священника Резо, одного из Пяти Мудрецов современности?",
+          "q_en": "What was sealed in the eyes of Red Priest Rezo, one of the Five Wise Men of modern times?",
+          "opts_ru": [
+            "Орихалк",
+            "Рубиноокий Повелитель Тьмы",
+            "Философский камень"
+          ],
+          "opts_en": [
+            "Orichalcum",
+            "Ruby-Eyed Demon Lord",
+            "Philosopher's Stone"
+          ],
+          "correct_ru": "Рубиноокий Повелитель Тьмы",
+          "correct_en": "Ruby-Eyed Demon Lord"
+        }
+      },
+      {
+        "ps1_index": 2,
+        "renpy_id": 41,
+        "font_size": "auto",
+        "q_line1": "Что такое",
+        "q_line2": "Клеа-Байбл?",
+        "opt1": "Записи Грэона",
+        "opt2": "Мысли Магнуса",
+        "opt3": "Знания дракона",
+        "correct": 2,
+        "original_jp": {
+          "q1": "伝説の魔道書クレアバイブル,",
+          "q2": "その実[03E8]は?",
+          "opt1": "ルオ=グラオンの雑記帳",
+          "opt2": "レイ=マグナスの思念",
+          "opt3": "水[03DA]王の知[03E9]",
+          "comment": "#Q41 伝説の魔道書クレアバイブル、 その実態は?      1.ルオ=グラオンの雑記帳   2. レイニマグナスの思念   +3.水竜王の知識"
+        },
+        "renpy_source": {
+          "q_ru": "Что на самом деле представляет собой легендарная Пречистая Библия?",
+          "q_en": "What does the legendary magic book 'Clair Bible' actually represent?",
+          "opts_ru": [
+            "Записная книжка Руо Грэона",
+            "Мысленная сущность Лей Магнуса",
+            "Знания Водного Короля-Дракона"
+          ],
+          "opts_en": [
+            "Ruо Greon's notebook",
+            "Rainy Magnus's mental essence",
+            "Knowledge of the Water Dragon Queen"
+          ],
+          "correct_ru": "Знания Водного Короля-Дракона",
+          "correct_en": "Knowledge of the Water Dragon Queen"
+        }
+      },
+      {
+        "ps1_index": 3,
+        "renpy_id": 69,
+        "font_size": "auto",
+        "q_line1": "Кто не знает",
+        "q_line2": "Драгу-Слейв?",
+        "opt1": "Родимус",
+        "opt2": "Зольф",
+        "opt3": "Сильфиль",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,ドラグmiddle-dotスレイブの",
+          "q2": "呪文を使えないのは誰?",
+          "opt1": "ロディマス",
+          "opt2": "ゾルフ",
+          "opt3": "シルフィ-ル",
+          "comment": "#Q69 次のうち、ドラグ・スレイブの呪文を使えないのは誰?   +1.ロディマス    2. ゾルフ      3. シルフィール"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из перечисленных героев не может использовать заклинание Драгу Слейв?",
+          "q_en": "Which of the following cannot use the 'Dragon Slave' spell?",
+          "opts_ru": [
+            "Родимус",
+            "Зольф",
+            "Сильфиль"
+          ],
+          "opts_en": [
+            "Rodimus",
+            "Zolf",
+            "Sylphiel"
+          ],
+          "correct_ru": "Родимус",
+          "correct_en": "Rodimus"
+        }
+      },
+      {
+        "ps1_index": 4,
+        "renpy_id": 80,
+        "font_size": "auto",
+        "q_line1": "Вестник мага",
+        "q_line2": "Медио?",
+        "opt1": "Лайзель Спокс",
+        "opt2": "Дриад Спокс",
+        "opt3": "Маренейд Спокс",
+        "correct": 0,
+        "original_jp": {
+          "q1": "魔道士メディオ=グランシップが",
+          "q2": "発行している[03EA]関[03EB]の名は?",
+          "opt1": "ライゼ-ルmiddle-dotスポ-クス",
+          "opt2": "ドライアドmiddle-dotスポ-クス",
+          "opt3": "マレネイドmiddle-dotスポ-クス",
+          "comment": "#Q80 魔道士メディオ=グランシップが発行している機関紙の名は?       1. ライゼール・スポークス      +2. ドライアド・スポークス     3. マレネイド・スポークス"
+        },
+        "renpy_source": {
+          "q_ru": "Как называется информационный бюллетень, выпускаемый магом Медио Граншипом?",
+          "q_en": "What is the newsletter published by mage Medio Granship?",
+          "opts_ru": [
+            "Лайзель Спокс",
+            "Дриад Спокс",
+            "Маренейд Спокс"
+          ],
+          "opts_en": [
+            "Theisel Spokes",
+            "Dryad Spokes",
+            "Marenade Spokes"
+          ],
+          "correct_ru": "Лайзель Спокс",
+          "correct_en": "Theisel Spokes"
+        }
+      },
+      {
+        "ps1_index": 5,
+        "renpy_id": 60,
+        "font_size": "auto",
+        "q_line1": "Чьё заклятие",
+        "q_line2": "от Шабранигдо?",
+        "opt1": "Рагна Блэйд",
+        "opt2": "Гига Слейв",
+        "opt3": "Драгу Слейв",
+        "correct": 2,
+        "original_jp": {
+          "q1": "次のうち,赤[03A7]の魔王の力を",
+          "q2": "借りた呪文はどれ?",
+          "opt1": "ラグナmiddle-dotブレ-ド",
+          "opt2": "ギガmiddle-dotスレイブ",
+          "opt3": "ドラグmiddle-dotスレイブ",
+          "comment": "#Q60 次のうち、赤眼の魔王の力を借りた呪文はどれ?     1. ラグナ・ブレード     2. ギガ・スレイブ      +3. ドラグ・スレイブ"
+        },
+        "renpy_source": {
+          "q_ru": "Какое из заклинаний черпает силу у Рубиноокого Повелителя Тьмы?",
+          "q_en": "Which spell draws power from the Red-Eyed Demon Lord?",
+          "opts_ru": [
+            "Рагна Блэйд",
+            "Гига Слейв",
+            "Драгу Слейв"
+          ],
+          "opts_en": [
+            "Ragna Blade",
+            "Giga Slave",
+            "Dragon Slave"
+          ],
+          "correct_ru": "Драгу Слейв",
+          "correct_en": "Dragon Slave"
+        }
+      },
+      {
+        "ps1_index": 6,
+        "renpy_id": 65,
+        "font_size": "auto",
+        "q_line1": "Оружие лорда",
+        "q_line2": "Дарк Стара?",
+        "opt1": "Меч Света",
+        "opt2": "Клинок Эльмеки",
+        "opt3": "Взрывной меч",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,[03EC]世界の魔王",
+          "q2": "ダ-クmiddle-dotスタ-の武器はどれ?",
+          "opt1": "光の剣",
+          "opt2": "エルメキアmiddle-dotブレ-ド",
+          "opt3": "ブラストソ-ド",
+          "comment": "#Q65 次のうち、異世界の魔王ダーク・スターの武器はどれ?  +1.光の剣  2. エルメキア・ブレード   3. ブラストソード"
+        },
+        "renpy_source": {
+          "q_ru": "Какое оружие принадлежит Дарк Стару, Повелителю Тьмы из иного мира?",
+          "q_en": "What weapon does Dark Star, the demon lord from another world, have?",
+          "opts_ru": [
+            "Меч Света",
+            "Эльмекийский клинок",
+            "Взрывной меч"
+          ],
+          "opts_en": [
+            "Sword of Light",
+            "Elmekian Blade",
+            "Blast Sword"
+          ],
+          "correct_ru": "Меч Света",
+          "correct_en": "Sword of Light"
+        }
+      },
+      {
+        "ps1_index": 7,
+        "renpy_id": 99,
+        "font_size": "auto",
+        "q_line1": "Имя меча",
+        "q_line2": "маньячки Реми?",
+        "opt1": "Потрошитель",
+        "opt2": "Джек",
+        "opt3": "Карма",
+        "correct": 1,
+        "original_jp": {
+          "q1": "[03ED]物マニアのレミ-が愛剣の",
+          "q2": "ロングソ-ドに付けた名は?",
+          "opt1": "リパ-",
+          "opt2": "ジャック",
+          "opt3": "カルマ",
+          "comment": "#Q99 刃物マニアのレミーが愛剣のロングソードに付けた名は?     1.リパー   +2. ジャック    3.カルマ"
+        },
+        "renpy_source": {
+          "q_ru": "Какое имя Лемми, помешанная на острых предметах, дала своему любимому длинному мечу?",
+          "q_en": "What name did Remy, obsessed with sharp objects, give to her beloved longsword?",
+          "opts_ru": [
+            "Потрошитель",
+            "Джек",
+            "Карма"
+          ],
+          "opts_en": [
+            "Ripper",
+            "Jack",
+            "Karma"
+          ],
+          "correct_ru": "Джек",
+          "correct_en": "Jack"
+        }
+      },
+      {
+        "ps1_index": 8,
+        "renpy_id": 98,
+        "font_size": "auto",
+        "q_line1": "Химера Зел —",
+        "q_line2": "голем и кто?",
+        "opt1": "Тролль",
+        "opt2": "Лессер Демон",
+        "opt3": "Броу Демон",
+        "correct": 2,
+        "original_jp": {
+          "q1": "魔剣士ゼルガディスはゴ-レムと",
+          "q2": "何のキメラ?",
+          "opt1": "トロル",
+          "opt2": "レッサ-デ-モン",
+          "opt3": "ブロウデ-モン",
+          "comment": "#Q98 魔剣士ゼルガディスはゴーレムと何のキメラ?  1. トロル      2.レッサーデーモン      +3. ブロウデーモン"
+        },
+        "renpy_source": {
+          "q_ru": "С кем, помимо голема, смешали Зелгадиса, создавая химеру?",
+          "q_en": "Who, besides a golem, was Zelgadis mixed with to create a chimera?",
+          "opts_ru": [
+            "Тролль",
+            "Лессер Демон",
+            "Броу Демон"
+          ],
+          "opts_en": [
+            "Troll",
+            "Lesser Demon",
+            "Blow Demon"
+          ],
+          "correct_ru": "Броу Демон",
+          "correct_en": "Blow Demon"
+        }
+      },
+      {
+        "ps1_index": 9,
+        "renpy_id": 12,
+        "font_size": "auto",
+        "q_line1": "Откуда родом",
+        "q_line2": "Лина?",
+        "opt1": "Зефилия",
+        "opt2": "Гаилия",
+        "opt3": "Город Атлас",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナの出身地といえば?",
+          "q2": "[0000]",
+          "opt1": "ゼフィ-リア[03EE]国",
+          "opt2": "ガイリア王国",
+          "opt3": "アトラスmiddle-dotシティ",
+          "comment": "#Q12 リナの出身地といえば? +1. ゼフィーリア公国    2. ガイリア王国   3. アトラス・シティ"
+        },
+        "renpy_source": {
+          "q_ru": "Откуда родом Лина?",
+          "q_en": "Where is Lina from?",
+          "opts_ru": [
+            "Королевство Зефилия",
+            "Королевство Гаилия",
+            "Город Атлас"
+          ],
+          "opts_en": [
+            "Kingdom of Zephilia",
+            "Kingdom of Gailia",
+            "City of Atlas"
+          ],
+          "correct_ru": "Королевство Зефилия",
+          "correct_en": "Kingdom of Zephilia"
+        }
+      },
+      {
+        "ps1_index": 10,
+        "renpy_id": 15,
+        "font_size": "auto",
+        "q_line1": "Имя сестры",
+        "q_line2": "Амелии?",
+        "opt1": "Леймия",
+        "opt2": "Грация",
+        "opt3": "Илия",
+        "correct": 1,
+        "original_jp": {
+          "q1": "修行の旅に出ているアメリアの",
+          "q2": "[03EF]の名は?",
+          "opt1": "レイミア",
+          "opt2": "グレイシア",
+          "opt3": "イリ-ア",
+          "comment": "#Q15 修行の旅に出ているアメリアの姉の名は?     1. レイミア +2. グレイシア   3. イリーアー"
+        },
+        "renpy_source": {
+          "q_ru": "Как зовут сестру Амелии, отправившуюся в странствия для самосовершенствования?",
+          "q_en": "What is the name of Amelia's sister who went on a journey for self-improvement?",
+          "opts_ru": [
+            "Леймия",
+            "Грация",
+            "Илия"
+          ],
+          "opts_en": [
+            "Leimia",
+            "Graecia",
+            "Ilia"
+          ],
+          "correct_ru": "Грация",
+          "correct_en": "Graecia"
+        }
+      },
+      {
+        "ps1_index": 11,
+        "renpy_id": 5,
+        "font_size": "auto",
+        "q_line1": "Что НЕ усилит",
+        "q_line2": "силу магии?",
+        "opt1": "Камень мудреца",
+        "opt2": "Кровь демона",
+        "opt3": "Орихалк",
+        "correct": 2,
+        "original_jp": {
+          "q1": "次のうち,魔力を増[03F0]する効果の",
+          "q2": "無いものはどれ?",
+          "opt1": "[03E7]者の石",
+          "opt2": "デモンブラッド",
+          "opt3": "オリハルコン",
+          "comment": "#Q5 次のうち、魔力を増幅する効果の無いものはどれ?    1. 賢者の石     2. デモンブラッド  +3. オリハルコン"
+        },
+        "renpy_source": {
+          "q_ru": "Что из перечисленного не обладает свойством усиливать магическую силу?",
+          "q_en": "Which of the following does not enhance magical power?",
+          "opts_ru": [
+            "Философский камень",
+            "Кровь демона",
+            "Орихалк"
+          ],
+          "opts_en": [
+            "Philosopher's Stone",
+            "Demon Blood",
+            "Orichalcum"
+          ],
+          "correct_ru": "Орихалк",
+          "correct_en": "Orichalcum"
+        }
+      },
+      {
+        "ps1_index": 12,
+        "renpy_id": 22,
+        "font_size": "auto",
+        "q_line1": "Что в лавке",
+        "q_line2": "продают парой?",
+        "opt1": "Доски Регулуса",
+        "opt2": "Зеркало Теней",
+        "opt3": "Кровь демона",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,魔法屋で2枚1組で",
+          "q2": "売られているものはどれ?",
+          "opt1": "レグルス[03F1]",
+          "opt2": "[03F2]の[03F3]",
+          "opt3": "デモンブラッド",
+          "comment": "# Q22 次のうち、魔法屋で2枚1組で売られているものはどれ?  +1.レグルス盤    2.影の鏡   3. デモンブラッド"
+        },
+        "renpy_source": {
+          "q_ru": "Что из перечисленного в магической лавке продаётся комплектом из двух штук?",
+          "q_en": "Which of the following is sold in sets of two in a magic shop?",
+          "opts_ru": [
+            "Доски Регулуса",
+            "Зеркало Теней",
+            "Кровь демона"
+          ],
+          "opts_en": [
+            "Regulus Boards",
+            "Mirror of Shadows",
+            "Demon Blood"
+          ],
+          "correct_ru": "Доски Регулуса",
+          "correct_en": "Regulus Boards"
+        }
+      },
+      {
+        "ps1_index": 13,
+        "renpy_id": 51,
+        "font_size": "auto",
+        "q_line1": "Кто НЕ знает",
+        "q_line2": "Бласт Бомб?",
+        "opt1": "Лей Магнус",
+        "opt2": "Амелия",
+        "opt3": "Зеллос",
+        "correct": 1,
+        "original_jp": {
+          "q1": "次のうち,ブラストmiddle-dotボムの",
+          "q2": "呪文を使えないのは誰?",
+          "opt1": "レイ=マグナス",
+          "opt2": "アメリア",
+          "opt3": "ゼロス",
+          "comment": "#Q51 次のうち、ブラスト・ボムの呪文を使えないのは誰?   1.レイ=マグナス   +2. アメリア    3. ゼロス"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из перечисленных не владеет заклинанием Бласт Бомб?",
+          "q_en": "Which of the following does not know the spell 'Blast Bomb'?",
+          "opts_ru": [
+            "Лей Магнус",
+            "Амелия",
+            "Зеллос"
+          ],
+          "opts_en": [
+            "Ley Magnus",
+            "Amelia",
+            "Xellos"
+          ],
+          "correct_ru": "Амелия",
+          "correct_en": "Amelia"
+        }
+      },
+      {
+        "ps1_index": 14,
+        "renpy_id": 42,
+        "font_size": "auto",
+        "q_line1": "Кто создал",
+        "q_line2": "Драгу Слейв?",
+        "opt1": "Резо",
+        "opt2": "Хальсиформ",
+        "opt3": "Лей Магнус",
+        "correct": 2,
+        "original_jp": {
+          "q1": "ドラグmiddle-dotスレイブの呪文を",
+          "q2": "[03F4]み出した人物の名は?",
+          "opt1": "レゾ",
+          "opt2": "ハルシフォム",
+          "opt3": "レイ=マグナス",
+          "comment": "#Q42 ドラグ・スレイブの呪文を編み出した人物の名は?    1.レゾ    2. ハルシフォム   +3. レイ=マグナス"
+        },
+        "renpy_source": {
+          "q_ru": "Кто создал заклинание Драгу Слейв?",
+          "q_en": "Who created the spell 'Dragon Slave'?",
+          "opts_ru": [
+            "Резо",
+            "Хальсиформ",
+            "Лей Магнус"
+          ],
+          "opts_en": [
+            "Rezo",
+            "Halciform",
+            "Ley Magnus"
+          ],
+          "correct_ru": "Лей Магнус",
+          "correct_en": "Ley Magnus"
+        }
+      },
+      {
+        "ps1_index": 15,
+        "renpy_id": 52,
+        "font_size": "auto",
+        "q_line1": "Почему Лина",
+        "q_line2": "поседела?",
+        "opt1": "Тратила жизнь",
+        "opt2": "Она постарела",
+        "opt3": "Красила волосы",
+        "correct": 0,
+        "original_jp": {
+          "q1": "ギガmiddle-dotスレイブを放ったリナの",
+          "q2": "髪が[03DB]色となった原因は?",
+          "opt1": "生体エネルギ-を使いすぎた",
+          "opt2": "年をとった",
+          "opt3": "髪をそめた",
+          "comment": "#Q52 ギガ・スレイブを放ったリナの髪が銀色となった原因は?     +1.生体エネルギーを使いすぎた    2.年をとった     3. 髪をそめた"
+        },
+        "renpy_source": {
+          "q_ru": "Почему волосы Лины после применения Гига Слейва стали серебряными?",
+          "q_en": "Why did Lina's hair turn silver after using Giga Slave?",
+          "opts_ru": [
+            "Она истратила слишком много жизненной энергии",
+            "Она постарела",
+            "Она покрасила волосы"
+          ],
+          "opts_en": [
+            "She used too much life energy",
+            "She aged",
+            "She dyed her hair"
+          ],
+          "correct_ru": "Она истратила слишком много жизненной энергии",
+          "correct_en": "She used too much life energy"
+        }
+      },
+      {
+        "ps1_index": 16,
+        "renpy_id": 85,
+        "font_size": "auto",
+        "q_line1": "Неверный цвет",
+        "q_line2": "звания Гильдии?",
+        "opt1": "Лина Розовая",
+        "opt2": "Тарим Красный",
+        "opt3": "Демия Синий",
+        "correct": 1,
+        "original_jp": {
+          "q1": "魔道士協会より[03F5]えられる色の",
+          "q2": "称期,間違った組み合わせは?",
+          "opt1": "[03F6]色のリナ",
+          "opt2": "赤のタリム",
+          "opt3": "青のデイミア",
+          "comment": "#Q85 魔道士協会より与えられる色の称号、間違った組み合わせは?   1. 桃色のリナ    +2. 赤のタリム   3. 青のデイミア"
+        },
+        "renpy_source": {
+          "q_ru": "Какое сочетание цветного звания, присуждаемого гильдией магов, является ошибочным?",
+          "q_en": "Which combination of colored ranks awarded by the Mages' Guild is incorrect?",
+          "opts_ru": [
+            "Лина Розовая",
+            "Тарим Красный",
+            "Демия Синий"
+          ],
+          "opts_en": [
+            "Lina the Pink",
+            "Tarim the Red",
+            "Damia the Blue"
+          ],
+          "correct_ru": "Тарим Красный",
+          "correct_en": "Tarim the Red"
+        }
+      },
+      {
+        "ps1_index": 17,
+        "renpy_id": 6,
+        "font_size": "auto",
+        "q_line1": "Где был камень",
+        "q_line2": "Хальсифома?",
+        "opt1": "Статуя горгульи",
+        "opt2": "Заколка Рубии",
+        "opt3": "Маска Сейграма",
+        "correct": 2,
+        "original_jp": {
+          "q1": "ハルシフォムの[03F7]を封じ込めた",
+          "q2": "[03F8]茶の石はどこにあった?",
+          "opt1": "ガ-ゴイルの石像",
+          "opt2": "ルビアの髪飾り",
+          "opt3": "セイグラムの仮面",
+          "comment": "#Q6 ハルシフォムの魂を封じ込めた契約の石はどこにあった?   1. ガーゴイルの石像     2. ルビアの髪飾り  +3. セイグラムの仮面"
+        },
+        "renpy_source": {
+          "q_ru": "Где находился камень договора, запечатавший душу Хальсифома?",
+          "q_en": "Where was the contract stone that sealed Halcifom's soul?",
+          "opts_ru": [
+            "В каменной статуе горгульи",
+            "В заколке для волос Рубии",
+            "В маске Сейграма"
+          ],
+          "opts_en": [
+            "In a stone gargoyle statue",
+            "In Rubia's hairpin",
+            "In Seigram's mask"
+          ],
+          "correct_ru": "В маске Сейграма",
+          "correct_en": "In Seigram's mask"
+        }
+      },
+      {
+        "ps1_index": 18,
+        "renpy_id": 91,
+        "font_size": "auto",
+        "q_line1": "Лина о своей",
+        "q_line2": "родине:",
+        "opt1": "Удар — и скалы!",
+        "opt2": "Зло без прав!",
+        "opt3": "Пёс лая боится",
+        "correct": 0,
+        "original_jp": {
+          "q1": "手加減の苦手なリナは自分の",
+          "q2": "[03F9]里をどういう世界と言った?",
+          "opt1": "手加減一発,岩をも砕く",
+          "opt2": "悪人に人[03FA]なし",
+          "opt3": "負け犬の遠[03FB]え",
+          "comment": "#Q91 手加減の苦手なリナは自分の郷里をどういう世界と言った?    +1.手加減一発、岩をも砕く      2.悪人に人権なし   3.負け犬の遠吠え"
+        },
+        "renpy_source": {
+          "q_ru": "Как Лина, не привыкшая рассчитывать силу, охарактеризовала свой родной город?",
+          "q_en": "How did Lina, not used to calculating strength, characterize her hometown?",
+          "opts_ru": [
+            "«Удар от души — и скалы крошатся»",
+            "«У злодеев нет прав»",
+            "«Побитая собака и лая боится»"
+          ],
+          "opts_en": [
+            "'A heartfelt blow crushes rocks'",
+            "'Villains have no rights'",
+            "'A beaten dog fears barking'"
+          ],
+          "correct_ru": "«Удар от души — и скалы крошатся»",
+          "correct_en": "'A heartfelt blow crushes rocks'"
+        }
+      },
+      {
+        "ps1_index": 19,
+        "renpy_id": 100,
+        "font_size": "auto",
+        "q_line1": "Богач Везенди",
+        "q_line2": "он же Зуума?",
+        "opt1": "Уэллс Зено",
+        "opt2": "Радок Ранзард",
+        "opt3": "Ария Эшфорд",
+        "correct": 1,
+        "original_jp": {
+          "q1": "暗殺者ズ-マと同一人物,",
+          "q2": "ヴェゼンディの資産家といえば?",
+          "opt1": "ウェルズ=ゼノ=ガイリア",
+          "opt2": "ラドック=ランザ-ド",
+          "opt3": "アリア=アシュフォ-ド",
+          "comment": "#Q100 暗殺者ズーマと同一人物、 ヴェゼンディの資産家といえば?  1.ウェルズ=ゼノ=ガイリア      +2. ラドック=ランザード      3. アリア=アシュフォード"
+        },
+        "renpy_source": {
+          "q_ru": "Назовите имя богача из Везенди, который оказался самим убийцей Зуумой.",
+          "q_en": "Name the Vesendian rich man who turned out to be the assassin Zuuma himself.",
+          "opts_ru": [
+            "Уэллс Зено Гаилия",
+            "Радок Ранзард",
+            "Ария Эшфорд"
+          ],
+          "opts_en": [
+            "Wells Zeno Gailia",
+            "Laddock Lanzard",
+            "Aria Ashford"
+          ],
+          "correct_ru": "Радок Ранзард",
+          "correct_en": "Laddock Lanzard"
+        }
+      },
+      {
+        "ps1_index": 20,
+        "renpy_id": 19,
+        "font_size": "auto",
+        "q_line1": "Возлюбленная",
+        "q_line2": "Люка?",
+        "opt1": "Элисиэль",
+        "opt2": "Шейла",
+        "opt3": "Милина",
+        "correct": 2,
+        "original_jp": {
+          "q1": "トレジャ-ハンタ-,ル-クの",
+          "q2": "意中の相手は?",
+          "opt1": "エリシエル",
+          "opt2": "シェ-ラ",
+          "opt3": "ミリ-ナ",
+          "comment": "#Q19 トレジャーハンター、ルークの意中の相手は?    1. エリシエル    2. シェーラ     +3. ミリーナ"
+        },
+        "renpy_source": {
+          "q_ru": "Кто является возлюбленной Люка, охотника за сокровищами?",
+          "q_en": "Who is the object of Luke's affection, the treasure hunter?",
+          "opts_ru": [
+            "Элисиэль",
+            "Шейла",
+            "Милина"
+          ],
+          "opts_en": [
+            "Elisiel",
+            "Sheila",
+            "Mileena"
+          ],
+          "correct_ru": "Милина",
+          "correct_en": "Mileena"
+        }
+      },
+      {
+        "ps1_index": 21,
+        "renpy_id": 46,
+        "font_size": "auto",
+        "q_line1": "Слова сестры,",
+        "q_line2": "погнавшие Лину?",
+        "opt1": "«Повидай мир»",
+        "opt2": "Кругом клады",
+        "opt3": "С глаз долой",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナが旅をするきっかけとなった",
+          "q2": "[03F9]里の[03EF]ちゃんのひとことは?",
+          "opt1": "世界を見てこい",
+          "opt2": "世界にはお宝だらけ",
+          "opt3": "二度とツラを見せるな",
+          "comment": "#Q46 リナが旅をするきっかけとなった郷里の姉ちゃんのひとことは?      +1.世界を見てこい      2. 世界にはお宝だらけ    3. 二度とツラを見せるな"
+        },
+        "renpy_source": {
+          "q_ru": "Какие слова старшей сестры из родного города побудили Лину отправиться в странствия?",
+          "q_en": "What words from her older sister prompted Lina to go on a journey?",
+          "opts_ru": [
+            "«Повидай мир»",
+            "«Мир полон сокровищ»",
+            "«Не попадайся мне на глаза»"
+          ],
+          "opts_en": [
+            "'See the world'",
+            "'The world is full of treasures'",
+            "'So I don't have to see your face anymore'"
+          ],
+          "correct_ru": "«Повидай мир»",
+          "correct_en": "'See the world'"
+        }
+      },
+      {
+        "ps1_index": 22,
+        "renpy_id": 31,
+        "font_size": "auto",
+        "q_line1": "Какую кличку",
+        "q_line2": "дала НЕ Клэр?",
+        "opt1": "Враг живого",
+        "opt2": "Лина-бродяжка",
+        "opt3": "Губитель мира",
+        "correct": 1,
+        "original_jp": {
+          "q1": "次のうち,クレアの広めたリナの",
+          "q2": "あだ名でないものはどれ?",
+          "opt1": "生きとし生けるものの天敵",
+          "opt2": "ドラまたリナ",
+          "opt3": "世界の破壊者",
+          "comment": "#Q31 次のうち、クレアの広めたリナのあだ名でないものはどれ?     1. 生きとし生けるものの天敵     +2. ドラまたリナ  3. 世界の破壊者"
+        },
+        "renpy_source": {
+          "q_ru": "Какое из прозвищ Лины распространила не Клэр?",
+          "q_en": "Which of Lina's nicknames was not spread by Claire?",
+          "opts_ru": [
+            "Враг всего живого",
+            "Лина-бродяжка",
+            "Разрушительница мира"
+          ],
+          "opts_en": [
+            "Enemy of all living",
+            "Lina the drifter",
+            "World Destroyer"
+          ],
+          "correct_ru": "Лина-бродяжка",
+          "correct_en": "Lina the drifter"
+        }
+      },
+      {
+        "ps1_index": 23,
+        "renpy_id": 39,
+        "font_size": "auto",
+        "q_line1": "Профессия",
+        "q_line2": "мечника Гаури?",
+        "opt1": "Паладин",
+        "opt2": "Пекарь",
+        "opt3": "Наёмник",
+        "correct": 2,
+        "original_jp": {
+          "q1": "剣士ガウリイの本業は?",
+          "q2": "[0000]",
+          "opt1": "法[03FC]士",
+          "opt2": "パン屋",
+          "opt3": "若者",
+          "comment": "#Q39 剣士ガウリイの本業は?    1.聖騎士   2.パン屋   +3.傭兵"
+        },
+        "renpy_source": {
+          "q_ru": "Кто по профессии мечник Гаури?",
+          "q_en": "What is Gourry the swordsman's profession?",
+          "opts_ru": [
+            "Паладин",
+            "Пекарь",
+            "Наёмник"
+          ],
+          "opts_en": [
+            "Paladin",
+            "Baker",
+            "Mercenary"
+          ],
+          "correct_ru": "Наёмник",
+          "correct_en": "Mercenary"
+        }
+      },
+      {
+        "ps1_index": 24,
+        "renpy_id": 44,
+        "font_size": "auto",
+        "q_line1": "Фамильный",
+        "q_line2": "клинок Гаури?",
+        "opt1": "Меч Света",
+        "opt2": "Меч Благодати",
+        "opt3": "Меч Дракона",
+        "correct": 0,
+        "original_jp": {
+          "q1": "ガウリイの家に代々伝わる伝説の",
+          "q2": "武器の名は?",
+          "opt1": "光の剣",
+          "opt2": "[03FD][03FE]の剣",
+          "opt3": "赤[03DA]の剣",
+          "comment": "#Q44 ガウリイの家に代々伝わる伝説の武器の名は?  +1.光の剣  2. 祝福の剣     3. 赤竜の剣"
+        },
+        "renpy_source": {
+          "q_ru": "Как называется легендарный клинок, что веками передавался в роду Гаури?",
+          "q_en": "What is the legendary blade that has been passed down in Gourry's family for centuries?",
+          "opts_ru": [
+            "Меч Света",
+            "Меч Благословения",
+            "Меч Красного Дракона"
+          ],
+          "opts_en": [
+            "Sword of Light",
+            "Sword of Blessing",
+            "Red Dragon Sword"
+          ],
+          "correct_ru": "Меч Света",
+          "correct_en": "Sword of Light"
+        }
+      },
+      {
+        "ps1_index": 25,
+        "renpy_id": 11,
+        "font_size": "auto",
+        "q_line1": "Кем Гаури себя",
+        "q_line2": "считает Лине?",
+        "opt1": "Жених",
+        "opt2": "Опекун",
+        "opt3": "Фамильяр",
+        "correct": 1,
+        "original_jp": {
+          "q1": "ガウリイは自称,リナの[03DE][03DE][03DE]?",
+          "q2": "[0000]",
+          "opt1": "[03FF]茶者",
+          "opt2": "明裏者",
+          "opt3": "使い魔",
+          "comment": "#Q11 ガウリイは自称、リナの○○○? 1.婚約者   +2.保護者  3. 使い魔"
+        },
+        "renpy_source": {
+          "q_ru": "Кем, по собственному утверждению, является Гаури для Лины?",
+          "q_en": "Who does Gourry claim to be to Lina?",
+          "opts_ru": [
+            "Жених",
+            "Опекун",
+            "Фамильяр"
+          ],
+          "opts_en": [
+            "Fiancé",
+            "Guardian",
+            "Familiar"
+          ],
+          "correct_ru": "Опекун",
+          "correct_en": "Guardian"
+        }
+      },
+      {
+        "ps1_index": 26,
+        "renpy_id": 68,
+        "font_size": "auto",
+        "q_line1": "Что нужно Резо,",
+        "q_line2": "чтоб прозреть?",
+        "opt1": "Зеркало Теней",
+        "opt2": "Камень договора",
+        "opt3": "Камень мудреца",
+        "correct": 2,
+        "original_jp": {
+          "q1": "レゾが自分の目を開かせるために",
+          "q2": "必要としたものは?",
+          "opt1": "[03F2]の[03F3]",
+          "opt2": "[03F8]茶の石",
+          "opt3": "[03E7]者の石",
+          "comment": "#Q68 レゾが自分の目を開かせるために必要としたものは?    1.影の鏡       2. 契約の石     +3. 賢者の石"
+        },
+        "renpy_source": {
+          "q_ru": "Что потребовалось Резо, чтобы открыть свои глаза?",
+          "q_en": "What did Rezo need to open his eyes?",
+          "opts_ru": [
+            "Зеркало Теней",
+            "Камень договора",
+            "Философский камень"
+          ],
+          "opts_en": [
+            "Mirror of Shadows",
+            "Contract Stone",
+            "Philosopher's Stone"
+          ],
+          "correct_ru": "Философский камень",
+          "correct_en": "Philosopher's Stone"
+        }
+      },
+      {
+        "ps1_index": 27,
+        "renpy_id": 20,
+        "font_size": "auto",
+        "q_line1": "Принц Фил себя",
+        "q_line2": "называет...",
+        "opt1": "Пацифист",
+        "opt2": "Тиран",
+        "opt3": "Вегетарианец",
+        "correct": 0,
+        "original_jp": {
+          "q1": "セイル-ンのフィリオネル王子は",
+          "q2": "自称,[03DE][03DE]買義者?",
+          "opt1": "平和",
+          "opt2": "暴力",
+          "opt3": "夕食",
+          "comment": "#Q20 セイルーンのフィリオネル王子は自称、○○主義者?    +1.平和   2.暴力    3.菜食"
+        },
+        "renpy_source": {
+          "q_ru": "Кем, по собственному утверждению, является принц Филионел из Сейруна?",
+          "q_en": "Who does Prince Philionel of Seyruun claim to be?",
+          "opts_ru": [
+            "Пацифист",
+            "Сторонник насилия",
+            "Вегетарианец"
+          ],
+          "opts_en": [
+            "Pacifist",
+            "Pro-violence",
+            "Vegetarian"
+          ],
+          "correct_ru": "Пацифист",
+          "correct_en": "Pacifist"
+        }
+      },
+      {
+        "ps1_index": 28,
+        "renpy_id": 21,
+        "font_size": "auto",
+        "q_line1": "Чем питается",
+        "q_line2": "древо Флагун?",
+        "opt1": "Священная сила",
+        "opt2": "Миазмы",
+        "opt3": "Живая кровь",
+        "correct": 1,
+        "original_jp": {
+          "q1": "神法陽フラグ-ンは何を吸って",
+          "q2": "成長している?",
+          "opt1": "法なる力",
+          "opt2": "沈気",
+          "opt3": "生き戦",
+          "comment": "#Q21 神聖樹フラグーンは何を吸って成長している?   1. 聖なる力     +2.瘴気   3. 生き血"
+        },
+        "renpy_source": {
+          "q_ru": "Чем питается священное древо Флагун?",
+          "q_en": "What does the sacred tree Flagoon feed on?",
+          "opts_ru": [
+            "Священная сила",
+            "Миазмы",
+            "Живая кровь"
+          ],
+          "opts_en": [
+            "Sacred power",
+            "Poisonous fumes",
+            "Living blood"
+          ],
+          "correct_ru": "Миазмы",
+          "correct_en": "Poisonous fumes"
+        }
+      },
+      {
+        "ps1_index": 29,
+        "renpy_id": 50,
+        "font_size": "auto",
+        "q_line1": "Какой меч добил",
+        "q_line2": "копию Резо?",
+        "opt1": "Меч Света",
+        "opt2": "Клинок Эльмеки",
+        "opt3": "Меч Благодати",
+        "correct": 2,
+        "original_jp": {
+          "q1": "コピ-レゾにとどめをさした剣の",
+          "q2": "名は?",
+          "opt1": "光の剣",
+          "opt2": "エルメキアmiddle-dotブレ-ド",
+          "opt3": "[03FD][03FE]の剣",
+          "comment": "#Q50 コピーレゾにとどめをさした剣の名は?     1.光の剣   2. エルメキア・ブレード   +3. 祝福の剣"
+        },
+        "renpy_source": {
+          "q_ru": "Какой клинок нанёс последний удар копии Резо?",
+          "q_en": "Which blade dealt the final blow to Rezo's copy?",
+          "opts_ru": [
+            "Меч Света",
+            "Эльмекийский клинок",
+            "Благословенный клинок"
+          ],
+          "opts_en": [
+            "Sword of Light",
+            "Elmekian Blade",
+            "Sword of Blessing"
+          ],
+          "correct_ru": "Благословенный клинок",
+          "correct_en": "Sword of Blessing"
+        }
+      },
+      {
+        "ps1_index": 30,
+        "renpy_id": 9,
+        "font_size": "auto",
+        "q_line1": "Профессия",
+        "q_line2": "Сильфиль?",
+        "opt1": "Жрица",
+        "opt2": "Мечница",
+        "opt3": "Некромант",
+        "correct": 0,
+        "original_jp": {
+          "q1": "シルフィ-ルの[0254]業は?",
+          "q2": "[0000]",
+          "opt1": "巫女",
+          "opt2": "剣士",
+          "opt3": "ネクロマンサ-",
+          "comment": "#Q9 シルフィールの職業は? +1.巫女   2.剣士    3. ネクロマンサー"
+        },
+        "renpy_source": {
+          "q_ru": "Кто по профессии Сильфиль?",
+          "q_en": "What is Sylphiel's profession?",
+          "opts_ru": [
+            "Жрица",
+            "Мечница",
+            "Некромант"
+          ],
+          "opts_en": [
+            "Priestess",
+            "Warrior",
+            "Necromancer"
+          ],
+          "correct_ru": "Жрица",
+          "correct_en": "Priestess"
+        }
+      },
+      {
+        "ps1_index": 31,
+        "renpy_id": 7,
+        "font_size": "auto",
+        "q_line1": "Кем был маг",
+        "q_line2": "Врумугун?",
+        "opt1": "Слуга демона",
+        "opt2": "Человек-копия",
+        "opt3": "Один из братьев",
+        "correct": 1,
+        "original_jp": {
+          "q1": "倒しても倒しても現れる魔道士",
+          "q2": "ヴルムグンの正体は?",
+          "opt1": "悪魔と[03F8]茶した魔道士",
+          "opt2": "コピ-人間",
+          "opt3": "兄弟の多い魔道士",
+          "comment": "#Q7 倒しても倒しても現れる魔道士ヴルムグンの正体は?    1. 悪魔と契約した魔道士   +2.コピー人間    3. 兄弟の多い魔道士"
+        },
+        "renpy_source": {
+          "q_ru": "Кем на самом деле был маг Врумугун, который появлялся вновь и вновь, сколько бы его ни побеждали?",
+          "q_en": "Who was the mage Vrumugun who kept appearing no matter how many times he was defeated?",
+          "opts_ru": [
+            "Маг, заключивший договор с демоном",
+            "Человек-копия",
+            "Маг, у которого было много братьев"
+          ],
+          "opts_en": [
+            "A mage who made a pact with a demon",
+            "A copy human",
+            "A mage with many brothers"
+          ],
+          "correct_ru": "Человек-копия",
+          "correct_en": "A copy human"
+        }
+      },
+      {
+        "ps1_index": 32,
+        "renpy_id": 64,
+        "font_size": "auto",
+        "q_line1": "Как Лина",
+        "q_line2": "называет Нагу?",
+        "opt1": "Чудо-колдунья",
+        "opt2": "Мой соперник",
+        "opt3": "Помёт рыбки",
+        "correct": 2,
+        "original_jp": {
+          "q1": "ナ-ガのことをリナはなんと",
+          "q2": "呼んでいる?",
+          "opt1": "天才美少女魔道士",
+          "opt2": "最大最強のライバル",
+          "opt3": "金魚のうんち",
+          "comment": "#Q64 ナーガのことをリナはなんと呼んでいる?    1.天才美少女魔道士      2.最大最強のライバル     +3. 金魚のうんち"
+        },
+        "renpy_source": {
+          "q_ru": "Как Лина называет Нагу?",
+          "q_en": "What does Lina call Naga?",
+          "opts_ru": [
+            "Гениальная красавица-волшебница",
+            "Величайшая и сильнейшая соперница",
+            "Помёт золотой рыбки"
+          ],
+          "opts_en": [
+            "Genius beautiful sorceress",
+            "Greatest and strongest rival",
+            "Goldfish poop"
+          ],
+          "correct_ru": "Помёт золотой рыбки",
+          "correct_en": "Goldfish poop"
+        }
+      },
+      {
+        "ps1_index": 33,
+        "renpy_id": 36,
+        "font_size": "auto",
+        "q_line1": "Химера Диола",
+        "q_line2": "по типу Лины?",
+        "opt1": "Лимера",
+        "opt2": "Линамера",
+        "opt3": "Линазавр",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナをベ-スに考えられていた",
+          "q2": "ディオル会心のキメラの名は?",
+          "opt1": "リメラ",
+          "opt2": "リナメラ",
+          "opt3": "リナザウラ-",
+          "comment": "#Q36 リナをベースに考えられていたディオル会心のキメラの名は?   +1.リメラ  2. リナメラ     3. リナザウラー"
+        },
+        "renpy_source": {
+          "q_ru": "Как Диол собирался назвать химеру, своё коронное творение, созданное по образцу Лины?",
+          "q_en": "What was Diol going to name the chimera created based on Lina?",
+          "opts_ru": [
+            "Лимера",
+            "Линамера",
+            "Линазавр"
+          ],
+          "opts_en": [
+            "Limer",
+            "Linamer",
+            "Linasaur"
+          ],
+          "correct_ru": "Лимера",
+          "correct_en": "Limer"
+        }
+      },
+      {
+        "ps1_index": 34,
+        "renpy_id": 3,
+        "font_size": "auto",
+        "q_line1": "Живой доспех с",
+        "q_line2": "душой девицы?",
+        "opt1": "Винни",
+        "opt2": "Натали",
+        "opt3": "Анис",
+        "correct": 1,
+        "original_jp": {
+          "q1": "情女の心を持つ動く報といえば?",
+          "q2": "[0000]",
+          "opt1": "ウィニ-",
+          "opt2": "ナタリ-",
+          "opt3": "アニス",
+          "comment": "#Q3 乙女の心を持つ動く鎧といえば? 1.ウィニー  +2. ナタリー    3. アニス"
+        },
+        "renpy_source": {
+          "q_ru": "Какие живые доспехи обладают девичьим сердцем?",
+          "q_en": "Which moving armor has a maiden's heart?",
+          "opts_ru": [
+            "Винни",
+            "Натали",
+            "Анис"
+          ],
+          "opts_en": [
+            "Winnie",
+            "Natalie",
+            "Anise"
+          ],
+          "correct_ru": "Натали",
+          "correct_en": "Natalie"
+        }
+      },
+      {
+        "ps1_index": 35,
+        "renpy_id": 58,
+        "font_size": "auto",
+        "q_line1": "Придворный маг,",
+        "q_line2": "бивший Лину?",
+        "opt1": "Сирена",
+        "opt2": "Фаранирамираж",
+        "opt3": "Розер Райман",
+        "correct": 2,
+        "original_jp": {
+          "q1": "人[03FA]壁裏団体に聞われてリナを",
+          "q2": "襲った元西役魔道士といえば?",
+          "opt1": "シレ-ネ=フィッツマイヤ-",
+          "opt2": "ファラ=ラミラ-ジュ",
+          "opt3": "ロ-ザ=ライマン",
+          "comment": "#Q58 人権擁護団体に雇われてリナを襲った元宮廷魔道士といえば? いえば?      1.シレーネ=フィッツマイヤー     2. ファラニラミラージュ       +3. ローザーライマン"
+        },
+        "renpy_source": {
+          "q_ru": "Назовите имя бывшего придворного мага, нанятого обществом защиты прав человека, чтобы напасть на Лину.",
+          "q_en": "Name the former court mage hired by the human rights protection society to attack Lina.",
+          "opts_ru": [
+            "Сирена Фитцмайер",
+            "Фаранирамираж",
+            "Розер Райман"
+          ],
+          "opts_en": [
+            "Sirena Fitzmeier",
+            "Faranira mirage",
+            "Roser Raiman"
+          ],
+          "correct_ru": "Розер Райман",
+          "correct_en": "Roser Raiman"
+        }
+      },
+      {
+        "ps1_index": 36,
+        "renpy_id": 67,
+        "font_size": "auto",
+        "q_line1": "Агент Рувина,",
+        "q_line2": "ведший Лину?",
+        "opt1": "Вайзер Фрейон",
+        "opt2": "Гайус Коудвэлл",
+        "opt3": "Джеффри",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナを利用したルヴィナガルドの",
+          "q2": "特別警備官といえば?",
+          "opt1": "ワイザ-=フレイオン",
+          "opt2": "ガイウス=コ-ドウェル",
+          "opt3": "ジェフリ-=メイルスタ-",
+          "comment": "#Q67 リナを利用したルヴィナガルドの特別捜査官といえば?      +1. ワイザー=フレイオン      2. ガイウス=コードウェル      3. ジェフリー=メイルスター"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из спецагентов Рувинагарда использовал Лину в своих целях?",
+          "q_en": "Which of Ruvinagard's special agents used Lina for their purposes?",
+          "opts_ru": [
+            "Вайзер Фрейон",
+            "Гайус Коудвэлл",
+            "Джеффри Мейлстер"
+          ],
+          "opts_en": [
+            "Wizer Freion",
+            "Gaius Cordwell",
+            "Jeffrey Meister"
+          ],
+          "correct_ru": "Вайзер Фрейон",
+          "correct_en": "Wizer Freion"
+        }
+      },
+      {
+        "ps1_index": 37,
+        "renpy_id": 35,
+        "font_size": "auto",
+        "q_line1": "Стрелы вампира",
+        "q_line2": "Штайндорфа:",
+        "opt1": "Тыква",
+        "opt2": "Морковка",
+        "opt3": "Огурец",
+        "correct": 1,
+        "original_jp": {
+          "q1": "吸戦[021F]シュタインドルフの放った",
+          "q2": "フレアmiddle-dotアロ-をたとえると?",
+          "opt1": "カボチャ",
+          "opt2": "ニンジン",
+          "opt3": "キュウリ",
+          "comment": "#Q35 吸血鬼シュタインドルフの放ったフレア・アローをたとえると?   1.カボチャ  +2. ニンジン    3. キュウリ"
+        },
+        "renpy_source": {
+          "q_ru": "С чем сравнивали Флеа Арроу, пущенные вампиром Штайндорфом?",
+          "q_en": "What were the 'Fire Arrows' shot by vampire Steinfield compared to?",
+          "opts_ru": [
+            "Тыква",
+            "Морковка",
+            "Огурец"
+          ],
+          "opts_en": [
+            "A pumpkin",
+            "A carrot",
+            "A cucumber"
+          ],
+          "correct_ru": "Морковка",
+          "correct_en": "A carrot"
+        }
+      },
+      {
+        "ps1_index": 38,
+        "renpy_id": 16,
+        "font_size": "auto",
+        "q_line1": "Облик пантеры",
+        "q_line2": "Зектара?",
+        "opt1": "Кламбе",
+        "opt2": "Герцог Турадия",
+        "opt3": "Герцог Фраон",
+        "correct": 2,
+        "original_jp": {
+          "q1": "黒葬人間ゼクタ-の人間の時の",
+          "q2": "儀は?",
+          "opt1": "クランベ",
+          "opt2": "トゥラ-ディア[03EE]",
+          "opt3": "フラオン[03EE]",
+          "comment": "#Q16 黒豹人間ゼクターの人間の時の姿は?   1. クランベ     2.トゥラーディア公  +3. フラオン公"
+        },
+        "renpy_source": {
+          "q_ru": "Как выглядит в человеческом обличье Зектар, человек-чёрная пантера?",
+          "q_en": "What does Zektar, the black panther person, look like in human form?",
+          "opts_ru": [
+            "Кламбе",
+            "Герцог Турадия",
+            "Герцог Фраон"
+          ],
+          "opts_en": [
+            "Clambe",
+            "Duke Turadia",
+            "Duke Fraon"
+          ],
+          "correct_ru": "Герцог Фраон",
+          "correct_en": "Duke Fraon"
+        }
+      },
+      {
+        "ps1_index": 39,
+        "renpy_id": 32,
+        "font_size": "auto",
+        "q_line1": "Трус на одной",
+        "q_line2": "ноге у гидры?",
+        "opt1": "Рауль Клементс",
+        "opt2": "Гарднер",
+        "opt3": "Гайус Кордвелл",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナと共にヒドラ[02C7]治に出かけた",
+          "q2": "根性なしの式目の戦士といえば?",
+          "opt1": "ラウル=クレメンツ",
+          "opt2": "ガ-ドナ-",
+          "opt3": "ガイウス=コ-ドウェル",
+          "comment": "#Q32 リナと共にヒドラ退治に出かけた根性なしの片目の戦士といえば?     +1. ラウル=クレメンツ   2. ガードナー    3. ガイウス=コードウェル"
+        },
+        "renpy_source": {
+          "q_ru": "Назовите имя одноногого воина-труса, который отправился с Линой сражаться с гидрой?",
+          "q_en": "Name the one-legged cowardly warrior who went with Lina to fight the hydra.",
+          "opts_ru": [
+            "Рауль Клементс",
+            "Гарднер",
+            "Гайус Кордвелл"
+          ],
+          "opts_en": [
+            "Raul Clements",
+            "Gardner",
+            "Gaius Cordwell"
+          ],
+          "correct_ru": "Рауль Клементс",
+          "correct_en": "Raul Clements"
+        }
+      },
+      {
+        "ps1_index": 40,
+        "renpy_id": 79,
+        "font_size": "auto",
+        "q_line1": "Кто убил отца",
+        "q_line2": "маньячки Реми?",
+        "opt1": "Лина",
+        "opt2": "Керн",
+        "opt3": "Саузенд",
+        "correct": 1,
+        "original_jp": {
+          "q1": "[03ED]物マニアのレミ-の父親を",
+          "q2": "殺した魔道士といえば?",
+          "opt1": "リナ",
+          "opt2": "ケルン",
+          "opt3": "サウザンド",
+          "comment": "#Q79 刃物マニアのレミーの父親を殺した魔道士といえば?   1. リナ   +2. ケルン     3. サウザンド"
+        },
+        "renpy_source": {
+          "q_ru": "Какой маг убил отца Реми, помешанной на острых предметах?",
+          "q_en": "Which mage killed Remy's father, the one obsessed with sharp objects?",
+          "opts_ru": [
+            "Лина",
+            "Керн",
+            "Саузенд"
+          ],
+          "opts_en": [
+            "Lina",
+            "Kern",
+            "Thousand"
+          ],
+          "correct_ru": "Керн",
+          "correct_en": "Kern"
+        }
+      },
+      {
+        "ps1_index": 41,
+        "renpy_id": 81,
+        "font_size": "auto",
+        "q_line1": "Заклинание Наги",
+        "q_line2": "против Бурея?",
+        "opt1": "Демона Кристал",
+        "opt2": "Вигас Гайя",
+        "opt3": "Хаос Стринг",
+        "correct": 2,
+        "original_jp": {
+          "q1": "暗殺者ブ-レイとその弟子を",
+          "q2": "倒したナ-ガの呪文は?",
+          "opt1": "デモナmiddle-dotクリスタル",
+          "opt2": "ヴィ-ガスガイア",
+          "opt3": "カオスmiddle-dotストリング",
+          "comment": "#Q81 暗殺者ブーレイとその弟子を倒したナーガの呪文は?   1. デモナ・クリスタル    2. ヴィーガスガイア     +3. カオス・ストリング"
+        },
+        "renpy_source": {
+          "q_ru": "С помощью какого заклинания Нага победила убийцу Бурея и его учеников?",
+          "q_en": "With which spell did Naga defeat the assassin Burei and his students?",
+          "opts_ru": [
+            "Демона Кристал",
+            "Вигас Гайя",
+            "Хаос Стринг"
+          ],
+          "opts_en": [
+            "Demonа Crystal",
+            "Veesgaia",
+            "Chaos String"
+          ],
+          "correct_ru": "Хаос Стринг",
+          "correct_en": "Chaos String"
+        }
+      },
+      {
+        "ps1_index": 42,
+        "renpy_id": 88,
+        "font_size": "auto",
+        "q_line1": "Что НЕ говорила",
+        "q_line2": "мать Илизы?",
+        "opt1": "Шиш поймаешь",
+        "opt2": "Покажи им ад",
+        "opt3": "Все средства!",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,イリ-ズの母親の",
+          "q2": "言葉でないものはどれ?",
+          "opt1": "ないソデは定れぬ",
+          "opt2": "はむかう奴にはぢごくを見せろ",
+          "opt3": "敵を倒すのに手段はえらぶな",
+          "comment": "#Q88 次のうち、イリーズの母親の言葉でないものはどれ?   +1. ないソデは振れぬ    2. はむかう奴にはぢごくを見せろ   3. 敵を倒すのに手段はえらぶな"
+        },
+        "renpy_source": {
+          "q_ru": "Какое изречение не принадлежит матери Илизы?",
+          "q_en": "Which saying does not belong to Iliza's mother?",
+          "opts_ru": [
+            "«Голыми руками шиша не ухватишь»",
+            "«Тому, кто перечит, покажи ад»",
+            "«В борьбе с врагом все средства хороши»"
+          ],
+          "opts_en": [
+            "'You can't grab a fig with bare hands'",
+            "'Show hell to those who contradict'",
+            "'All means are good in fighting an enemy'"
+          ],
+          "correct_ru": "«Голыми руками шиша не ухватишь»",
+          "correct_en": "'You can't grab a fig with bare hands'"
+        }
+      },
+      {
+        "ps1_index": 43,
+        "renpy_id": 93,
+        "font_size": "auto",
+        "q_line1": "Истинное лицо",
+        "q_line2": "ведьмы Мишель?",
+        "opt1": "Толстая тётка",
+        "opt2": "Красавица",
+        "opt3": "Монстр",
+        "correct": 0,
+        "original_jp": {
+          "q1": "ふくみ笑いが無気味な呪[0371]士,",
+          "q2": "ミシェ-ルの甘顔は?",
+          "opt1": "太ったおばさん",
+          "opt2": "かけ値なしの美少女",
+          "opt3": "魔族",
+          "comment": "#Q93 ふくみ笑いが無気味な呪術士、 ミシェールの素顔は?      1. 太ったおばさん  +2. かけ値なしの美少女   3.魔族"
+        },
+        "renpy_source": {
+          "q_ru": "Каково истинное лицо колдуньи Мишель, жутковато посмеивающейся исподтишка?",
+          "q_en": "What is the true face of the witch Michelle, who chuckles eerily from the shadows?",
+          "opts_ru": [
+            "Толстая тётка",
+            "Бесспорная красавица",
+            "Монстр"
+          ],
+          "opts_en": [
+            "Fat lady",
+            "Undisputed beauty",
+            "Monster"
+          ],
+          "correct_ru": "Толстая тётка",
+          "correct_en": "Fat lady"
+        }
+      },
+      {
+        "ps1_index": 44,
+        "renpy_id": 97,
+        "font_size": "auto",
+        "q_line1": "Истинная суть",
+        "q_line2": "Зеллоса?",
+        "opt1": "Дракон",
+        "opt2": "Божество",
+        "opt3": "Демон",
+        "correct": 2,
+        "original_jp": {
+          "q1": "[01FA]の神官,ゼロスの正体は?",
+          "q2": "[0000]",
+          "opt1": "[03DA]族",
+          "opt2": "神族",
+          "opt3": "魔族",
+          "comment": "#Q97 謎の神官、ゼロスの正体は?      1.竜族    2.神族    +3.魔族"
+        },
+        "renpy_source": {
+          "q_ru": "Кем на самом деле является таинственный священник Зеллос?",
+          "q_en": "Who is the mysterious priest Xellos really?",
+          "opts_ru": [
+            "Дракон",
+            "Божество",
+            "Демон"
+          ],
+          "opts_en": [
+            "Dragon",
+            "Deity",
+            "Demon"
+          ],
+          "correct_ru": "Демон",
+          "correct_en": "Demon"
+        }
+      },
+      {
+        "ps1_index": 45,
+        "renpy_id": 4,
+        "font_size": "auto",
+        "q_line1": "Стиль одежды",
+        "q_line2": "дизайнера Тани?",
+        "opt1": "Формальный",
+        "opt2": "Неформальный",
+        "opt3": "Без разницы",
+        "correct": 0,
+        "original_jp": {
+          "q1": "ファッションmiddle-dotデザイナ-,",
+          "q2": "タチアナの支持するスタイルは?",
+          "opt1": "フォ-マル",
+          "opt2": "アンフォ-マル",
+          "opt3": "特になし",
+          "comment": "#Q4 ファッション・デザイナー、タチアナの支持するスタイルは?    +1.フォーマル    2.アンフォーマル   3. 特になし"
+        },
+        "renpy_source": {
+          "q_ru": "Какому стилю в одежде отдаёт предпочтение модельер Татьяна?",
+          "q_en": "What style of clothing does designer Tatiana prefer?",
+          "opts_ru": [
+            "Формальный",
+            "Неформальный",
+            "Нет предпочтений"
+          ],
+          "opts_en": [
+            "Formal",
+            "Informal",
+            "None particular"
+          ],
+          "correct_ru": "Формальный",
+          "correct_en": "Formal"
+        }
+      },
+      {
+        "ps1_index": 46,
+        "renpy_id": 73,
+        "font_size": "auto",
+        "q_line1": "Родня Сильфиль",
+        "q_line2": "в Сейруне?",
+        "opt1": "Ланц",
+        "opt2": "Грэй",
+        "opt3": "Родд",
+        "correct": 1,
+        "original_jp": {
+          "q1": "セイル-ンで神官と魔法状を営む",
+          "q2": "シルフィ-ルの親類の名は?",
+          "opt1": "ランツ",
+          "opt2": "グレイ",
+          "opt3": "ロッド",
+          "comment": "#Q73 セイルーンで神官と魔法医を営むシルフィールの親類の名は?   1. ランツ      +2. グレイ     3.ロッド"
+        },
+        "renpy_source": {
+          "q_ru": "Как зовут родственника Сильфиль, который в Сейруне служит священником и целителем?",
+          "q_en": "What is the name of Sylphiel's relative who serves as a priest and healer in Seyruun?",
+          "opts_ru": [
+            "Ланц",
+            "Грэй",
+            "Родд"
+          ],
+          "opts_en": [
+            "Lantz",
+            "Gray",
+            "Rodd"
+          ],
+          "correct_ru": "Грэй",
+          "correct_en": "Gray"
+        }
+      },
+      {
+        "ps1_index": 47,
+        "renpy_id": 2,
+        "font_size": "auto",
+        "q_line1": "Кто барьером",
+        "q_line2": "запер Лину?",
+        "opt1": "Канзель",
+        "opt2": "Сейграм",
+        "opt3": "Мазенда",
+        "correct": 2,
+        "original_jp": {
+          "q1": "結界[0371]でリナの呪文を封じた",
+          "q2": "魔族の名は?",
+          "opt1": "カンヅェル",
+          "opt2": "セイグラム",
+          "opt3": "マゼンダ",
+          "comment": "#Q2 結界術でリナの呪文を封じた魔族の名は?     1. カンヅェル    2. セイグラム    +3. マゼンダー"
+        },
+        "renpy_source": {
+          "q_ru": "Как зовут демона, который запечатал магию Лины?",
+          "q_en": "What is the name of the monster that sealed Lina's spells with a magical barrier?",
+          "opts_ru": [
+            "Канзель",
+            "Сейграм",
+            "Мазенда"
+          ],
+          "opts_en": [
+            "Kanzel",
+            "Seigram",
+            "Mazenda"
+          ],
+          "correct_ru": "Мазенда",
+          "correct_en": "Mazenda"
+        }
+      },
+      {
+        "ps1_index": 48,
+        "renpy_id": 8,
+        "font_size": "auto",
+        "q_line1": "Демон, ставший",
+        "q_line2": "частью Зуумы?",
+        "opt1": "Сейграм",
+        "opt2": "Дюглд",
+        "opt3": "Горуас",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナを倒すため,暗殺者ズ-マと",
+          "q2": "同化した魔族の名は?",
+          "opt1": "セイグラム",
+          "opt2": "デュグルド",
+          "opt3": "ゴルアス",
+          "comment": "#Q8 リナを倒すため、暗殺者ズーマと同化した魔族の名は?   +1.セイグラム    2. デュグルド    3. ゴルアス"
+        },
+        "renpy_source": {
+          "q_ru": "Как звали демона, который слился с убийцей Зуумой, дабы одолеть Лину?",
+          "q_en": "What was the name of the demon that merged with assassin Zuma to defeat Lina?",
+          "opts_ru": [
+            "Сейграм",
+            "Дюглд",
+            "Горуас"
+          ],
+          "opts_en": [
+            "Seigram",
+            "Dugold",
+            "Goruas"
+          ],
+          "correct_ru": "Сейграм",
+          "correct_en": "Seigram"
+        }
+      },
+      {
+        "ps1_index": 49,
+        "renpy_id": 37,
+        "font_size": "auto",
+        "q_line1": "Где хранилась",
+        "q_line2": "Клеа-Байбл?",
+        "opt1": "Город Атлас",
+        "opt2": "Драконий Пик",
+        "opt3": "Город Сейрун",
+        "correct": 1,
+        "original_jp": {
+          "q1": "伝説の魔道書クレアバイブルの",
+          "q2": "[0289]されていた場所は?",
+          "opt1": "アトラスmiddle-dotシティ",
+          "opt2": "ドラゴンズmiddle-dotピ-ク",
+          "opt3": "セイル-ンmiddle-dotシティ",
+          "comment": "#Q37 伝説の魔道書クレアバイブルの隠されていた場所は?   1. アトラス・シティ     +2. ドラゴンズ・ピーク   3. セイルーン・シティ"
+        },
+        "renpy_source": {
+          "q_ru": "Где была сокрыта легендарная магическая книга Пречистая Библия?",
+          "q_en": "Where was the legendary magic book 'Clair Bible' hidden?",
+          "opts_ru": [
+            "Город Атлас",
+            "Драконий Пик",
+            "Город Сейрун"
+          ],
+          "opts_en": [
+            "In the city of Atlas",
+            "On Dragon Peak",
+            "In the city of Seyruun"
+          ],
+          "correct_ru": "Драконий Пик",
+          "correct_en": "On Dragon Peak"
+        }
+      },
+      {
+        "ps1_index": 50,
+        "renpy_id": 53,
+        "font_size": "auto",
+        "q_line1": "Чем Эрис",
+        "q_line2": "подчиняла люд?",
+        "opt1": "Зелья",
+        "opt2": "Нити",
+        "opt3": "Рубины",
+        "correct": 2,
+        "original_jp": {
+          "q1": "赤法師レゾの助手,エリシエルが",
+          "q2": "人を操るのに使ったものは?",
+          "opt1": "薬",
+          "opt2": "況",
+          "opt3": "ルビ-",
+          "comment": "#Q53 赤法師レゾの助手、エリシエルが人を操るのに使ったものは?   1.薬     2.糸     +3. ルビー"
+        },
+        "renpy_source": {
+          "q_ru": "С помощью чего Эрис, помощница Красного Священника Резо, управляла людьми?",
+          "q_en": "How did Elisiel, Red Priest Rezo's assistant, control people?",
+          "opts_ru": [
+            "Зелья",
+            "Нити",
+            "Рубины"
+          ],
+          "opts_en": [
+            "Potion",
+            "Threads",
+            "Ruby"
+          ],
+          "correct_ru": "Рубины",
+          "correct_en": "Ruby"
+        }
+      },
+      {
+        "ps1_index": 51,
+        "renpy_id": 86,
+        "font_size": "auto",
+        "q_line1": "Пик атаки в",
+        "q_line2": "астрале?",
+        "opt1": "Ра Тилт",
+        "opt2": "Брам Гаш",
+        "opt3": "Эльмекия Ланс",
+        "correct": 0,
+        "original_jp": {
+          "q1": "精[036E]魔[0371]で最強の攻撃呪文と",
+          "q2": "いえば?",
+          "opt1": "ラmiddle-dotティルト",
+          "opt2": "ブラムmiddle-dotガッシュ",
+          "opt3": "エルメキアmiddle-dotランス",
+          "comment": "#Q86 精霊魔術で最強の攻撃呪文といえば?  +1. ラ・ティルト・     2.ブラム・ガッシュ      3. エルメキア・ランス"
+        },
+        "renpy_source": {
+          "q_ru": "Какое заклинание считается сильнейшим атакующим в астральной магии?",
+          "q_en": "Which spell is considered the strongest attack in astral magic?",
+          "opts_ru": [
+            "Ра Тилт",
+            "Брам Гаш",
+            "Эльмекия Ланс"
+          ],
+          "opts_en": [
+            "Ra Tilt",
+            "Bram Gash",
+            "Elmekia Lance"
+          ],
+          "correct_ru": "Ра Тилт",
+          "correct_en": "Ra Tilt"
+        }
+      },
+      {
+        "ps1_index": 52,
+        "renpy_id": 87,
+        "font_size": "auto",
+        "q_line1": "Кто создал",
+        "q_line2": "Зеркало Теней?",
+        "opt1": "Руо Грэон",
+        "opt2": "Шазард Руганди",
+        "opt3": "Лей Магнус",
+        "correct": 1,
+        "original_jp": {
+          "q1": "[03F2]の[03F3]を作り出した伝説の魔道士",
+          "q2": "といえば?",
+          "opt1": "ルオ=グラオン",
+          "opt2": "シャザ-ド=ルガンディ",
+          "opt3": "レイ=マグナス",
+          "comment": "#Q87 影の鏡を作り出した伝説の魔道士といえば?   1.ルオ=グラオン   +2. シャザード=ルガンディ     3. レイ=マグナス"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из легендарных магов создал Зеркало Теней?",
+          "q_en": "Which legendary mage created the Mirror of Shadows?",
+          "opts_ru": [
+            "Руо Грэон",
+            "Шазард Руганди",
+            "Лей Магнус"
+          ],
+          "opts_en": [
+            "Ruo Greon",
+            "Shazard Rugandi",
+            "Ley Magnus"
+          ],
+          "correct_ru": "Шазард Руганди",
+          "correct_en": "Shazard Rugandi"
+        }
+      },
+      {
+        "ps1_index": 53,
+        "renpy_id": 66,
+        "font_size": "auto",
+        "q_line1": "Чего боится",
+        "q_line2": "Нага?",
+        "opt1": "Деньги",
+        "opt2": "Медузы",
+        "opt3": "Кровь",
+        "correct": 2,
+        "original_jp": {
+          "q1": "次のうち,ナ-ガの苦手なものは",
+          "q2": "どれ?",
+          "opt1": "お金",
+          "opt2": "クラゲ",
+          "opt3": "戦",
+          "comment": "#Q66 次のうち、ナーガの苦手なものはどれ?     1. お金       2. クラゲ      +3.血"
+        },
+        "renpy_source": {
+          "q_ru": "Чего боится Нага?",
+          "q_en": "What is Naga afraid of?",
+          "opts_ru": [
+            "Деньги",
+            "Медузы",
+            "Кровь"
+          ],
+          "opts_en": [
+            "Money",
+            "Jellyfish",
+            "Blood"
+          ],
+          "correct_ru": "Кровь",
+          "correct_en": "Blood"
+        }
+      },
+      {
+        "ps1_index": 54,
+        "renpy_id": 59,
+        "font_size": "auto",
+        "q_line1": "Кто из демонов",
+        "q_line2": "сильнейший?",
+        "opt1": "Жрец Зеллос",
+        "opt2": "Жрец Ралтарк",
+        "opt3": "Генерал Рашат",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,もっとも力の強い",
+          "q2": "魔族はどれ?",
+          "opt1": "[03E6]神官ゼロス",
+          "opt2": "[03DA]神官ラルタ-ク",
+          "opt3": "[03DA][0128]他ラ-シャ-ト",
+          "comment": "#Q59 次のうち、もっとも力の強い魔族はどれ?    +1.獣神官ゼロス   2. 竜神官ラルターク     3. 竜将軍ラーシャート"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из перечисленных демонов обладает наибольшей мощью?",
+          "q_en": "Which of the following monsters has the greatest power?",
+          "opts_ru": [
+            "Священник Зверя Зеллос",
+            "Священник Демона-Дракона Ралтарк",
+            "Генерал Демона-Дракона Рашат"
+          ],
+          "opts_en": [
+            "Beast Priest Xellos",
+            "Dragon Priest Raltark",
+            "Dragon General Rashart"
+          ],
+          "correct_ru": "Священник Зверя Зеллос",
+          "correct_en": "Beast Priest Xellos"
+        }
+      },
+      {
+        "ps1_index": 55,
+        "renpy_id": 38,
+        "font_size": "auto",
+        "q_line1": "Комплекс Лины",
+        "q_line2": "в своём теле?",
+        "opt1": "Волосы",
+        "opt2": "Грудь",
+        "opt3": "Ноги",
+        "correct": 1,
+        "original_jp": {
+          "q1": "リナが自分の体の中で,もっとも",
+          "q2": "気にしているところは?",
+          "opt1": "髪",
+          "opt2": "胸",
+          "opt3": "足",
+          "comment": "#Q38 リナが自分の体の中で、もっとも気にしているところは?     1.髪     +2.胸    3.足"
+        },
+        "renpy_source": {
+          "q_ru": "Какая часть собственного тела больше всего беспокоит Лину?",
+          "q_en": "Which part of her body bothers Lina the most?",
+          "opts_ru": [
+            "Волосы",
+            "Грудь",
+            "Ноги"
+          ],
+          "opts_en": [
+            "Hair",
+            "Chest",
+            "Legs"
+          ],
+          "correct_ru": "Грудь",
+          "correct_en": "Chest"
+        }
+      },
+      {
+        "ps1_index": 56,
+        "renpy_id": 28,
+        "font_size": "auto",
+        "q_line1": "Зверолюд —",
+        "q_line2": "питомец сестры?",
+        "opt1": "Горуас",
+        "opt2": "Ведур",
+        "opt3": "Дилгир",
+        "correct": 2,
+        "original_jp": {
+          "q1": "リナの[03F9]里の[03EF]ちゃんにペットと",
+          "q2": "して[0148]われた[03E6]人の名は?",
+          "opt1": "ゴルアス",
+          "opt2": "ヴェドゥル",
+          "opt3": "ディルギア",
+          "comment": "#Q28 リナの郷里の姉ちゃんにペットとして拾われた獣人の名は?     1. ゴルアス     2. ヴェドゥル    +3. ディルギア"
+        },
+        "renpy_source": {
+          "q_ru": "Как звали зверочеловека, которого подобрала как питомца старшая сестра из родного города Лины?",
+          "q_en": "What was the name of the beastman that Lina's older sister from her hometown took in as a pet?",
+          "opts_ru": [
+            "Горуас",
+            "Ведур",
+            "Дилгир"
+          ],
+          "opts_en": [
+            "Goruas",
+            "Vedur",
+            "Dilgir"
+          ],
+          "correct_ru": "Дилгир",
+          "correct_en": "Dilgir"
+        }
+      },
+      {
+        "ps1_index": 57,
+        "renpy_id": 90,
+        "font_size": "auto",
+        "q_line1": "Доспехи химеры",
+        "q_line2": "Дюклиса?",
+        "opt1": "Занаффар",
+        "opt2": "Вальмашид",
+        "opt3": "Блейдхаут",
+        "correct": 0,
+        "original_jp": {
+          "q1": "虎と人間のキメラ,デュクリスの",
+          "q2": "身につけていた報の名は?",
+          "opt1": "ザナッファ-",
+          "opt2": "ヴァルマシ-ド",
+          "opt3": "ブレ-ドハウト",
+          "comment": "#Q90 虎と人間のキメラ、デュクリスの身につけていた鎧の名は?    +1. ザナッファー      2. ヴァルマシード      3. ブレードハウト"
+        },
+        "renpy_source": {
+          "q_ru": "Как назывались доспехи, в которые был облачен химера Дюклис (помесь тигра и человека)?",
+          "q_en": "What were the armor that the chimera Duclis (tiger-human hybrid) was clad in called?",
+          "opts_ru": [
+            "Занаффар",
+            "Вальмашид",
+            "Блейдхаут"
+          ],
+          "opts_en": [
+            "Zanaffar",
+            "Valmashid",
+            "Bladehout"
+          ],
+          "correct_ru": "Занаффар",
+          "correct_en": "Zanaffar"
+        }
+      },
+      {
+        "ps1_index": 58,
+        "renpy_id": 75,
+        "font_size": "auto",
+        "q_line1": "Правая часть",
+        "q_line2": "лица Визеа?",
+        "opt1": "Каменная маска",
+        "opt2": "Кусок мяса",
+        "opt3": "Курица",
+        "correct": 1,
+        "original_jp": {
+          "q1": "顔の左半分はハンサムな魔族",
+          "q2": "ヴィゼア,右半分は?",
+          "opt1": "石の仮面",
+          "opt2": "肉のかたまり",
+          "opt3": "ニワトリ",
+          "comment": "#Q75 顔の左半分はハンサムな魔族ヴィゼア、右半分は?    1.石の仮面      +2. 肉のかたまり      3. ニワトリ"
+        },
+        "renpy_source": {
+          "q_ru": "Левая половина лица монстра Визеа — красивая. А какая правая?",
+          "q_en": "The left half of demon Vizea's face is beautiful. What is the right half like?",
+          "opts_ru": [
+            "Каменная маска",
+            "Кусок мяса",
+            "Курица"
+          ],
+          "opts_en": [
+            "Stone mask",
+            "Piece of meat",
+            "Chicken"
+          ],
+          "correct_ru": "Кусок мяса",
+          "correct_en": "Piece of meat"
+        }
+      },
+      {
+        "ps1_index": 59,
+        "renpy_id": 1,
+        "font_size": "auto",
+        "q_line1": "Как выглядит",
+        "q_line2": "химера Ведур?",
+        "opt1": "Леопард",
+        "opt2": "Паук",
+        "opt3": "Ящерица",
+        "correct": 2,
+        "original_jp": {
+          "q1": "キメラのヴェドルはどんな儀を",
+          "q2": "している?",
+          "opt1": "葬",
+          "opt2": "クモ",
+          "opt3": "トカゲ",
+          "comment": "#Q1 キメラのヴェドルはどんな姿をしている?     1.豹     2.クモ\t+3. トカゲ"
+        },
+        "renpy_source": {
+          "q_ru": "Как выглядит химера Ведур?",
+          "q_en": "What does Vedor's chimera look like?",
+          "opts_ru": [
+            "Леопард",
+            "Паук",
+            "Ящерица"
+          ],
+          "opts_en": [
+            "Leopard",
+            "Spider",
+            "Lizard"
+          ],
+          "correct_ru": "Ящерица",
+          "correct_en": "Lizard"
+        }
+      },
+      {
+        "ps1_index": 60,
+        "renpy_id": 26,
+        "font_size": "auto",
+        "q_line1": "Смысл наряда",
+        "q_line2": "Наги?",
+        "opt1": "Память о матери",
+        "opt2": "Память об отце",
+        "opt3": "Дар любимого",
+        "correct": 0,
+        "original_jp": {
+          "q1": "ナ-ガの服装には本人のセンス",
+          "q2": "以外にどういった意味がある?",
+          "opt1": "母の形見",
+          "opt2": "父の形見",
+          "opt3": "音人のプレゼント",
+          "comment": "#Q26 ナーガの服装には本人のセンス以外にどういった意味がある?   +1.母の形見     2.父の形見  3. 恋人のプレゼント"
+        },
+        "renpy_source": {
+          "q_ru": "Что, помимо собственного вкуса, определяет выбор наряда Наги?",
+          "q_en": "What, besides her own taste, determines Naga's choice of outfit?",
+          "opts_ru": [
+            "Память о матери",
+            "Память об отце",
+            "Подарок возлюбленного"
+          ],
+          "opts_en": [
+            "Memory of her mother",
+            "Memory of her father",
+            "A lover's gift"
+          ],
+          "correct_ru": "Память о матери",
+          "correct_en": "Memory of her mother"
+        }
+      },
+      {
+        "ps1_index": 61,
+        "renpy_id": 70,
+        "font_size": "auto",
+        "q_line1": "Кто уничтожил",
+        "q_line2": "Фибризо?",
+        "opt1": "Шабранигдо",
+        "opt2": "Лорд Кошмаров",
+        "opt3": "Аквалорд",
+        "correct": 1,
+        "original_jp": {
+          "q1": "待王フィブリゾを滅ぼした",
+          "q2": "相手は?",
+          "opt1": "赤[03A7]の魔王",
+          "opt2": "金色の魔王",
+          "opt3": "水[03DA]王",
+          "comment": "#Q70 冥王フィブリゾを滅ぼした相手は?   1.赤眼の魔王     +2.金色の魔王    3.水竜王"
+        },
+        "renpy_source": {
+          "q_ru": "Кто уничтожил Владыку Ада Фибризо?",
+          "q_en": "Who destroyed the Lord of Hell, Fibrizo?",
+          "opts_ru": [
+            "Рубиноокий Повелитель Тьмы",
+            "Золотой Повелитель Тьмы",
+            "Водный Король-Дракон"
+          ],
+          "opts_en": [
+            "Red-Eyed Demon Lord",
+            "Golden Demon Lord",
+            "Water Dragon Queen"
+          ],
+          "correct_ru": "Золотой Повелитель Тьмы",
+          "correct_en": "Golden Demon Lord"
+        }
+      },
+      {
+        "ps1_index": 62,
+        "renpy_id": 96,
+        "font_size": "auto",
+        "q_line1": "Обычный облик",
+        "q_line2": "демона Дулгофа?",
+        "opt1": "Курица",
+        "opt2": "Тотемный столб",
+        "opt3": "Меч",
+        "correct": 2,
+        "original_jp": {
+          "q1": "魔族ドゥ-ルゴ-ファの普段の",
+          "q2": "儀は?",
+          "opt1": "ニワトリ",
+          "opt2": "ト-テムポ-ル",
+          "opt3": "剣",
+          "comment": "#Q96 魔族ドゥールゴーファの普段の姿は?      1. ニワトリ     2.トーテムポール   +3.剣"
+        },
+        "renpy_source": {
+          "q_ru": "В каком обличье обычно пребывает демон Дулгофа?",
+          "q_en": "What form does the demon Dulgof usually take?",
+          "opts_ru": [
+            "Курица",
+            "Тотемный столб",
+            "Меч"
+          ],
+          "opts_en": [
+            "Chicken",
+            "Totem pole",
+            "Sword"
+          ],
+          "correct_ru": "Меч",
+          "correct_en": "Sword"
+        }
+      },
+      {
+        "ps1_index": 63,
+        "renpy_id": 25,
+        "font_size": "auto",
+        "q_line1": "Напиток из книг",
+        "q_line2": "по «Рубакам»?",
+        "opt1": "Сакэ «Урарён»",
+        "opt2": "Пиво «Панон»",
+        "opt3": "Вино «Ромаль»",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,スレイヤ-ズの小説に",
+          "q2": "行場したことのあるお酒は?",
+          "opt1": "名酒うらりょん",
+          "opt2": "パノンmiddle-dotビ-ル",
+          "opt3": "ロマ-ルワイン",
+          "comment": "#Q25 次のうち、スレイヤーズの小説に登場したことのあるお酒は?   +1. 名酒うらりょん     2.パノン・ビール   3.ロマールワイン"
+        },
+        "renpy_source": {
+          "q_ru": "Какой напиток упоминался в новеллах по Рубакам?",
+          "q_en": "What drink was mentioned in the Slayers novels?",
+          "opts_ru": [
+            "Знаменитое сакэ «Урарён»",
+            "Пиво «Панон»",
+            "Вино «Ромаль»"
+          ],
+          "opts_en": [
+            "Famous sake 'Uraryon'",
+            "Beer 'Panon'",
+            "Wine 'Romal'"
+          ],
+          "correct_ru": "Знаменитое сакэ «Урарён»",
+          "correct_en": "Famous sake 'Uraryon'"
+        }
+      },
+      {
+        "ps1_index": 64,
+        "renpy_id": 13,
+        "font_size": "auto",
+        "q_line1": "Куда вернулся",
+        "q_line2": "Красный Дракон?",
+        "opt1": "Древо Флагун",
+        "opt2": "Океан Хаоса",
+        "opt3": "Драконий Пик",
+        "correct": 1,
+        "original_jp": {
+          "q1": "4つの分身を残した赤の[03DA]神は,",
+          "q2": "どこへ帰っていった?",
+          "opt1": "神法陽フラグ-ン",
+          "opt2": "混Aの海",
+          "opt3": "ドラゴンズmiddle-dotピ-ク",
+          "comment": "#Q13 4つの分身を残した赤の竜神は、 どこへ帰っていった?  1. 神聖樹フラグーン     +2.混沌の海     3. ドラゴンズ・ピーク"
+        },
+        "renpy_source": {
+          "q_ru": "Куда возвратился Красный Бог-Дракон, оставив после себя четыре воплощения?",
+          "q_en": "Where did the Red Divine Dragon return to, leaving behind four beasts?",
+          "opts_ru": [
+            "Священное древо Флагун",
+            "Океан Хаоса",
+            "Драконий Пик"
+          ],
+          "opts_en": [
+            "To the sacred tree Flagoon",
+            "To the Sea of Chaos",
+            "To Dragon Peak"
+          ],
+          "correct_ru": "Океан Хаоса",
+          "correct_en": "To the Sea of Chaos"
+        }
+      },
+      {
+        "ps1_index": 65,
+        "renpy_id": 30,
+        "font_size": "auto",
+        "q_line1": "Банда, разбитая",
+        "q_line2": "Линой и Еленой?",
+        "opt1": "Чёрный Дракон",
+        "opt2": "Хеллмастер",
+        "opt3": "Чёрный Волк",
+        "correct": 2,
+        "original_jp": {
+          "q1": "剣士エレナがリナと共に壊滅",
+          "q2": "させた盗賊団の名は?",
+          "opt1": "ブラックmiddle-dotドラゴン",
+          "opt2": "ヘルマスタ-",
+          "opt3": "ダ-クmiddle-dotウルフ",
+          "comment": "#Q30 剣士エレナがリナと共に壊滅させた盗賊団の名は?    1.ブラック・ドラゴン     2. ヘルマスター   +3. ダーク・ウルフ"
+        },
+        "renpy_source": {
+          "q_ru": "Как называлась шайка разбойников, которую вместе с Линой уничтожила воительница Елена?",
+          "q_en": "What was the band of bandits that warrior Elena destroyed together with Lina?",
+          "opts_ru": [
+            "Чёрный Дракон",
+            "Хеллмастер",
+            "Чёрный Волк"
+          ],
+          "opts_en": [
+            "Black Dragon",
+            "Hellmaster",
+            "Dark Wolf"
+          ],
+          "correct_ru": "Чёрный Волк",
+          "correct_en": "Dark Wolf"
+        }
+      },
+      {
+        "ps1_index": 66,
+        "renpy_id": 33,
+        "font_size": "auto",
+        "q_line1": "Жрица с жутким",
+        "q_line2": "дневником?",
+        "opt1": "Миина",
+        "opt2": "Клэр",
+        "opt3": "Сэмми",
+        "correct": 0,
+        "original_jp": {
+          "q1": "おそろしい内容の絵日記をつけて",
+          "q2": "いる神官の少女といえば?",
+          "opt1": "ミ-ナ",
+          "opt2": "クレア",
+          "opt3": "サミ-",
+          "comment": "#Q33 おそろしい内容の絵日記をつけている神官の少女といえば?     +1.ミーナ      2. クレア      3. サミー"
+        },
+        "renpy_source": {
+          "q_ru": "Какая священица ведёт дневник с ужасающими картинками?",
+          "q_en": "Which priestess keeps a diary with terrifying pictures?",
+          "opts_ru": [
+            "Миина",
+            "Клэр",
+            "Сэмми"
+          ],
+          "opts_en": [
+            "Mina",
+            "Claire",
+            "Sammy"
+          ],
+          "correct_ru": "Миина",
+          "correct_en": "Mina"
+        }
+      },
+      {
+        "ps1_index": 67,
+        "renpy_id": 43,
+        "font_size": "auto",
+        "q_line1": "Кто путает себя",
+        "q_line2": "со славой Лины?",
+        "opt1": "Кэролайн",
+        "opt2": "Рина Сэмберс",
+        "opt3": "Марти Рэнфорд",
+        "correct": 1,
+        "original_jp": {
+          "q1": "リナのうわさを自分のことだと",
+          "q2": "今違いしている魔道士といえば?",
+          "opt1": "キャロライン",
+          "opt2": "リイナ=サンバ-ス",
+          "opt3": "マ-ティ-=レンフォ-ド",
+          "comment": "#Q43 リナのうわさを自分のことだと勘違いしている魔道士といえば?  1. キャロライン   +2. リイナ=サンバース   3. マーティー=レンフォード"
+        },
+        "renpy_source": {
+          "q_ru": "Какой маг по ошибке принимает слухи о Лине на свой счёт?",
+          "q_en": "Which mage mistakenly takes rumors about Lina personally?",
+          "opts_ru": [
+            "Кэролайн",
+            "Рина Сэмберс",
+            "Марти Рэнфорд"
+          ],
+          "opts_en": [
+            "Caroline",
+            "Rina Sambers",
+            "Marty Ranford"
+          ],
+          "correct_ru": "Рина Сэмберс",
+          "correct_en": "Rina Sambers"
+        }
+      },
+      {
+        "ps1_index": 68,
+        "renpy_id": 27,
+        "font_size": "auto",
+        "q_line1": "Дань дракону",
+        "q_line2": "в г. Илии?",
+        "opt1": "Золото и клады",
+        "opt2": "Вино и девы",
+        "opt3": "Капуста и мясо",
+        "correct": 2,
+        "original_jp": {
+          "q1": "意地取い町人,イリ-アの町では",
+          "q2": "黒[03DA]に何を要求されていた?",
+          "opt1": "金貨と宝石",
+          "opt2": "お酒と若い娘",
+          "opt3": "キャベツとブタ肉コマ切れ",
+          "comment": "#Q27 意地汚い町人、イリーアの町では黒竜に何を要求されていた?   1. 金貨と宝石    2. お酒と若い娘   +3. キャベツとブタ肉コマ切れ"
+        },
+        "renpy_source": {
+          "q_ru": "Чего требовал чёрный дракон от жадных горожан в городе Илии?",
+          "q_en": "What did the black dragon demand from the greedy citizens in the city of Ilia?",
+          "opts_ru": [
+            "Золотые монеты и драгоценные камни",
+            "Вина и молодые девушки",
+            "Капуста и свиная нарезка"
+          ],
+          "opts_en": [
+            "Gold coins and jewels",
+            "Wine and young maidens",
+            "Cabbage and pork slices"
+          ],
+          "correct_ru": "Капуста и свиная нарезка",
+          "correct_en": "Cabbage and pork slices"
+        }
+      },
+      {
+        "ps1_index": 69,
+        "renpy_id": 49,
+        "font_size": "auto",
+        "q_line1": "Секрет матери-",
+        "q_line2": "эльфийки?",
+        "opt1": "Скрывала года",
+        "opt2": "Иноверка",
+        "opt3": "Любит клинки",
+        "correct": 0,
+        "original_jp": {
+          "q1": "エルフの母親,シャ-リ-ンには",
+          "q2": "どんな秘密があった?",
+          "opt1": "若ボケ",
+          "opt2": "[03EC]教俺",
+          "opt3": "[03ED]物マニア",
+          "comment": "#Q49 エルフの母親、シャーリーンにはどんな秘密があった?  +1.若ポケ      2.異教徒   3. 刃物マニア"
+        },
+        "renpy_source": {
+          "q_ru": "Какой секрет был у Шарлин, матери-эльфийки?",
+          "q_en": "What secret did Charlene, the elf mother, have?",
+          "opts_ru": [
+            "Она притворялась молодой",
+            "Она была иноверкой",
+            "Она была помешана на острых предметах"
+          ],
+          "opts_en": [
+            "She pretended to be young",
+            "She was a heretic",
+            "She was obsessed with sharp objects"
+          ],
+          "correct_ru": "Она притворялась молодой",
+          "correct_en": "She pretended to be young"
+        }
+      },
+      {
+        "ps1_index": 70,
+        "renpy_id": 18,
+        "font_size": "auto",
+        "q_line1": "Орден хилого",
+        "q_line2": "Джеффри?",
+        "opt1": "Вечное Пламя",
+        "opt2": "Золотое Пламя",
+        "opt3": "Чёрное Пламя",
+        "correct": 1,
+        "original_jp": {
+          "q1": "ひ商な[03FC]士,ジェフリ-の聞った",
+          "q2": "ひ商な私設[03FC]士団の名は?",
+          "opt1": "急遠の炎の[03FC]士団",
+          "opt2": "止金の炎の[03FC]士団",
+          "opt3": "角黒の炎の[03FC]士団",
+          "comment": "#Q18 ひ弱な騎士、ジェフリーの雇ったひ弱な私設騎士団の名は?     1.永遠の炎の騎士団      +2. 黄金の炎の騎士団    3. 漆黒の炎の騎士団"
+        },
+        "renpy_source": {
+          "q_ru": "Как назывался хилый частный рыцарский орден, нанятый хилым рыцарем Джеффри?",
+          "q_en": "What was the puny private knight order hired by the puny knight Geoffrey?",
+          "opts_ru": [
+            "Орден Вечного Пламени",
+            "Орден Золотого Пламени",
+            "Орден Чёрного Пламени"
+          ],
+          "opts_en": [
+            "Order of Eternal Flame",
+            "Order of Golden Flame",
+            "Order of Pitch-Black Flame"
+          ],
+          "correct_ru": "Орден Золотого Пламени",
+          "correct_en": "Order of Golden Flame"
+        }
+      },
+      {
+        "ps1_index": 71,
+        "renpy_id": 56,
+        "font_size": "auto",
+        "q_line1": "Кем стал безот-",
+        "q_line2": "казный Меррил?",
+        "opt1": "Придворный маг",
+        "opt2": "Жрец Тьмы",
+        "opt3": "Главарь банды",
+        "correct": 2,
+        "original_jp": {
+          "q1": "人の頼みを[033F]れない[03E7]者メリルは",
+          "q2": "頼まれて何をやっていた?",
+          "opt1": "西役魔道士",
+          "opt2": "邪神教団の教祖",
+          "opt3": "野盗の頭",
+          "comment": "#Q56 人の頼みを断れない賢者メリルは頼まれて何をやっていた?   1.宮廷魔道士      2.邪神教団の教祖   +3.野盗の頭"
+        },
+        "renpy_source": {
+          "q_ru": "Кем был мудрец Меррил, который никому не мог отказать в просьбе?",
+          "q_en": "What did sage Merril, who couldn't refuse anyone's request, do for a living?",
+          "opts_ru": [
+            "Придворный маг",
+            "Жрец секты Тёмного Бога",
+            "Главарь разбойников"
+          ],
+          "opts_en": [
+            "Was a court mage",
+            "Was a priest of the Dark God sect",
+            "Was a bandit leader"
+          ],
+          "correct_ru": "Главарь разбойников",
+          "correct_en": "Was a bandit leader"
+        }
+      },
+      {
+        "ps1_index": 72,
+        "renpy_id": 47,
+        "font_size": "auto",
+        "q_line1": "Как Милена",
+        "q_line2": "задела Дракона?",
+        "opt1": "Ничтожество",
+        "opt2": "«Старый хрыч»",
+        "opt3": "Болван",
+        "correct": 0,
+        "original_jp": {
+          "q1": "水[03DA]王の神官ミレナは,地[03DA]王を",
+          "q2": "何と言ってけなしたか?",
+          "opt1": "くそ地味",
+          "opt2": "ロ-トル",
+          "opt3": "でくのぼ-",
+          "comment": "#Q47 水竜王の神官ミレナは、地竜王を何と言ってけなしたか?     +1.くそ地味     2.ロートル      3. でくのぼー"
+        },
+        "renpy_source": {
+          "q_ru": "Как оскорбила священница Водного Короля-Дракона Милена Земляного Короля-Дракона?",
+          "q_en": "How did Milena, priestess of the Water Dragon Queen, insult the Lord of Earth Dragons?",
+          "opts_ru": [
+            "«Унылое ничтожество»",
+            "«Старый хрыч»",
+            "«Бестолковый болван»"
+          ],
+          "opts_en": [
+            "'Dull bore'",
+            "'Old codger'",
+            "'Clueless blockhead'"
+          ],
+          "correct_ru": "«Унылое ничтожество»",
+          "correct_en": "'Dull bore'"
+        }
+      },
+      {
+        "ps1_index": 73,
+        "renpy_id": 57,
+        "font_size": "auto",
+        "q_line1": "Нрав Гарднера,",
+        "q_line2": "парня Эллеми?",
+        "opt1": "Вспыльчивый",
+        "opt2": "Трусливый",
+        "opt3": "Самоуверенный",
+        "correct": 1,
+        "original_jp": {
+          "q1": "エレミ-の音人,ガ-ドナ-の",
+          "q2": "性格は?",
+          "opt1": "短気",
+          "opt2": "根性なし",
+          "opt3": "自信過端",
+          "comment": "#Q57 エレミーの恋人、ガードナーの性格は?     1.短気    +2.根性なし     3.自信過剰"
+        },
+        "renpy_source": {
+          "q_ru": "Какой характер у Гарднера, возлюбленного Эллеми?",
+          "q_en": "What is the personality of Gardner, Ellemia's beloved?",
+          "opts_ru": [
+            "Вспыльчивый",
+            "Трусливый",
+            "Самоуверенный"
+          ],
+          "opts_en": [
+            "Hot-tempered",
+            "Cowardly",
+            "Overconfident"
+          ],
+          "correct_ru": "Трусливый",
+          "correct_en": "Cowardly"
+        }
+      },
+      {
+        "ps1_index": 74,
+        "renpy_id": 62,
+        "font_size": "auto",
+        "q_line1": "Кого сожгла",
+        "q_line2": "Милина огнём?",
+        "opt1": "Лебифор",
+        "opt2": "Рикагис",
+        "opt3": "Губерг",
+        "correct": 2,
+        "original_jp": {
+          "q1": "次のうち,ミリ-ナにエルメキア",
+          "q2": "フレイムで倒された魔族はどれ?",
+          "opt1": "レビフォア",
+          "opt2": "リカギス",
+          "opt3": "グバ-グ",
+          "comment": "#Q62 次のうち、ミリーナにエルメキアフレイムで倒された魔族はどれ?     1.レビフォア     2. リカギス     +3. グバーグ"
+        },
+        "renpy_source": {
+          "q_ru": "Какого демона Милина уничтожила заклинанием Эльмекия Флейм?",
+          "q_en": "Which demon did Mirina destroy with the 'Elmekian Flame' spell?",
+          "opts_ru": [
+            "Лебифор",
+            "Рикагис",
+            "Губерг"
+          ],
+          "opts_en": [
+            "Revifor",
+            "Rikagis",
+            "Gubarg"
+          ],
+          "correct_ru": "Губерг",
+          "correct_en": "Gubarg"
+        }
+      },
+      {
+        "ps1_index": 75,
+        "renpy_id": 71,
+        "font_size": "auto",
+        "q_line1": "Кто создал",
+        "q_line2": "зомби-актёров?",
+        "opt1": "Винни",
+        "opt2": "Марша",
+        "opt3": "Рэйли",
+        "correct": 0,
+        "original_jp": {
+          "q1": "小議でアドリブのきくゾンビを",
+          "q2": "作り出せる元死[036E][0371]士の名は?",
+          "opt1": "ウィニ-",
+          "opt2": "マ-シャ",
+          "opt3": "レイリ-",
+          "comment": "#Q71 小粋でアドリブのきくゾンビを作り出せる元死霊術士の名は?   +1.ウィニー     2.マーシャ      3. レイリー"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из бывших некромантов умеет создавать импозантных зомби, способных к импровизации?",
+          "q_en": "Which former necromancer can create impressive zombies capable of improvisation?",
+          "opts_ru": [
+            "Винни",
+            "Марша",
+            "Рэйли"
+          ],
+          "opts_en": [
+            "Winnie",
+            "Marsha",
+            "Riley"
+          ],
+          "correct_ru": "Винни",
+          "correct_en": "Winnie"
+        }
+      },
+      {
+        "ps1_index": 76,
+        "renpy_id": 54,
+        "font_size": "auto",
+        "q_line1": "Заказ Лине от",
+        "q_line2": "убийцы Гизана?",
+        "opt1": "Убить короля",
+        "opt2": "Возродить село",
+        "opt3": "Доставить груз",
+        "correct": 1,
+        "original_jp": {
+          "q1": "暗殺者ギザンがリナに依頼した",
+          "q2": "仕事は何?",
+          "opt1": "国王暗殺",
+          "opt2": "村おこし",
+          "opt3": "荷物運び",
+          "comment": "#Q54 暗殺者ギザンがリナに依頼した仕事は何?    1.国王暗殺      +2. 村おこし    3.荷物運び"
+        },
+        "renpy_source": {
+          "q_ru": "Какое дело поручил Лине убийца Гизан?",
+          "q_en": "What task did assassin Gizan give Lina?",
+          "opts_ru": [
+            "Убить короля",
+            "Возродить деревню",
+            "Доставить груз"
+          ],
+          "opts_en": [
+            "Kill the king",
+            "Revive a village",
+            "Deliver cargo"
+          ],
+          "correct_ru": "Возродить деревню",
+          "correct_en": "Revive a village"
+        }
+      },
+      {
+        "ps1_index": 77,
+        "renpy_id": 89,
+        "font_size": "auto",
+        "q_line1": "Удар силой с",
+        "q_line2": "двух кулаков?",
+        "opt1": "Руби Ай Блейд",
+        "opt2": "Астрал Вайн",
+        "opt3": "Висфаранк",
+        "correct": 2,
+        "original_jp": {
+          "q1": "両手に魔力を集結し,相手を",
+          "q2": "なぐり倒す呪文の名は?",
+          "opt1": "ルビ-アイmiddle-dotブレ-ド",
+          "opt2": "アストラルmiddle-dotヴァイン",
+          "opt3": "ヴィスファランク",
+          "comment": "#Q89 両手に魔力を集結し、相手をなぐり倒す呪文の名は?   1. ルビーアイ・ブレード   2. アストラル・ヴァイン   +3. ヴィスファランク"
+        },
+        "renpy_source": {
+          "q_ru": "Как называется заклинание, которое концентрирует магическую силу в обеих руках и сбивает противника с ног?",
+          "q_en": "What is the spell that gathers magical power in both hands and strikes the enemy?",
+          "opts_ru": [
+            "Руби Ай Блейд",
+            "Астрал Вайн",
+            "Висфаранк"
+          ],
+          "opts_en": [
+            "Ruby Eye Blade",
+            "Astral Vine",
+            "Visfarank"
+          ],
+          "correct_ru": "Висфаранк",
+          "correct_en": "Visfarank"
+        }
+      },
+      {
+        "ps1_index": 78,
+        "renpy_id": 92,
+        "font_size": "auto",
+        "q_line1": "Спутники жизни,",
+        "q_line2": "по сестре Лины?",
+        "opt1": "Недоразумения",
+        "opt2": "Трудности",
+        "opt3": "Разрушения",
+        "correct": 0,
+        "original_jp": {
+          "q1": "リナの[03F9]里の[03EF]ちゃんは,人生に",
+          "q2": "何がつきものと言っていた?",
+          "opt1": "並解",
+          "opt2": "苦労",
+          "opt3": "破壊",
+          "comment": "#Q92 リナの郷里の姉ちゃんは、人生に何がつきものと言っていた?   +1.誤解   2.苦労    3.破壊"
+        },
+        "renpy_source": {
+          "q_ru": "Что, по словам старшей сестрёнки Лины с родины, является неотъемлемой частью жизни?",
+          "q_en": "What, according to Lina's older sister from her hometown, inevitably accompanies life?",
+          "opts_ru": [
+            "Недоразумения",
+            "Трудности",
+            "Разрушения"
+          ],
+          "opts_en": [
+            "Misunderstandings",
+            "Difficulties",
+            "Destruction"
+          ],
+          "correct_ru": "Недоразумения",
+          "correct_en": "Misunderstandings"
+        }
+      },
+      {
+        "ps1_index": 79,
+        "renpy_id": 77,
+        "font_size": "auto",
+        "q_line1": "Как иначе зовут",
+        "q_line2": "«Души фей»?",
+        "opt1": "Звездосветы",
+        "opt2": "Лжесветлячки",
+        "opt3": "Призраки",
+        "correct": 1,
+        "original_jp": {
+          "q1": "洞[02B4]などを声っている光の愚,",
+          "q2": "フェアリ-middle-dotソウルの別名は?",
+          "opt1": "ホシホタル",
+          "opt2": "ホタルモドキ",
+          "opt3": "マボロシホタル",
+          "comment": "#Q77 洞窟などを漂っている光の球、 フェアリー・ソウルの別名は?      1.ホシホタル     +2. ホタルモドキ      3.マボロシホタル"
+        },
+        "renpy_source": {
+          "q_ru": "Как иначе называют «Души фей», светящиеся шары, что блуждают в пещерах?",
+          "q_en": "What else are 'Fairy Souls', glowing balls that wander in caves, called?",
+          "opts_ru": [
+            "Звёздные светлячки",
+            "Лжесветлячки",
+            "Призрачные светлячки"
+          ],
+          "opts_en": [
+            "Star fireflies",
+            "False fireflies",
+            "Ghost fireflies"
+          ],
+          "correct_ru": "Лжесветлячки",
+          "correct_en": "False fireflies"
+        }
+      },
+      {
+        "ps1_index": 80,
+        "renpy_id": 94,
+        "font_size": "auto",
+        "q_line1": "Почему Гизарме",
+        "q_line2": "пропустил ночь?",
+        "opt1": "Забыл про дату",
+        "opt2": "Напился и спал",
+        "opt3": "Холод и снег",
+        "correct": 2,
+        "original_jp": {
+          "q1": "暗殺者ギザルメ-が予様した夜に",
+          "q2": "来れなかったわけは?",
+          "opt1": "予様日を忘れていた",
+          "opt2": "酒を飲んで由迷していた",
+          "opt3": "昼がちらついてて戻かった",
+          "comment": "#Q94 暗殺者ギザルメーが予告した夜に来れなかったわけは?      1.予告日を忘れていた     2.酒を飲んで爆睡していた   +3. 雪がちらついてて寒かった"
+        },
+        "renpy_source": {
+          "q_ru": "Почему убийца Гизарме не пришёл в назначенную ночь?",
+          "q_en": "Why did the assassin Gizarme not come on the appointed night?",
+          "opts_ru": [
+            "Запамятовал дату",
+            "Напился и крепко спал",
+            "Было холодно и снежок сыпал"
+          ],
+          "opts_en": [
+            "Forgot the date",
+            "Got drunk and slept soundly",
+            "It was cold and snowing"
+          ],
+          "correct_ru": "Было холодно и снежок сыпал",
+          "correct_en": "It was cold and snowing"
+        }
+      },
+      {
+        "ps1_index": 81,
+        "renpy_id": 95,
+        "font_size": "auto",
+        "q_line1": "Имя киллера",
+        "q_line2": "Гизарме?",
+        "opt1": "Маргарита",
+        "opt2": "Жозефина",
+        "opt3": "Анис",
+        "correct": 0,
+        "original_jp": {
+          "q1": "暗殺者,幻惑のギザルメ-の",
+          "q2": "本名は?",
+          "opt1": "マルガリ-タ",
+          "opt2": "ジョセフィ-ヌ",
+          "opt3": "アニス",
+          "comment": "#Q95 暗殺者、幻惑のギザルメーの本名は?      +1. マルガリータ      2. ジョセフィーヌ      3. アニス"
+        },
+        "renpy_source": {
+          "q_ru": "Каково настоящее имя убийцы по прозвищу «Гизарме Иллюзионист»?",
+          "q_en": "What is the real name of the assassin known as 'Gizarme the Illusionist'?",
+          "opts_ru": [
+            "Маргарита",
+            "Жозефина",
+            "Анис"
+          ],
+          "opts_en": [
+            "Margarita",
+            "Josephine",
+            "Anise"
+          ],
+          "correct_ru": "Маргарита",
+          "correct_en": "Margarita"
+        }
+      },
+      {
+        "ps1_index": 82,
+        "renpy_id": 55,
+        "font_size": "auto",
+        "q_line1": "Чем был сражён",
+        "q_line2": "человек-демон?",
+        "opt1": "Ра Тилт Амелии",
+        "opt2": "Бласт Эш Лины",
+        "opt3": "Меч Света Гаури",
+        "correct": 0,
+        "original_jp": {
+          "q1": "元近[025E]者団の人魔ザインは何で",
+          "q2": "倒された?",
+          "opt1": "アメリアのラmiddle-dotティルト",
+          "opt2": "リナのブラストmiddle-dotアッシュ",
+          "opt3": "ガウリイの光の剣",
+          "comment": "#Q55 元近衛兵団の人魔ザインは何で倒された?    1. アメリアのラ・ティルト      +2. リナのブラスト・アッシュ    3. ガウリイの光の剣"
+        },
+        "renpy_source": {
+          "q_ru": "Чем был побеждён Зайн, человек-демон из бывших гвардейцев?",
+          "q_en": "How was Zain, the monster-man from former guards, defeated?",
+          "opts_ru": [
+            "Ра Тилт Амелии",
+            "Бласт Эш Лины",
+            "Меч Света Гаури"
+          ],
+          "opts_en": [
+            "Amelia's 'La Tilt' spell",
+            "Lina's 'Ash Explosion'",
+            "Gourry's Sword of Light"
+          ],
+          "correct_ru": "Ра Тилт Амелии",
+          "correct_en": "Amelia's 'La Tilt' spell"
+        }
+      },
+      {
+        "ps1_index": 83,
+        "renpy_id": 61,
+        "font_size": "auto",
+        "q_line1": "Что украла",
+        "q_line2": "Милли в Клейне?",
+        "opt1": "Драгоценности",
+        "opt2": "Украла арбуз",
+        "opt3": "Украла корову",
+        "correct": 2,
+        "original_jp": {
+          "q1": "[03E6]使いミリ-がクレインの町で",
+          "q2": "働いた悪事とは?",
+          "opt1": "宝石泥棒",
+          "opt2": "スイカ泥棒",
+          "opt3": "宿泥棒",
+          "comment": "#Q61 獣使いミリーがクレインの町で働いた悪事とは?     1.宝石泥棒      2. スイカ泥棒    +3.牛泥棒"
+        },
+        "renpy_source": {
+          "q_ru": "Какое злодеяние совершила Милли, звериная повелительница, в городе Клейн?",
+          "q_en": "What crime did Milli, the beast mistress, commit in the city of Klein?",
+          "opts_ru": [
+            "Украла драгоценности",
+            "Украла арбуз",
+            "Украла корову"
+          ],
+          "opts_en": [
+            "Stole jewels",
+            "Stole a watermelon",
+            "Stole a cow"
+          ],
+          "correct_ru": "Украла корову",
+          "correct_en": "Stole a cow"
+        }
+      },
+      {
+        "ps1_index": 84,
+        "renpy_id": 74,
+        "font_size": "auto",
+        "q_line1": "Зачем жрец",
+        "q_line2": "Майлз танцует?",
+        "opt1": "Обычай родины",
+        "opt2": "Закон церкви",
+        "opt3": "Мужской шарм",
+        "correct": 0,
+        "original_jp": {
+          "q1": "神官マイルズが戦いの前に化続と",
+          "q2": "寝りを行うわけは?",
+          "opt1": "[03F9]里の風凶",
+          "opt2": "教会の静",
+          "opt3": "男のロマン",
+          "comment": "#Q74 神官マイルズが戦いの前に化粧と踊りを行うわけは?   +1.郷里の風習    2.教会の掟      3. 男のロマン"
+        },
+        "renpy_source": {
+          "q_ru": "Почему священник Майлз перед боем красится и танцует?",
+          "q_en": "Why does priest Miles put on makeup and dance before battle?",
+          "opts_ru": [
+            "Таков обычай его родных мест",
+            "Таков закон церкви",
+            "Таков мужской романтизм"
+          ],
+          "opts_en": [
+            "It's a custom of his homeland",
+            "It's church law",
+            "It's male romanticism"
+          ],
+          "correct_ru": "Таков обычай его родных мест",
+          "correct_en": "It's a custom of his homeland"
+        }
+      },
+      {
+        "ps1_index": 85,
+        "renpy_id": 63,
+        "font_size": "auto",
+        "q_line1": "Кто комплексует",
+        "q_line2": "из-за груди?",
+        "opt1": "Меррил",
+        "opt2": "Марша",
+        "opt3": "Клейн",
+        "correct": 1,
+        "original_jp": {
+          "q1": "次のうち,リナと同じように胸の",
+          "q2": "大きさを気にしているのは誰?",
+          "opt1": "メリル",
+          "opt2": "マ-シャ",
+          "opt3": "クレ-ネ",
+          "comment": "#Q63 次のうち、リナと同じように胸の大きさを気にしているのは誰?  1. メリル      +2. マーシャ    3.クレーネ"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из перечисленных так же, как и Лина, комплексует из-за размера груди?",
+          "q_en": "Which of the following, like Lina, has a complex about chest size?",
+          "opts_ru": [
+            "Меррил",
+            "Марша",
+            "Клейн"
+          ],
+          "opts_en": [
+            "Merril",
+            "Marsha",
+            "Klein"
+          ],
+          "correct_ru": "Марша",
+          "correct_en": "Marsha"
+        }
+      },
+      {
+        "ps1_index": 86,
+        "renpy_id": 72,
+        "font_size": "auto",
+        "q_line1": "Финал поваров —",
+        "q_line2": "что в руках?",
+        "opt1": "Спагетти",
+        "opt2": "Сашими",
+        "opt3": "Чёрствый хлеб",
+        "correct": 2,
+        "original_jp": {
+          "q1": "兄弟料理人の料理対決で,読方が",
+          "q2": "最後に手にしていた料理は?",
+          "opt1": "スパゲッティパスタ",
+          "opt2": "活け造り",
+          "opt3": "礼焼きパン",
+          "comment": "#Q72 兄弟料理人の料理対決で、双方が最後に手にしていた料理は?   1. スパゲッティパスタ    2. 活け造り     +3. 堅焼きパン"
+        },
+        "renpy_source": {
+          "q_ru": "Какое блюдо в итоге оказалось у обоих братьев-поваров во время кулинарного поединка?",
+          "q_en": "What dish did both chef brothers end up holding during the cooking duel?",
+          "opts_ru": [
+            "Спагетти",
+            "Сашими",
+            "Чёрствый хлеб"
+          ],
+          "opts_en": [
+            "Spaghetti",
+            "Live fish sashimi",
+            "Stale bread"
+          ],
+          "correct_ru": "Чёрствый хлеб",
+          "correct_en": "Stale bread"
+        }
+      },
+      {
+        "ps1_index": 87,
+        "renpy_id": 14,
+        "font_size": "auto",
+        "q_line1": "Цвет глаз у",
+        "q_line2": "рыцаря Уоррена?",
+        "opt1": "Голубые",
+        "opt2": "Чёрные",
+        "opt3": "Золотые",
+        "correct": 0,
+        "original_jp": {
+          "q1": "正義バカの独者ウォ-レン,[0288]の",
+          "q2": "目は何色?",
+          "opt1": "青色",
+          "opt2": "黒色",
+          "opt3": "金色",
+          "comment": "#Q14 正義バカの勇者ウォーレン、彼の目は何色?   +1.青色   2.黑色    3.金色"
+        },
+        "renpy_source": {
+          "q_ru": "Какого цвета глаза Уоррена, героя, помешанного на справедливости?",
+          "q_en": "What color are Warren's eyes, the hero obsessed with justice?",
+          "opts_ru": [
+            "Голубые",
+            "Чёрные",
+            "Золотые"
+          ],
+          "opts_en": [
+            "Blue",
+            "Black",
+            "Gold"
+          ],
+          "correct_ru": "Голубые",
+          "correct_en": "Blue"
+        }
+      },
+      {
+        "ps1_index": 88,
+        "renpy_id": 23,
+        "font_size": "auto",
+        "q_line1": "В кого влюбился",
+        "q_line2": "богач Лестер?",
+        "opt1": "В Лину",
+        "opt2": "В Нагу",
+        "opt3": "В Илизу",
+        "correct": 1,
+        "original_jp": {
+          "q1": "次のうち,金持ちのぼんぼん,",
+          "q2": "レスタ-が[028B]れた相手は?",
+          "opt1": "リナ",
+          "opt2": "ナ-ガ",
+          "opt3": "イリ-ズ",
+          "comment": "#Q23 次のうち、金持ちのぼんぼん。 レスターが惚れた相手は?    1. リナ   +2. ナーガ     3.イリーズ"
+        },
+        "renpy_source": {
+          "q_ru": "В кого влюбился Лестер, богатенький сынок?",
+          "q_en": "Who did Lester, the rich son, fall in love with?",
+          "opts_ru": [
+            "В Лину",
+            "В Нагу",
+            "В Илизу"
+          ],
+          "opts_en": [
+            "Lina",
+            "Naga",
+            "Iliza"
+          ],
+          "correct_ru": "В Нагу",
+          "correct_en": "Naga"
+        }
+      },
+      {
+        "ps1_index": 89,
+        "renpy_id": 76,
+        "font_size": "auto",
+        "q_line1": "Непобедимый",
+        "q_line2": "боксёр Люкнэ?",
+        "opt1": "Раг",
+        "opt2": "Франк",
+        "opt3": "Гурка",
+        "correct": 2,
+        "original_jp": {
+          "q1": "リュクネ-の町で最強伝説を",
+          "q2": "きずいていた占[033A]士の名は?",
+          "opt1": "ラグ",
+          "opt2": "フランク",
+          "opt3": "グルカ",
+          "comment": "#Q76 リュクネーの町で最強伝説をきずいていた拳闘士の名は?     1. ラグ       2. フランク     +3. グルカ"
+        },
+        "renpy_source": {
+          "q_ru": "Как звали кулачного бойца, создавшего в городе Люкнэ легенду о своей непобедимости?",
+          "q_en": "What was the name of the fist fighter who created a legend of invincibility in the city of Lukne?",
+          "opts_ru": [
+            "Раг",
+            "Франк",
+            "Гурка"
+          ],
+          "opts_en": [
+            "Rag",
+            "Frank",
+            "Gurka"
+          ],
+          "correct_ru": "Гурка",
+          "correct_en": "Gurka"
+        }
+      },
+      {
+        "ps1_index": 90,
+        "renpy_id": 82,
+        "font_size": "auto",
+        "q_line1": "Сила водного",
+        "q_line2": "духа в людях?",
+        "opt1": "В 2-3 раза выше",
+        "opt2": "Как у людей",
+        "opt3": "В 10 раз меньше",
+        "correct": 0,
+        "original_jp": {
+          "q1": "絶滅したとされていた追僕な",
+          "q2": "水[036E]族,その筋力はどの程度?",
+          "opt1": "人間の2,3倍",
+          "opt2": "人間と同詳",
+          "opt3": "人間の10分の1",
+          "comment": "#Q82 絶滅したとされていた温厚な水霊族、その筋力はどの程度?    +1.人間の2、3倍      2.人間と同等     3.人間の10分の1"
+        },
+        "renpy_source": {
+          "q_ru": "Какова физическая сила кроткого водного духа, который считался вымершим?",
+          "q_en": "What is the physical strength of the gentle water spirit that was thought extinct?",
+          "opts_ru": [
+            "В два-три раза выше человеческой",
+            "Равна человеческой",
+            "В десять раз меньше человеческой"
+          ],
+          "opts_en": [
+            "Two to three times human",
+            "Equal to human",
+            "Ten times less than human"
+          ],
+          "correct_ru": "В два-три раза выше человеческой",
+          "correct_en": "Two to three times human"
+        }
+      },
+      {
+        "ps1_index": 91,
+        "renpy_id": 24,
+        "font_size": "auto",
+        "q_line1": "Король осеннего",
+        "q_line2": "стола?",
+        "opt1": "Сайра",
+        "opt2": "Нигитаке",
+        "opt3": "Мидия",
+        "correct": 1,
+        "original_jp": {
+          "q1": "配の味覚の腕王といえば?",
+          "q2": "[0000]",
+          "opt1": "サンマ",
+          "opt2": "ニギタケ",
+          "opt3": "レム-ル流",
+          "comment": "#秋の味覚の帝王といえば?   1. サンマ      +2. ニギタケ    3. レムール貝"
+        },
+        "renpy_source": {
+          "q_ru": "Кого величают королём осеннего стола?",
+          "q_en": "Who is called the king of the autumn table?",
+          "opts_ru": [
+            "Сайра",
+            "Нигитаке",
+            "Мидия"
+          ],
+          "opts_en": [
+            "Sairu",
+            "Nigitake",
+            "Midia"
+          ],
+          "correct_ru": "Нигитаке",
+          "correct_en": "Nigitake"
+        }
+      },
+      {
+        "ps1_index": 92,
+        "renpy_id": 45,
+        "font_size": "auto",
+        "q_line1": "Как Нага лечила",
+        "q_line2": "страх Винни?",
+        "opt1": "Сброс с обрыва",
+        "opt2": "Заперла в скале",
+        "opt3": "Пугала куклой",
+        "correct": 2,
+        "original_jp": {
+          "q1": "元死[036E][0371]士ウィニ-の[029F]がりを",
+          "q2": "なおすため,ナ-ガは何をした?",
+          "opt1": "ガケから突き落とそうとした",
+          "opt2": "洞[02B4]に閉じ込めようとした",
+          "opt3": "着ぐるみでおどかそうとした",
+          "comment": "#45 元死霊術士ウィニーの怖がりをなおすため、ナーガは何をした?   1. ガケから突き落とそうとした   2.洞窟に閉じ込めようとした   +3. 着ぐるみでおどかそうとした"
+        },
+        "renpy_source": {
+          "q_ru": "Что предприняла Нага, чтобы избавить Винни, бывшего некроманта, от страхов?",
+          "q_en": "What did Naga do to free Winnie, the former necromancer, from her fears?",
+          "opts_ru": [
+            "Попыталась сбросить её с обрыва",
+            "Попыталась запереть её в пещере",
+            "Попыталась напугать её в ростовой кукле"
+          ],
+          "opts_en": [
+            "Tried to push her off a cliff",
+            "Tried to lock her in a cave",
+            "Tried to scare her in a life-size doll"
+          ],
+          "correct_ru": "Попыталась напугать её в ростовой кукле",
+          "correct_en": "Tried to scare her in a life-size doll"
+        }
+      },
+      {
+        "ps1_index": 93,
+        "renpy_id": 17,
+        "font_size": "auto",
+        "q_line1": "Кузина ученицы",
+        "q_line2": "Клэр?",
+        "opt1": "Мина",
+        "opt2": "Леймия",
+        "opt3": "Илия",
+        "correct": 0,
+        "original_jp": {
+          "q1": "次のうち,魔道士見凶いの",
+          "q2": "クレアの恩[03EF]妹にあたるのは誰?",
+          "opt1": "ミ-ナ",
+          "opt2": "レイミア",
+          "opt3": "イリ-ア",
+          "comment": "#Q17 次のうち、魔道士見習いのクレアの従姉妹にあたるのは誰?     +1. ミーナ     2. レイミア     3. イリーア"
+        },
+        "renpy_source": {
+          "q_ru": "Кто из перечисленных является двоюродной сестрой Клэр, ученицы мага?",
+          "q_en": "Which of the following is the cousin of Claire, the mage's apprentice?",
+          "opts_ru": [
+            "Мина",
+            "Леймия",
+            "Илия"
+          ],
+          "opts_en": [
+            "Mina",
+            "Leimia",
+            "Ilia"
+          ],
+          "correct_ru": "Мина",
+          "correct_en": "Mina"
+        }
+      },
+      {
+        "ps1_index": 94,
+        "renpy_id": 84,
+        "font_size": "auto",
+        "q_line1": "Кого Люк добил",
+        "q_line2": "Руби-клинком?",
+        "opt1": "Бейз",
+        "opt2": "Рикагис",
+        "opt3": "Лебифор",
+        "correct": 1,
+        "original_jp": {
+          "q1": "次のうち,ル-クにルビ-アイmiddle-dot",
+          "q2": "ブレ-ドで倒された魔族はどれ?",
+          "opt1": "ベイズ",
+          "opt2": "リカギス",
+          "opt3": "レビフォア",
+          "comment": "#Q84 次のうち、ルークにルビーアイ・ ブレードで倒された魔族はどれ?    1. ベイズ      +2. リカギス    3. レビフォア"
+        },
+        "renpy_source": {
+          "q_ru": "Какого демона сразил Люк клинком Руби Ай Блейд?",
+          "q_en": "Which demon did Luke defeat with the Ruby Eye blade?",
+          "opts_ru": [
+            "Бейз",
+            "Рикагис",
+            "Лебифор"
+          ],
+          "opts_en": [
+            "Beiz",
+            "Licagis",
+            "Lebifore"
+          ],
+          "correct_ru": "Рикагис",
+          "correct_en": "Licagis"
+        }
+      },
+      {
+        "ps1_index": 95,
+        "renpy_id": 34,
+        "font_size": "auto",
+        "q_line1": "Когда была",
+        "q_line2": "Война Падения?",
+        "opt1": "Около 5000 лет",
+        "opt2": "Около 2000 лет",
+        "opt3": "Около 1000 лет",
+        "correct": 2,
+        "original_jp": {
+          "q1": "降魔戦起はリナたちの時代から",
+          "q2": "何年ほど前の出来事?",
+          "opt1": "およそ5000年前",
+          "opt2": "およそ2000年前",
+          "opt3": "およそ1000年前",
+          "comment": "#Q34 降魔戦争はリナたちの時代から何年ほど前の出来事?    1. およそ5000年前    2. およそ2000年前    +3. およそ1000年前"
+        },
+        "renpy_source": {
+          "q_ru": "Сколько лет прошло со времён Войны Падения Демонов до эпохи Лины?",
+          "q_en": "How many years passed from the Great Monster Fall War to Lina's era?",
+          "opts_ru": [
+            "Около 5000 лет",
+            "Около 2000 лет",
+            "Около 1000 лет"
+          ],
+          "opts_en": [
+            "About 5000 years",
+            "About 2000 years",
+            "About 1000 years"
+          ],
+          "correct_ru": "Около 1000 лет",
+          "correct_en": "About 1000 years"
+        }
+      },
+      {
+        "ps1_index": 96,
+        "renpy_id": 48,
+        "font_size": "auto",
+        "q_line1": "Как зовут сына",
+        "q_line2": "убийцы Зуумы?",
+        "opt1": "Абель",
+        "opt2": "Зайн",
+        "opt3": "Лавас",
+        "correct": 0,
+        "original_jp": {
+          "q1": "暗殺者ズ-マの息子の名は?",
+          "q2": "[0000]",
+          "opt1": "アベル",
+          "opt2": "ザイン",
+          "opt3": "ラ-ヴァス",
+          "comment": "#Q48 暗殺者ズーマの息子の名は?      +1. アベル     2.ザイン       3. ラーヴァス"
+        },
+        "renpy_source": {
+          "q_ru": "Как зовут сына убийцы Зуумы?",
+          "q_en": "What is the name of assassin Zuuma's son?",
+          "opts_ru": [
+            "Абель",
+            "Зайн",
+            "Лавас"
+          ],
+          "opts_en": [
+            "Abel",
+            "Zain",
+            "Ravas"
+          ],
+          "correct_ru": "Абель",
+          "correct_en": "Abel"
+        }
+      },
+      {
+        "ps1_index": 97,
+        "renpy_id": 10,
+        "font_size": "auto",
+        "q_line1": "Синдикат Галса",
+        "q_line2": "Блейдера?",
+        "opt1": "Шабранигдо",
+        "opt2": "Хелл Мастер",
+        "opt3": "Цефеид",
+        "correct": 1,
+        "original_jp": {
+          "q1": "ガルス=ブレンダ-が首領を",
+          "q2": "受めていた犯罪結建の名は?",
+          "opt1": "シャブラニグドゥ",
+          "opt2": "ヘルマスタ-",
+          "opt3": "スィ-フィ-ド",
+          "comment": "#Q10 ガルス=ブレンダーが首領を務めていた犯罪結社の名は?  1.シャブラニグドゥ  +2. ヘルマスター  3. スィーフィード"
+        },
+        "renpy_source": {
+          "q_ru": "Как назывался преступный синдикат, которым заправлял Галс Блейдер?",
+          "q_en": "What was the criminal syndicate run by Gars Bender?",
+          "opts_ru": [
+            "Шабранигдо",
+            "Хелл Мастер",
+            "Цефеид"
+          ],
+          "opts_en": [
+            "Shabranigdu",
+            "Hellmaster",
+            "Sifid"
+          ],
+          "correct_ru": "Хелл Мастер",
+          "correct_en": "Hellmaster"
+        }
+      },
+      {
+        "ps1_index": 98,
+        "renpy_id": 40,
+        "font_size": "auto",
+        "q_line1": "Чем сестра Лины",
+        "q_line2": "убила дракона?",
+        "opt1": "Длинный меч",
+        "opt2": "Меч Дракона",
+        "opt3": "Кухонный нож",
+        "correct": 2,
+        "original_jp": {
+          "q1": "リナの[03F9]里の[03EF]ちゃんは",
+          "q2": "朝撃[03DA]を何で倒した?",
+          "opt1": "ロングソ-ド",
+          "opt2": "赤[03DA]剣",
+          "opt3": "調困",
+          "comment": "#Q40 リナの郷里の姉ちゃんは雷撃竜を何で倒した?      1. ロングソード   2.赤竜剣   +3.包丁"
+        },
+        "renpy_source": {
+          "q_ru": "Чем старшая сестра из родного города Лины зарубила Плазменного дракона?",
+          "q_en": "What did Lina's older sister from her hometown use to slay the Thunder Dragon?",
+          "opts_ru": [
+            "Длинный меч",
+            "Меч Красного Дракона",
+            "Кухонный нож"
+          ],
+          "opts_en": [
+            "Long sword",
+            "Red Dragon Sword",
+            "Kitchen knife"
+          ],
+          "correct_ru": "Кухонный нож",
+          "correct_en": "Kitchen knife"
+        }
+      },
+      {
+        "ps1_index": 99,
+        "renpy_id": 78,
+        "font_size": "auto",
+        "q_line1": "Нрав зеркальной",
+        "q_line2": "копии Лины?",
+        "opt1": "Добрый, кроткий",
+        "opt2": "Дерзкий, буйный",
+        "opt3": "Эгоистичный",
+        "correct": 0,
+        "original_jp": {
+          "q1": "[03F2]の[03F3]によって生み出された",
+          "q2": "リナのコピ-の性格は?",
+          "opt1": "情女ちっくで人道買義",
+          "opt2": "生意気で破壊買義",
+          "opt3": "ク-ルで利割買義",
+          "comment": "#Q78 影の鏡によって生み出されたリナのコピーの性格は?   +1. 乙女ちっくで入道主義      2.生意気で破壊主義      3.クールで利己主義"
+        },
+        "renpy_source": {
+          "q_ru": "Какой характер был у копии Лины, созданной Зеркалом Теней?",
+          "q_en": "What personality did the copy of Lina created by the Mirror of Shadows have?",
+          "opts_ru": [
+            "Сентиментальный и гуманистический",
+            "Дерзкий и разрушительный",
+            "Холодный и эгоистичный"
+          ],
+          "opts_en": [
+            "Sentimental and humanistic",
+            "Bold and destructive",
+            "Cold and selfish"
+          ],
+          "correct_ru": "Сентиментальный и гуманистический",
+          "correct_en": "Sentimental and humanistic"
+        }
+      }
+    ]
+  }
+}

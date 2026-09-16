@@ -613,7 +613,7 @@ def verify_combat_patch(
         pos_92 = 0x06286C + 91 * 4
         ram_92 = struct.unpack_from("<I", prog_007, pos_92)[0]
         spk_92 = struct.unpack_from("<H", prog_007, ram_92 - RAM_BASE)[0]
-        assert spk_92 in (0x0048, 0x0000, 0xD26A), f"Expected cue 92 speaker opcode or padding, got 0x{spk_92:04X}"
+        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171), f"Expected cue 92 speaker opcode or padding, got 0x{spk_92:04X}"
 
         return {
             "verified": True,

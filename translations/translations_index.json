@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "title": "Slayers Royal (PS1) — Единый реестр каталогов локализации",
+    "version": "1.0",
+    "description": "Сводный индекс всех 9 каталогов локализации в translations/: сюжет, бой, интерактивные комнаты, мини-игры, городские службы, диалоги магазинов, справочные карточки, карта мира и вывески локаций.",
+    "target_disc": "slayers_royal_ru.bin",
+    "locale": "ru",
+    "total_catalogs": 9,
+    "last_updated": "2026-09-14"
+  },
+  "catalogs": [
+    {
+      "id": "story_dialogues",
+      "file": "translations/story_dialogues_ru.json",
+      "name": "Сюжетные диалоги и развилки",
+      "description": "Все 4 514 реплик основного сюжета, сюжетных развилок, диалогов с NPC и выборов ответов во всех 30 сценах игры.",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x03B..0x057, 0x139 (30 сцен)",
+      "total_entries": 4514,
+      "constraints": {
+        "max_chars_per_line": 15,
+        "lines_per_page": "1-3",
+        "page_break": "\\f разрешён только если allow_page_break == true (терминатор 0x00FD)",
+        "encoding": "Unicode NFC -> 16-bit Cyrillic charmap"
+      },
+      "patcher_tool": "tools/sync_story_dialogues.py -> patch_repo/localize.py",
+      "build_flag": "--story, --dialogues",
+      "validation_command": "python3 tools/sync_story_dialogues.py --validate"
+    },
+    {
+      "id": "combat_dialogues",
+      "file": "translations/combat_dialogues_ru.json",
+      "name": "Боевые диалоги и реплики",
+      "description": "Реплики персонажей во время тактических сражений: вступительные фразы, перепалки и сюжетные события в бою.",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x007 (растровый шрифт в 0x142)",
+      "total_entries": "114 блоков (101 диалог)",
+      "constraints": {
+        "max_chars_per_line": 21,
+        "max_lines_per_bubble": 3,
+        "budget": "Бюджет байт строго фиксирован для каждого блока в RAM"
+      },
+      "patcher_tool": "tools/patch_combat_dialogues.py",
+      "build_flag": "--combat, --combat-dialogues",
+      "validation_command": "python3 tools/patch_combat_dialogues.py --verify"
+    },
+    {
+      "id": "room_inspection",
+      "file": "translations/room_inspection_ru.json",
+      "name": "Осмотр предметов в комнатах",
+      "description": "Названия и подробные юмористические описания интерактивных объектов во всех 149 локациях и комнатах игры.",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x058..0x138 (149 комнат)",
+      "total_entries": "6 044 строки (сотни интерактивных объектов)",
+      "constraints": {
+        "pointers": "Таблицы 32-битных указателей со смещением RAM base 0x00200000",
+        "encoding": "uint16 Cyrillic charmap"
+      },
+      "patcher_tool": "tools/patch_inspection.py",
+      "build_flag": "--quick, -q, --inspection",
+      "validation_command": "python3 -m pytest tools/test_inspection_translations.py -q"
+    },
+    {
+      "id": "minigames",
+      "file": "translations/minigames_ru.json",
+      "name": "Мини-игры и викторина",
+      "description": "Правила всех 5 аркадных мини-игр и полный каталог из 100 вопросов викторины Slayers Quiz с вариантами ответов.",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x00D..0x011 (Entries 13..17)",
+      "total_entries": "5 мини-игр, 100 вопросов викторины (400 вариантов)",
+      "constraints": {
+        "font": "4bpp шрифт VRAM (960, 0), CLUT палитра 0x7FFF",
+        "charmap": "Синхронизирован с 0x03A и glyph_map.json"
+      },
+      "patcher_tool": "tools/patch_minigames.py",
+      "build_flag": "--minigames, --quiz",
+      "validation_command": "python3 tools/patch_minigames.py --verify"
+    },
+    {
+      "id": "town_services",
+      "file": "translations/town_services_ru.json",
+      "name": "Городские службы, меню и валюта",
+      "description": "Меню гостиниц, таверн, лавок, пунктов обмена валют, курсы валют и суффиксы цен (СЕРЕБРО / ЗОЛОТО).",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x003, 0x03A",
+      "total_entries": "417 строк конфигурации и строк",
+      "constraints": {
+        "encoding": "uint16_le, терминатор 0x00FF",
+        "mips_patch": "Замена опкодов суффиксов в коде MIPS (Tavern 0x80066660, Inn/Shops 0x800707A8)"
+      },
+      "patcher_tool": "tools/patch_town_services.py",
+      "build_flag": "--services, --town",
+      "validation_command": "python3 tools/patch_town_services.py --verify"
+    },
+    {
+      "id": "shop_dialogues",
+      "file": "translations/shop_dialogues_ru.json",
+      "name": "Диалоги и меню магазинов и лавок",
+      "description": "Полный каталог реплик торговцев, торга персонажей, покупки и продажи предметов, а также 91 наименования товаров и экипировки (PROG.UNT 0x003).",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x003 (RAM 0x8004E5B0)",
+      "total_entries": "98 диалогов (100 указателей) + 91 предмет",
+      "constraints": {
+        "max_chars_per_line": 15,
+        "lines_per_page": "1-3",
+        "encoding": "uint16_le, терминатор 0x00FF, перенос 0x00FE, страница 0x00FD",
+        "charmap": "Authoritative PROG.UNT 0x03A Cyrillic VRAM font"
+      },
+      "patcher_tool": "tools/patch_town_services.py",
+      "build_flag": "--services, --town",
+      "validation_command": "python3 tools/test_shop_catalog.py"
+    },
+    {
+      "id": "lore_cards",
+      "file": "translations/lore_cards_ru.json",
+      "name": "Справочные карточки персонажей и лора",
+      "description": "13 справочных карточек главных героев и лора в PROG.UNT, а также 12 баннеров меню галереи в OPT.UNT.",
+      "target_archive": "PROG.UNT (32..46), OPT.UNT (182..194)",
+      "target_entries": "13 справочных карточек, 12 баннеров",
+      "total_entries": "13 карточек (315 строк)",
+      "constraints": {
+        "types": "split_card (4bpp текстовый оверлей) и combined_8bpp (полный арт с текстом)",
+        "line_length": "До 45 символов в строке, 8-9 строк на карточку"
+      },
+      "patcher_tool": "tools/patch_lore_cards.py",
+      "build_flag": "--cards",
+      "validation_command": "python3 tools/patch_lore_cards.py --disc downloads/sr.bin --cards translations/lore_cards_ru.json --dry-run"
+    },
+    {
+      "id": "world_map",
+      "file": "translations/world_map_ru.json",
+      "name": "Названия локаций на карте мира",
+      "description": "20 названий городов, деревень и сюжетных локаций, отображаемых на глобальной карте мира при перемещении.",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x001 (таблица сектор 89, указатели сектор 93)",
+      "total_entries": 20,
+      "constraints": {
+        "table_size": "Максимум 458 байт",
+        "ram_base": "0x8005BDB0"
+      },
+      "patcher_tool": "tools/patch_world_map.py",
+      "build_flag": "--map",
+      "validation_command": "python3 tools/patch_world_map.py --verify"
+    },
+    {
+      "id": "location_banners",
+      "file": "translations/location_banners_ru.json",
+      "name": "Графические вывески и плашки локаций",
+      "description": "24 графических баннера вывесок улиц, площадей и заведений, визуально отображаемых при входе в локацию.",
+      "target_archive": "BASYOG.UNT",
+      "target_entries": "Entry 466 (LBA 240133..240140)",
+      "total_entries": 24,
+      "constraints": {
+        "font_rendering": "4bpp растровые тайлы VRAM с auto-scaling кегля",
+        "hardware_limits": "Ширина окна движка 70-75px"
+      },
+      "patcher_tool": "tools/patch_location_banners.py",
+      "build_flag": "--banners",
+      "validation_command": "python3 tools/patch_location_banners.py --verify"
+    }
+  ]
+}

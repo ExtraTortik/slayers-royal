@@ -26,9 +26,9 @@
     "PLAZA": {
       "text_en": "PLAZA",
       "text_ru": "ПЛОЩАДЬ",
-      "font_size": "auto",
+      "font_size": "6",
       "align": "center",
-      "offset_x": -25,
+      "offset_x": -30,
       "offset_y": 0,
       "max_hardware_width_px": 75,
       "description": "Городская площадь"
@@ -56,9 +56,9 @@
     "ARMORY": {
       "text_en": "ARMORY",
       "text_ru": "ОРУЖЕЙНАЯ",
-      "font_size": "auto",
+      "font_size": "7",
       "align": "center",
-      "offset_x": 0,
+      "offset_x":-5,
       "offset_y": 0,
       "max_hardware_width_px": 75,
       "description": "Оружейная лавка"

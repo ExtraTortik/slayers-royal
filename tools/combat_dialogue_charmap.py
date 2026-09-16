@@ -40,6 +40,7 @@ CYRILLIC_LOWER_BASE = 0x0171  # 0x0171..0x0191 (33 tiles)
 # Control codes in dialogue stream
 OPCODE_NEWLINE = 0x00FE
 OPCODE_BUBBLE_ADVANCE = 0x00FD
+OPCODE_PAGE_BREAK = 0x00FD  # Alias for OPCODE_BUBBLE_ADVANCE (intra-bubble pagination)
 OPCODE_BLOCK_END = 0x00FF
 
 # Punctuation & digits in font 0x142 (canonical)
@@ -257,7 +258,7 @@ def encode_combat_dialogue_string(
 
     Special codes:
     - '\\n' -> 0x00FE (line break)
-    - '\\f' -> 0x00FD (bubble advance)
+    - '\\f' -> 0x00FD (OPCODE_PAGE_BREAK / OPCODE_BUBBLE_ADVANCE: page break)
     - '…'  -> three dots (0x00A2, 0x00A2, 0x00A2)
     """
     cm = charmap if charmap is not None else COMBAT_CHARMAP
