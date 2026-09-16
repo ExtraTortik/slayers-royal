@@ -202,7 +202,7 @@ BANNER_LAYOUT: list[tuple[str, str, tuple[int, int, int, int], tuple[int, int]]]
 
     # Band 3 (Row 3): Y=72..96
     ("TAVERN", "TAVERN", (0, 72, 60, 96), (4, 79)),
-    ("TEMPLE", "TEMPLE", (50, 72, 94, 96), (54, 79)),
+    ("TEMPLE", "TEMPLE", (61, 72, 94, 96), (63, 79)),
     # LEAVE TOWN window is X=98..189 (91px wide).
     # "ПОКИНУТЬ ГОРОД" is 85px wide at font 6. Centered at X=101, Y=80!
     ("LEAVE TOWN", "LEAVE TOWN", (95, 72, 195, 96), (101, 80)),

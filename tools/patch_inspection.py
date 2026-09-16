@@ -64,6 +64,44 @@ ROOM_ENTRIES_START = 0x059
 ROOM_ENTRIES_END = 0x0F8
 DEFAULT_MISSING_ROOMS = REPO_ROOT / "data" / "missing_rooms_jp_ru.json"
 DEFAULT_SOURCE_BIN = REPO_ROOT / "downloads" / "sr.bin"
+DEFAULT_ROOM_NAMES = REPO_ROOT / "translations" / "room_names_ru.json"
+
+
+def load_room_names(path: str | Path | None = None) -> dict[str, Any]:
+    """Load room location names mapping from JSON."""
+    target_path = Path(path) if path else DEFAULT_ROOM_NAMES
+    if not target_path.is_file():
+        return {}
+    try:
+        doc = json.loads(target_path.read_text(encoding="utf-8"))
+        return doc.get("entries", doc)
+    except Exception as exc:
+        print(f"Warning: Failed to load room names from {target_path} ({exc})", file=sys.stderr)
+        return {}
+
+
+def get_room_name_translation(
+    entry_idx: int, room_names_doc: dict[str, Any] | None
+) -> str | None:
+    """Retrieve translated room location banner string for an entry from room_names dictionary."""
+    if not room_names_doc:
+        return None
+    keys = [
+        f"0x{entry_idx:03X}",
+        f"0x{entry_idx:03x}",
+        f"0x{entry_idx:X}",
+        f"0x{entry_idx:x}",
+        str(entry_idx),
+        entry_idx,
+    ]
+    for k in keys:
+        if k in room_names_doc:
+            val = room_names_doc[k]
+            if isinstance(val, dict):
+                return val.get("name_ru") or val.get("russian") or val.get("ru")
+            elif isinstance(val, str) and val.strip():
+                return val.strip()
+    return None
 
 
 def load_missing_rooms(path: str | Path | None = None) -> dict[str, Any]:
@@ -563,8 +601,25 @@ def rebuild_inspection_entry(
         new_data_end,
     ) = _encode_entry_payload(info, working_strings, cm)
 
+    # Pre-calculate room name requirements and extra space needed if relocated
+    rn_enc: bytes | None = None
+    rn_offset = 0
+    next_hdr = 0
+    extra_len = 0
+    if room_name is not None and len(original_bytes) >= 0x0050:
+        room_name_ptr = struct.unpack_from(">I", original_bytes, HDR_ROOM_NAME_PTR)[0]
+        p08 = struct.unpack_from(">I", original_bytes, 0x0008)[0]
+        if room_name_ptr >= RAM_BASE and p08 >= RAM_BASE:
+            rn_offset = room_name_ptr - RAM_BASE
+            next_hdr = p08 - RAM_BASE
+            rn_enc = encode_string(room_name, cm)
+            if rn_offset + len(rn_enc) > next_hdr:
+                extra_len = len(rn_enc) + 4
+
+    effective_allocated = allocated - extra_len
+
     # Sector budget enforcement with progressive condensation
-    if new_data_end > allocated and progressive_shorten and shorten_lines is not None:
+    if new_data_end > effective_allocated and progressive_shorten and shorten_lines is not None:
         # Build map from orig_target to list of string indices to keep duplicates synchronized
         target_to_indices: dict[int, list[int]] = {}
         for i, target in enumerate(info.pointer_offsets):
@@ -591,11 +646,11 @@ def rebuild_inspection_entry(
                     new_pt_offset,
                     new_data_end,
                 ) = _encode_entry_payload(info, working_strings, cm)
-                if new_data_end <= allocated:
+                if new_data_end <= effective_allocated:
                     break
 
         # Pass 2: If still overflowing, shorten strings with > 1 line down to 1 line (longest first)
-        if new_data_end > allocated:
+        if new_data_end > effective_allocated:
             cand_targets_p2 = [
                 t
                 for t, indices in target_to_indices.items()
@@ -616,15 +671,14 @@ def rebuild_inspection_entry(
                         new_pt_offset,
                         new_data_end,
                     ) = _encode_entry_payload(info, working_strings, cm)
-                    if new_data_end <= allocated:
+                    if new_data_end <= effective_allocated:
                         break
 
-    if new_data_end > allocated:
+    if new_data_end > effective_allocated:
         raise ValueError(
             f"Entry {entry_index:#05x} rebuilt data size ({new_data_end} bytes) "
             f"exceeds allocated capacity ({allocated} bytes) by {new_data_end - allocated} bytes"
         )
-
     new_pt_end = new_pt_offset + len(pointer_table_payload)
     trailing_block = info.trailing_block
 
@@ -640,17 +694,17 @@ def rebuild_inspection_entry(
     struct.pack_into(">I", rebuilt, HDR_TRAILING_PTR_1, RAM_BASE + new_pt_end + info.offset_2c_rel)
     struct.pack_into(">I", rebuilt, HDR_TRAILING_PTR_2, RAM_BASE + new_pt_end + info.offset_30_rel)
 
-    # Optionally encode room name if specified (e.g. "БАР" at 0x0044)
-    if room_name is not None and len(original_bytes) >= 0x0050:
-        room_name_ptr = struct.unpack_from(">I", original_bytes, HDR_ROOM_NAME_PTR)[0]
-        if room_name_ptr >= RAM_BASE:
-            rn_offset = room_name_ptr - RAM_BASE
-            rn_enc = encode_string(room_name, cm)
-            # Ensure it fits in the room name slot without colliding with subsequent structures
-            next_hdr = struct.unpack_from(">I", original_bytes, 0x0008)[0] - RAM_BASE
-            if rn_offset + len(rn_enc) <= next_hdr:
-                rebuilt[rn_offset : rn_offset + len(rn_enc)] = rn_enc
-
+    # Encode room name if specified (in-place if fits, otherwise relocated to free space)
+    if rn_enc is not None and rn_offset > 0:
+        if rn_offset + len(rn_enc) <= next_hdr:
+            rebuilt[rn_offset : rn_offset + len(rn_enc)] = rn_enc
+            rebuilt[rn_offset + len(rn_enc) : next_hdr] = b"\x00" * (next_hdr - (rn_offset + len(rn_enc)))
+        else:
+            new_rn_offset = (new_data_end + 3) & ~3
+            if new_rn_offset + len(rn_enc) <= allocated:
+                rebuilt[new_rn_offset : new_rn_offset + len(rn_enc)] = rn_enc
+                struct.pack_into(">I", rebuilt, HDR_ROOM_NAME_PTR, RAM_BASE + new_rn_offset)
+                new_data_end = new_rn_offset + len(rn_enc)
     result = InspectionPatchResult(
         entry_index=entry_index,
         allocated_size=allocated,
@@ -779,11 +833,15 @@ def patch_inspection_entries(
     progressive_shorten: bool = True,
     missing_rooms_doc: dict[str, Any] | None = None,
     source_prog: bytes | None = None,
+    room_names_doc: dict[str, Any] | None = None,
 ) -> list[InspectionPatchResult]:
     """Patch room inspection entries in a PROG.UNT archive in memory."""
     cm = charmap if charmap is not None else DEFAULT_CHARMAP
     entries = read_unt_index(prog_archive)
     results: list[InspectionPatchResult] = []
+
+    if room_names_doc is None and DEFAULT_ROOM_NAMES.is_file():
+        room_names_doc = load_room_names(DEFAULT_ROOM_NAMES)
 
     # Auto-load missing rooms doc if not explicitly provided and default file exists
     if missing_rooms_doc is None and DEFAULT_MISSING_ROOMS.is_file():
@@ -869,11 +927,13 @@ def patch_inspection_entries(
             except Exception:
                 continue
 
+            rn = get_room_name_translation(entry_idx, room_names_doc)
             rebuilt_bytes, result = rebuild_inspection_entry(
                 base_bytes,
                 missing_strings,
                 charmap=cm,
                 entry_index=entry_idx,
+                room_name=rn,
                 allocated_size=entry.size,
                 progressive_shorten=progressive_shorten,
             )
@@ -887,10 +947,22 @@ def patch_inspection_entries(
                 )
             continue
 
+        rn = get_room_name_translation(entry_idx, room_names_doc)
         if orig_info is None:
+            if rn is not None and len(orig_bytes) >= 0x0050:
+                p3c = struct.unpack_from(">I", orig_bytes, HDR_ROOM_NAME_PTR)[0] - RAM_BASE
+                p08 = struct.unpack_from(">I", orig_bytes, 0x08)[0] - RAM_BASE
+                if 0 <= p3c < p08 <= len(orig_bytes):
+                    enc = encode_string(rn, cm)
+                    if len(enc) <= (p08 - p3c):
+                        rebuilt = bytearray(orig_bytes)
+                        rebuilt[p3c : p3c + len(enc)] = enc
+                        rebuilt[p3c + len(enc) : p08] = b"\x00" * (p08 - p3c - len(enc))
+                        patch_unt_entry(prog_archive, entry_idx, rebuilt)
             continue
 
-        translated_strings, room_name = resolve_entry_translations(orig_info, translations_doc)
+        translated_strings, rn_from_trans = resolve_entry_translations(orig_info, translations_doc)
+        room_name = rn or rn_from_trans
         rebuilt_bytes, result = rebuild_inspection_entry(
             orig_bytes,
             translated_strings,
@@ -961,6 +1033,7 @@ def patch_disc_image(
     progressive_shorten: bool = True,
     missing_rooms_doc: dict[str, Any] | None = None,
     source_prog: bytes | None = None,
+    room_names_doc: dict[str, Any] | None = None,
 ) -> list[InspectionPatchResult]:
     """Patch PROG.UNT directly within a PS1 CD-ROM BIN image with EDC/ECC repair."""
     if replace_extent_in_place is None:
@@ -987,6 +1060,7 @@ def patch_disc_image(
         progressive_shorten=progressive_shorten,
         missing_rooms_doc=missing_rooms_doc,
         source_prog=source_prog,
+        room_names_doc=room_names_doc,
     )
 
     replace_extent_in_place(disc_path, prog_lba, bytes(prog_archive))
@@ -1013,6 +1087,12 @@ def main() -> int:
         type=Path,
         default=DEFAULT_MISSING_ROOMS if DEFAULT_MISSING_ROOMS.is_file() else None,
         help="Path to missing_rooms_jp_ru.json containing translations for omitted rooms",
+    )
+    parser.add_argument(
+        "--room-names",
+        type=Path,
+        default=DEFAULT_ROOM_NAMES if DEFAULT_ROOM_NAMES.is_file() else None,
+        help="Path to room_names_ru.json containing Russian location names for room banners",
     )
     parser.add_argument(
         "--source-bin",
@@ -1105,6 +1185,9 @@ def main() -> int:
     if args.source_bin and args.source_bin.is_file():
         source_prog = extract_prog_from_path(args.source_bin)
 
+    room_names_doc: dict[str, Any] | None = None
+    if args.room_names and args.room_names.is_file():
+        room_names_doc = load_room_names(args.room_names)
 
     # Handle BIN image patching
     if args.bin:
@@ -1118,6 +1201,7 @@ def main() -> int:
             verbose=args.verbose,
             missing_rooms_doc=missing_rooms_doc,
             source_prog=source_prog,
+            room_names_doc=room_names_doc,
         )
         print(f"Successfully patched {len(results)} inspection entries in {args.bin}:")
         if not args.verbose:
@@ -1143,6 +1227,7 @@ def main() -> int:
             verbose=args.verbose,
             missing_rooms_doc=missing_rooms_doc,
             source_prog=source_prog,
+            room_names_doc=room_names_doc,
         )
         out_path = args.output if args.output else args.prog
         out_path.write_bytes(archive)

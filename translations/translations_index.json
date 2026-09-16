@@ -158,6 +158,22 @@
       "patcher_tool": "tools/patch_location_banners.py",
       "build_flag": "--banners",
       "validation_command": "python3 tools/patch_location_banners.py --verify"
+    },
+    {
+      "id": "room_names",
+      "file": "translations/room_names_ru.json",
+      "name": "Названия комнат и локаций в верхних плашках",
+      "description": "160 названий локаций и комнат игры, отображаемых в верхней навигационной плашке экрана при исследовании (PROG.UNT 0x059..0x0F8).",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x059..0x0F8 (89..248, 160 записей)",
+      "total_entries": 160,
+      "constraints": {
+        "ram_base": "0x00200000",
+        "header_offset": "0x003C (HDR_ROOM_NAME_PTR)"
+      },
+      "patcher_tool": "tools/patch_inspection.py",
+      "build_flag": "--inspection",
+      "validation_command": "python3 tools/patch_inspection.py --verify"
     }
   ]
 }

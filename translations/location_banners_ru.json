@@ -106,11 +106,11 @@
     "TAVERN": {
       "text_en": "TAVERN",
       "text_ru": "ТАВЕРНА",
-      "font_size": "auto",
+      "font_size": 7,
       "align": "center",
       "offset_x": 0,
       "offset_y": 0,
-      "max_hardware_width_px": 60,
+      "max_hardware_width_px": 56,
       "description": "Таверна"
     },
     "TEMPLE": {

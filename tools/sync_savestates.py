@@ -43,6 +43,15 @@ from tools.patch_town_services import (
     RAM_BASE,
     decode_string,
 )
+from patch_repo.localization import sr_charmap
+from patch_repo.localization.glyphs import BASE_CHAR_TO_GLYPH
+from tools.patch_inspection import (
+    DEFAULT_ROOM_NAMES,
+    HDR_ROOM_NAME_PTR,
+    encode_string,
+    load_charmap,
+    load_room_names,
+)
 
 DEFAULT_BIN = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
 DEFAULT_SAVESTATES_DIR = Path(os.path.expanduser("~/.local/share/duckstation/savestates"))
@@ -107,6 +116,76 @@ def find_entry3_in_payload(decompressed: bytes, entry3_header: bytes) -> int | N
         return new_pos - GREETING_OFFSET_ENTRY3
 
     return None
+def build_room_lookup_to_ru(room_names_doc: dict[str, Any]) -> dict[str, str]:
+    """Build mapping from any known room name (JP or EN) to Russian translated name."""
+    lookup: dict[str, str] = {}
+    for e_key, e_val in room_names_doc.items():
+        if isinstance(e_val, dict):
+            ru = e_val.get("name_ru") or e_val.get("russian") or e_val.get("ru")
+            en = e_val.get("name_en")
+            jp = e_val.get("name_jp")
+            if ru:
+                if en:
+                    lookup[en] = ru
+                if jp:
+                    lookup[jp] = ru
+    return lookup
+
+
+def sync_room_names_in_payload(
+    decomp: bytearray,
+    room_lookup: dict[str, str],
+    cm: dict[str, int],
+) -> list[dict[str, Any]]:
+    """Identify and update any active room entries in emulator RAM payload to Russian names."""
+    updates: list[dict[str, Any]] = []
+    pattern = bytes.fromhex("00000000 00000000 0020")
+    pos = 0
+    jp_cm = sr_charmap.build_charmap()
+    glyph_to_char = {v: k for k, v in BASE_CHAR_TO_GLYPH.items()}
+    ROOM_RAM_BASE = 0x00200000
+
+    while True:
+        p = decomp.find(pattern, pos)
+        if p == -1:
+            break
+        if p + 64 <= len(decomp):
+            p3c = struct.unpack_from(">I", decomp, p + HDR_ROOM_NAME_PTR)[0]
+            p08 = struct.unpack_from(">I", decomp, p + 0x08)[0]
+            if 0x00200000 <= p3c <= 0x00205000 and 0x00200000 <= p08 <= 0x00205000:
+                rn_off = p + (p3c - ROOM_RAM_BASE)
+                words: list[int] = []
+                c = rn_off
+                while c + 2 <= len(decomp):
+                    w = struct.unpack_from(">H", decomp, c)[0]
+                    c += 2
+                    if w == 0x00FF:
+                        break
+                    words.append(w)
+                txt_en = "".join(glyph_to_char.get(w, f"[{hex(w)}]") for w in words)
+                txt_jp = "".join(jp_cm.get(w, f"[{hex(w)}]") for w in words)
+                ru_text = room_lookup.get(txt_en) or room_lookup.get(txt_jp)
+                if ru_text:
+                    enc = encode_string(ru_text, cm)
+                    rel_3c = p3c - ROOM_RAM_BASE
+                    rel_08 = p08 - ROOM_RAM_BASE
+                    if len(enc) <= (rel_08 - rel_3c):
+                        decomp[rn_off : rn_off + len(enc)] = enc
+                        decomp[rn_off + len(enc) : p + rel_08] = b"\x00" * (rel_08 - rel_3c - len(enc))
+                        loc = "in-place"
+                    else:
+                        target_off = 0x0F00
+                        decomp[p + target_off : p + target_off + len(enc)] = enc
+                        struct.pack_into(">I", decomp, p + HDR_ROOM_NAME_PTR, ROOM_RAM_BASE + target_off)
+                        loc = f"relocated@{hex(target_off)}"
+                    updates.append({
+                        "pos": hex(p),
+                        "old_en": txt_en,
+                        "new_ru": ru_text,
+                        "loc": loc,
+                    })
+        pos = p + 1
+    return updates
 
 
 def sync_single_savestate(
@@ -146,27 +225,36 @@ def sync_single_savestate(
 
     entry3_header = entry3_disc[:16]
     entry3_start = find_entry3_in_payload(decomp, entry3_header)
-    if entry3_start is None:
-        result["status"] = "entry3_not_loaded"
-        result["message"] = "Entry 3 not active in RAM (saved outside town)"
+    
+    # Also synchronize room names
+    cm = load_charmap()
+    rn_doc = load_room_names()
+    room_lookup = build_room_lookup_to_ru(rn_doc)
+    room_updates = sync_room_names_in_payload(decomp, room_lookup, cm)
+    result["room_updates"] = room_updates
+
+    if entry3_start is None and not room_updates:
+        result["status"] = "not_loaded"
+        result["message"] = "Neither Entry 3 nor active room in RAM"
         return result
+    if entry3_start is not None:
+        result["entry3_found"] = True
+        result["entry3_offset"] = hex(entry3_start)
+        greeting_pos = entry3_start + GREETING_OFFSET_ENTRY3
 
-    result["entry3_found"] = True
-    result["entry3_offset"] = hex(entry3_start)
-    greeting_pos = entry3_start + GREETING_OFFSET_ENTRY3
+        had_old = decomp[greeting_pos : greeting_pos + len(OLD_GREETING_BYTES)] == OLD_GREETING_BYTES
+        result["had_old_greeting"] = had_old
 
-    had_old = decomp[greeting_pos : greeting_pos + len(OLD_GREETING_BYTES)] == OLD_GREETING_BYTES
-    result["had_old_greeting"] = had_old
+        # Replace Entry 3 in RAM
+        decomp[entry3_start : entry3_start + ENTRY3_SIZE] = entry3_disc
 
-    # Replace Entry 3 in RAM
-    decomp[entry3_start : entry3_start + ENTRY3_SIZE] = entry3_disc
+        has_new = decomp[greeting_pos : greeting_pos + len(NEW_GREETING_BYTES)] == NEW_GREETING_BYTES
+        result["has_new_greeting"] = has_new
 
-    has_new = decomp[greeting_pos : greeting_pos + len(NEW_GREETING_BYTES)] == NEW_GREETING_BYTES
-    result["has_new_greeting"] = has_new
-
-    # Check that old mojibake is eliminated
-    assert OLD_GREETING_BYTES not in decomp, f"Old greeting still present in {sav_path.name}!"
-
+        # Check that old mojibake is eliminated
+        assert OLD_GREETING_BYTES not in decomp, f"Old greeting still present in {sav_path.name}!"
+    else:
+        result["entry3_found"] = False
     if not dry_run:
         # Create backup if requested and .bak doesn't exist
         if backup:

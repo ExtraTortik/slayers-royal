@@ -9,6 +9,7 @@ RU_DIR="$SCRIPT_DIR/localization-output/ru"
 RU_BIN="$RU_DIR/slayers_royal_ru.bin"
 RU_CUE="$RU_DIR/slayers_royal_ru.cue"
 INSPECTION_JSON="$SCRIPT_DIR/translations/room_inspection_ru.json"
+ROOM_NAMES_JSON="$SCRIPT_DIR/translations/room_names_ru.json"
 CARDS_JSON="$SCRIPT_DIR/translations/lore_cards_ru.json"
 COMBAT_JSON="$SCRIPT_DIR/translations/combat_ru.json"
 COMBAT_DIALOGUES_JSON="$SCRIPT_DIR/translations/combat_dialogues_ru.json"
@@ -54,6 +55,8 @@ if [[ "$1" == "--validate" ]]; then
         --workspace "$PATCH_REPO_DIR/localization-work/ru" \
         --locale ru
     echo "[*] Валидация каталога комнат..."
+    echo "[*] Валидация каталога названий комнат и локаций..."
+    python3 -m pytest tools/test_room_names.py -q
     python3 -m pytest tools/test_inspection_translations.py -q
     echo "[✓] Все файлы перевода корректны и не содержат ошибок!"
     echo "[*] Валидация боевого режима..."
@@ -91,7 +94,7 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
     echo "==========================================================="
     echo "[2/2] Накатывание сопутствующих патчей (инспекция, карты, плашки, бой, службы, мини-игры)..."
     echo "==========================================================="
-    python3 "$SCRIPT_DIR/tools/patch_inspection.py" --bin "$RU_BIN" --translations "$INSPECTION_JSON" --all-rooms
+    python3 "$SCRIPT_DIR/tools/patch_inspection.py" --bin "$RU_BIN" --translations "$INSPECTION_JSON" --room-names "$ROOM_NAMES_JSON" --all-rooms
     python3 "$SCRIPT_DIR/tools/patch_lore_cards.py" --disc "$RU_BIN" --cards "$CARDS_JSON"
     python3 "$SCRIPT_DIR/tools/patch_world_map.py" --bin "$RU_BIN" --catalog "$MAP_JSON"
     python3 "$SCRIPT_DIR/tools/patch_location_banners.py" --bin "$RU_BIN" --catalog "$BANNERS_JSON"
@@ -118,6 +121,7 @@ if [[ "$1" == "--quick" || "$1" == "-q" || "$1" == "--inspection" ]]; then
     python3 "$SCRIPT_DIR/tools/patch_inspection.py" \
         --bin "$RU_BIN" \
         --translations "$INSPECTION_JSON" \
+        --room-names "$ROOM_NAMES_JSON" \
         --all-rooms
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
     echo "==========================================================="
@@ -244,6 +248,7 @@ echo "[3/9] Внедрение описаний интерактивных об�
 python3 "$SCRIPT_DIR/tools/patch_inspection.py" \
     --bin "$RU_BIN" \
     --translations "$INSPECTION_JSON" \
+    --room-names "$ROOM_NAMES_JSON" \
     --all-rooms
 
 echo "[4/9] Внедрение энциклопедических карточек персонажей..."

@@ -1,0 +1,1374 @@
+{
+  "metadata": {
+    "title": "Slayers Royal (PS1) - Каталог названий комнат и локаций",
+    "description": "Полный каталог перевода названий комнат и локаций игры (PROG.UNT 0x059..0x0F8, 160 записей).",
+    "source_archive": "PROG.UNT",
+    "entries_range": "0x059..0x0F8 (89..248)",
+    "total_rooms": 160,
+    "unique_locations_count": 48
+  },
+  "unique_locations": {
+    "定食屋": {
+      "ru": "БАР",
+      "en": "BAR",
+      "desc": "Закусочная / бар"
+    },
+    "表通り": {
+      "ru": "ГЛАВНАЯ",
+      "en": "MAIN",
+      "desc": "Главная улица города"
+    },
+    "宿屋": {
+      "ru": "ОТЕЛЬ",
+      "en": "IN",
+      "desc": "Гостиница / отель"
+    },
+    "裏通り": {
+      "ru": "ЗАКОУЛКИ",
+      "en": "BACK",
+      "desc": "Закоулки / переулки города"
+    },
+    "あやしい宿屋": {
+      "ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "en": "ODD IN",
+      "desc": "Подозрительная гостиница"
+    },
+    "イゼルセン北の森": {
+      "ru": "С. ЛЕС ИЗЕЛЬСЕНА",
+      "en": "IZELCEN N FOREST",
+      "desc": "Северный лес Изельсена"
+    },
+    "ガケ": {
+      "ru": "УТЁС",
+      "en": "CLIFF",
+      "desc": "Утёс / скалистый обрыв"
+    },
+    "ガレフの[0x289]れ家": {
+      "ru": "ЛОГОВО ГАЛЕФА",
+      "en": "GALEV DEN",
+      "desc": "Логово Галефа"
+    },
+    "キュ-ザック北の森": {
+      "ru": "С. ЛЕС КЬЮЗАКА",
+      "en": "KUZACK NORTH",
+      "desc": "Северный лес Кьюзака"
+    },
+    "キュ-ザック西": {
+      "ru": "ЗАПАД КЬЮЗАКА",
+      "en": "KUZACK WEST",
+      "desc": "Западная область Кьюзака"
+    },
+    "グラムストック東": {
+      "ru": "В. ГРАМСТОК",
+      "en": "GRAMSTOCK EAST",
+      "desc": "Восточный Грамсток"
+    },
+    "サンブルク東": {
+      "ru": "В. САМБУРГ",
+      "en": "SUNBURG EAST",
+      "desc": "Восточный Самбург"
+    },
+    "セイル-ン東": {
+      "ru": "В. СЕЙРУН",
+      "en": "SEYRUUN EAST",
+      "desc": "Восточный Сейрун"
+    },
+    "セイル-ン王国国境": {
+      "ru": "ГРАНИЦА СЕЙРУНА",
+      "en": "SEYRUUN BORDER",
+      "desc": "Граница королевства Сейрун"
+    },
+    "ソニアmiddle-dotシティ街道": {
+      "ru": "ТРАКТ СОНИИ",
+      "en": "SONIA HWY",
+      "desc": "Тракт города Сония"
+    },
+    "ソニアmiddle-dotシティ裏街道": {
+      "ru": "ЗАКОУЛКИ СОНИИ",
+      "en": "SONIA BACK RD",
+      "desc": "Обходная дорога Сонии"
+    },
+    "トゥ-ルmiddle-dotシティ北": {
+      "ru": "С. ТУР-СИТИ",
+      "en": "TOUL CITY N",
+      "desc": "Север Тур-Сити"
+    },
+    "バ-クランド南の森": {
+      "ru": "Ю. ЛЕС БАРКЛЕНДА",
+      "en": "BARK S FOREST",
+      "desc": "Южный лес Баркленда"
+    },
+    "バ-クランド東の森": {
+      "ru": "В. ЛЕС БАРКЛЕНДА",
+      "en": "BARK E FOREST",
+      "desc": "Восточный лес Баркленда"
+    },
+    "バ-クランド西の森": {
+      "ru": "З. ЛЕС БАРКЛЕНДА",
+      "en": "BARK W FOREST",
+      "desc": "Западный лес Баркленда"
+    },
+    "バザ-": {
+      "ru": "БАЗАР",
+      "en": "BAZ",
+      "desc": "Базар / рынок"
+    },
+    "ラ-クの家": {
+      "ru": "ДОМ ЛАРКА",
+      "en": "LARK",
+      "desc": "Дом Ларка"
+    },
+    "ラルティ-グ王国国境": {
+      "ru": "ГРАНИЦА РАЛЬТИГА",
+      "en": "RALTEAGUE BDR",
+      "desc": "Граница королевства Ральтиг"
+    },
+    "レザリアム城": {
+      "ru": "ЗАМОК ЛЕЗАРИАМ",
+      "en": "LEZARIAM",
+      "desc": "Замок Лезариам"
+    },
+    "倉庫": {
+      "ru": "СКЛАД",
+      "en": "STORE",
+      "desc": "Склад / хранилище"
+    },
+    "古びた洋館": {
+      "ru": "СТАРЫЙ ОСОБНЯК",
+      "en": "MANOR",
+      "desc": "Старинный особняк"
+    },
+    "地下水道": {
+      "ru": "КАНАЛИЗАЦИЯ",
+      "en": "SEWER",
+      "desc": "Подземная канализация"
+    },
+    "大広間": {
+      "ru": "ГЛАВНЫЙ ЗАЛ",
+      "en": "HALL",
+      "desc": "Большой парадный зал"
+    },
+    "宝物庫": {
+      "ru": "СОКРОВИЩНИЦА",
+      "en": "VAULT",
+      "desc": "Сокровищница замка"
+    },
+    "市場": {
+      "ru": "РЫНОК",
+      "en": "MARKET",
+      "desc": "Городской рынок"
+    },
+    "広場": {
+      "ru": "ПЛОЩАДЬ",
+      "en": "PLAZA",
+      "desc": "Городская площадь"
+    },
+    "教会": {
+      "ru": "ЦЕРКОВЬ",
+      "en": "CHURCH",
+      "desc": "Церковь / собор"
+    },
+    "本城通路": {
+      "ru": "КОРИДОР ЗАМКА",
+      "en": "HALL",
+      "desc": "Коридор замка"
+    },
+    "森": {
+      "ru": "ЛЕС",
+      "en": "WOODS",
+      "desc": "Лес / лесная чаща"
+    },
+    "武器屋": {
+      "ru": "ОРУЖЕЙНАЯ",
+      "en": "WPN",
+      "desc": "Оружейная лавка"
+    },
+    "洞穴": {
+      "ru": "ПЕЩЕРА",
+      "en": "CAVE",
+      "desc": "Вход в пещеру"
+    },
+    "洞穴内部": {
+      "ru": "В ПЕЩЕРЕ",
+      "en": "CAVE IN",
+      "desc": "Внутренняя часть пещеры"
+    },
+    "海辺": {
+      "ru": "ПОБЕРЕЖЬЕ",
+      "en": "SEA",
+      "desc": "Морское побережье"
+    },
+    "港": {
+      "ru": "ПРИСТАНЬ",
+      "en": "PORT",
+      "desc": "Портовая пристань"
+    },
+    "王立図書館": {
+      "ru": "БИБЛИОТЕКА",
+      "en": "LIBRARY",
+      "desc": "Королевская библиотека"
+    },
+    "町外れ": {
+      "ru": "ОКРАИНА",
+      "en": "OUT",
+      "desc": "Окраина города"
+    },
+    "町長の家": {
+      "ru": "ДОМ МЭРА",
+      "en": "MAYOR",
+      "desc": "Дом мэра города"
+    },
+    "神殿": {
+      "ru": "ХРАМ",
+      "en": "TEMPLE",
+      "desc": "Святилище / храм"
+    },
+    "路地裏": {
+      "ru": "ПЕРЕУЛОК",
+      "en": "ALLEY",
+      "desc": "Узкий переулок"
+    },
+    "道具屋": {
+      "ru": "ЛАВКА",
+      "en": "ITEM",
+      "desc": "Лавка предметов и снадобьев"
+    },
+    "酒場": {
+      "ru": "ТАВЕРНА",
+      "en": "TAVERN",
+      "desc": "Таверна"
+    },
+    "長老の家": {
+      "ru": "СТАРОСТА",
+      "en": "ELDER",
+      "desc": "Дом старейшины / старосты"
+    },
+    "魔道士協会": {
+      "ru": "ГИЛЬДИЯ МАГОВ",
+      "en": "MAGE GUILD",
+      "desc": "Гильдия магов"
+    }
+  },
+  "entries": {
+    "0x059": {
+      "entry_index": 89,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x05A": {
+      "entry_index": 90,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x05B": {
+      "entry_index": 91,
+      "name_jp": "町外れ",
+      "name_en": "OUT",
+      "name_ru": "ОКРАИНА",
+      "description": "Окраина города"
+    },
+    "0x05C": {
+      "entry_index": 92,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x05D": {
+      "entry_index": 93,
+      "name_jp": "定食屋",
+      "name_en": "BAR",
+      "name_ru": "БАР",
+      "description": "Закусочная / бар"
+    },
+    "0x05E": {
+      "entry_index": 94,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x05F": {
+      "entry_index": 95,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x060": {
+      "entry_index": 96,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x061": {
+      "entry_index": 97,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x062": {
+      "entry_index": 98,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x063": {
+      "entry_index": 99,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x064": {
+      "entry_index": 100,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x065": {
+      "entry_index": 101,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x066": {
+      "entry_index": 102,
+      "name_jp": "武器屋",
+      "name_en": "WPN",
+      "name_ru": "ОРУЖЕЙНАЯ",
+      "description": "Оружейная лавка"
+    },
+    "0x067": {
+      "entry_index": 103,
+      "name_jp": "森",
+      "name_en": "WOODS",
+      "name_ru": "ЛЕС",
+      "description": "Лес / лесная чаща"
+    },
+    "0x068": {
+      "entry_index": 104,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x069": {
+      "entry_index": 105,
+      "name_jp": "長老の家",
+      "name_en": "ELDER",
+      "name_ru": "СТАРОСТА",
+      "description": "Дом старейшины / старосты"
+    },
+    "0x06A": {
+      "entry_index": 106,
+      "name_jp": "長老の家",
+      "name_en": "ELDER",
+      "name_ru": "СТАРОСТА",
+      "description": "Дом старейшины / старосты"
+    },
+    "0x06B": {
+      "entry_index": 107,
+      "name_jp": "洞穴",
+      "name_en": "CAVE",
+      "name_ru": "ПЕЩЕРА",
+      "description": "Вход в пещеру"
+    },
+    "0x06C": {
+      "entry_index": 108,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x06D": {
+      "entry_index": 109,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x06E": {
+      "entry_index": 110,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x06F": {
+      "entry_index": 111,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x070": {
+      "entry_index": 112,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x071": {
+      "entry_index": 113,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x072": {
+      "entry_index": 114,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x073": {
+      "entry_index": 115,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x074": {
+      "entry_index": 116,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x075": {
+      "entry_index": 117,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x076": {
+      "entry_index": 118,
+      "name_jp": "洞穴内部",
+      "name_en": "CAVE IN",
+      "name_ru": "В ПЕЩЕРЕ",
+      "description": "Внутренняя часть пещеры"
+    },
+    "0x077": {
+      "entry_index": 119,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x078": {
+      "entry_index": 120,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x079": {
+      "entry_index": 121,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x07A": {
+      "entry_index": 122,
+      "name_jp": "港",
+      "name_en": "PORT",
+      "name_ru": "ПРИСТАНЬ",
+      "description": "Портовая пристань"
+    },
+    "0x07B": {
+      "entry_index": 123,
+      "name_jp": "路地裏",
+      "name_en": "ALLEY",
+      "name_ru": "ПЕРЕУЛОК",
+      "description": "Узкий переулок"
+    },
+    "0x07C": {
+      "entry_index": 124,
+      "name_jp": "倉庫",
+      "name_en": "STORE",
+      "name_ru": "СКЛАД",
+      "description": "Склад / хранилище"
+    },
+    "0x07D": {
+      "entry_index": 125,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x07E": {
+      "entry_index": 126,
+      "name_jp": "魔道士協会",
+      "name_en": "MAGE GUILD",
+      "name_ru": "ГИЛЬДИЯ МАГОВ",
+      "description": "Гильдия магов"
+    },
+    "0x07F": {
+      "entry_index": 127,
+      "name_jp": "魔道士協会",
+      "name_en": "MAGE GUILD",
+      "name_ru": "ГИЛЬДИЯ МАГОВ",
+      "description": "Гильдия магов"
+    },
+    "0x080": {
+      "entry_index": 128,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x081": {
+      "entry_index": 129,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x082": {
+      "entry_index": 130,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x083": {
+      "entry_index": 131,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x084": {
+      "entry_index": 132,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x085": {
+      "entry_index": 133,
+      "name_jp": "武器屋",
+      "name_en": "WPN",
+      "name_ru": "ОРУЖЕЙНАЯ",
+      "description": "Оружейная лавка"
+    },
+    "0x086": {
+      "entry_index": 134,
+      "name_jp": "教会",
+      "name_en": "CHURCH",
+      "name_ru": "ЦЕРКОВЬ",
+      "description": "Церковь / собор"
+    },
+    "0x087": {
+      "entry_index": 135,
+      "name_jp": "教会",
+      "name_en": "CHURCH",
+      "name_ru": "ЦЕРКОВЬ",
+      "description": "Церковь / собор"
+    },
+    "0x088": {
+      "entry_index": 136,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x089": {
+      "entry_index": 137,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x08A": {
+      "entry_index": 138,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x08B": {
+      "entry_index": 139,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x08C": {
+      "entry_index": 140,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x08D": {
+      "entry_index": 141,
+      "name_jp": "ラ-クの家",
+      "name_en": "LARK[0x0]",
+      "name_ru": "ДОМ ЛАРКА",
+      "description": "Дом Ларка"
+    },
+    "0x08E": {
+      "entry_index": 142,
+      "name_jp": "ラ-クの家",
+      "name_en": "LARK[0x0]",
+      "name_ru": "ДОМ ЛАРКА",
+      "description": "Дом Ларка"
+    },
+    "0x08F": {
+      "entry_index": 143,
+      "name_jp": "ガケ",
+      "name_en": "CLIFF",
+      "name_ru": "УТЁС",
+      "description": "Утёс / скалистый обрыв"
+    },
+    "0x090": {
+      "entry_index": 144,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x091": {
+      "entry_index": 145,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x092": {
+      "entry_index": 146,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x093": {
+      "entry_index": 147,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x094": {
+      "entry_index": 148,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x095": {
+      "entry_index": 149,
+      "name_jp": "あやしい宿屋",
+      "name_en": "ODD IN",
+      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "description": "Подозрительная гостиница"
+    },
+    "0x096": {
+      "entry_index": 150,
+      "name_jp": "あやしい宿屋",
+      "name_en": "ODD IN",
+      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "description": "Подозрительная гостиница"
+    },
+    "0x097": {
+      "entry_index": 151,
+      "name_jp": "あやしい宿屋",
+      "name_en": "ODD IN",
+      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "description": "Подозрительная гостиница"
+    },
+    "0x098": {
+      "entry_index": 152,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x099": {
+      "entry_index": 153,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x09A": {
+      "entry_index": 154,
+      "name_jp": "あやしい宿屋",
+      "name_en": "ODD IN",
+      "name_ru": "ТЁМНЫЙ ОТЕЛЬ",
+      "description": "Подозрительная гостиница"
+    },
+    "0x09B": {
+      "entry_index": 155,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x09C": {
+      "entry_index": 156,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x09D": {
+      "entry_index": 157,
+      "name_jp": "町外れ",
+      "name_en": "OUT",
+      "name_ru": "ОКРАИНА",
+      "description": "Окраина города"
+    },
+    "0x09E": {
+      "entry_index": 158,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x09F": {
+      "entry_index": 159,
+      "name_jp": "市場",
+      "name_en": "MARKET",
+      "name_ru": "РЫНОК",
+      "description": "Городской рынок"
+    },
+    "0x0A0": {
+      "entry_index": 160,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0A1": {
+      "entry_index": 161,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0A2": {
+      "entry_index": 162,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0A3": {
+      "entry_index": 163,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x0A4": {
+      "entry_index": 164,
+      "name_jp": "町長の家",
+      "name_en": "MAYOR",
+      "name_ru": "ДОМ МЭРА",
+      "description": "Дом мэра города"
+    },
+    "0x0A5": {
+      "entry_index": 165,
+      "name_jp": "町長の家",
+      "name_en": "MAYOR",
+      "name_ru": "ДОМ МЭРА",
+      "description": "Дом мэра города"
+    },
+    "0x0A6": {
+      "entry_index": 166,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x0A7": {
+      "entry_index": 167,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x0A8": {
+      "entry_index": 168,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x0A9": {
+      "entry_index": 169,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x0AA": {
+      "entry_index": 170,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0AB": {
+      "entry_index": 171,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0AC": {
+      "entry_index": 172,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0AD": {
+      "entry_index": 173,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0AE": {
+      "entry_index": 174,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0AF": {
+      "entry_index": 175,
+      "name_jp": "バザ-",
+      "name_en": "BAZ",
+      "name_ru": "БАЗАР",
+      "description": "Базар / рынок"
+    },
+    "0x0B0": {
+      "entry_index": 176,
+      "name_jp": "バザ-",
+      "name_en": "BAZ",
+      "name_ru": "БАЗАР",
+      "description": "Базар / рынок"
+    },
+    "0x0B1": {
+      "entry_index": 177,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0B2": {
+      "entry_index": 178,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0B3": {
+      "entry_index": 179,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0B4": {
+      "entry_index": 180,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0B5": {
+      "entry_index": 181,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x0B6": {
+      "entry_index": 182,
+      "name_jp": "武器屋",
+      "name_en": "WPN",
+      "name_ru": "ОРУЖЕЙНАЯ",
+      "description": "Оружейная лавка"
+    },
+    "0x0B7": {
+      "entry_index": 183,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x0B8": {
+      "entry_index": 184,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x0B9": {
+      "entry_index": 185,
+      "name_jp": "広場",
+      "name_en": "PLAZA",
+      "name_ru": "ПЛОЩАДЬ",
+      "description": "Городская площадь"
+    },
+    "0x0BA": {
+      "entry_index": 186,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0BB": {
+      "entry_index": 187,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0BC": {
+      "entry_index": 188,
+      "name_jp": "王立図書館",
+      "name_en": "LIBRARY",
+      "name_ru": "БИБЛИОТЕКА",
+      "description": "Королевская библиотека"
+    },
+    "0x0BD": {
+      "entry_index": 189,
+      "name_jp": "王立図書館",
+      "name_en": "LIBRARY",
+      "name_ru": "БИБЛИОТЕКА",
+      "description": "Королевская библиотека"
+    },
+    "0x0BE": {
+      "entry_index": 190,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0BF": {
+      "entry_index": 191,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x0C0": {
+      "entry_index": 192,
+      "name_jp": "武器屋",
+      "name_en": "WPN",
+      "name_ru": "ОРУЖЕЙНАЯ",
+      "description": "Оружейная лавка"
+    },
+    "0x0C1": {
+      "entry_index": 193,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x0C2": {
+      "entry_index": 194,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x0C3": {
+      "entry_index": 195,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0C4": {
+      "entry_index": 196,
+      "name_jp": "森",
+      "name_en": "WOODS",
+      "name_ru": "ЛЕС",
+      "description": "Лес / лесная чаща"
+    },
+    "0x0C5": {
+      "entry_index": 197,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0C6": {
+      "entry_index": 198,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x0C7": {
+      "entry_index": 199,
+      "name_jp": "表通り",
+      "name_en": "MAIN",
+      "name_ru": "ГЛАВНАЯ",
+      "description": "Главная улица города"
+    },
+    "0x0C8": {
+      "entry_index": 200,
+      "name_jp": "裏通り",
+      "name_en": "BACK",
+      "name_ru": "ЗАКОУЛКИ",
+      "description": "Закоулки / переулки города"
+    },
+    "0x0C9": {
+      "entry_index": 201,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0CA": {
+      "entry_index": 202,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x0CB": {
+      "entry_index": 203,
+      "name_jp": "神殿",
+      "name_en": "TEMPLE",
+      "name_ru": "ХРАМ",
+      "description": "Святилище / храм"
+    },
+    "0x0CC": {
+      "entry_index": 204,
+      "name_jp": "地下水道",
+      "name_en": "SEWER",
+      "name_ru": "КАНАЛИЗАЦИЯ",
+      "description": "Подземная канализация"
+    },
+    "0x0CD": {
+      "entry_index": 205,
+      "name_jp": "地下水道",
+      "name_en": "SEWER",
+      "name_ru": "КАНАЛИЗАЦИЯ",
+      "description": "Подземная канализация"
+    },
+    "0x0CE": {
+      "entry_index": 206,
+      "name_jp": "森",
+      "name_en": "WOODS",
+      "name_ru": "ЛЕС",
+      "description": "Лес / лесная чаща"
+    },
+    "0x0CF": {
+      "entry_index": 207,
+      "name_jp": "酒場",
+      "name_en": "TAVERN",
+      "name_ru": "ТАВЕРНА",
+      "description": "Таверна"
+    },
+    "0x0D0": {
+      "entry_index": 208,
+      "name_jp": "道具屋",
+      "name_en": "ITEM",
+      "name_ru": "ЛАВКА",
+      "description": "Лавка предметов и снадобьев"
+    },
+    "0x0D1": {
+      "entry_index": 209,
+      "name_jp": "宿屋",
+      "name_en": "IN",
+      "name_ru": "ОТЕЛЬ",
+      "description": "Гостиница / отель"
+    },
+    "0x0D2": {
+      "entry_index": 210,
+      "name_jp": "レザリアム城",
+      "name_en": "LEZARIAM",
+      "name_ru": "ЗАМОК ЛЕЗАРИАМ",
+      "description": "Замок Лезариам"
+    },
+    "0x0D3": {
+      "entry_index": 211,
+      "name_jp": "本城通路",
+      "name_en": "HALL",
+      "name_ru": "КОРИДОР ЗАМКА",
+      "description": "Коридор замка"
+    },
+    "0x0D4": {
+      "entry_index": 212,
+      "name_jp": "宝物庫",
+      "name_en": "VAULT",
+      "name_ru": "СОКРОВИЩНИЦА",
+      "description": "Сокровищница замка"
+    },
+    "0x0D5": {
+      "entry_index": 213,
+      "name_jp": "大広間",
+      "name_en": "HALL",
+      "name_ru": "ГЛАВНЫЙ ЗАЛ",
+      "description": "Большой парадный зал"
+    },
+    "0x0D6": {
+      "entry_index": 214,
+      "name_jp": "海辺",
+      "name_en": "SEA",
+      "name_ru": "ПОБЕРЕЖЬЕ",
+      "description": "Морское побережье"
+    },
+    "0x0D7": {
+      "entry_index": 215,
+      "name_jp": "大広間",
+      "name_en": "HALL",
+      "name_ru": "ГЛАВНЫЙ ЗАЛ",
+      "description": "Большой парадный зал"
+    },
+    "0x0D8": {
+      "entry_index": 216,
+      "name_jp": "バ-クランド東の森",
+      "name_en": "BARK E FOREST",
+      "name_ru": "В. ЛЕС БАРКЛЕНДА",
+      "description": "Восточный лес Баркленда"
+    },
+    "0x0D9": {
+      "entry_index": 217,
+      "name_jp": "バ-クランド西の森",
+      "name_en": "BARK W FOREST",
+      "name_ru": "З. ЛЕС БАРКЛЕНДА",
+      "description": "Западный лес Баркленда"
+    },
+    "0x0DA": {
+      "entry_index": 218,
+      "name_jp": "グラムストック東",
+      "name_en": "GRAMSTOCK EAST",
+      "name_ru": "В. ГРАМСТОК",
+      "description": "Восточный Грамсток"
+    },
+    "0x0DB": {
+      "entry_index": 219,
+      "name_jp": "ソニアmiddle-dotシティ街道",
+      "name_en": "SONIA HWY",
+      "name_ru": "ТРАКТ СОНИИ",
+      "description": "Тракт города Сония"
+    },
+    "0x0DC": {
+      "entry_index": 220,
+      "name_jp": "ソニアmiddle-dotシティ裏街道",
+      "name_en": "SONIA BACK RD",
+      "name_ru": "ЗАКОУЛКИ СОНИИ",
+      "description": "Обходная дорога Сонии"
+    },
+    "0x0DD": {
+      "entry_index": 221,
+      "name_jp": "ソニアmiddle-dotシティ裏街道",
+      "name_en": "SONIA BACK RD",
+      "name_ru": "ЗАКОУЛКИ СОНИИ",
+      "description": "Обходная дорога Сонии"
+    },
+    "0x0DE": {
+      "entry_index": 222,
+      "name_jp": "バ-クランド南の森",
+      "name_en": "BARK S FOREST",
+      "name_ru": "Ю. ЛЕС БАРКЛЕНДА",
+      "description": "Южный лес Баркленда"
+    },
+    "0x0DF": {
+      "entry_index": 223,
+      "name_jp": "イゼルセン北の森",
+      "name_en": "IZELCEN N FOREST",
+      "name_ru": "С. ЛЕС ИЗЕЛЬСЕНА",
+      "description": "Северный лес Изельсена"
+    },
+    "0x0E0": {
+      "entry_index": 224,
+      "name_jp": "イゼルセン北の森",
+      "name_en": "IZELCEN N FOREST",
+      "name_ru": "С. ЛЕС ИЗЕЛЬСЕНА",
+      "description": "Северный лес Изельсена"
+    },
+    "0x0E1": {
+      "entry_index": 225,
+      "name_jp": "セイル-ン王国国境",
+      "name_en": "SEYRUUN BORDER",
+      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "description": "Граница королевства Сейрун"
+    },
+    "0x0E2": {
+      "entry_index": 226,
+      "name_jp": "セイル-ン王国国境",
+      "name_en": "SEYRUUN BORDER",
+      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "description": "Граница королевства Сейрун"
+    },
+    "0x0E3": {
+      "entry_index": 227,
+      "name_jp": "セイル-ン王国国境",
+      "name_en": "SEYRUUN BORDER",
+      "name_ru": "ГРАНИЦА СЕЙРУНА",
+      "description": "Граница королевства Сейрун"
+    },
+    "0x0E4": {
+      "entry_index": 228,
+      "name_jp": "キュ-ザック西",
+      "name_en": "KUZACK WEST",
+      "name_ru": "ЗАПАД КЬЮЗАКА",
+      "description": "Западная область Кьюзака"
+    },
+    "0x0E5": {
+      "entry_index": 229,
+      "name_jp": "グラムストック東",
+      "name_en": "GRAMSTOCK EAST",
+      "name_ru": "В. ГРАМСТОК",
+      "description": "Восточный Грамсток"
+    },
+    "0x0E6": {
+      "entry_index": 230,
+      "name_jp": "グラムストック東",
+      "name_en": "GRAMSTOCK EAST",
+      "name_ru": "В. ГРАМСТОК",
+      "description": "Восточный Грамсток"
+    },
+    "0x0E7": {
+      "entry_index": 231,
+      "name_jp": "キュ-ザック北の森",
+      "name_en": "KUZACK NORTH",
+      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "description": "Северный лес Кьюзака"
+    },
+    "0x0E8": {
+      "entry_index": 232,
+      "name_jp": "キュ-ザック北の森",
+      "name_en": "KUZACK NORTH",
+      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "description": "Северный лес Кьюзака"
+    },
+    "0x0E9": {
+      "entry_index": 233,
+      "name_jp": "キュ-ザック北の森",
+      "name_en": "KUZACK NORTH",
+      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "description": "Северный лес Кьюзака"
+    },
+    "0x0EA": {
+      "entry_index": 234,
+      "name_jp": "キュ-ザック北の森",
+      "name_en": "KUZACK NORTH",
+      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "description": "Северный лес Кьюзака"
+    },
+    "0x0EB": {
+      "entry_index": 235,
+      "name_jp": "キュ-ザック北の森",
+      "name_en": "KUZACK NORTH",
+      "name_ru": "С. ЛЕС КЬЮЗАКА",
+      "description": "Северный лес Кьюзака"
+    },
+    "0x0EC": {
+      "entry_index": 236,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0ED": {
+      "entry_index": 237,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0EE": {
+      "entry_index": 238,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0EF": {
+      "entry_index": 239,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0F0": {
+      "entry_index": 240,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0F1": {
+      "entry_index": 241,
+      "name_jp": "古びた洋館",
+      "name_en": "MANOR",
+      "name_ru": "СТАРЫЙ ОСОБНЯК",
+      "description": "Старинный особняк"
+    },
+    "0x0F2": {
+      "entry_index": 242,
+      "name_jp": "ガレフの[0x289]れ家",
+      "name_en": "GALEV DEN",
+      "name_ru": "ЛОГОВО ГАЛЕФА",
+      "description": "Логово Галефа"
+    },
+    "0x0F3": {
+      "entry_index": 243,
+      "name_jp": "セイル-ン東",
+      "name_en": "SEYRUUN EAST",
+      "name_ru": "В. СЕЙРУН",
+      "description": "Восточный Сейрун"
+    },
+    "0x0F4": {
+      "entry_index": 244,
+      "name_jp": "ラルティ-グ王国国境",
+      "name_en": "RALTEAGUE BDR",
+      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "description": "Граница королевства Ральтиг"
+    },
+    "0x0F5": {
+      "entry_index": 245,
+      "name_jp": "ラルティ-グ王国国境",
+      "name_en": "RALTEAGUE BDR",
+      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "description": "Граница королевства Ральтиг"
+    },
+    "0x0F6": {
+      "entry_index": 246,
+      "name_jp": "ラルティ-グ王国国境",
+      "name_en": "RALTEAGUE BDR",
+      "name_ru": "ГРАНИЦА РАЛЬТИГА",
+      "description": "Граница королевства Ральтиг"
+    },
+    "0x0F7": {
+      "entry_index": 247,
+      "name_jp": "サンブルク東",
+      "name_en": "SUNBURG EAST",
+      "name_ru": "В. САМБУРГ",
+      "description": "Восточный Самбург"
+    },
+    "0x0F8": {
+      "entry_index": 248,
+      "name_jp": "トゥ-ルmiddle-dotシティ北",
+      "name_en": "TOUL CITY N",
+      "name_ru": "С. ТУР-СИТИ",
+      "description": "Север Тур-Сити"
+    }
+  }
+}
