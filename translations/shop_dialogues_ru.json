@@ -1385,7 +1385,7 @@
       "pointer_offset_hex": "0x030A54",
       "offset_hex": "0x0305DC",
       "text_jp": "知力",
-      "text_ru": "Интеллект"
+      "text_ru": "Разум"
     },
     {
       "index": 14,
@@ -1399,7 +1399,7 @@
       "pointer_offset_hex": "0x030A5C",
       "offset_hex": "0x0305EC",
       "text_jp": "やる気",
-      "text_ru": "Боевой дух"
+      "text_ru": "Дух"
     },
     {
       "index": 16,
@@ -1441,21 +1441,21 @@
       "pointer_offset_hex": "0x030A74",
       "offset_hex": "0x030614",
       "text_jp": "ライトスチ-ル",
-      "text_ru": "Лёгкая сталь"
+      "text_ru": "Л.Сталь"
     },
     {
       "index": 22,
       "pointer_offset_hex": "0x030A78",
       "offset_hex": "0x030624",
       "text_jp": "ドラゴンのうろこ",
-      "text_ru": "Чешуя дракона"
+      "text_ru": "Чеш.Драк"
     },
     {
       "index": 23,
       "pointer_offset_hex": "0x030A7C",
       "offset_hex": "0x030638",
       "text_jp": "マジックコットン",
-      "text_ru": "Магический хлопок"
+      "text_ru": "М.Хлопок"
     },
     {
       "index": 24,
@@ -1469,35 +1469,35 @@
       "pointer_offset_hex": "0x030A84",
       "offset_hex": "0x030660",
       "text_jp": "クリスタルシルク",
-      "text_ru": "Кристальный шёлк"
+      "text_ru": "Кр.Шёлк"
     },
     {
       "index": 26,
       "pointer_offset_hex": "0x030A88",
       "offset_hex": "0x030674",
       "text_jp": "大ガメのこうら",
-      "text_ru": "Панцирь черепахи"
+      "text_ru": "Панцирь"
     },
     {
       "index": 27,
       "pointer_offset_hex": "0x030A8C",
       "offset_hex": "0x030684",
       "text_jp": "ワイバ-ンのはね",
-      "text_ru": "Крыло виверны"
+      "text_ru": "Кр.Вивер"
     },
     {
       "index": 28,
       "pointer_offset_hex": "0x030A90",
       "offset_hex": "0x030698",
       "text_jp": "ラ-ジャドラゴン",
-      "text_ru": "Раджа-дракон"
+      "text_ru": "Р-Дракон"
     },
     {
       "index": 29,
       "pointer_offset_hex": "0x030A94",
       "offset_hex": "0x0306AC",
       "text_jp": "魔法石",
-      "text_ru": "Магический камень"
+      "text_ru": "Маг.кам"
     },
     {
       "index": 30,
@@ -1518,70 +1518,70 @@
       "pointer_offset_hex": "0x030AA0",
       "offset_hex": "0x0306D4",
       "text_jp": "ライトソ-ド",
-      "text_ru": "Меч Света"
+      "text_ru": "МечСвета"
     },
     {
       "index": 33,
       "pointer_offset_hex": "0x030AA4",
       "offset_hex": "0x0306E4",
       "text_jp": "クレイソ-ド",
-      "text_ru": "Глиняный меч"
+      "text_ru": "Глин.меч"
     },
     {
       "index": 34,
       "pointer_offset_hex": "0x030AA8",
       "offset_hex": "0x0306F4",
       "text_jp": "マスタ-ソ-ド",
-      "text_ru": "Мастер-меч"
+      "text_ru": "Маст.меч"
     },
     {
       "index": 35,
       "pointer_offset_hex": "0x030AAC",
       "offset_hex": "0x030704",
       "text_jp": "高そうな剣",
-      "text_ru": "Дорогой меч"
+      "text_ru": "Дор.меч"
     },
     {
       "index": 36,
       "pointer_offset_hex": "0x030AB0",
       "offset_hex": "0x030710",
       "text_jp": "ロングソ-ド",
-      "text_ru": "Длинный меч"
+      "text_ru": "Длин.меч"
     },
     {
       "index": 37,
       "pointer_offset_hex": "0x030AB4",
       "offset_hex": "0x030720",
       "text_jp": "エルフの魔法剣",
-      "text_ru": "Эльфийский меч"
+      "text_ru": "Эльф.меч"
     },
     {
       "index": 38,
       "pointer_offset_hex": "0x030AB8",
       "offset_hex": "0x030730",
       "text_jp": "エルメキアソ-ド",
-      "text_ru": "Меч Эльмеки"
+      "text_ru": "Эльмекия"
     },
     {
       "index": 39,
       "pointer_offset_hex": "0x030ABC",
       "offset_hex": "0x030744",
       "text_jp": "ライトソ-ド",
-      "text_ru": "Меч Света"
+      "text_ru": "МечСвета"
     },
     {
       "index": 40,
       "pointer_offset_hex": "0x030AC0",
       "offset_hex": "0x030754",
       "text_jp": "ヘビ-ソ-ド",
-      "text_ru": "Тяжёлый меч"
+      "text_ru": "Тяж.меч"
     },
     {
       "index": 41,
       "pointer_offset_hex": "0x030AC4",
       "offset_hex": "0x030764",
       "text_jp": "バスタ-ソ-ド",
-      "text_ru": "Меч-бастард"
+      "text_ru": "Бастард"
     },
     {
       "index": 42,
@@ -1595,7 +1595,7 @@
       "pointer_offset_hex": "0x030ACC",
       "offset_hex": "0x03077C",
       "text_jp": "おやじのかたみ",
-      "text_ru": "Память об отце"
+      "text_ru": "Память"
     },
     {
       "index": 44,
@@ -1616,14 +1616,14 @@
       "pointer_offset_hex": "0x030AD8",
       "offset_hex": "0x03079C",
       "text_jp": "ミラ-ジュナイフ",
-      "text_ru": "Миражный кинжал"
+      "text_ru": "Мираж"
     },
     {
       "index": 47,
       "pointer_offset_hex": "0x030ADC",
       "offset_hex": "0x0307B0",
       "text_jp": "ショ-トソ-ド",
-      "text_ru": "Короткий меч"
+      "text_ru": "Кор.меч"
     },
     {
       "index": 48,
@@ -1644,21 +1644,21 @@
       "pointer_offset_hex": "0x030AE8",
       "offset_hex": "0x0307D0",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 51,
       "pointer_offset_hex": "0x030AEC",
       "offset_hex": "0x0307E4",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 52,
       "pointer_offset_hex": "0x030AF0",
       "offset_hex": "0x0307F8",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 53,
@@ -1686,35 +1686,35 @@
       "pointer_offset_hex": "0x030B00",
       "offset_hex": "0x030824",
       "text_jp": "とげのマント",
-      "text_ru": "Шипастый плащ"
+      "text_ru": "Шип.плащ"
     },
     {
       "index": 57,
       "pointer_offset_hex": "0x030B04",
       "offset_hex": "0x030834",
       "text_jp": "どくろの首飾り",
-      "text_ru": "Ожерелье с черепом"
+      "text_ru": "Ож.Череп"
     },
     {
       "index": 58,
       "pointer_offset_hex": "0x030B08",
       "offset_hex": "0x030844",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 59,
       "pointer_offset_hex": "0x030B0C",
       "offset_hex": "0x030858",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 60,
       "pointer_offset_hex": "0x030B10",
       "offset_hex": "0x03086C",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 61,
@@ -1742,42 +1742,42 @@
       "pointer_offset_hex": "0x030B20",
       "offset_hex": "0x0308BC",
       "text_jp": "白いほうい",
-      "text_ru": "Белое одеяние"
+      "text_ru": "Бел.роба"
     },
     {
       "index": 65,
       "pointer_offset_hex": "0x030B24",
       "offset_hex": "0x0308C8",
       "text_jp": "白いほうい",
-      "text_ru": "Белое одеяние"
+      "text_ru": "Бел.роба"
     },
     {
       "index": 66,
       "pointer_offset_hex": "0x030B28",
       "offset_hex": "0x0308D4",
       "text_jp": "白いほうい",
-      "text_ru": "Белое одеяние"
+      "text_ru": "Бел.роба"
     },
     {
       "index": 67,
       "pointer_offset_hex": "0x030B2C",
       "offset_hex": "0x0308E0",
       "text_jp": "白いマント",
-      "text_ru": "Белый плащ"
+      "text_ru": "Бел.плащ"
     },
     {
       "index": 68,
       "pointer_offset_hex": "0x030B30",
       "offset_hex": "0x0308EC",
       "text_jp": "白いマント",
-      "text_ru": "Белый плащ"
+      "text_ru": "Бел.плащ"
     },
     {
       "index": 69,
       "pointer_offset_hex": "0x030B34",
       "offset_hex": "0x0308F8",
       "text_jp": "白いマント",
-      "text_ru": "Белый плащ"
+      "text_ru": "Бел.плащ"
     },
     {
       "index": 70,
@@ -1805,63 +1805,63 @@
       "pointer_offset_hex": "0x030B44",
       "offset_hex": "0x03091C",
       "text_jp": "ほしのリング",
-      "text_ru": "Звёздное кольцо"
+      "text_ru": "Зв.перст"
     },
     {
       "index": 74,
       "pointer_offset_hex": "0x030B48",
       "offset_hex": "0x03092C",
       "text_jp": "ほしのリング",
-      "text_ru": "Звёздное кольцо"
+      "text_ru": "Зв.перст"
     },
     {
       "index": 75,
       "pointer_offset_hex": "0x030B4C",
       "offset_hex": "0x03093C",
       "text_jp": "ほしのリング",
-      "text_ru": "Звёздное кольцо"
+      "text_ru": "Зв.перст"
     },
     {
       "index": 76,
       "pointer_offset_hex": "0x030B50",
       "offset_hex": "0x03094C",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 77,
       "pointer_offset_hex": "0x030B54",
       "offset_hex": "0x030960",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 78,
       "pointer_offset_hex": "0x030B58",
       "offset_hex": "0x030974",
       "text_jp": "ショルダ-ガ-ド",
-      "text_ru": "Наплечники"
+      "text_ru": "Наплечн."
     },
     {
       "index": 79,
       "pointer_offset_hex": "0x030B5C",
       "offset_hex": "0x030988",
       "text_jp": "神官のマント",
-      "text_ru": "Плащ жреца"
+      "text_ru": "Пл.жреца"
     },
     {
       "index": 80,
       "pointer_offset_hex": "0x030B60",
       "offset_hex": "0x030998",
       "text_jp": "神官のマント",
-      "text_ru": "Плащ жреца"
+      "text_ru": "Пл.жреца"
     },
     {
       "index": 81,
       "pointer_offset_hex": "0x030B64",
       "offset_hex": "0x0309A8",
       "text_jp": "神官のマント",
-      "text_ru": "Плащ жреца"
+      "text_ru": "Пл.жреца"
     },
     {
       "index": 82,
@@ -1910,21 +1910,21 @@
       "pointer_offset_hex": "0x030B80",
       "offset_hex": "0x0309F4",
       "text_jp": "宿屋のチップ",
-      "text_ru": "Жетон гостиницы"
+      "text_ru": "Жетон"
     },
     {
       "index": 89,
       "pointer_offset_hex": "0x030B84",
       "offset_hex": "0x030A04",
       "text_jp": "高そうな像",
-      "text_ru": "Дорогая статуэтка"
+      "text_ru": "Статуя"
     },
     {
       "index": 90,
       "pointer_offset_hex": "0x030B88",
       "offset_hex": "0x030A10",
       "text_jp": "魔道士協会の本",
-      "text_ru": "Книга Гильдии магов"
+      "text_ru": "Кн.Магов"
     }
   ]
 }

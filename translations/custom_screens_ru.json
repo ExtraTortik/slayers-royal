@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "title": "Slayers Royal (PS1) — Каталог пользовательских экранов (OPT.UNT и PROG.UNT)",
+    "description": "Полный каталог графических экранов игры: OPT.UNT 203 (Бесконечная игра), 221 (Ход), 225 (Старт) и PROG.UNT 323 (Game Over / Конец игры).",
+    "target_archives": [
+      {
+        "name": "OPT.UNT",
+        "lba": 226000
+      },
+      {
+        "name": "PROG.UNT",
+        "lba": 229020
+      }
+    ],
+    "total_screens": 4
+  },
+  "screens": [
+    {
+      "id": "turn",
+      "entry_index": 203,
+      "hex_index": "0xCB",
+      "archive": "OPT.UNT",
+      "archive_lba": 226000,
+      "sector_offset": 2713,
+      "lba": 228713,
+      "sectors": 1,
+      "budget": 2048,
+      "width": 64,
+      "height": 16,
+      "bpp": 4,
+      "vram_x": 640,
+      "vram_y": 448,
+      "vram_w_words": 16,
+      "clut_x": 0,
+      "clut_y": 497,
+      "clut_colors": 16,
+      "compressed": false,
+      "name_en": "TURN",
+      "name_ru": "ХОД",
+      "aliases": [
+        "opt_203_64x16_uncompressed.png",
+        "opt_203.png",
+        "203.png",
+        "turn.png"
+      ]
+    },
+    {
+      "id": "unlimited_play",
+      "entry_index": 221,
+      "hex_index": "0xDD",
+      "archive": "OPT.UNT",
+      "archive_lba": 226000,
+      "sector_offset": 2916,
+      "lba": 228916,
+      "sectors": 3,
+      "budget": 6144,
+      "width": 80,
+      "height": 64,
+      "bpp": 8,
+      "vram_x": 960,
+      "vram_y": 0,
+      "vram_w_words": 40,
+      "clut_x": 0,
+      "clut_y": 489,
+      "clut_colors": 256,
+      "compressed": false,
+      "name_en": "UNLIMITED PLAY",
+      "name_ru": "БЕСКОНЕЧНАЯ ИГРА",
+      "aliases": [
+        "opt_221_80x64_uncompressed.png",
+        "opt_221.png",
+        "221.png",
+        "unlimited_play.png"
+      ]
+    },
+    {
+      "id": "start",
+      "entry_index": 225,
+      "hex_index": "0xE1",
+      "archive": "OPT.UNT",
+      "archive_lba": 226000,
+      "sector_offset": 2926,
+      "lba": 228926,
+      "sectors": 1,
+      "budget": 2048,
+      "width": 64,
+      "height": 16,
+      "bpp": 4,
+      "vram_x": 1000,
+      "vram_y": 0,
+      "vram_w_words": 16,
+      "clut_x": 0,
+      "clut_y": 490,
+      "clut_colors": 16,
+      "compressed": false,
+      "name_en": "START",
+      "name_ru": "СТАРТ",
+      "aliases": [
+        "opt_225_64x16_uncompressed.png",
+        "opt_225.png",
+        "225.png",
+        "start.png"
+      ]
+    },
+    {
+      "id": "game_over",
+      "entry_index": 323,
+      "hex_index": "0x143",
+      "archive": "PROG.UNT",
+      "archive_lba": 229020,
+      "sector_offset": 4182,
+      "lba": 233202,
+      "sectors": 5,
+      "budget": 10240,
+      "width": 320,
+      "height": 240,
+      "bpp": 8,
+      "vram_x": 0,
+      "vram_y": 0,
+      "vram_w_words": 160,
+      "clut_x": 0,
+      "clut_y": 480,
+      "clut_colors": 256,
+      "compressed": true,
+      "compression_algo": "unt_lz mode 1",
+      "name_en": "GAME OVER",
+      "name_ru": "КОНЕЦ ИГРЫ",
+      "aliases": [
+        "prog_323_320x240_decomp_0x0.png",
+        "prog_323.png",
+        "323.png",
+        "game_over.png"
+      ]
+    }
+  ]
+}

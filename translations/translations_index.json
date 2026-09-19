@@ -3,11 +3,11 @@
   "metadata": {
     "title": "Slayers Royal (PS1) — Единый реестр каталогов локализации",
     "version": "1.0",
-    "description": "Сводный индекс всех 9 каталогов локализации в translations/: сюжет, бой, интерактивные комнаты, мини-игры, городские службы, диалоги магазинов, справочные карточки, карта мира и вывески локаций.",
+    "description": "Сводный индекс всех 14 каталогов локализации в translations/: сюжет, бой, интерактивные комнаты, мини-игры, городские службы, диалоги магазинов, справочные карточки, карта мира, вывески локаций, названия комнат, меню выбора мини-игр, меню бонусов, карты городов и пользовательские экраны.",
     "target_disc": "slayers_royal_ru.bin",
     "locale": "ru",
-    "total_catalogs": 9,
-    "last_updated": "2026-09-14"
+    "total_catalogs": 14,
+    "last_updated": "2026-09-19"
   },
   "catalogs": [
     {
@@ -174,6 +174,70 @@
       "patcher_tool": "tools/patch_inspection.py",
       "build_flag": "--inspection",
       "validation_command": "python3 tools/patch_inspection.py --verify"
+    },
+    {
+      "id": "minigames_menu",
+      "file": "translations/minigames_menu_ru.json",
+      "name": "Меню выбора мини-игр",
+      "description": "Графические плашки и вывески меню выбора всех 7 мини-игр (включая Slot Machine и Knight & Monster) и подсказок меню в OPT.UNT (17 записей: 152..158, 159..168, 4bpp TIM).",
+      "target_archive": "OPT.UNT",
+      "target_entries": "152..168 (17 записей, LBA 226000, секторы 2506..2522)",
+      "total_entries": 17,
+      "constraints": {
+        "format": "4bpp TIM, нежатые секторы 2048 байт",
+        "clut_colors": "Цвет 0x8000 (индекс 15, непрозрачный чёрный), цвет 1 (светлая фаска)"
+      },
+      "patcher_tool": "tools/patch_minigames_menu.py",
+      "build_flag": "--minigames-menu",
+      "validation_command": "python3 tools/patch_minigames_menu.py --verify"
+    },
+    {
+      "id": "bonus_menu",
+      "file": "translations/bonus_menu_ru.json",
+      "name": "Меню бонусов и главное меню",
+      "description": "Графические заголовки разделов бонусной комнаты (РОЛИКИ, ЗВУК, МИНИ-ИГРЫ, ПОМОЩЬ) в OPT.UNT (записи 143..146, 4bpp TIM) и элементы главного меню (СТАРТ, ЗАГРУЗКА, БОНУС).",
+      "target_archive": "OPT.UNT",
+      "target_entries": "143..146 (4 записи, LBA 226000, секторы 2458..2461)",
+      "total_entries": 7,
+      "constraints": {
+        "format": "4bpp TIM, нежатые секторы 2048 байт",
+        "font": "PressStart2P.ttf, белый цвет (индекс 1) и тёмная обводка (индекс 15)"
+      },
+      "patcher_tool": "tools/patch_bonus_menu.py",
+      "build_flag": "--bonus-menu, --title-menu",
+      "validation_command": "python3 tools/patch_bonus_menu.py --verify"
+    },
+    {
+      "id": "town_maps",
+      "file": "translations/town_maps_ru.json",
+      "name": "Иллюстрации карт городов",
+      "description": "Иллюстрации карт всех 10 городов в BASYOG.UNT (записи 467..476, 224x168, 8bpp TIM, LZSS mode 1) с возможностью пользовательской замены.",
+      "target_archive": "BASYOG.UNT",
+      "target_entries": "467..476 (10 записей, LBA 240141..240276, секторы 6813..6948)",
+      "total_entries": 10,
+      "constraints": {
+        "format": "8bpp TIM (224x168), 256-color CLUT at VRAM cx=0, cy=480, LZSS mode 1 (unt_lz)",
+        "budget": "Строго в пределах выделенного количества секторов (12..16 секторов на запись)"
+      },
+      "patcher_tool": "tools/patch_town_maps.py",
+      "build_flag": "--town-maps, --maps",
+      "validation_command": "python3 tools/patch_town_maps.py --verify"
+    },
+    {
+      "id": "custom_screens",
+      "file": "translations/custom_screens_ru.json",
+      "name": "Пользовательские экраны (Game Over, Ход, Старт, Бесконечная игра)",
+      "description": "Графические экраны игры в OPT.UNT (записи 203, 221, 225) и PROG.UNT (запись 323, Game Over) с поддержкой замены, квантования и сжатия unt_lz.",
+      "target_archive": "OPT.UNT, PROG.UNT",
+      "target_entries": "OPT 203, 221, 225; PROG 323 (4 записи, LBA 228713, 228916, 228926, 233202)",
+      "total_entries": 4,
+      "constraints": {
+        "format": "OPT 203 (4bpp, 64x16), OPT 221 (8bpp, 80x64), OPT 225 (4bpp, 64x16), PROG 323 (8bpp, 320x240, LZSS mode 1)",
+        "budget": "OPT 203 (1 сектор, 2048 B), OPT 221 (3 сектора, 6144 B), OPT 225 (1 сектор, 2048 B), PROG 323 (5 секторов, 10240 B)"
+      },
+      "patcher_tool": "tools/patch_custom_screens.py",
+      "build_flag": "--custom-screens, --screens",
+      "validation_command": "python3 tools/patch_custom_screens.py --verify"
     }
   ]
 }

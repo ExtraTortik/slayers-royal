@@ -56,10 +56,13 @@ DEFAULT_TARGET_BIN = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_r
 PROG_LBA = 229020
 PROG_SECTOR_MAP_DATA = 89
 PROG_SECTOR_MAP_PTRS = 93
+PROG_SECTOR_1606 = 1606
+PROG_SECTOR_1607 = 1607
 
 SECTOR_89_LBA = PROG_LBA + PROG_SECTOR_MAP_DATA  # 229109
 SECTOR_93_LBA = PROG_LBA + PROG_SECTOR_MAP_PTRS  # 229113
-
+SECTOR_1606_LBA = PROG_LBA + PROG_SECTOR_1606  # 230626
+SECTOR_1607_LBA = PROG_LBA + PROG_SECTOR_1607  # 230627
 SECTOR_89_TABLE_OFFSET = 0x05FC
 SECTOR_89_SAFE_END = 0x07C6  # Crucial system jump table starts at 0x07C6 and must be preserved!
 MAX_TABLE_BYTES = SECTOR_89_SAFE_END - SECTOR_89_TABLE_OFFSET  # 458 bytes
@@ -73,6 +76,16 @@ NUM_LOCATIONS = 20
 RAM_BASE = 0x8005BDB0
 TABLE_START_IN_ENTRY = SECTOR_89_TABLE_OFFSET  # 0x05FC
 
+RAM_BASE_1606 = 0x800805B0
+RAM_BASE_1607 = 0x80080DB0
+
+SECTOR_1606_T1_OFFSET = 0x0150
+SECTOR_1606_T1_PTR_OFFSET = 0x0388
+SECTOR_1606_T1_PTR_COUNT = 34
+
+SECTOR_1606_T2_OFFSET = 0x06C4
+SECTOR_1607_T2_PTR_OFFSET = 0x00DC
+SECTOR_1607_T2_PTR_COUNT = 30
 DELIMITER = 0x00FF
 # Canonical system jump table and SPU/loader pointers at 0x07C6..0x0800 (58 bytes).
 # Present in both JP and EN retail images; must be strictly preserved for CD-ROM interrupts to function!
@@ -380,103 +393,266 @@ def patch_world_map_font_glyphs(bin_path: Path | str, ttf_path: Path | None = No
     replace_extent_in_place(p, PROG_LBA + raw_sec_num, bytes(raw_extent))
     return len(STACKED_GLYPHS)
 
-def patch_world_map_sector_1606(bin_path: Path | str) -> int:
-    """Patch Sector 1606 (LBA 230626) in PROG.UNT to write full Russian names for world map banners.
+SPECIAL_GLYPH_NAMES: dict[int, str] = {
+    0x028A: "НД",
+    0x028C: "НТ",
+    0x028D: "ОК",
+    0x028B: "РЕГ",
+    0x029C: "ИОН",
+    0x02B6: "ТУР-СИТИ",
+    0x02C7: "МАРК-УЭЛЛС",
+    0x02D3: "ЛЕЗАРИАМ",
+}
 
-    - Table 1 (0x150..0x20F, 12 slots of 16B) and Table 2 (0x6C4..0x783, 12 slots of 16B):
-        Slot 0: ЛЕЙКВУД
-        Slot 1: БАРКЛЕНД (with НД ligature 0x028A)
-        Slot 2: ГРАМСТОК (with ОК ligature 0x028D)
-        Slot 3: СОНИЯ
-        Slot 4: МАРК-УЭЛЛС (0x02C7)
-        Slot 5: ИЗЕЛЬСЕН (ИЗЕЛЬС.)
-        Slot 6: ФРИГРАНТ (with НТ ligature 0x028C)
-        Slot 7: КЬЮЗАК
-        Slot 8: СЕЙРУН
-        Slot 9: САНБУРГ
-        Slot 10: ТУР-СИТИ (0x02B6)
-        Slot 11: ЛЕЗАРИАМ (0x02D3)
-    - Road and area location labels (0x204..0x380, 21 fixed-offset slots).
+TOWN_SLOTS_TABLE_1: list[tuple[int, list[str | int]]] = [
+    (0, ["Л", "Е", "Й", "К", "В", "У", "Д"]),
+    (1, ["Б", "А", "Р", "К", "Л", "Е", 0x028A]),
+    (2, ["Г", "Р", "А", "М", "С", "Т", 0x028D]),
+    (3, ["С", "О", "Н", "И", "Я"]),
+    (4, [0x02C7]),
+    (5, ["И", "З", "Е", "Л", "Ь", "С", "Е", "Н"]),
+    (6, ["Ф", "Р", "И", "Г", "Р", "А", 0x028C]),
+    (7, ["К", "Ь", "Ю", "З", "А", "К"]),
+    (8, ["С", "Е", "Й", "Р", "У", "Н"]),
+    (9, ["С", "А", "Н", "Б", "У", "Р", "Г"]),
+    (10, [0x02B6]),
+    (11, [0x02D3]),
+]
+
+ROAD_SLOTS_TABLE_1: list[tuple[int, str | list[int]]] = [
+    (12, "ВОСТ.БАРК"),
+    (13, "ЗАП. БАРК"),
+    (14, "ВОСТ.ГРАМ"),
+    (15, "ШОССЕ СОН"),
+    (16, "ТРОПА СОНИИ"),
+    (17, "ТРОПА СОНИИ"),
+    (18, "ЮЖН. БАРК"),
+    (19, "ВОСТ.БАРК"),
+    (20, "СЕВ.ИЗЕЛЬ"),
+    (21, "ГР.СЕЙРУН"),
+    (22, "З.КЬЮЗ."),
+    (23, "СЕВ.ФРИГР."),
+    (24, "ЮГ СЕЙР"),
+    (25, "С.КЬЮЗ."),
+    (26, "В.СЕЙР."),
+    (27, "ГР.РАЛЬТИГ"),
+    (28, "В.САНБ."),
+    (29, "С.ТУР-СИТ"),
+    (30, [0x028B, 0x029C]),
+    (31, "ДОРОГ"),
+    (32, [0x028B]),
+]
+
+TABLE_1_ITEMS = TOWN_SLOTS_TABLE_1 + ROAD_SLOTS_TABLE_1
+TABLE_2_ITEMS = TOWN_SLOTS_TABLE_1 + ROAD_SLOTS_TABLE_1[:18]
+
+
+def encode_location_entry(
+    item: str | list[str | int], charmap: dict[str, int] | None = None
+) -> bytes:
+    """Encode a single location entry (string or list of chars/glyphs) to 16-bit LE words delimited by DELIMITER."""
+    cm = charmap if charmap is not None else DEFAULT_CHARMAP
+    if isinstance(item, str):
+        words = [cm[c] for c in item]
+    else:
+        words = [cm[c] if isinstance(c, str) else c for c in item]
+    words.append(DELIMITER)
+    return struct.pack(f"<{len(words)}H", *words)
+
+
+def decode_location_entry(
+    data: bytes, offset: int, charmap: dict[str, int] | None = None
+) -> str:
+    """Decode a single 16-bit LE word string from data starting at offset until DELIMITER."""
+    cm = charmap if charmap is not None else DEFAULT_CHARMAP
+    rev_map = get_reverse_charmap(cm)
+    chars: list[str] = []
+    curr = offset
+    while curr + 2 <= len(data):
+        val = struct.unpack_from("<H", data, curr)[0]
+        if val == DELIMITER:
+            break
+        if val in SPECIAL_GLYPH_NAMES:
+            chars.append(SPECIAL_GLYPH_NAMES[val])
+        else:
+            chars.append(rev_map.get(val, f"[{val:04X}]"))
+        curr += 2
+    return "".join(chars)
+
+
+def patch_world_map_sectors_1606_1607(
+    bin_path: Path | str,
+    charmap: dict[str, int] | None = None,
+    update_secondary: bool = True,
+) -> int:
+    """Patch Sector 1606 (LBA 230626) and Sector 1607 (LBA 230627) in PROG.UNT.
+
+    Layout:
+    - Table 1 (0x150..0x388 in Sector 1606): 12 towns + 21 roads/suffixes = 33 strings.
+    - Table 1 pointers (0x388..0x410 in Sector 1606): 34 pointers.
+      * 0x388: Pointer to town 0 (Lakewood): 0x800805B0 + t1_offsets[0]
+      * 0x38C: Pointer to town 0 (Lakewood): 0x800805B0 + t1_offsets[0]
+      * 0x390: Pointer to town 1 (Barkland): 0x800805B0 + t1_offsets[1]
+      * 0x394..0x3B8: Pointers to towns 2..11: 0x800805B0 + t1_offsets[2..11]
+      * 0x3BC..0x40C: Pointers to roads/suffixes 12..32: 0x800805B0 + t1_offsets[12..32]
+    - Table 2 (0x6C4 in Sector 1606 crossing into Sector 1607): 12 towns + 18 roads = 30 strings.
+    - Table 2 pointers (0x0DC..0x154 in Sector 1607): 30 pointers (0x800805B0 + t2_offsets[idx]).
+
+    Recalculates Mode 2 Form 1 EDC/ECC for both sectors.
+    Also updates secondary disc if patch_repo/localization-output/ru/slayers_royal_ru.bin exists.
     """
     p = Path(bin_path)
-    sec1606_lba = PROG_LBA + 1606
-    sec1606 = bytearray(read_extent(p, sec1606_lba, USER_DATA_SIZE))
+    sec1606 = bytearray(read_extent(p, SECTOR_1606_LBA, USER_DATA_SIZE))
+    sec1607 = bytearray(read_extent(p, SECTOR_1607_LBA, USER_DATA_SIZE))
 
-    CM = DEFAULT_CHARMAP
+    # 1. Table 1 layout at 0x150 in Sector 1606
+    cur_off = SECTOR_1606_T1_OFFSET
+    t1_offsets: list[int] = []
+    for idx, item in TABLE_1_ITEMS:
+        enc = encode_location_entry(item, charmap)
+        t1_offsets.append(cur_off)
+        sec1606[cur_off : cur_off + len(enc)] = enc
+        cur_off += len(enc)
 
-    def make_slot(chars: list[str | int]) -> bytes:
-        words = [CM[c] if isinstance(c, str) else c for c in chars]
-        words.append(DELIMITER)
-        b = bytearray(struct.pack(f"<{len(words)}H", *words))
-        pad = 16 - len(b)
-        if pad > 0:
-            b.extend(b"\x00" * pad)
-        return bytes(b[:16])
+    if cur_off > SECTOR_1606_T1_PTR_OFFSET:
+        raise ValueError(
+            f"Table 1 size overflow: cur_off 0x{cur_off:04X} > 0x{SECTOR_1606_T1_PTR_OFFSET:04X}"
+        )
+    sec1606[cur_off:SECTOR_1606_T1_PTR_OFFSET] = b"\x00" * (
+        SECTOR_1606_T1_PTR_OFFSET - cur_off
+    )
 
-    # 12 Town slots for Table 1 and Table 2
-    town_slots_data = [
-        (0, ["Л", "Е", "Й", "К", "В", "У", "Д"]),
-        (1, ["Б", "А", "Р", "К", "Л", "Е", 0x028A]),
-        (2, ["Г", "Р", "А", "М", "С", "Т", 0x028D]),
-        (3, ["С", "О", "Н", "И", "Я"]),
-        (4, [0x02C7]),
-        (5, ["И", "З", "Е", "Л", "Ь", "С", "."]),
-        (6, ["Ф", "Р", "И", "Г", "Р", "А", 0x028C]),
-        (7, ["К", "Ь", "Ю", "З", "А", "К"]),
-        (8, ["С", "Е", "Й", "Р", "У", "Н"]),
-        (9, ["С", "А", "Н", "Б", "У", "Р", "Г"]),
-        (10, [0x02B6]),
-        (11, [0x02D3]),
-    ]
+    # 2. Table 1 pointers: 34 pointers at 0x388..0x410 in Sector 1606
+    t1_ptrs: list[int] = [
+        RAM_BASE_1606 + t1_offsets[0],
+        RAM_BASE_1606 + t1_offsets[0],
+    ] + [RAM_BASE_1606 + t1_offsets[i] for i in range(1, 33)]
+    if len(t1_ptrs) != SECTOR_1606_T1_PTR_COUNT:
+        raise ValueError(
+            f"Expected {SECTOR_1606_T1_PTR_COUNT} Table 1 pointers, got {len(t1_ptrs)}"
+        )
+    struct.pack_into(
+        f"<{SECTOR_1606_T1_PTR_COUNT}I", sec1606, SECTOR_1606_T1_PTR_OFFSET, *t1_ptrs
+    )
 
-    for idx, chars in town_slots_data:
-        slot_bytes = make_slot(chars)
-        t1_off = 0x150 + idx * 16
-        t2_off = 0x6C4 + idx * 16
-        t1_len = 4 if idx == 11 else 16
-        sec1606[t1_off : t1_off + t1_len] = slot_bytes[:t1_len]
-        sec1606[t2_off : t2_off + 16] = slot_bytes
+    # 3. Table 2 layout at 0x6C4 in Sector 1606 crossing into Sector 1607
+    buf = bytearray(sec1606 + sec1607)
+    cur_off_t2 = SECTOR_1606_T2_OFFSET
+    t2_offsets: list[int] = []
+    for idx, item in TABLE_2_ITEMS:
+        enc = encode_location_entry(item, charmap)
+        t2_offsets.append(cur_off_t2)
+        buf[cur_off_t2 : cur_off_t2 + len(enc)] = enc
+        cur_off_t2 += len(enc)
 
-    # 21 Road/area slots between 0x204 and 0x380
-    road_slots = [
-        (0x204, 20, "ВОСТ.БАРК"),
-        (0x218, 20, "ЗАП. БАРК"),
-        (0x22C, 20, "ВОСТ.ГРАМ"),
-        (0x240, 20, "ШОССЕ СОН"),
-        (0x254, 24, "ТРОПА СОНИИ"),
-        (0x26C, 24, "ТРОПА СОНИИ"),
-        (0x284, 20, "ЮЖН. БАРК"),
-        (0x298, 20, "ВОСТ.БАРК"),
-        (0x2AC, 20, "СЕВ.ИЗЕЛЬ"),
-        (0x2C0, 20, "ГР.СЕЙРУН"),
-        (0x2D4, 16, "З.КЬЮЗ."),
-        (0x2E4, 24, "СЕВ.ФРИГР."),
-        (0x2FC, 16, "ЮГ СЕЙР"),
-        (0x30C, 16, "С.КЬЮЗ."),
-        (0x31C, 16, "В.СЕЙР."),
-        (0x32C, 24, "ГР.РАЛЬТИГ"),
-        (0x344, 16, "В.САНБ."),
-        (0x354, 20, "С.ТУР-СИТ"),
-        (0x368, 8, [0x028B, 0x029C]),
-        (0x370, 12, "ДОРОГ"),
-        (0x37C, 4, [0x028B]),
-    ]
+    t2_ptr_abs_limit = USER_DATA_SIZE + SECTOR_1607_T2_PTR_OFFSET
+    if cur_off_t2 > t2_ptr_abs_limit:
+        raise ValueError(
+            f"Table 2 size overflow: cur_off_t2 0x{cur_off_t2:04X} > 0x{t2_ptr_abs_limit:04X}"
+        )
+    buf[cur_off_t2:t2_ptr_abs_limit] = b"\x00" * (t2_ptr_abs_limit - cur_off_t2)
 
-    for off, max_b, item in road_slots:
-        if isinstance(item, list):
-            words = list(item)
-        else:
-            words = [CM[c] for c in item]
-        words.append(DELIMITER)
-        b = bytearray(struct.pack(f"<{len(words)}H", *words))
-        pad = max_b - len(b)
-        if pad > 0:
-            b.extend(b"\x00" * pad)
-        sec1606[off : off + max_b] = b[:max_b]
+    sec1606 = buf[:USER_DATA_SIZE]
+    sec1607 = buf[USER_DATA_SIZE : USER_DATA_SIZE * 2]
 
-    replace_extent_in_place(p, sec1606_lba, bytes(sec1606))
-    return len(town_slots_data) + len(road_slots)
+    # 4. Table 2 pointers: 30 pointers at 0x0DC..0x154 in Sector 1607
+    t2_ptrs: list[int] = [RAM_BASE_1606 + off for off in t2_offsets]
+    if len(t2_ptrs) != SECTOR_1607_T2_PTR_COUNT:
+        raise ValueError(
+            f"Expected {SECTOR_1607_T2_PTR_COUNT} Table 2 pointers, got {len(t2_ptrs)}"
+        )
+    struct.pack_into(
+        f"<{SECTOR_1607_T2_PTR_COUNT}I", sec1607, SECTOR_1607_T2_PTR_OFFSET, *t2_ptrs
+    )
 
+    # 5. Write to target disc with EDC/ECC recalculated
+    replace_extent_in_place(p, SECTOR_1606_LBA, bytes(sec1606))
+    replace_extent_in_place(p, SECTOR_1607_LBA, bytes(sec1607))
+
+    # 6. Update secondary disc if requested and present
+    if update_secondary:
+        alt_bin = REPO_ROOT / "patch_repo" / "localization-output" / "ru" / "slayers_royal_ru.bin"
+        if alt_bin.is_file() and alt_bin.resolve() != p.resolve():
+            try:
+                replace_extent_in_place(alt_bin, SECTOR_1606_LBA, bytes(sec1606))
+                replace_extent_in_place(alt_bin, SECTOR_1607_LBA, bytes(sec1607))
+            except Exception as exc:
+                print(f"Warning: Could not update secondary disc {alt_bin}: {exc}", file=sys.stderr)
+
+    return len(TABLE_1_ITEMS) + len(TABLE_2_ITEMS)
+
+
+patch_world_map_sector_1606 = patch_world_map_sectors_1606_1607
+
+
+def verify_world_map_sectors_1606_1607(
+    bin_path: Path | str,
+    charmap: dict[str, int] | None = None,
+) -> dict[str, Any]:
+    """Verify Sector 1606 and Sector 1607 pointers, strings, and EDC/ECC."""
+    p = Path(bin_path)
+    if not p.is_file():
+        raise FileNotFoundError(f"BIN image not found: {p}")
+
+    checksums = CdChecksums()
+    with p.open("rb") as handle:
+        for lba in (SECTOR_1606_LBA, SECTOR_1607_LBA):
+            handle.seek(lba * RAW_SECTOR_SIZE)
+            raw_sec = handle.read(RAW_SECTOR_SIZE)
+            if len(raw_sec) != RAW_SECTOR_SIZE:
+                raise ValueError(f"Failed to read complete raw sector at LBA {lba}")
+            assert raw_sec[0x818:0x81C] == checksums.compute_edc(raw_sec[0x10:0x818]), (
+                f"Mode 2 Form 1 EDC checksum mismatch at LBA {lba}"
+            )
+            assert raw_sec[0x81C:0x8C8] == checksums.compute_ecc(raw_sec[0x10:], 86, 24, 2, 86), (
+                f"Mode 2 Form 1 ECC P-parity mismatch at LBA {lba}"
+            )
+            assert raw_sec[0x8C8:0x930] == checksums.compute_ecc(raw_sec[0x10:], 52, 43, 86, 88), (
+                f"Mode 2 Form 1 ECC Q-parity mismatch at LBA {lba}"
+            )
+
+    sec1606 = read_extent(p, SECTOR_1606_LBA, USER_DATA_SIZE)
+    sec1607 = read_extent(p, SECTOR_1607_LBA, USER_DATA_SIZE)
+
+    # Check Table 1 pointers
+    t1_ptrs = struct.unpack_from(f"<{SECTOR_1606_T1_PTR_COUNT}I", sec1606, SECTOR_1606_T1_PTR_OFFSET)
+    t1_strings: list[str] = []
+    for idx, ptr in enumerate(t1_ptrs):
+        rel = ptr - RAM_BASE_1606
+        assert SECTOR_1606_T1_OFFSET <= rel < SECTOR_1606_T1_PTR_OFFSET, (
+            f"Table 1 pointer [{idx}] out of range: 0x{ptr:08X} (rel: 0x{rel:04X})"
+        )
+        s = decode_location_entry(sec1606, rel, charmap)
+        assert len(s) > 0, f"Table 1 pointer [{idx}] points to empty string"
+        t1_strings.append(s)
+
+    assert t1_strings[6] == "ИЗЕЛЬСЕН", f"Expected 'ИЗЕЛЬСЕН' at 0x3A0, got '{t1_strings[6]}'"
+    assert t1_strings[7] == "ФРИГРАНТ", f"Expected 'ФРИГРАНТ' at 0x3A4, got '{t1_strings[7]}'"
+
+    # Check Table 2 pointers
+    buf = sec1606 + sec1607
+    t2_ptrs = struct.unpack_from(f"<{SECTOR_1607_T2_PTR_COUNT}I", sec1607, SECTOR_1607_T2_PTR_OFFSET)
+    t2_strings: list[str] = []
+    for idx, ptr in enumerate(t2_ptrs):
+        rel = ptr - RAM_BASE_1606
+        assert SECTOR_1606_T2_OFFSET <= rel < USER_DATA_SIZE + SECTOR_1607_T2_PTR_OFFSET, (
+            f"Table 2 pointer [{idx}] out of range: 0x{ptr:08X} (rel: 0x{rel:04X})"
+        )
+        s = decode_location_entry(buf, rel, charmap)
+        assert len(s) > 0, f"Table 2 pointer [{idx}] points to empty string"
+        t2_strings.append(s)
+
+    return {
+        "verified": True,
+        "sector_1606_lba": SECTOR_1606_LBA,
+        "sector_1607_lba": SECTOR_1607_LBA,
+        "t1_pointers_count": len(t1_ptrs),
+        "t2_pointers_count": len(t2_ptrs),
+        "iselsen": t1_strings[6],
+        "frigrant": t1_strings[7],
+        "t1_strings": t1_strings,
+        "t2_strings": t2_strings,
+    }
 
 def verify_world_map_bin(
     bin_path: Path | str,
@@ -553,6 +729,8 @@ def verify_world_map_bin(
     assert sec89[SECTOR_89_SAFE_END:] != b"\x00" * (USER_DATA_SIZE - SECTOR_89_SAFE_END), (
         "Sector 89 system jump table at 0x07C6 was corrupted with zeroes!"
     )
+    # 7. Verify Sector 1606 and Sector 1607
+    sec1606_1607_report = verify_world_map_sectors_1606_1607(p, charmap)
 
     return {
         "verified": True,
@@ -567,6 +745,7 @@ def verify_world_map_bin(
         "first_location": decoded[0],
         "second_location": decoded[1],
         "pointers_sample": [f"0x{ptr:08X}" for ptr in actual_pointers[:4]],
+        "sector_1606_1607": sec1606_1607_report,
     }
 
 
@@ -601,7 +780,7 @@ def patch_world_map_bin(
     # 3. Patch stacked location glyphs (ЛЕЙК/ВУД, БАРК/ЛЕНД, РЕГИОН) in font TIM
     patched_glyphs_count = patch_world_map_font_glyphs(p)
     # 4. Patch Sector 1606 banner strings (full-size ЛЕЙКВУД, БАРКЛЕНД, etc.)
-    patch_world_map_sector_1606(p)
+    patch_world_map_sectors_1606_1607(p, charmap=charmap)
 
     result = {
         "patched": True,

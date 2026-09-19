@@ -119,6 +119,13 @@ class TestShopCatalog(unittest.TestCase):
                 jp_match,
                 f"Untranslated Japanese characters in shop item {idx}: '{item['text_ru']}'",
             )
+
+        for idx, item in enumerate(items):
+            self.assertLessEqual(
+                len(item["text_ru"]),
+                8,
+                f"Shop item {idx} ('{item['text_ru']}') exceeds 8 chars limit for inventory display!",
+            )
     def test_stat_column_widths_and_overlay_positioning(self):
         items = self.data.get("shop_items", [])
         expected_compact_stats = {

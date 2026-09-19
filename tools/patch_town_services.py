@@ -160,6 +160,11 @@ SHOP_ITEMS_TABLE_START = 0x030A20
 SHOP_ITEMS_COUNT = 91
 SHOP_ITEMS_TABLE_END = SHOP_ITEMS_TABLE_START + SHOP_ITEMS_COUNT * 4  # 0x030B8C
 
+# Inventory window header in Entry 3 (Japanese: "もってるもの" -> Russian: "ВЕЩИ")
+INVENTORY_HEADER_OFFSET = 0x0303A0
+INVENTORY_HEADER_MAX_BYTES = 16
+INVENTORY_HEADER_TEXT_RU = "ВЕЩИ"
+
 CYRILLIC_HEX_NORMALIZE = str.maketrans({
     "А": "A", "а": "a",
     "В": "B", "в": "b",
@@ -291,11 +296,18 @@ def encode_string(
 
 def decode_string(
     raw: bytes,
-    rev_charmap: Mapping[int, str] | None = None,
+    rev_charmap: Mapping[int, str] | Mapping[str, int] | None = None,
     stop_at_terminator: bool = True,
 ) -> str:
     """Decode Slayers Royal 16-bit little-endian stream into Unicode text."""
-    rev = rev_charmap if rev_charmap is not None else REVERSE_CHARMAP
+    if rev_charmap is None:
+        rev: Mapping[int, str] = REVERSE_CHARMAP
+    else:
+        first_k = next(iter(rev_charmap.keys()), None)
+        if isinstance(first_k, str):
+            rev = {v: k for k, v in rev_charmap.items()}
+        else:
+            rev = rev_charmap
     chars: list[str] = []
     n = len(raw) // 2
     words = struct.unpack_from(f"<{n}H", raw)
@@ -573,6 +585,19 @@ def patch_menu_typography(
 
     return report
 
+def patch_inventory_header(
+    buf: bytearray,
+    charmap: Mapping[str, int] | None = None,
+) -> bytearray:
+    """Patch inventory window header ("ВЕЩИ" at 0x0303A0 replacing Japanese "もってるもの")."""
+    cm = charmap if charmap is not None else build_authoritative_vram_charmap()
+    words = [cm[c] for c in INVENTORY_HEADER_TEXT_RU] + [DELIMITER]
+    raw_bytes = struct.pack(f"<{len(words)}H", *words)
+    padded = raw_bytes + b"\x00" * (INVENTORY_HEADER_MAX_BYTES - len(raw_bytes))
+    buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES] = padded
+    return buf
+
+
 def patch_shop_dialogues_buffer(
     buf: bytearray,
     shop_catalog: dict[str, Any],
@@ -597,6 +622,10 @@ def patch_shop_dialogues_buffer(
         "relocated_count": 0,
         "modified_offsets": [],
     }
+    # Patch inventory window header ("ВЕЩИ" at 0x0303A0)
+    patch_inventory_header(buf, cm)
+    report["modified_offsets"].append(f"0x{INVENTORY_HEADER_OFFSET:06X}")
+
 
     dialogues = shop_catalog.get("dialogues")
     if dialogues is None and "shop_dialogue" in shop_catalog:
@@ -733,6 +762,10 @@ def patch_entry3_buffer(
         "pointer_updates": {},
         "string_allocations": {},
     }
+
+    # Patch inventory window header ("ВЕЩИ" replacing Japanese "もってるもの" at 0x0303A0)
+    patch_inventory_header(buf, cm)
+    report["modified_offsets"].append(f"0x{INVENTORY_HEADER_OFFSET:06X}")
 
     # If catalog is purely shop_dialogues_ru.json (has "dialogues" and no tavern/inn services)
     if "dialogues" in catalog and not ("tavern_services" in catalog or "inn_services" in catalog):
@@ -970,14 +1003,25 @@ def patch_entry3_buffer(
 
 
 def patch_town_services(
-    bin_path: Path | str,
+    bin_path: Path | str | bytes | bytearray,
     catalog_path: Path | str | None = None,
     shop_catalog_path: Path | str | None = None,
     dry_run: bool = False,
     patch_font: bool = True,
     shops_only: bool = False,
-) -> dict[str, Any]:
-    """Patch town services, shop dialogues, menus, and currency in disc image."""
+    charmap: Mapping[str, int] | None = None,
+) -> dict[str, Any] | bytearray:
+    """Patch town services, shop dialogues, menus, and currency in disc image or Entry 3 buffer."""
+    if isinstance(bin_path, (bytes, bytearray)):
+        entry3 = bytearray(bin_path)
+        cm = charmap if charmap is not None else build_authoritative_vram_charmap()
+        patch_inventory_header(entry3, cm)
+        if catalog_path is not None:
+            cat = load_catalog(catalog_path) if isinstance(catalog_path, (Path, str)) else catalog_path
+            shop_cat = load_catalog(shop_catalog_path) if isinstance(shop_catalog_path, (Path, str)) else shop_catalog_path
+            entry3, _ = patch_entry3_buffer(entry3, cat, charmap=cm, shop_catalog=shop_cat)
+        return entry3
+
     p = Path(bin_path)
     if not p.is_file():
         raise FileNotFoundError(f"BIN image not found: {p}")
@@ -1055,6 +1099,14 @@ def verify_town_services(
     assert actual_hud_mips == expected_hud_mips, (
         f"Legacy shop HUD at 0x{LEGACY_SHOP_HUD_OFFSET:06X} not neutralized: "
         f"found {actual_hud_mips.hex()}, expected {expected_hud_mips.hex()}"
+    )
+
+    # Verify Inventory window header ("ВЕЩИ" at 0x0303A0..0x0303B0)
+    inv_header_bytes = entry3[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES]
+    inv_header_text = decode_string(inv_header_bytes, cm)
+    assert inv_header_text == INVENTORY_HEADER_TEXT_RU, (
+        f"Inventory window header mismatch at 0x{INVENTORY_HEADER_OFFSET:06X}: "
+        f"found {inv_header_text!r} ({inv_header_bytes.hex()}), expected {INVENTORY_HEADER_TEXT_RU!r}"
     )
 
     if not is_shops_mode:
@@ -1309,8 +1361,38 @@ def verify_town_services(
         "table0_pointers": len(all_table0_ptrs),
         "table1_pointers": len(all_table1_ptrs),
         "table2_pointers": len(all_table2_ptrs),
+        "inventory_header": inv_header_text,
         "status": "valid",
     }
+
+
+def verify_patched_town_services(
+    target: Path | str | bytes | bytearray,
+    catalog_path: Path | str | None = None,
+    shop_catalog_path: Path | str | None = None,
+    shops_only: bool = False,
+    charmap: Mapping[str, int] | None = None,
+) -> dict[str, Any]:
+    """Verify patched town services and inventory header in disc image or Entry 3 buffer."""
+    cm = charmap if charmap is not None else build_authoritative_vram_charmap()
+    if isinstance(target, (bytes, bytearray)):
+        entry3 = bytes(target)
+        inv_header_bytes = entry3[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES]
+        inv_header_text = decode_string(inv_header_bytes, cm)
+        assert inv_header_text == INVENTORY_HEADER_TEXT_RU, (
+            f"Inventory window header mismatch at 0x{INVENTORY_HEADER_OFFSET:06X}: "
+            f"found {inv_header_text!r} ({inv_header_bytes.hex()}), expected {INVENTORY_HEADER_TEXT_RU!r}"
+        )
+        return {
+            "inventory_header": inv_header_text,
+            "status": "valid",
+        }
+    return verify_town_services(
+        bin_path=target,
+        catalog_path=catalog_path,
+        shop_catalog_path=shop_catalog_path,
+        shops_only=shops_only,
+    )
 
 
 def main() -> int:

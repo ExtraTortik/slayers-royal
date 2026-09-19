@@ -48,6 +48,9 @@ from tools.patch_town_services import (
     INN_BOX_WIDTH_OFFSET,
     INN_BOX_X_OFFSET,
     INN_PRICE_SUFFIX_OFFSET,
+    INVENTORY_HEADER_MAX_BYTES,
+    INVENTORY_HEADER_OFFSET,
+    INVENTORY_HEADER_TEXT_RU,
     LEGACY_SHOP_HUD_OFFSET,
     RAM_BASE,
     REVERSE_CHARMAP,
@@ -64,10 +67,12 @@ from tools.patch_town_services import (
     TAVERN_BOX_X_OFFSET,
     TAVERN_PRICE_SUFFIX_OFFSET,
     TOTAL_SHOP_POINTERS,
+    build_authoritative_vram_charmap,
     decode_string,
     encode_rejection_scene,
     encode_string,
     get_font_pixel,
+    get_entry_03a_location,
     load_catalog,
     patch_entry3_buffer,
     patch_menu_typography,
@@ -76,6 +81,7 @@ from tools.patch_town_services import (
     render_currency_tiles,
     set_font_pixel,
     verify_town_services,
+    verify_patched_town_services,
 )
 
 
@@ -386,7 +392,8 @@ def test_entry_03a_decompressed_currency_tiles():
     if not bin_path.is_file():
         pytest.skip(f"Target disc image not found: {bin_path}")
 
-    extent_03a = read_extent(bin_path, ENTRY_03A_LBA, ENTRY_03A_SIZE)
+    lba_03a, sec_03a, size_03a = get_entry_03a_location(bin_path)
+    extent_03a = read_extent(bin_path, lba_03a, size_03a)
     decomp_03a, _ = unt_lz.decompress(extent_03a)
     assert len(decomp_03a) == 131616, f"Expected 131616 bytes TIM, got {len(decomp_03a)}"
 
@@ -587,12 +594,13 @@ def test_shop_items_table_030A20(shop_catalog: dict[str, Any]):
     assert len(table0_ptrs) == SHOP_ITEMS_COUNT == 91
 
     # Verify specific items
+    shop_items_dict = {it["index"]: (it.get("text_ru") or it.get("ru")) for it in shop_catalog.get("shop_items", [])}
     item_tests = [
-        (0, "Лина"),
-        (7, "Ф.Атк"),
-        (32, "Меч Света"),
-        (36, "Длинный меч"),
-        (47, "Короткий меч"),
+        (0, shop_items_dict.get(0, "Лина")),
+        (7, shop_items_dict.get(7, "Ф.Атк")),
+        (32, shop_items_dict.get(32, "МечСвета")),
+        (36, shop_items_dict.get(36, "Длин.меч")),
+        (47, shop_items_dict.get(47, "Кор.меч")),
     ]
     for idx, exp_name in item_tests:
         p_off = SHOP_ITEMS_TABLE_START + idx * 4
@@ -608,6 +616,51 @@ def test_shop_items_table_030A20(shop_catalog: dict[str, Any]):
     suggest_words = [struct.unpack_from("<H", raw_suggest, i)[0] for i in range(0, len(raw_suggest), 2)]
     first_nl = suggest_words.index(0x00FE)
     assert suggest_words[first_nl + 1] == 0x00BF, "<00BF> must be at start of Line 2 in buy_suggest_weapon"
+
+def test_inventory_header_patching():
+    """Test patching of inventory window header at 0x0303A0 in Entry 3.
+
+    Verifies that INVENTORY_HEADER_OFFSET in patched entry3 contains 'ВЕЩИ'
+    encoded in authoritative charmap, eliminating the Japanese 'もってるもの' mojibake.
+    """
+    cm = build_authoritative_vram_charmap()
+    expected_words = [cm[c] for c in INVENTORY_HEADER_TEXT_RU] + [DELIMITER]
+    expected_bytes = struct.pack(f"<{len(expected_words)}H", *expected_words)
+    expected_padded = expected_bytes + b"\x00" * (INVENTORY_HEADER_MAX_BYTES - len(expected_bytes))
+
+    # 1. Setup a dummy buffer simulating unpatched Entry 3 with original Japanese mojibake
+    dummy_buf = bytearray(ENTRY3_SIZE)
+    japanese_mojibake = bytes.fromhex("230034001300290023001900ff000000")
+    dummy_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + len(japanese_mojibake)] = japanese_mojibake
+
+    # Verify unpatched buffer decodes to Japanese mojibake 'ЫлМбЫС' under Cyrillic VRAM font
+    unpatched_decoded = decode_string(dummy_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + 16])
+    assert unpatched_decoded == "ЫлМбЫС", f"Expected unpatched mojibake 'ЫлМбЫС', got {unpatched_decoded!r}"
+
+    # 2. Patch using patch_town_services with raw entry3 buffer
+    patched_buf = patch_town_services(bytearray(dummy_buf))
+    assert patched_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES] == expected_padded
+    patched_decoded = decode_string(patched_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + 16])
+    assert patched_decoded == INVENTORY_HEADER_TEXT_RU == "ВЕЩИ"
+
+    # 3. Patch using patch_entry3_buffer with town services catalog
+    cat = load_catalog(DEFAULT_CATALOG)
+    patched_entry3, report = patch_entry3_buffer(bytearray(dummy_buf), cat)
+    assert patched_entry3[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES] == expected_padded
+    assert decode_string(patched_entry3[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + 16]) == "ВЕЩИ"
+    assert f"0x{INVENTORY_HEADER_OFFSET:06X}" in report["modified_offsets"]
+
+    # 4. Patch using patch_shop_dialogues_buffer with shop catalog
+    shop_cat = load_catalog(DEFAULT_SHOP_CATALOG)
+    patched_shop_buf, shop_report, _ = patch_shop_dialogues_buffer(bytearray(dummy_buf), shop_cat)
+    assert patched_shop_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + INVENTORY_HEADER_MAX_BYTES] == expected_padded
+    assert decode_string(patched_shop_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + 16]) == "ВЕЩИ"
+    assert f"0x{INVENTORY_HEADER_OFFSET:06X}" in shop_report["modified_offsets"]
+
+    # 5. Verify using verify_patched_town_services
+    res = verify_patched_town_services(patched_entry3)
+    assert res["status"] == "valid"
+    assert res["inventory_header"] == "ВЕЩИ"
 
 def test_entry3_edc_ecc_verification():
     """Test Mode 2 Form 1 EDC/ECC sector verification for Entry 3 on target disc image."""

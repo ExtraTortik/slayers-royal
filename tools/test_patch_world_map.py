@@ -14,7 +14,12 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from patch_repo.localization.disc import USER_DATA_SIZE
+from patch_repo.localization.disc import (
+    CdChecksums,
+    RAW_SECTOR_SIZE,
+    USER_DATA_SIZE,
+    read_extent,
+)
 from tools.patch_world_map import (
     DEFAULT_CHARMAP,
     DEFAULT_TARGET_BIN,
@@ -23,19 +28,37 @@ from tools.patch_world_map import (
     MAX_TABLE_BYTES,
     NUM_LOCATIONS,
     RAM_BASE,
+    RAM_BASE_1606,
+    RAM_BASE_1607,
+    ROAD_SLOTS_TABLE_1,
     SECTOR_89_LBA,
     SECTOR_89_TABLE_OFFSET,
     SECTOR_93_LBA,
     SECTOR_93_PTR_OFFSET,
+    SECTOR_1606_LBA,
+    SECTOR_1606_T1_OFFSET,
+    SECTOR_1606_T1_PTR_COUNT,
+    SECTOR_1606_T1_PTR_OFFSET,
+    SECTOR_1606_T2_OFFSET,
+    SECTOR_1607_LBA,
+    SECTOR_1607_T2_PTR_COUNT,
+    SECTOR_1607_T2_PTR_OFFSET,
+    SPECIAL_GLYPH_NAMES,
+    TABLE_1_ITEMS,
+    TABLE_2_ITEMS,
     TABLE_START_IN_ENTRY,
+    TOWN_SLOTS_TABLE_1,
     calculate_pointers,
+    decode_location_entry,
     decode_location_strings,
+    encode_location_entry,
     encode_location_strings,
     load_world_map_translations,
     patch_world_map_sectors,
+    patch_world_map_sectors_1606_1607,
     verify_world_map_bin,
+    verify_world_map_sectors_1606_1607,
 )
-
 
 @pytest.fixture
 def translations_catalog() -> list[str]:
@@ -258,3 +281,152 @@ def test_cli_dry_run():
     res = subprocess.run(cmd, capture_output=True, text=True, check=False)
     assert res.returncode == 0, f"CLI --dry-run failed: {res.stderr}"
     assert "[OK] Dry run successful" in res.stdout
+
+
+def test_sector_1606_table_1_pointers_and_strings():
+    """Verify all 34 pointers at 0x388 in Sector 1606 point to valid strings.
+
+    Specifically verify:
+    - All 34 pointers point to valid non-empty strings.
+    - Pointer at 0x3A0 points to 'ИЗЕЛЬСЕН' without any dot.
+    - Pointer at 0x3A4 points to 'ФРИГРАНТ'.
+    """
+    if not DEFAULT_TARGET_BIN.is_file():
+        pytest.skip(f"Target disc not found: {DEFAULT_TARGET_BIN}")
+
+    sec1606 = read_extent(DEFAULT_TARGET_BIN, SECTOR_1606_LBA, USER_DATA_SIZE)
+    ptrs = struct.unpack_from(f"<{SECTOR_1606_T1_PTR_COUNT}I", sec1606, SECTOR_1606_T1_PTR_OFFSET)
+    assert len(ptrs) == 34
+
+    for idx, ptr in enumerate(ptrs):
+        rel = ptr - RAM_BASE_1606
+        assert SECTOR_1606_T1_OFFSET <= rel < SECTOR_1606_T1_PTR_OFFSET, (
+            f"Pointer [{idx}] 0x{ptr:08X} (rel: 0x{rel:04X}) out of valid range"
+        )
+        s = decode_location_entry(sec1606, rel)
+        assert len(s) > 0, f"Pointer [{idx}] points to empty string"
+
+    # Pointer at 0x3A0 (index 6): 'ИЗЕЛЬСЕН' without dot
+    ptr_3a0 = struct.unpack_from("<I", sec1606, 0x3A0)[0]
+    s_3a0 = decode_location_entry(sec1606, ptr_3a0 - RAM_BASE_1606)
+    assert s_3a0 == "ИЗЕЛЬСЕН", f"Expected 'ИЗЕЛЬСЕН' at 0x3A0, got '{s_3a0}'"
+    assert "." not in s_3a0
+    assert "。" not in s_3a0
+
+    # Pointer at 0x3A4 (index 7): 'ФРИГРАНТ'
+    ptr_3a4 = struct.unpack_from("<I", sec1606, 0x3A4)[0]
+    s_3a4 = decode_location_entry(sec1606, ptr_3a4 - RAM_BASE_1606)
+    assert s_3a4 == "ФРИГРАНТ", f"Expected 'ФРИГРАНТ' at 0x3A4, got '{s_3a4}'"
+
+
+def test_sector_1607_table_2_pointers_and_strings():
+    """Verify all 30 pointers at 0x0DC in Sector 1607 point to valid strings."""
+    if not DEFAULT_TARGET_BIN.is_file():
+        pytest.skip(f"Target disc not found: {DEFAULT_TARGET_BIN}")
+
+    sec1606 = read_extent(DEFAULT_TARGET_BIN, SECTOR_1606_LBA, USER_DATA_SIZE)
+    sec1607 = read_extent(DEFAULT_TARGET_BIN, SECTOR_1607_LBA, USER_DATA_SIZE)
+    buf = sec1606 + sec1607
+
+    ptrs = struct.unpack_from(f"<{SECTOR_1607_T2_PTR_COUNT}I", sec1607, SECTOR_1607_T2_PTR_OFFSET)
+    assert len(ptrs) == 30
+
+    for idx, ptr in enumerate(ptrs):
+        rel = ptr - RAM_BASE_1606
+        assert SECTOR_1606_T2_OFFSET <= rel < USER_DATA_SIZE + SECTOR_1607_T2_PTR_OFFSET, (
+            f"Pointer [{idx}] 0x{ptr:08X} (rel: 0x{rel:04X}) out of Table 2 range"
+        )
+        s = decode_location_entry(buf, rel)
+        assert len(s) > 0, f"Pointer [{idx}] points to empty string"
+
+    # Check first two towns
+    assert decode_location_entry(buf, ptrs[0] - RAM_BASE_1606) == "ЛЕЙКВУД"
+    assert decode_location_entry(buf, ptrs[1] - RAM_BASE_1606) == "БАРКЛЕНД"
+
+    # Check boundary straddling string (index 19 at 0x128)
+    ptr_19 = ptrs[19]
+    rel_19 = ptr_19 - RAM_BASE_1606
+    assert rel_19 < USER_DATA_SIZE < rel_19 + 20, "String 19 should straddle sector boundary at 0x800"
+    assert decode_location_entry(buf, rel_19) == "ВОСТ.БАРК"
+
+
+def test_sector_1606_1607_edc_ecc_checksums():
+    """Verify Mode 2 Form 1 EDC/ECC checksums for Sector 1606 and Sector 1607."""
+    if not DEFAULT_TARGET_BIN.is_file():
+        pytest.skip(f"Target disc not found: {DEFAULT_TARGET_BIN}")
+
+    checksums = CdChecksums()
+    with DEFAULT_TARGET_BIN.open("rb") as handle:
+        for lba in (SECTOR_1606_LBA, SECTOR_1607_LBA):
+            handle.seek(lba * RAW_SECTOR_SIZE)
+            raw = handle.read(RAW_SECTOR_SIZE)
+            assert len(raw) == RAW_SECTOR_SIZE, f"Failed to read LBA {lba}"
+            # EDC check
+            expected_edc = checksums.compute_edc(raw[0x10:0x818])
+            assert raw[0x818:0x81C] == expected_edc, f"Mode 2 Form 1 EDC checksum mismatch at LBA {lba}"
+            # ECC P-parity check
+            expected_ecc_p = checksums.compute_ecc(raw[0x10:], 86, 24, 2, 86)
+            assert raw[0x81C:0x8C8] == expected_ecc_p, f"Mode 2 Form 1 ECC P-parity mismatch at LBA {lba}"
+            # ECC Q-parity check
+            expected_ecc_q = checksums.compute_ecc(raw[0x10:], 52, 43, 86, 88)
+            assert raw[0x8C8:0x930] == expected_ecc_q, f"Mode 2 Form 1 ECC Q-parity mismatch at LBA {lba}"
+
+
+def test_verify_world_map_sectors_1606_1607_report():
+    """Test verify_world_map_sectors_1606_1607 function."""
+    if not DEFAULT_TARGET_BIN.is_file():
+        pytest.skip(f"Target disc not found: {DEFAULT_TARGET_BIN}")
+
+    report = verify_world_map_sectors_1606_1607(DEFAULT_TARGET_BIN)
+    assert report["verified"] is True
+    assert report["sector_1606_lba"] == SECTOR_1606_LBA
+    assert report["sector_1607_lba"] == SECTOR_1607_LBA
+    assert report["t1_pointers_count"] == 34
+    assert report["t2_pointers_count"] == 30
+    assert report["iselsen"] == "ИЗЕЛЬСЕН"
+    assert report["frigrant"] == "ФРИГРАНТ"
+
+
+def test_table_1_and_2_in_memory_simulation():
+    """Test in-memory packing and pointer resolution for Table 1 and Table 2."""
+    sec1606 = bytearray(USER_DATA_SIZE)
+    sec1607 = bytearray(USER_DATA_SIZE)
+
+    # Pack Table 1
+    cur_off = SECTOR_1606_T1_OFFSET
+    t1_offsets = []
+    for idx, item in TABLE_1_ITEMS:
+        enc = encode_location_entry(item)
+        t1_offsets.append(cur_off)
+        sec1606[cur_off : cur_off + len(enc)] = enc
+        cur_off += len(enc)
+
+    assert cur_off <= SECTOR_1606_T1_PTR_OFFSET
+    t1_ptrs = [
+        RAM_BASE_1606 + t1_offsets[0],
+        RAM_BASE_1606 + t1_offsets[0],
+    ] + [RAM_BASE_1606 + t1_offsets[i] for i in range(1, 33)]
+    assert len(t1_ptrs) == 34
+    struct.pack_into(f"<{SECTOR_1606_T1_PTR_COUNT}I", sec1606, SECTOR_1606_T1_PTR_OFFSET, *t1_ptrs)
+
+    # Pack Table 2
+    buf = bytearray(sec1606 + sec1607)
+    cur_off_t2 = SECTOR_1606_T2_OFFSET
+    t2_offsets = []
+    for idx, item in TABLE_2_ITEMS:
+        enc = encode_location_entry(item)
+        t2_offsets.append(cur_off_t2)
+        buf[cur_off_t2 : cur_off_t2 + len(enc)] = enc
+        cur_off_t2 += len(enc)
+
+    assert cur_off_t2 <= USER_DATA_SIZE + SECTOR_1607_T2_PTR_OFFSET
+    sec1606 = buf[:USER_DATA_SIZE]
+    sec1607 = buf[USER_DATA_SIZE : USER_DATA_SIZE * 2]
+    t2_ptrs = [RAM_BASE_1606 + off for off in t2_offsets]
+    struct.pack_into(f"<{SECTOR_1607_T2_PTR_COUNT}I", sec1607, SECTOR_1607_T2_PTR_OFFSET, *t2_ptrs)
+
+    # Verify decoded results
+    assert decode_location_entry(sec1606, t1_ptrs[6] - RAM_BASE_1606) == "ИЗЕЛЬСЕН"
+    assert decode_location_entry(sec1606, t1_ptrs[7] - RAM_BASE_1606) == "ФРИГРАНТ"
+    assert decode_location_entry(buf, t2_ptrs[0] - RAM_BASE_1606) == "ЛЕЙКВУД"
+    assert decode_location_entry(buf, t2_ptrs[19] - RAM_BASE_1606) == "ВОСТ.БАРК"

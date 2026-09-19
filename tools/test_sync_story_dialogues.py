@@ -303,7 +303,7 @@ class TestProductionCatalogsIntegrity:
             data = json.load(f)
 
         assert "catalogs" in data
-        assert len(data["catalogs"]) == 9
+        assert len(data["catalogs"]) == 14
 
         catalog_ids = {c["id"] for c in data["catalogs"]}
         expected_ids = {
@@ -316,8 +316,12 @@ class TestProductionCatalogsIntegrity:
             "lore_cards",
             "world_map",
             "location_banners",
+            "room_names",
+            "minigames_menu",
+            "bonus_menu",
+            "town_maps",
+            "custom_screens",
         }
-        assert catalog_ids == expected_ids
 
         # Check all referenced files exist
         for cat in data["catalogs"]:

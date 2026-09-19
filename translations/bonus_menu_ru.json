@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "title": "Slayers Royal (PS1) - Bonus Room & Title Screen Menu Catalog",
+    "archive": "OPT.UNT",
+    "archive_lba": 226000,
+    "total_bonus_entries": 4,
+    "total_title_entries": 3,
+    "format": "4bpp TIM",
+    "font": "fonts/PressStart2P.ttf"
+  },
+  "bonus_menu": {
+    "frame": {
+      "entry": 142,
+      "sector_offset": 2456,
+      "sectors": 2,
+      "width": 128,
+      "height": 32,
+      "vram_x": 320,
+      "vram_y": 224,
+      "clut_x": 0,
+      "clut_y": 482,
+      "description": "Template frame (navy with gold border)"
+    },
+    "sound_mode": {
+      "entry": 143,
+      "sector_offset": 2458,
+      "sectors": 1,
+      "width": 112,
+      "height": 16,
+      "vram_x": 384,
+      "vram_y": 224,
+      "clut_x": 0,
+      "clut_y": 483,
+      "text_en": "SOUND MODE",
+      "text_ru": "ЗВУК",
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    },
+    "movies": {
+      "entry": 144,
+      "sector_offset": 2459,
+      "sectors": 1,
+      "width": 64,
+      "height": 16,
+      "vram_x": 412,
+      "vram_y": 224,
+      "clut_x": 0,
+      "clut_y": 484,
+      "text_en": "MOVIES",
+      "text_ru": "РОЛИКИ",
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    },
+    "help": {
+      "entry": 145,
+      "sector_offset": 2460,
+      "sectors": 1,
+      "width": 64,
+      "height": 16,
+      "vram_x": 428,
+      "vram_y": 224,
+      "clut_x": 0,
+      "clut_y": 485,
+      "text_en": "HELP",
+      "text_ru": "ПОМОЩЬ",
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    },
+    "minigames": {
+      "entry": 146,
+      "sector_offset": 2461,
+      "sectors": 1,
+      "width": 80,
+      "height": 16,
+      "vram_x": 384,
+      "vram_y": 240,
+      "clut_x": 0,
+      "clut_y": 486,
+      "text_en": "MINIGAMES",
+      "text_ru": "МИНИ-ИГРЫ",
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    }
+  },
+  "title_menu": {
+    "start": {
+      "id": "start",
+      "text_en": "START",
+      "text_ru": "СТАРТ",
+      "width": 64,
+      "height": 16,
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    },
+    "continue": {
+      "id": "continue",
+      "text_en": "CONTINUE",
+      "text_ru": "ЗАГРУЗКА",
+      "width": 80,
+      "height": 16,
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    },
+    "bonus": {
+      "id": "bonus",
+      "text_en": "BONUS",
+      "text_ru": "БОНУС",
+      "width": 64,
+      "height": 16,
+      "font_size": 8,
+      "tracking": 0,
+      "color_index": 1,
+      "outline_index": 15
+    }
+  }
+}

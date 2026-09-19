@@ -853,20 +853,20 @@ class TestMinigamesPatching(unittest.TestCase):
         """Verify exact character mapping without +1 off-by-one shift."""
         cm = build_minigames_charmap()
         # Cyrillic uppercase
-        self.assertEqual(cm["Ё"], 0x0007)
-        self.assertEqual(cm["А"], 0x0008)
-        self.assertEqual(cm["Б"], 0x0009)
-        self.assertEqual(cm["Я"], 0x0028)
+        self.assertEqual(cm["Ё"], 0x0006)
+        self.assertEqual(cm["А"], 0x0007)
+        self.assertEqual(cm["Б"], 0x0008)
+        self.assertEqual(cm["Я"], 0x0027)
 
         # Cyrillic lowercase
-        self.assertEqual(cm["а"], 0x0029)
-        self.assertEqual(cm["б"], 0x002A)
-        self.assertEqual(cm["я"], 0x0050)
-        self.assertEqual(cm["ё"], 0x0051)
+        self.assertEqual(cm["а"], 0x0028)
+        self.assertEqual(cm["б"], 0x0029)
+        self.assertEqual(cm["я"], 0x004E)
+        self.assertEqual(cm["ё"], 0x0050)
 
         # Quotes & Typographic punctuation
-        self.assertEqual(cm["«"], 0x0005)
-        self.assertEqual(cm["»"], 0x0006)
+        self.assertEqual(cm["«"], 0x0004)
+        self.assertEqual(cm["»"], 0x0005)
         self.assertEqual(cm[" "], 0x007D)
         self.assertEqual(cm["."], 0x00A2)
         self.assertEqual(cm[","], 0x00A1)
@@ -881,16 +881,16 @@ class TestMinigamesPatching(unittest.TestCase):
 
         # Reverse charmap priority
         rev = get_reverse_charmap(cm)
-        self.assertEqual(rev[0x0005], "«")
-        self.assertEqual(rev[0x0006], "»")
-        self.assertEqual(rev[0x0007], "Ё")
-        self.assertEqual(rev[0x0008], "А")
-        self.assertEqual(rev[0x0009], "Б")
-        self.assertEqual(rev[0x0028], "Я")
-        self.assertEqual(rev[0x0029], "а")
-        self.assertEqual(rev[0x002A], "б")
-        self.assertEqual(rev[0x0050], "я")
-        self.assertEqual(rev[0x0051], "ё")
+        self.assertEqual(rev[0x0004], "«")
+        self.assertEqual(rev[0x0005], "»")
+        self.assertEqual(rev[0x0006], "Ё")
+        self.assertEqual(rev[0x0007], "А")
+        self.assertEqual(rev[0x0008], "Б")
+        self.assertEqual(rev[0x0027], "Я")
+        self.assertEqual(rev[0x0028], "а")
+        self.assertEqual(rev[0x0029], "б")
+        self.assertEqual(rev[0x004E], "я")
+        self.assertEqual(rev[0x0050], "ё")
 
     def test_quiz_rules_exact_text_roundtrip(self):
         """Verify Quiz rules decode cleanly without shift, including «Рубак» quotes."""
