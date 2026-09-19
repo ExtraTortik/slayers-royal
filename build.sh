@@ -26,6 +26,7 @@ TOWN_MAPS_JSON="$SCRIPT_DIR/translations/town_maps_ru.json"
 TOWN_MAPS_DIR="$SCRIPT_DIR/data/custom_town_maps"
 CUSTOM_HUD_DIR="$SCRIPT_DIR/data/custom_hud_textures"
 CUSTOM_SCREENS_DIR="$SCRIPT_DIR/data/custom_screens"
+EXTRA_SCREENS_DIR="$SCRIPT_DIR/data/extra_screens"
 PATCH_REPO_DIR="$SCRIPT_DIR/patch_repo"
 
 echo "==========================================================="
@@ -54,6 +55,7 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     echo "  --hud, --e8          Обновить атлас интерфейса/HUD (PROG.UNT 0x008, 74 380) из data/custom_hud_textures/"
     echo "  --title-logo, --logo Внедрить русский логотип «РУБАКИ КОРОЛЕВСКИЕ» титульного экрана"
     echo "  --custom-screens, --screens Обновить пользовательские экраны (Game Over, Ход, Старт, Бесконечная игра) из data/custom_screens/"
+    echo "  --extra-screens Внедрить 13 дополнительных экранов/текстур (OPT 137..232, OPTCINE 01, PROG 54..57)"
     echo "  --validate   Проверить каталоги диалогов, комнат, карты, плашек, служб, мини-игр, викторины и меню на ошибки"
     echo "  --help, -h   Показать эту справку"
     exit 0
@@ -103,6 +105,9 @@ if [[ "$1" == "--validate" ]]; then
     python3 -m pytest tools/test_patch_custom_screens.py -q
     python3 -m pytest tools/test_patch_bonus_menu.py -q
     python3 -m pytest tools/test_patch_e8_textures.py -q
+    echo "[*] Валидация 13 дополнительных экранов/текстур (OPT 137..232, OPTCINE 01, PROG 54..57)..."
+    python3 "$SCRIPT_DIR/tools/patch_extra_screens.py" --verify --bin "$RU_BIN"
+    python3 -m pytest tools/test_patch_extra_screens.py -q
     exit 0
 fi
 
@@ -381,6 +386,23 @@ if [[ "$1" == "--custom-screens" || "$1" == "--screens" ]]; then
     echo "==========================================================="
     exit 0
 fi
+if [[ "$1" == "--extra-screens" ]]; then
+    echo "==========================================================="
+    echo "[1/1] Внедрение 13 дополнительных экранов/текстур (OPT 137..232, OPTCINE 01, PROG 54..57)..."
+    echo "==========================================================="
+    if [[ ! -f "$RU_BIN" ]]; then
+        echo "Ошибка: базовый образ $RU_BIN не найден. Запустите сначала полную сборку ./build.sh" >&2
+        exit 1
+    fi
+    python3 "$SCRIPT_DIR/tools/patch_extra_screens.py" --bin "$RU_BIN"
+    mkdir -p "$PATCH_REPO_DIR/localization-output/ru"
+    cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
+    echo "==========================================================="
+    echo "[✓] 13 дополнительных экранов/текстур успешно внедрены!"
+    echo "==========================================================="
+    exit 0
+fi
+
 
 
 # Полная сборка
@@ -465,6 +487,10 @@ fi
 if [[ -d "$CUSTOM_SCREENS_DIR" ]] && compgen -G "$CUSTOM_SCREENS_DIR/*.png" > /dev/null 2>&1; then
     echo "[13/13] Внедрение пользовательских экранов (OPT 203, 221, 225; PROG 323)..."
     python3 "$SCRIPT_DIR/tools/patch_custom_screens.py" --bin "$RU_BIN" --screens-dir "$CUSTOM_SCREENS_DIR"
+fi
+if [[ -d "$EXTRA_SCREENS_DIR" ]] && compgen -G "$EXTRA_SCREENS_DIR/*.png" > /dev/null 2>&1 || compgen -G "$SCRIPT_DIR/еще переводы/*.png" > /dev/null 2>&1; then
+    echo "[14/14] Внедрение 13 дополнительных экранов/текстур (OPT 137..232, OPTCINE 01, PROG 54..57)..."
+    python3 "$SCRIPT_DIR/tools/patch_extra_screens.py" --bin "$RU_BIN"
 fi
 mkdir -p "$PATCH_REPO_DIR/localization-output/ru"
 cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"

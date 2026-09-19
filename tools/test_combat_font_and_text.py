@@ -560,3 +560,176 @@ class TestCombatPatcher:
             ram_p = struct.unpack_from("<I", prog_007, pos)[0]
             t = ram_p - RAM_BASE
             assert 0 <= t < len(prog_007) - 2, f"Cue {idx} pointer 0x{ram_p:08X} out of bounds"
+
+
+class TestCombatScaffolding:
+    """Verify combat font templates and spell translation catalog."""
+
+    def test_combat_font_template_structure_and_palette(self):
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        assert tpl_path.is_file(), "data/combat_font_template.png must exist"
+        from PIL import Image
+        im = Image.open(tpl_path)
+        assert im.size == (528, 96), f"Expected 528x96, got {im.size}"
+        assert im.mode == "RGBA", f"Expected RGBA mode, got {im.mode}"
+
+        # Verify 4-color palette
+        allowed_colors = {
+            (0, 0, 0, 0),        # Transparent
+            (0, 0, 0, 255),      # Black outline
+            (128, 128, 128, 255),# Grey shading / guide border
+            (255, 255, 255, 255),# White core
+        }
+        colors = {im.getpixel((x, y)) for y in range(im.height) for x in range(im.width)}
+        for c in colors:
+            assert c in allowed_colors, f"Unexpected color {c} in combat font template"
+
+    def test_combat_font_template_empty_drawing_cells_with_guides(self):
+        """Verify that Row 3 and Row 5 have empty drawing cells with guide markings."""
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        from PIL import Image
+        from tools.patch_combat_font import (
+            CYRILLIC_UPPER,
+            CYRILLIC_LOWER,
+            CYR_UPPER_WIDTHS,
+            CYR_LOWER_WIDTHS,
+        )
+        im = Image.open(tpl_path)
+
+        # Row 3: Cyrillic uppercase drawing tiles
+        for col, ch in enumerate(CYRILLIC_UPPER):
+            cell = im.crop((col * 16, 3 * 16, (col + 1) * 16, 4 * 16))
+            w = CYR_UPPER_WIDTHS.get(ch, 8)
+            # Outer cell border is grey
+            assert cell.getpixel((0, 0)) == (128, 128, 128, 255)
+            assert cell.getpixel((15, 15)) == (128, 128, 128, 255)
+            # Top-left guide corner at (1, 2)
+            assert cell.getpixel((1, 2)) == (128, 128, 128, 255)
+            # Top-right guide corner at (w, 2)
+            assert cell.getpixel((w, 2)) == (128, 128, 128, 255)
+            # Bottom-left guide corner at (1, 14) - baseline
+            assert cell.getpixel((1, 14)) == (128, 128, 128, 255)
+            # Bottom-right guide corner at (w, 14) - baseline
+            assert cell.getpixel((w, 14)) == (128, 128, 128, 255)
+            # Drawing interior is completely transparent (no placeholder PressStart2P glyphs)
+            for iy in (8, 9):
+                for ix in range(2, w):
+                    assert cell.getpixel((ix, iy)) == (0, 0, 0, 0), (
+                        f"Upper cell '{ch}' at ({ix}, {iy}) not transparent"
+                    )
+
+        # Row 5: Cyrillic lowercase drawing tiles (Small Caps height 10, Y: 5..14)
+        for col, ch in enumerate(CYRILLIC_LOWER):
+            cell = im.crop((col * 16, 5 * 16, (col + 1) * 16, 6 * 16))
+            w = CYR_LOWER_WIDTHS.get(ch, 8)
+            # Outer cell border is grey
+            assert cell.getpixel((0, 0)) == (128, 128, 128, 255)
+            assert cell.getpixel((15, 15)) == (128, 128, 128, 255)
+            # Top-left guide corner at (1, 5)
+            assert cell.getpixel((1, 5)) == (128, 128, 128, 255)
+            # Top-right guide corner at (w, 5)
+            assert cell.getpixel((w, 5)) == (128, 128, 128, 255)
+            # Bottom-left guide corner at (1, 14) - baseline
+            assert cell.getpixel((1, 14)) == (128, 128, 128, 255)
+            # Bottom-right guide corner at (w, 14) - baseline
+            assert cell.getpixel((w, 14)) == (128, 128, 128, 255)
+            # Drawing interior is transparent
+            for iy in (8, 9):
+                for ix in range(2, w):
+                    assert cell.getpixel((ix, iy)) == (0, 0, 0, 0), (
+                        f"Lower cell '{ch}' at ({ix}, {iy}) not transparent"
+                    )
+
+    def test_combat_font_template_labels(self):
+        """Verify that Row 2 and Row 4 contain clear text labels directly above drawing tiles."""
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        from PIL import Image
+        from tools.patch_combat_font import CYRILLIC_UPPER, CYRILLIC_LOWER
+        im = Image.open(tpl_path)
+
+        # Row 2: Uppercase labels
+        for col, ch in enumerate(CYRILLIC_UPPER):
+            cell = im.crop((col * 16, 2 * 16, (col + 1) * 16, 3 * 16))
+            colors = {c[1] for c in (cell.getcolors(256) or [])}
+            # Must contain white core text and black outline
+            assert (255, 255, 255, 255) in colors, f"Missing white text in label '{ch}'"
+            assert (0, 0, 0, 255) in colors, f"Missing black outline in label '{ch}'"
+
+        # Row 4: Lowercase labels
+        for col, ch in enumerate(CYRILLIC_LOWER):
+            cell = im.crop((col * 16, 4 * 16, (col + 1) * 16, 5 * 16))
+            colors = {c[1] for c in (cell.getcolors(256) or [])}
+            assert (255, 255, 255, 255) in colors, f"Missing white text in lower label '{ch}'"
+            assert (0, 0, 0, 255) in colors, f"Missing black outline in lower label '{ch}'"
+
+        # Row 0 and Row 1: Authentic English reference rows
+        for r in (0, 1):
+            row_im = im.crop((0, r * 16, 16 * 16, (r + 1) * 16))
+            colors = {c[1] for c in (row_im.getcolors(1024) or [])}
+            assert (255, 255, 255, 255) in colors, f"Row {r} missing authentic white glyph pixels"
+
+    def test_combat_font_importer_empty_and_painted(self):
+        """Verify importer functions: import_combat_font_template and is_tile_empty."""
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        from PIL import Image
+        from tools.patch_combat_font import (
+            import_combat_font_template,
+            is_tile_empty,
+            CYRILLIC_UPPER,
+            CYRILLIC_LOWER,
+        )
+        from tools.build_spells_catalog import tile_2bpp_to_image
+
+        # 1. Untouched template imports as completely empty tiles (guides filtered)
+        tiles = import_combat_font_template(tpl_path)
+        assert len(tiles) == 66, f"Expected 66 tiles, got {len(tiles)}"
+        for ch, tdata in tiles.items():
+            assert is_tile_empty(tdata), f"Expected tile for '{ch}' to be empty, got {tdata.hex()}"
+
+        # 2. Painted template recovers user pixels and filters guide borders
+        canvas = Image.open(tpl_path).copy()
+        # Paint test stroke on 'А' (Row 3, Col 0): White at (5, 5), Black at (6, 5)
+        canvas.putpixel((5, 3 * 16 + 5), (255, 255, 255, 255))
+        canvas.putpixel((6, 3 * 16 + 5), (0, 0, 0, 255))
+
+        painted_tiles = import_combat_font_template(canvas)
+        a_tile = painted_tiles["А"]
+        assert not is_tile_empty(a_tile), "Tile 'А' should not be empty after painting"
+
+        # Verify recovered pixel art in 2BPP
+        a_im = tile_2bpp_to_image(a_tile)
+        assert a_im.getpixel((5, 5)) == (255, 255, 255, 255), "White pixel recovered"
+        assert a_im.getpixel((6, 5)) == (0, 0, 0, 255), "Black pixel recovered"
+        assert a_im.getpixel((0, 0)) == (0, 0, 0, 0), "Guide border filtered to transparent"
+
+    def test_combat_font_reference_grid_exists(self):
+        ref_path = REPO_ROOT / "data" / "combat_font_reference_grid.png"
+        assert ref_path.is_file(), "data/combat_font_reference_grid.png must exist"
+        from PIL import Image
+        im = Image.open(ref_path)
+        assert im.size[0] >= 1000 and im.size[1] >= 500, "Reference grid must be enlarged visual guide"
+        assert im.size == (5724, 960), f"Expected (5724, 960), got {im.size}"
+    def test_spells_ru_catalog_119_entries(self):
+        spells_path = REPO_ROOT / "translations" / "spells_ru.json"
+        assert spells_path.is_file(), "translations/spells_ru.json must exist"
+        catalog = json.loads(spells_path.read_text(encoding="utf-8"))
+        assert len(catalog) == 119, f"Expected exactly 119 spells, got {len(catalog)}"
+
+        for idx, item in enumerate(catalog):
+            expected_idx = 325 + idx
+            assert item["entry_index"] == expected_idx
+            assert item["entry_hex"] == f"0x{expected_idx:03X}"
+            assert "title_en" in item and len(item["title_en"]) > 0
+            assert "title_ru" in item and len(item["title_ru"]) > 0
+            assert "name_en" in item and "name_ru" in item
+            assert "pages_en" in item and isinstance(item["pages_en"], list)
+            assert "pages_ru" in item and isinstance(item["pages_ru"], list)
+            assert "desc_en" in item and isinstance(item["desc_en"], str)
+            assert "desc_ru" in item and isinstance(item["desc_ru"], str)
+            assert "title_jp" in item
+
+            # Title before delimiter in authentic spells
+            if item["pages_en"]:
+                assert len(item["pages_ru"]) == len(item["pages_en"]), (
+                    f"Page count mismatch at {expected_idx}: {len(item['pages_ru'])} != {len(item['pages_en'])}"
+                )

@@ -58,6 +58,106 @@ DIGITS = "0123456789"
 PUNCTUATION = "!\"()*,-./:;?="
 ASCII_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 
+CYR_UPPER_WIDTHS: dict[str, int] = {
+    "Ж": 10, "М": 10, "Ф": 10, "Ш": 10, "Щ": 10, "Ъ": 10, "Ы": 10, "Ю": 10, "Я": 10,
+    "Г": 6,
+}
+CYR_LOWER_WIDTHS: dict[str, int] = {
+    "ж": 10, "м": 10, "ф": 10, "ш": 10, "щ": 10, "ъ": 10, "ы": 10, "ю": 10, "я": 10,
+    "г": 6,
+}
+
+
+def tile_image_to_2bpp(
+    tile_im: Image.Image,
+    filter_guides: bool = True,
+    guide_coords: set[tuple[int, int]] | None = None,
+) -> bytes:
+    """Convert a 16x16 RGBA tile image to 64-byte 2BPP tile data.
+
+    Maps colors to 2BPP:
+    - Transparent (alpha < 128) -> 0
+    - Grey guide (#808080) -> 0 if filter_guides is True
+    - White core (#FFFFFF / bright) -> 3
+    - Black outline / shadow (#000000 / dark) -> 1
+    - User-painted Grey (#808080) -> 2
+    """
+    if tile_im.size != (16, 16):
+        tile_im = tile_im.crop((0, 0, 16, 16))
+    pix = tile_im.load()
+    out = bytearray()
+
+    for y in range(16):
+        for col_byte in range(4):
+            px_base = col_byte * 4
+            vals = []
+            for i in range(4):
+                px = px_base + i
+                rgba = pix[px, y]
+                if rgba[3] < 128:
+                    vals.append(0)
+                    continue
+
+                r, g, b = rgba[:3]
+                is_guide = (r, g, b) == (128, 128, 128)
+                if filter_guides and is_guide:
+                    if guide_coords is None or (px, y) in guide_coords:
+                        vals.append(0)
+                        continue
+
+                if r >= 192 and g >= 192 and b >= 192:
+                    vals.append(3)
+                elif r <= 64 and g <= 64 and b <= 64:
+                    vals.append(1)
+                elif (r, g, b) == (128, 128, 128):
+                    vals.append(2)
+                else:
+                    lum = 0.299 * r + 0.587 * g + 0.114 * b
+                    vals.append(3 if lum >= 170 else (2 if lum >= 85 else 1))
+
+            b_byte = (vals[0] & 3) | ((vals[1] & 3) << 2) | ((vals[2] & 3) << 4) | ((vals[3] & 3) << 6)
+            out.append(b_byte)
+
+    return bytes(out)
+
+
+def is_tile_empty(tile_bytes: bytes) -> bool:
+    """Return True if 64-byte tile contains only transparent pixels (all zero bytes)."""
+    return all(b == 0 for b in tile_bytes)
+
+
+def import_combat_font_template(
+    template_path: Path | Image.Image | str,
+    filter_guides: bool = True,
+) -> dict[str, bytes]:
+    """Import 16x16 Cyrillic glyph tiles from combat font template PNG.
+
+    Reads:
+    - Row 3 for CYRILLIC_UPPER ('А'..'Я', 33 columns)
+    - Row 5 for CYRILLIC_LOWER ('а'..'я', 33 columns)
+
+    Returns:
+        dict mapping each of the 66 characters to its 64-byte 2BPP tile data.
+    """
+    if isinstance(template_path, (str, Path)):
+        img = Image.open(template_path).convert("RGBA")
+    else:
+        img = template_path.convert("RGBA")
+
+    results: dict[str, bytes] = {}
+
+    for col, ch in enumerate(CYRILLIC_UPPER):
+        crop = img.crop((col * 16, 3 * 16, (col + 1) * 16, 4 * 16))
+        tile_data = tile_image_to_2bpp(crop, filter_guides=filter_guides)
+        results[ch] = tile_data
+
+    for col, ch in enumerate(CYRILLIC_LOWER):
+        crop = img.crop((col * 16, 5 * 16, (col + 1) * 16, 6 * 16))
+        tile_data = tile_image_to_2bpp(crop, filter_guides=filter_guides)
+        results[ch] = tile_data
+
+    return results
+
 # Latin lookalikes mapped to verified gourry-hacks runtime font tiles
 LATIN_EQUIVALENTS: dict[str, int] = {
     "А": 0x00BE,  # 'A'
@@ -332,11 +432,16 @@ def render_cyrillic_glyph_2bpp(char: str, font_path: Path) -> bytes:
 def build_patched_combat_font(
     tim_decompressed: bytes,
     font_path: Path | None = None,
+    template_path: Path | None = None,
 ) -> tuple[bytes, bytes]:
     """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
 
     Renders all 66 characters in CYRILLIC_UPPER (0x0150..0x0170) and
     CYRILLIC_LOWER (0x0171..0x0191) using put_hw_tile_2bpp.
+
+    If template_path is provided (or if data/combat_font_template.png exists),
+    user-painted tiles are imported. Any empty/untouched tiles fall back to
+    render_cyrillic_glyph_2bpp.
 
     Returns:
         (patched_tim_decompressed, compressed_bytes)
@@ -351,18 +456,35 @@ def build_patched_combat_font(
     if not fp.is_file():
         raise FileNotFoundError(f"Font file not found: {fp}")
 
+    tpl_file = template_path
+    if tpl_file is None:
+        default_tpl = REPO_ROOT / "data" / "combat_font_template.png"
+        if default_tpl.is_file():
+            tpl_file = default_tpl
+
+    imported_tiles: dict[str, bytes] = {}
+    if tpl_file is not None and Path(tpl_file).is_file():
+        try:
+            imported_tiles = import_combat_font_template(tpl_file)
+        except Exception:
+            imported_tiles = {}
+
     patched_tim = bytearray(tim_decompressed)
 
     # Render 33 uppercase Russian glyphs into 0x0150..0x0170
     for idx, ch in enumerate(CYRILLIC_UPPER):
         code = CYRILLIC_UPPER_BASE + idx
-        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
+        tile_bytes = imported_tiles.get(ch)
+        if tile_bytes is None or is_tile_empty(tile_bytes):
+            tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
         put_hw_tile_2bpp(patched_tim, code, tile_bytes)
 
     # Render 33 lowercase Russian glyphs into 0x0171..0x0191
     for idx, ch in enumerate(CYRILLIC_LOWER):
         code = CYRILLIC_LOWER_BASE + idx
-        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
+        tile_bytes = imported_tiles.get(ch)
+        if tile_bytes is None or is_tile_empty(tile_bytes):
+            tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
         put_hw_tile_2bpp(patched_tim, code, tile_bytes)
 
     patched_bytes = bytes(patched_tim)
