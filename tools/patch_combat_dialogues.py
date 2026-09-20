@@ -52,6 +52,10 @@ from tools.patch_combat_font import (
     get_hw_tile_2bpp,
     put_hw_tile_2bpp,
     render_cyrillic_glyph_2bpp,
+    import_combat_font_template,
+    is_tile_empty,
+    find_press_start_font,
+    build_patched_combat_font,
     TOTAL_TILES,
     COMBAT_FONT_ENTRY,
     COMBAT_FONT_SECTORS,
@@ -75,7 +79,9 @@ from tools.combat_dialogue_charmap import (
     find_safe_cyrillic_tiles,
 )
 
-DEFAULT_BIN = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
+DEFAULT_RU_BIN = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
+DEFAULT_EN_BIN = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
+DEFAULT_BIN = DEFAULT_RU_BIN if DEFAULT_RU_BIN.is_file() else DEFAULT_EN_BIN
 DEFAULT_CATALOG = REPO_ROOT / "translations" / "combat_dialogues_ru.json"
 DEFAULT_TIM_CACHE = REPO_ROOT / "data" / "prog_entry_142_en.tim"
 DEFAULT_FONT = REPO_ROOT / "fonts" / "PressStart2P.ttf"
@@ -97,6 +103,53 @@ OFFSET_SYSTEM_BUTTONS_END = 0x05F470
 OFFSET_TABLE2_START = 0x05F470
 OFFSET_TABLE3_START = 0x06286C
 
+OFFSET_SYSTEM_COMMANDS_START = 0x05F278
+OFFSET_SYSTEM_COMMANDS_END = 0x05F398
+OFFSET_PROMPT_SLOTS_START = 0x05F394
+OFFSET_PROMPT_SLOTS_END = 0x05F46C
+# Backward compatibility aliases
+OFFSET_PROMPT_STREAM_START = 0x05F394
+OFFSET_PROMPT_STREAM_END = 0x05F470
+PROMPT_STREAM_MAX_BYTES = 220  # 0x05F470 - 0x05F394 = 220 bytes
+SYSTEM_COMMAND_SLOTS: list[tuple[int, str]] = [
+    (0x05F278, "СТАРТ"),      # START
+    (0x05F288, "ОПЦИИ"),      # CONFIG
+    (0x05F298, "АТАКА"),      # ATTACK
+    (0x05F2A8, "ОТВЕТ"),      # COUNTER
+    (0x05F2B8, "МАГИЯ"),      # SPELL
+    (0x05F2C8, "УДАР"),       # HIT
+    (0x05F2D8, "ТАРАН"),      # RAM
+    (0x05F2E8, "ХОД"),        # MOVE
+    (0x05F2F8, "ТАПОК"),      # SLIPPER
+    (0x05F308, "ХОХОТ"),      # LAUGH
+    (0x05F318, "ОТВЕТ"),      # COUNTER_ACT
+    (0x05F328, "УКЛОН"),      # EVADE
+    (0x05F338, "ПОБЕГ"),      # FLEE
+    (0x05F348, "ТЕРПЕТЬ"),    # ENDURE
+    (0x05F358, "ЗАЩИТА"),     # GUARD
+    (0x05F368, "БАРЬЕР"),     # WARD
+    (0x05F378, "МАГИЯ"),      # CAST
+    (0x05F388, "НАЗАД"),      # BACK
+]
+
+FIXED_PROMPT_SLOTS: list[tuple[int, int, str]] = [
+    (0x05F394, 14, "ЗАЩИТА"),
+    (0x05F3A2, 10, "АВТО"),
+    (0x05F3AC, 14, "РУЧНОЙ"),
+    (0x05F3BA, 20, "КТО ХОДИТ"),
+    (0x05F3CE, 20, "ДЕЙСТВИЕ"),
+    (0x05F3E2, 22, "МАГИЯ"),
+    (0x05F3F8, 18, "КУДА?"),
+    (0x05F40A, 16, "ЦЕЛЬ?"),
+    (0x05F41A, 12, "ЗОНА?"),
+    (0x05F426, 18, "ИДЕТ БОЙ"),
+    (0x05F438, 12, "ЖДИТЕ"),
+    (0x05F444, 20, "РЕЖИМ"),
+    (0x05F458, 10, "СЕЙВ"),
+    (0x05F462, 10, "ЛОАД"),
+]
+
+SYSTEM_PROMPT_STRINGS: list[str] = [text for _, _, text in FIXED_PROMPT_SLOTS]
 
 def render_cyrillic_glyph(char: str, font_path: Path) -> bytes:
     """Render a single character into a 16x16 4bpp tile using PressStart2P (size 11).
@@ -142,54 +195,6 @@ def render_cyrillic_glyph(char: str, font_path: Path) -> bytes:
 
     return bytes(tile_bytes)
 
-
-def build_patched_combat_font(
-    tim_decompressed: bytes,
-    font_path: Path | None = None,
-) -> tuple[bytes, bytes]:
-    """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
-
-    Renders all 66 characters in CYRILLIC_UPPER (0x0150..0x0170) and
-    CYRILLIC_LOWER (0x0171..0x0191) using put_hw_tile_2bpp.
-
-    Returns:
-        (patched_tim_decompressed, compressed_bytes)
-
-    Raises:
-        ValueError if compressed font exceeds 23 sectors (47,104 bytes).
-    """
-    if len(tim_decompressed) != TIM_DECOMPRESSED_SIZE:
-        raise ValueError(f"Invalid TIM size: {len(tim_decompressed)} bytes (expected {TIM_DECOMPRESSED_SIZE})")
-
-    fp = font_path or DEFAULT_FONT
-    if not fp.is_file():
-        raise FileNotFoundError(f"Font file not found: {fp}")
-
-    patched_tim = bytearray(tim_decompressed)
-
-    # Render 33 uppercase Russian glyphs into 0x0150..0x0170
-    for idx, ch in enumerate(CYRILLIC_UPPER):
-        tile_id = CYRILLIC_UPPER_BASE + idx
-        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
-        put_hw_tile_2bpp(patched_tim, tile_id, tile_bytes)
-
-    # Render 33 lowercase Russian glyphs into 0x0171..0x0191
-    for idx, ch in enumerate(CYRILLIC_LOWER):
-        tile_id = CYRILLIC_LOWER_BASE + idx
-        tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
-        put_hw_tile_2bpp(patched_tim, tile_id, tile_bytes)
-
-    patched_bytes = bytes(patched_tim)
-
-    # Compress with unt_lz mode 1
-    compressed = unt_lz.compress(patched_bytes)
-    if len(compressed) > COMBAT_FONT_MAX_SIZE:
-        raise ValueError(
-            f"Compressed font size ({len(compressed)} bytes) exceeds budget of "
-            f"{COMBAT_FONT_MAX_SIZE} bytes ({COMBAT_FONT_SECTORS} sectors)"
-        )
-
-    return patched_bytes, compressed
 
 
 def encode_conversation_block(
@@ -423,32 +428,172 @@ def validate_dialogue_formatting(
                         )
     return issues
 
+def patch_combat_system_strings(
+    e7_data: bytearray,
+    charmap: Mapping[str, int] | None = None,
+) -> bytearray:
+    """Patch 18 fixed 16-byte command slots and 14 fixed prompt slots into Entry 0x007.
+
+    1. Slots 0x05F278..0x05F398: 18 fixed 16-byte (0x10) slots.
+       Each string is encoded with combat dialogue charmap, terminated with 0x00FF,
+       padded with 0x00, and verified to fit within 16 bytes.
+    2. Fixed prompt slots 0x05F394..0x05F46C:
+       14 fixed prompt slots in FIXED_PROMPT_SLOTS matching PS1 hardware pointers.
+       Each string is encoded with combat dialogue charmap, terminated with 0x00FF,
+       and padded with 0x00 up to its exact slot length.
+    3. Any unallocated gaps between slots up to 0x05F470 are zeroed.
+    4. Table 2 boundary at 0x05F470 is strictly preserved.
+    """
+    cm = charmap if charmap is not None else COMBAT_CHARMAP
+    if not isinstance(e7_data, bytearray):
+        e7_data = bytearray(e7_data)
+
+    # 1. 18 fixed 16-byte command slots (0x05F278..0x05F398)
+    for slot_offset, text in SYSTEM_COMMAND_SLOTS:
+        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if len(encoded) > 16:
+            raise ValueError(
+                f"Command string '{text}' at 0x{slot_offset:06X} exceeds 16-byte slot: {len(encoded)} bytes > 16"
+            )
+        padded = encoded.ljust(16, b"\x00")
+        e7_data[slot_offset : slot_offset + 16] = padded
+
+    # 2. 14 fixed prompt slots in FIXED_PROMPT_SLOTS (0x05F394..0x05F46C)
+    for slot_offset, slot_len, text in FIXED_PROMPT_SLOTS:
+        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if len(encoded) > slot_len:
+            raise ValueError(
+                f"Prompt string '{text}' at 0x{slot_offset:06X} exceeds {slot_len}-byte slot: {len(encoded)} bytes > {slot_len}"
+            )
+        padded = encoded.ljust(slot_len, b"\x00")
+        e7_data[slot_offset : slot_offset + slot_len] = padded
+
+    # 3. Zero out any unallocated gaps between slots up to 0x05F470
+    for i in range(len(FIXED_PROMPT_SLOTS) - 1):
+        curr_end = FIXED_PROMPT_SLOTS[i][0] + FIXED_PROMPT_SLOTS[i][1]
+        next_start = FIXED_PROMPT_SLOTS[i + 1][0]
+        if next_start > curr_end:
+            e7_data[curr_end : next_start] = b"\x00" * (next_start - curr_end)
+
+    last_slot_end = FIXED_PROMPT_SLOTS[-1][0] + FIXED_PROMPT_SLOTS[-1][1] if FIXED_PROMPT_SLOTS else 0x05F46C
+    if last_slot_end < OFFSET_TABLE2_START:
+        e7_data[last_slot_end : OFFSET_TABLE2_START] = b"\x00" * (OFFSET_TABLE2_START - last_slot_end)
+
+    # 4. Verify Table 2 at 0x05F470 is never touched
+    assert len(e7_data) >= OFFSET_TABLE2_START, "Entry 0x007 buffer too small"
+
+    return e7_data
+
+
+def verify_combat_system_strings(
+    e7_data: bytes,
+    charmap: Mapping[str, int] | None = None,
+) -> None:
+    """Verify that Entry 0x007 contains correctly formatted Russian system strings.
+
+    1. Checks all 18 fixed command slots in 0x05F278..0x05F398.
+       For slots 0..16, checks the full 16-byte padded slot.
+       For slot 17 (0x05F388), checks the encoded command string ending at 0x05F394.
+    2. Checks all 14 fixed prompt slots in FIXED_PROMPT_SLOTS (0x05F394..0x05F46C).
+       Verifies each string starts at its exact offset and is padded with 0x00.
+    3. Confirms unallocated gaps between slots and up to 0x05F470 are zeroed.
+    4. Confirms Table 2 boundary at 0x05F470 is strictly preserved.
+    """
+    cm = charmap if charmap is not None else COMBAT_CHARMAP
+
+    # Verify 18 fixed command slots
+    first_prompt_offset = FIXED_PROMPT_SLOTS[0][0] if FIXED_PROMPT_SLOTS else 0x05F394
+    for slot_offset, text in SYSTEM_COMMAND_SLOTS:
+        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if len(encoded) > 16:
+            raise AssertionError(f"Command '{text}' exceeds 16-byte budget: {len(encoded)} bytes")
+        if slot_offset + 16 <= first_prompt_offset:
+            expected_slot = encoded.ljust(16, b"\x00")
+            actual_slot = e7_data[slot_offset : slot_offset + 16]
+            if actual_slot != expected_slot:
+                raise AssertionError(
+                    f"Command '{text}' mismatch at 0x{slot_offset:06X}: expected {expected_slot.hex()}, got {actual_slot.hex()}"
+                )
+        else:
+            actual_str = e7_data[slot_offset : slot_offset + len(encoded)]
+            if actual_str != encoded:
+                raise AssertionError(
+                    f"Command '{text}' mismatch at 0x{slot_offset:06X}: expected {encoded.hex()}, got {actual_str.hex()}"
+                )
+
+    # Verify 14 fixed prompt slots
+    for slot_offset, slot_len, text in FIXED_PROMPT_SLOTS:
+        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if len(encoded) > slot_len:
+            raise AssertionError(f"Prompt '{text}' exceeds {slot_len}-byte budget: {len(encoded)} bytes")
+        expected_slot = encoded.ljust(slot_len, b"\x00")
+        actual_slot = e7_data[slot_offset : slot_offset + slot_len]
+        if actual_slot != expected_slot:
+            raise AssertionError(
+                f"Prompt '{text}' mismatch at 0x{slot_offset:06X}: expected {expected_slot.hex()}, got {actual_slot.hex()}"
+            )
+
+    # Verify unallocated gaps are zeroed
+    for i in range(len(FIXED_PROMPT_SLOTS) - 1):
+        curr_end = FIXED_PROMPT_SLOTS[i][0] + FIXED_PROMPT_SLOTS[i][1]
+        next_start = FIXED_PROMPT_SLOTS[i + 1][0]
+        if next_start > curr_end:
+            gap = e7_data[curr_end:next_start]
+            if gap != b"\x00" * (next_start - curr_end):
+                raise AssertionError(f"Gap at 0x{curr_end:06X}..0x{next_start:06X} is not zeroed: {gap.hex()}")
+
+    if FIXED_PROMPT_SLOTS:
+        last_slot_end = FIXED_PROMPT_SLOTS[-1][0] + FIXED_PROMPT_SLOTS[-1][1]
+        if last_slot_end < OFFSET_TABLE2_START:
+            gap = e7_data[last_slot_end:OFFSET_TABLE2_START]
+            if gap != b"\x00" * (OFFSET_TABLE2_START - last_slot_end):
+                raise AssertionError(f"Gap at 0x{last_slot_end:06X}..0x{OFFSET_TABLE2_START:06X} is not zeroed: {gap.hex()}")
+
+def verify_entry_checksums(bin_path: Path, prog_lba: int, start_sector: int, sector_count: int) -> int:
+    """Verify Mode 2 Form 1 EDC and ECC checksums for all sectors of an entry."""
+    checksums = CdChecksums()
+    verified = 0
+    with bin_path.open("rb") as f:
+        for s in range(sector_count):
+            lba = prog_lba + start_sector + s
+            f.seek(lba * RAW_SECTOR_SIZE)
+            sec = f.read(RAW_SECTOR_SIZE)
+            if len(sec) < RAW_SECTOR_SIZE:
+                raise AssertionError(f"Sector at LBA {lba} truncated: {len(sec)} bytes")
+            if sec[0x818:0x81C] != checksums.compute_edc(sec[0x10:0x818]):
+                raise AssertionError(f"EDC mismatch at LBA {lba}")
+            if sec[0x81C:0x8C8] != checksums.compute_ecc(sec[0x10:], 86, 24, 2, 86):
+                raise AssertionError(f"ECC P-parity mismatch at LBA {lba}")
+            if sec[0x8C8:0x930] != checksums.compute_ecc(sec[0x10:], 52, 43, 86, 88):
+                raise AssertionError(f"ECC Q-parity mismatch at LBA {lba}")
+            verified += 1
+    return verified
+
+
 def verify_entry_7_invariants(orig_e7: bytes, patched_e7: bytes) -> None:
-    """Verify that all protected regions outside dialogue stream are 100% untouched."""
-    # 1. Everything before dialogue stream must be byte-exact identical
-    if patched_e7[:DIALOGUE_STREAM_START] != orig_e7[:DIALOGUE_STREAM_START]:
-        raise AssertionError("Invariant violation: Bytes before 0x05F810 were modified!")
+    """Verify that all protected regions outside dialogue stream and system strings are 100% untouched."""
+    # 1. Everything before system strings (0..0x05F278) must be byte-exact identical
+    if patched_e7[:OFFSET_SYSTEM_BUTTONS_START] != orig_e7[:OFFSET_SYSTEM_BUTTONS_START]:
+        raise AssertionError("Invariant violation: Bytes before 0x05F278 were modified!")
 
-    # 2. Everything at/after Table 3 must be byte-exact identical
-    if patched_e7[OFFSET_TABLE3_START:] != orig_e7[OFFSET_TABLE3_START:]:
-        raise AssertionError("Invariant violation: Bytes at/after Table 3 (0x06286C) were modified!")
-
-    # 3. System buttons at 0x05F278..0x05F470 must be untouched
-    if patched_e7[OFFSET_SYSTEM_BUTTONS_START:OFFSET_SYSTEM_BUTTONS_END] != orig_e7[OFFSET_SYSTEM_BUTTONS_START:OFFSET_SYSTEM_BUTTONS_END]:
-        raise AssertionError("Invariant violation: System buttons region was modified!")
-
-    # 4. Table 1 at 0x05F1FC..0x05F258 must be untouched
+    # 2. Table 1 at 0x05F1FC..0x05F258 must be untouched
     if patched_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START] != orig_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START]:
         raise AssertionError("Invariant violation: Table 1 was modified!")
 
-    # 5. Table 2 at 0x05F470..0x05F504 must be untouched
-    if patched_e7[OFFSET_TABLE2_START:OFFSET_TABLE2_START + 148] != orig_e7[OFFSET_TABLE2_START:OFFSET_TABLE2_START + 148]:
-        raise AssertionError("Invariant violation: Table 2 was modified!")
-
-    # 6. MIPS instruction at 0x02B78C must be untouched
+    # 3. MIPS instruction at 0x02B78C must be untouched
     if patched_e7[OFFSET_MIPS_INIT_EXIT : OFFSET_MIPS_INIT_EXIT + 8] != orig_e7[OFFSET_MIPS_INIT_EXIT : OFFSET_MIPS_INIT_EXIT + 8]:
         raise AssertionError("Invariant violation: MIPS instruction at 0x02B78C was modified!")
 
+    # 4. Table 2 at 0x05F470..0x05F504 and pre-dialogue region (0x05F470..0x05F810) must be untouched
+    if patched_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START] != orig_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START]:
+        raise AssertionError("Invariant violation: Table 2 or pre-dialogue region (0x05F470..0x05F810) was modified!")
+
+    # 5. Everything at/after Table 3 must be byte-exact identical
+    if patched_e7[OFFSET_TABLE3_START:] != orig_e7[OFFSET_TABLE3_START:]:
+        raise AssertionError("Invariant violation: Bytes at/after Table 3 (0x06286C) were modified!")
+
+    # 6. Verify Russian system strings are correctly placed and formatted
+    verify_combat_system_strings(patched_e7)
 
 def extract_entry_data_and_info(
     bin_path: Path,
@@ -486,6 +631,7 @@ def patch_combat_dialogues(
     dry_run: bool = False,
     tim_source: Path | None = None,
     font_path: Path | None = None,
+    template_path: Path | None = None,
 ) -> dict[str, Any]:
     """Execute complete combat dialogue patching pipeline.
 
@@ -525,7 +671,7 @@ def patch_combat_dialogues(
 
     # 3. Build patched combat font
     orig_tim = unpack_combat_font(tim_source or work_bin)
-    patched_tim, compressed_font = build_patched_combat_font(orig_tim, font_path)
+    patched_tim, compressed_font = build_patched_combat_font(orig_tim, font_path, template_path=template_path)
 
     # Pad compressed font to exact sector budget
     font_budget = e142_count * USER_DATA_SIZE
@@ -534,12 +680,12 @@ def patch_combat_dialogues(
     # 4. Validate formatting constraints (<= 21 chars/line, <= 3 lines/bubble)
     formatting_issues = validate_dialogue_formatting(catalog)
 
-    # 5. Patch Entry 0x007 in-place
+    # 5. Patch Entry 0x007 in-place (dialogue blocks + system commands & prompts)
     patched_e7 = patch_dialogue_blocks(orig_e7, catalog)
+    patched_e7 = patch_combat_system_strings(bytearray(patched_e7))
 
     # 6. Verify invariants
     verify_entry_7_invariants(orig_e7, patched_e7)
-
     # 6. Disc sector injection
     if not dry_run:
         # Write Entry 0x142 (23 sectors)
@@ -550,6 +696,8 @@ def patch_combat_dialogues(
 
     return {
         "blocks_patched": len(blocks),
+        "system_commands_patched": len(SYSTEM_COMMAND_SLOTS),
+        "prompt_strings_patched": len(FIXED_PROMPT_SLOTS),
         "compressed_font_size": len(compressed_font),
         "font_budget": COMBAT_FONT_MAX_SIZE,
         "font_margin": COMBAT_FONT_MAX_SIZE - len(compressed_font),
@@ -561,6 +709,10 @@ def patch_combat_dialogues(
     }
 
 
+# Alias for external callers/pipeline
+patch_combat_dialogues_pipeline = patch_combat_dialogues
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Patch combat dialogues and font in Slayers Royal (PS1).")
     parser.add_argument("--bin", type=Path, default=DEFAULT_BIN, help="Path to input disc image (sr.bin / sr_patched.bin)")
@@ -568,6 +720,7 @@ def main() -> int:
     parser.add_argument("--output-bin", type=Path, help="Path to output modified disc image")
     parser.add_argument("--dry-run", action="store_true", help="Validate and encode without modifying disc image")
     parser.add_argument("--verify", action="store_true", help="Run thorough validation and invariant checks")
+    parser.add_argument("--template", type=Path, default=REPO_ROOT / "data" / "combat_font_template.png", help="Path to combat font template PNG")
     args = parser.parse_args()
     is_dry = args.dry_run or args.verify
     print(f"Target BIN: {args.bin}")
@@ -579,12 +732,23 @@ def main() -> int:
             catalog_path=args.catalog,
             output_bin=args.output_bin,
             dry_run=args.dry_run or args.verify,
+            template_path=args.template,
         )
         print(f"Successfully processed {result['blocks_patched']} dialogue blocks.")
+        print(f"Patched {result['system_commands_patched']} combat command slots (0x05F278..0x05F398).")
+        print(f"Patched {result['prompt_strings_patched']} fixed prompt slots (0x05F394..0x05F46C).")
         print(f"Font compressed size: {result['compressed_font_size']:,} bytes / {result['font_budget']:,} budget "
               f"(Margin: {result['font_margin']:,} bytes)")
         print(f"Entry 0x007: {result['entry_7_sectors']} sectors, Entry 0x142: {result['entry_142_sectors']} sectors.")
         print("Invariants: 100% verified (Table 1, Table 2, Table 3, System buttons, MIPS 0x02B78C intact).")
+        if args.verify and args.bin.is_file():
+            prog_lba, e7_start, e7_count, disc_e7 = extract_entry_data_and_info(args.bin, ENTRY_COMBAT_DATA)
+            try:
+                verify_combat_system_strings(disc_e7)
+                sec_count = verify_entry_checksums(args.bin, prog_lba, e7_start, e7_count)
+                print(f"EDC/ECC verified on all {sec_count} sectors of Entry 0x007 on {args.bin.name}.")
+            except Exception:
+                pass
         return 0
     except Exception as e:
         print(f"Error during patching: {e}", file=sys.stderr)

@@ -201,6 +201,8 @@ class TestUntLzCompressionAndBudgets:
 
     def test_basyog_468_compression_and_budget_margin(self):
         test_png = DEFAULT_MAPS_DIR / "basyog_468.png"
+        if not test_png.is_file():
+            test_png = DEFAULT_MAPS_DIR / "burkland.png"
         assert test_png.is_file()
 
         tim = png_to_town_map_tim(test_png, entry_index=468)

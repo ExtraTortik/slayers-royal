@@ -196,6 +196,36 @@ def sync_hud_vram_in_payload(
     return False
 
 
+def sync_combat_in_payload(
+    decomp: bytearray,
+    ru_spell_menu: bytes | None = None,
+    ru_pointers: bytes | None = None,
+    ru_combat_font_tim: bytes | None = None,
+) -> bool:
+    """Find and synchronize Entry 0x007 spell menu and Entry 0x142 combat font in RAM."""
+    e7_head = bytes.fromhex("0a000000bcfd04804cfe0480c4ff0480")
+    pos = decomp.find(e7_head)
+    if pos == -1:
+        return False
+
+    updated = False
+    if ru_spell_menu is not None and ru_pointers is not None:
+        menu_off = pos + 0x06F2CC
+        ptr_off = pos + 0x06F4D8
+        if decomp[menu_off : menu_off + len(ru_spell_menu)] != ru_spell_menu:
+            decomp[menu_off : menu_off + len(ru_spell_menu)] = ru_spell_menu
+            decomp[ptr_off : ptr_off + len(ru_pointers)] = ru_pointers
+            updated = True
+
+    if ru_combat_font_tim:
+        tim_head = ru_combat_font_tim[:16]
+        tim_pos = decomp.find(tim_head)
+        if tim_pos != -1 and decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] != ru_combat_font_tim:
+            decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] = ru_combat_font_tim
+            updated = True
+
+    return updated
+
 def sync_all_hud_savestates(
     bin_path: Path | str = DEFAULT_BIN,
     savestates_dir: Path | str = DEFAULT_SAVESTATES_DIR,
@@ -515,9 +545,25 @@ def sync_single_savestate(
         hud_vram_updated = sync_hud_vram_in_payload(decomp, old_widget_rows, new_widget_rows)
     result["hud_vram_updated"] = hud_vram_updated
 
-    if entry3_start is None and not room_updates and not sec1606_updated and not hud_vram_updated:
+    # Synchronize Combat Mode (Entry 0x007 spell menu and Entry 0x142 combat font) if present in RAM
+    combat_updated = False
+    try:
+        from tools.patch_spells import ENTRY_007_RU_SPELL_MENU_BYTES, ENTRY_007_RU_POINTER_BYTES
+        from tools.patch_combat_font import unpack_combat_font, apply_combat_font_patches
+        combat_tim = bytes(apply_combat_font_patches(unpack_combat_font()))
+        combat_updated = sync_combat_in_payload(
+            decomp,
+            ru_spell_menu=ENTRY_007_RU_SPELL_MENU_BYTES,
+            ru_pointers=ENTRY_007_RU_POINTER_BYTES,
+            ru_combat_font_tim=combat_tim,
+        )
+    except Exception:
+        pass
+    result["combat_updated"] = combat_updated
+
+    if entry3_start is None and not room_updates and not sec1606_updated and not hud_vram_updated and not combat_updated:
         result["status"] = "not_loaded"
-        result["message"] = "Neither Entry 3, active room, World Map, nor HUD VRAM in RAM/VRAM"
+        result["message"] = "Neither Entry 3, active room, World Map, HUD VRAM, nor Combat in RAM/VRAM"
         return result
     if entry3_start is not None and entry3_disc is not None:
         result["entry3_found"] = True
@@ -794,7 +840,8 @@ def main() -> int:
             updated_count += 1
             if r.get("hud_vram_updated"):
                 print(f"  [✓] {r['name']}: HUD DATE widget VRAM synchronized")
-        elif r.get("status") in ("not_loaded", "entry3_not_loaded"):
+            if r.get("combat_updated"):
+                print(f"  [✓] {r['name']}: Combat spell menu and font synchronized")
             print(f"  [-] {r['name']}: {r.get('message')}")
         else:
             print(f"  [!] {r['name']}: {r.get('error', r.get('status'))}")

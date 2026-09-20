@@ -82,7 +82,7 @@ PTR_OFFSET_PICK_UNIT = 0x05F244
 
 # Combat font VRAM loader hook configuration in 0x007:
 # Target injection in 0x007:
-# RAM 0x8007989C: combat interface initialization exit (jr $ra replaced with j hook)
+# RAM 0x8007989C: combat interface initialization exit (original jr $ra; nop preserved)
 OFFSET_COMBAT_INIT_EXIT = 0x02B78C
 # Safe free space in 0x007 for the loader subroutine (after system strings):
 OFFSET_COMBAT_HOOK = 0x082800
@@ -461,15 +461,8 @@ def patch_combat_overlay_entry(
         ptrs_updated += 1
 
 
-    # 7. Inject combat font VRAM loader hook into 0x007
-    # 7a. Write loader subroutine into safe free space at OFFSET_COMBAT_HOOK
-    hook_code = build_combat_font_loader_hook()
-    e007_data[OFFSET_COMBAT_HOOK : OFFSET_COMBAT_HOOK + len(hook_code)] = hook_code
-
-    # 7b. Replace 'jr $ra; nop' at combat interface initialization exit (0x8007989C)
-    # with trampoline jump 'j <COMBAT_HOOK_RAM>; nop'
-    jump_instr = (0x02 << 26) | ((COMBAT_HOOK_RAM >> 2) & 0x03FFFFFF)
-    struct.pack_into("<II", e007_data, OFFSET_COMBAT_INIT_EXIT, jump_instr, 0x00000000)
+    # 7. Explicitly preserve/write clean 'jr $ra; nop' at combat interface initialization exit (0x8007989C)
+    struct.pack_into("<II", e007_data, OFFSET_COMBAT_INIT_EXIT, 0x03E00008, 0x00000000)
     # Write patched entry 0x007 back into PROG.UNT
     prog_archive[e007.offset : e007.offset + e007.size] = e007_data
 
@@ -576,11 +569,15 @@ def verify_combat_patch(
     # Verify entry 0x007
     prog_007 = read_extent(disc_path, prog_lba + e007.start_sector, e007.size)
 
-    # Detect active mode
+    # Check that combat interface initialization exit is clean jr $ra (0x03E00008)
     exit_instr = struct.unpack_from("<I", prog_007, OFFSET_COMBAT_INIT_EXIT)[0]
-    is_english = (exit_instr == 0x03E00008)
-    active_mode = ("en" if is_english else "ru") if mode == "auto" else mode
+    assert exit_instr == 0x03E00008, f"Expected standard jr $ra at 0x{OFFSET_COMBAT_INIT_EXIT:06X}, got 0x{exit_instr:08X}"
 
+    # Detect active mode: check if entry 0x007 has Russian combat UI (PICK UNIT is translated)
+    charmap = build_combat_charmap()
+    expected_pick_prefix = encode_text("ВЫБЕ", charmap)[:8]
+    has_ru_pick = (prog_007[OFFSET_PICK_UNIT : OFFSET_PICK_UNIT + 8] == expected_pick_prefix)
+    active_mode = ("ru" if has_ru_pick else "en") if mode == "auto" else mode
     # Check EDC and ECC checksums on disc sectors for 0x142 (23 sectors) and 0x007 (745 sectors)
     checksums = CdChecksums()
     verified_sectors = 0
@@ -608,21 +605,23 @@ def verify_combat_patch(
         ptr_pick = struct.unpack_from("<I", prog_007, PTR_OFFSET_PICK_UNIT)[0]
         assert ptr_pick == RAM_BASE + OFFSET_PICK_UNIT, f"Expected pointer 0x{RAM_BASE + OFFSET_PICK_UNIT:08X}, got 0x{ptr_pick:08X}"
         words_pick = decode_16le_string(prog_007, OFFSET_PICK_UNIT, stop_at_page=False)
-        assert words_pick == [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF], f"Expected PICK UNIT at 0x{OFFSET_PICK_UNIT:06X}"
+        is_ru_shield = (words_pick == [0x016A, 0x0159, 0x0163, 0x0150, 0x00FF])
+        is_ru_pick = (words_pick == [0x015B, 0x0163, 0x015F, 0x007D, 0x0166, 0x015F, 0x0154, 0x0159, 0x0163, 0x00A7, 0x00FF]) or is_ru_shield
+        assert words_pick == [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF] or is_ru_pick, f"Expected PICK UNIT at 0x{OFFSET_PICK_UNIT:06X}"
 
         pos_92 = 0x06286C + 91 * 4
         ram_92 = struct.unpack_from("<I", prog_007, pos_92)[0]
         spk_92 = struct.unpack_from("<H", prog_007, ram_92 - RAM_BASE)[0]
-        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171), f"Expected cue 92 speaker opcode or padding, got 0x{spk_92:04X}"
+        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171, 0x017D), f"Expected cue 92 speaker opcode or padding, got 0x{spk_92:04X}"
 
         return {
             "verified": True,
-            "mode": "en",
+            "mode": "ru" if is_ru_pick else "en",
             "combat_font_entry": f"0x{COMBAT_FONT_ENTRY:03X}",
             "combat_overlay_entry": f"0x{PROG_ENTRY_COMBAT:03X}",
-            "pick_unit_text": "PICK UNIT",
+            "pick_unit_text": "ЗАЩИТА" if is_ru_shield else ("КТО ХОДИТ?" if is_ru_pick else "PICK UNIT"),
             "cue_092_speaker": f"0x{spk_92:04X}",
-            "cue_092_text_prefix": "English gourry-hacks baseline",
+            "cue_092_text_prefix": "Russian system strings" if is_ru_pick else "English gourry-hacks baseline",
             "edc_ecc_verified_sectors": verified_sectors,
             "combat_vram_hook": "None (original jr $ra, English baseline)",
         }
@@ -688,15 +687,9 @@ def verify_combat_patch(
         kanji_cue = [w for w in w_cue if 0x0100 <= w <= 0x03E0]
         assert not kanji_cue, f"Dialogue cue {idx} at 0x{t:06X} contains kanji codes: {[hex(w) for w in kanji_cue]}"
 
-    jump_val = struct.unpack_from("<I", prog_007, OFFSET_COMBAT_INIT_EXIT)[0]
-    expected_jump = (0x02 << 26) | ((COMBAT_HOOK_RAM >> 2) & 0x03FFFFFF)
-    assert jump_val == expected_jump, (
-        f"Exit instruction at 0x{OFFSET_COMBAT_INIT_EXIT:06X} (RAM 0x{RAM_BASE + OFFSET_COMBAT_INIT_EXIT:08X}) "
-        f"must be jump to hook (0x{expected_jump:08X}), got 0x{jump_val:08X}"
+    assert exit_instr == 0x03E00008, (
+        f"Expected standard jr $ra at 0x{OFFSET_COMBAT_INIT_EXIT:06X}, got 0x{exit_instr:08X}"
     )
-    expected_hook = build_combat_font_loader_hook()
-    actual_hook = bytes(prog_007[OFFSET_COMBAT_HOOK : OFFSET_COMBAT_HOOK + len(expected_hook)])
-    assert actual_hook == expected_hook, f"Combat font loader hook code mismatch at 0x{OFFSET_COMBAT_HOOK:06X}"
 
     return {
         "verified": True,
@@ -707,7 +700,7 @@ def verify_combat_patch(
         "cue_092_speaker": f"0x{spk92:04X}",
         "cue_092_text_prefix": text_92[:35],
         "edc_ecc_verified_sectors": verified_sectors,
-        "combat_vram_hook": f"0x{COMBAT_HOOK_RAM:08X}",
+        "combat_vram_hook": "None (original jr $ra, clean exit)",
     }
 
 
@@ -794,7 +787,7 @@ def main() -> int:
     print(f"    Entry 0x007 Strings:  {result.system_strings_count} system strings, {result.dialogues_count} combat cues")
     print(f"    Pointers Updated:     {result.pointers_updated} RAM pointers")
     print(f"    Sectors Replaced:     {result.sectors_patched} Mode 2 Form 1 sectors with EDC/ECC repair")
-    print(f"    Combat VRAM Hook:     Injected at 0x{OFFSET_COMBAT_HOOK:06X} (RAM 0x{COMBAT_HOOK_RAM:08X})")
+    print(f"    Combat VRAM Hook:     None (preserved clean jr $ra; nop at 0x{OFFSET_COMBAT_INIT_EXIT:06X})")
 
     # Run verification immediately after patching
     report = verify_combat_patch(target_bin, catalog_path=args.catalog, mode="ru")

@@ -1,0 +1,2276 @@
+[
+  {
+    "entry_index": 325,
+    "entry_hex": "0x145",
+    "title_en": "MAGIC HELP",
+    "title_ru": "СПРАВКА ПО МАГИИ",
+    "name_en": "MAGIC HELP",
+    "name_ru": "СПРАВКА ПО МАГИИ",
+    "title_jp": "魔法の説明",
+    "desc_en": "",
+    "desc_ru": "",
+    "pages_en": [],
+    "pages_ru": [],
+    "menu_ru": "СПРАВКА ПО МАГИИ"
+  },
+  {
+    "entry_index": 326,
+    "entry_hex": "0x146",
+    "title_en": "Holy Bless",
+    "title_ru": "Холи Блесс",
+    "name_en": "Holy Bless",
+    "name_ru": "ХОЛИ-Б",
+    "title_jp": "ホ-リィ・ブレス",
+    "desc_en": "Purifies undead foes,\nincluding ghosts.\n\nAffects all undead units\non the map.",
+    "desc_ru": "Очищает нежить,\nвключая призраков.\n\nДействует на всю нежить\nна карте боя.",
+    "pages_en": [
+      "Purifies undead foes,\nincluding ghosts.",
+      "Affects all undead units\non the map."
+    ],
+    "pages_ru": [
+      "Очищает нежить,\nвключая призраков.",
+      "Действует на всю нежить\nна карте боя."
+    ],
+    "menu_ru": "ХОЛИ-Б"
+  },
+  {
+    "entry_index": 327,
+    "entry_hex": "0x147",
+    "title_en": "Vis Farank",
+    "title_ru": "Вис Фаранк",
+    "name_en": "Vis Farank",
+    "name_ru": "ВИС-Ф",
+    "title_jp": "ヴィスファランク",
+    "desc_en": "Imbues the caster's fists\nwith magic, raising attack.\nEffective on Mazoku.\n\nOnly affects the caster.",
+    "desc_ru": "Наполняет кулаки мага силой,\nповышая силу атаки.\nЭффективно против мазоку.\n\nДействует только\nна самого заклинателя.",
+    "pages_en": [
+      "Imbues the caster's fists\nwith magic, raising attack.\nEffective on Mazoku.",
+      "Only affects the caster."
+    ],
+    "pages_ru": [
+      "Наполняет кулаки мага силой,\nповышая силу атаки.\nЭффективно против мазоку.",
+      "Действует только\nна самого заклинателя."
+    ],
+    "menu_ru": "ВИС-Ф"
+  },
+  {
+    "entry_index": 328,
+    "entry_hex": "0x148",
+    "title_en": "Dill Brand",
+    "title_ru": "Дилл Бранд",
+    "name_en": "Dill Brand",
+    "name_ru": "ДИЛЛ-Б",
+    "title_jp": "ディル・ブランド",
+    "desc_en": "Blasts the earth upward\naround the caster.\n\nHits every unit within\n4 hexes, friend or foe.",
+    "desc_ru": "Вздымает землю вверх\nвокруг заклинателя.\n\nПоражает всех в радиусе\n4 клеток, и врагов,\nи союзников.",
+    "pages_en": [
+      "Blasts the earth upward\naround the caster.",
+      "Hits every unit within\n4 hexes, friend or foe."
+    ],
+    "pages_ru": [
+      "Вздымает землю вверх\nвокруг заклинателя.",
+      "Поражает всех в радиусе\n4 клеток, и врагов,\nи союзников."
+    ],
+    "menu_ru": "ДИЛЛ-Б"
+  },
+  {
+    "entry_index": 329,
+    "entry_hex": "0x149",
+    "title_en": "Dug Haut",
+    "title_ru": "Даг Хаут",
+    "name_en": "Dug Haut",
+    "name_ru": "ДАГХАУТ",
+    "title_jp": "ダグ・ハウト",
+    "desc_en": "Turns the earth to spikes\nthat impale the enemy.\n\nHits every unit within\n4 hexes, friend or foe.",
+    "desc_ru": "Превращает землю в шипы,\nпронзающие противника.\n\nПоражает всех в радиусе\n4 клеток, и врагов,\nи союзников.",
+    "pages_en": [
+      "Turns the earth to spikes\nthat impale the enemy.",
+      "Hits every unit within\n4 hexes, friend or foe."
+    ],
+    "pages_ru": [
+      "Превращает землю в шипы,\nпронзающие противника.",
+      "Поражает всех в радиусе\n4 клеток, и врагов,\nи союзников."
+    ],
+    "menu_ru": "ДАГХАУТ"
+  },
+  {
+    "entry_index": 330,
+    "entry_hex": "0x14A",
+    "title_en": "Diem Wind",
+    "title_ru": "Дим Винд",
+    "name_en": "Diem Wind",
+    "name_ru": "ДИМВИНД",
+    "title_jp": "ディム・ウィン",
+    "desc_en": "Summons fierce winds\nthat blow enemies away.\n\nBlows away every unit\nwithin 4 hexes,\nfriend or foe.",
+    "desc_ru": "Призывает яростный ветер,\nсдувающий противников.\n\nСдувает всех в радиусе\n4 клеток, и врагов,\nи союзников.",
+    "pages_en": [
+      "Summons fierce winds\nthat blow enemies away.",
+      "Blows away every unit\nwithin 4 hexes,\nfriend or foe."
+    ],
+    "pages_ru": [
+      "Призывает яростный ветер,\nсдувающий противников.",
+      "Сдувает всех в радиусе\n4 клеток, и врагов,\nи союзников."
+    ],
+    "menu_ru": "ДИМВИНД"
+  },
+  {
+    "entry_index": 331,
+    "entry_hex": "0x14B",
+    "title_en": "Sleeping N",
+    "title_ru": "Слипинг (Нага)",
+    "name_en": "Sleeping N",
+    "name_ru": "СЛИП Н",
+    "title_jp": "スリ-ピング [N]",
+    "desc_en": "Naga's version of a\nsleep spell.\n\nPuts the caster and units\nwithin 4 hexes to sleep.",
+    "desc_ru": "Особая версия заклинания сна\nот госпожи Наги.\n\nУсыпляет заклинателя\nи всех в радиусе 4 клеток.",
+    "pages_en": [
+      "Naga's version of a\nsleep spell.",
+      "Puts the caster and units\nwithin 4 hexes to sleep."
+    ],
+    "pages_ru": [
+      "Особая версия заклинания сна\nот госпожи Наги.",
+      "Усыпляет заклинателя\nи всех в радиусе 4 клеток."
+    ],
+    "menu_ru": "СЛИП Н"
+  },
+  {
+    "entry_index": 332,
+    "entry_hex": "0x14C",
+    "title_en": "Dragon Slave",
+    "title_ru": "Драгу Слейв",
+    "name_en": "Dragon Slave",
+    "name_ru": "ДРАГУ СЛЕЙВ",
+    "title_jp": "ドラグ・スレイブ",
+    "desc_en": "The strongest black magic.\n\nDeals massive damage to\nall units in its area.",
+    "desc_ru": "Сильнейшая чёрная магия.\n\nНаносит огромный урон\nвсем целям в зоне взрыва.",
+    "pages_en": [
+      "The strongest black magic.",
+      "Deals massive damage to\nall units in its area."
+    ],
+    "pages_ru": [
+      "Сильнейшая чёрная магия.",
+      "Наносит огромный урон\nвсем целям в зоне взрыва."
+    ],
+    "menu_ru": "ДРАГУ СЛЕЙВ"
+  },
+  {
+    "entry_index": 333,
+    "entry_hex": "0x14D",
+    "title_en": "Dragon Slave E",
+    "title_ru": "Драгу Слейв (Усил.)",
+    "name_en": "Dragon Slave E",
+    "name_ru": "ДРАГУ СЛ-У",
+    "title_jp": "ドラグ・スレイブ [E]",
+    "desc_en": "An enhanced version of\nDragon Slave.\n\nDeals massive damage to\nall units in its area.",
+    "desc_ru": "Усиленная версия\nДрагу Слейва.\n\nНаносит колоссальный урон\nвсем целям в зоне взрыва.",
+    "pages_en": [
+      "An enhanced version of\nDragon Slave.",
+      "Deals massive damage to\nall units in its area."
+    ],
+    "pages_ru": [
+      "Усиленная версия\nДрагу Слейва.",
+      "Наносит колоссальный урон\nвсем целям в зоне взрыва."
+    ],
+    "menu_ru": "ДРАГУ СЛ-У"
+  },
+  {
+    "entry_index": 334,
+    "entry_hex": "0x14E",
+    "title_en": "Flare Arrow N",
+    "title_ru": "Флейр Эрроу (Нага)",
+    "name_en": "Flare Arrow N",
+    "name_ru": "ФЛЕЙР-Э Н",
+    "title_jp": "フレア・アロ- [N]",
+    "desc_en": "Creates flaming arrows.\nNaga's version.\n\nAttacks 3 hexes ahead.\nHits friend and foe.",
+    "desc_ru": "Создаёт огненные стрелы.\nВерсия от Наги.\n\nАтакует на 3 клетки вперёд.\nБьёт и врагов, и своих.",
+    "pages_en": [
+      "Creates flaming arrows.\nNaga's version.",
+      "Attacks 3 hexes ahead.\nHits friend and foe."
+    ],
+    "pages_ru": [
+      "Создаёт огненные стрелы.\nВерсия от Наги.",
+      "Атакует на 3 клетки вперёд.\nБьёт и врагов, и своих."
+    ],
+    "menu_ru": "ФЛЕЙР-Э Н"
+  },
+  {
+    "entry_index": 335,
+    "entry_hex": "0x14F",
+    "title_en": "Freeze Arrow N",
+    "title_ru": "Фриз Эрроу (Нага)",
+    "name_en": "Freeze Arrow N",
+    "name_ru": "ФРИЗ-Э Н",
+    "title_jp": "フリ-ズ・アロ- [N]",
+    "desc_en": "Creates icy arrows.\nNaga's version.\n\nAttacks 3 hexes ahead.\nHits friend and foe.",
+    "desc_ru": "Создаёт ледяные стрелы.\nВерсия от Наги.\n\nАтакует на 3 клетки вперёд.\nБьёт и врагов, и своих.",
+    "pages_en": [
+      "Creates icy arrows.\nNaga's version.",
+      "Attacks 3 hexes ahead.\nHits friend and foe."
+    ],
+    "pages_ru": [
+      "Создаёт ледяные стрелы.\nВерсия от Наги.",
+      "Атакует на 3 клетки вперёд.\nБьёт и врагов, и своих."
+    ],
+    "menu_ru": "ФРИЗ-Э Н"
+  },
+  {
+    "entry_index": 336,
+    "entry_hex": "0x150",
+    "title_en": "Blast Ash",
+    "title_ru": "Бласт Эш",
+    "name_en": "Blast Ash",
+    "name_ru": "БЛАСТЭШ",
+    "title_jp": "ブラスト・アッシュ",
+    "desc_en": "Reduces a foe to dust\nin a single strike.\n\nAttacks in the chosen\ndirection.",
+    "desc_ru": "Обращает противника в прах\nодним точным ударом.\n\nАтакует в выбранном\nнаправлении.",
+    "pages_en": [
+      "Reduces a foe to dust\nin a single strike.",
+      "Attacks in the chosen\ndirection."
+    ],
+    "pages_ru": [
+      "Обращает противника в прах\nодним точным ударом.",
+      "Атакует в выбранном\nнаправлении."
+    ],
+    "menu_ru": "БЛАСТЭШ"
+  },
+  {
+    "entry_index": 337,
+    "entry_hex": "0x151",
+    "title_en": "Dynast Breath S",
+    "title_ru": "Дайнаст Брес (Сильфиль)",
+    "name_en": "Dynast Breath S",
+    "name_ru": "ДАЙН-С",
+    "title_jp": "ダイナスト・ブレス [S]",
+    "desc_en": "Black magic effective\nagainst Mazoku.\n\nAttacks every unit in\nthe chosen direction.",
+    "desc_ru": "Чёрная магия, эффективная\nпротив мазоку.\n\nАтакует всех на линии\nв выбранном направлении.",
+    "pages_en": [
+      "Black magic effective\nagainst Mazoku.",
+      "Attacks every unit in\nthe chosen direction."
+    ],
+    "pages_ru": [
+      "Чёрная магия, эффективная\nпротив мазоку.",
+      "Атакует всех на линии\nв выбранном направлении."
+    ],
+    "menu_ru": "ДАЙН-С"
+  },
+  {
+    "entry_index": 338,
+    "entry_hex": "0x152",
+    "title_en": "Flare Lance",
+    "title_ru": "Флейр Лэнс",
+    "name_en": "Flare Lance",
+    "name_ru": "ФЛЕЙР ЛЭНС",
+    "title_jp": "フレア・ランス",
+    "desc_en": "An enhanced version of\nFlare Arrow.\n\nAttacks in the chosen\ndirection.",
+    "desc_ru": "Усиленная версия\nФлейр Эрроу.\n\nАтакует в выбранном\nнаправлении.",
+    "pages_en": [
+      "An enhanced version of\nFlare Arrow.",
+      "Attacks in the chosen\ndirection."
+    ],
+    "pages_ru": [
+      "Усиленная версия\nФлейр Эрроу.",
+      "Атакует в выбранном\nнаправлении."
+    ],
+    "menu_ru": "ФЛЕЙР ЛЭНС"
+  },
+  {
+    "entry_index": 339,
+    "entry_hex": "0x153",
+    "title_en": "Icicle Lance",
+    "title_ru": "Айсикл Лэнс",
+    "name_en": "Icicle Lance",
+    "name_ru": "АЙСИКЛ ЛЭНС",
+    "title_jp": "アイシクル・ランス",
+    "desc_en": "An enhanced version of\nFreeze Arrow.\n\nAttacks in the chosen\ndirection.",
+    "desc_ru": "Усиленная версия\nФриз Эрроу.\n\nАтакует в выбранном\nнаправлении.",
+    "pages_en": [
+      "An enhanced version of\nFreeze Arrow.",
+      "Attacks in the chosen\ndirection."
+    ],
+    "pages_ru": [
+      "Усиленная версия\nФриз Эрроу.",
+      "Атакует в выбранном\nнаправлении."
+    ],
+    "menu_ru": "АЙСИКЛ ЛЭНС"
+  },
+  {
+    "entry_index": 340,
+    "entry_hex": "0x154",
+    "title_en": "Bram Gash",
+    "title_ru": "Брам Гаш",
+    "name_en": "Bram Gash",
+    "name_ru": "БРАМГАШ",
+    "title_jp": "ブラム・ガッシュ",
+    "desc_en": "Fires a wind arrow that\nbursts on impact.\n\nAttacks in the chosen\ndirection.",
+    "desc_ru": "Выпускает ветряную стрелу,\nвзрывающуюся при попадании.\n\nАтакует в выбранном\nнаправлении.",
+    "pages_en": [
+      "Fires a wind arrow that\nbursts on impact.",
+      "Attacks in the chosen\ndirection."
+    ],
+    "pages_ru": [
+      "Выпускает ветряную стрелу,\nвзрывающуюся при попадании.",
+      "Атакует в выбранном\nнаправлении."
+    ],
+    "menu_ru": "БРАМГАШ"
+  },
+  {
+    "entry_index": 341,
+    "entry_hex": "0x155",
+    "title_en": "Mega Brand",
+    "title_ru": "Мега Бранд",
+    "name_en": "Mega Brand",
+    "name_ru": "МЕГА БРАНД",
+    "title_jp": "メガ・ブランド",
+    "desc_en": "Blasts the earth upward.\nStronger than Dill Bred.\n\nAttacks in the chosen\ndirection.",
+    "desc_ru": "Вздымает землю вверх.\nМощнее Дилл Бранда.\n\nАтакует в выбранном\nнаправлении.",
+    "pages_en": [
+      "Blasts the earth upward.\nStronger than Dill Bred.",
+      "Attacks in the chosen\ndirection."
+    ],
+    "pages_ru": [
+      "Вздымает землю вверх.\nМощнее Дилл Бранда.",
+      "Атакует в выбранном\nнаправлении."
+    ],
+    "menu_ru": "МЕГА БРАНД"
+  },
+  {
+    "entry_index": 342,
+    "entry_hex": "0x156",
+    "title_en": "Diem Wind S",
+    "title_ru": "Дим Винд (Сильфиль)",
+    "name_en": "Diem Wind S",
+    "name_ru": "ДИМ-С",
+    "title_jp": "ディム・ウィン [S]",
+    "desc_en": "A directional version\nof Diem Wind.\n\nBlows away all units in\nthe chosen direction.",
+    "desc_ru": "Направленная версия\nДим Винда.\n\nСдувает всех на линии\nв выбранном направлении.",
+    "pages_en": [
+      "A directional version\nof Diem Wind.",
+      "Blows away all units in\nthe chosen direction."
+    ],
+    "pages_ru": [
+      "Направленная версия\nДим Винда.",
+      "Сдувает всех на линии\nв выбранном направлении."
+    ],
+    "menu_ru": "ДИМ-С"
+  },
+  {
+    "entry_index": 343,
+    "entry_hex": "0x157",
+    "title_en": "Astral Vine",
+    "title_ru": "Астрал Вайн",
+    "name_en": "Astral Vine",
+    "name_ru": "АСТРАЛ",
+    "title_jp": "アストラル・ヴァイン",
+    "desc_en": "Imbues weapons with magic\nand raises attack.\nEffective on Mazoku.\n\nAffects the caster and\nadjacent units.",
+    "desc_ru": "Зачаровывает оружие магией\nи повышает атаку. Эффективно\nпротив мазоку.\n\nДействует на оружие\nвыбранного союзника.",
+    "pages_en": [
+      "Imbues weapons with magic\nand raises attack.\nEffective on Mazoku.",
+      "Affects the caster and\nadjacent units."
+    ],
+    "pages_ru": [
+      "Зачаровывает оружие магией\nи повышает атаку. Эффективно\nпротив мазоку.",
+      "Действует на оружие\nвыбранного союзника."
+    ],
+    "menu_ru": "АСТРАЛ"
+  },
+  {
+    "entry_index": 344,
+    "entry_hex": "0x158",
+    "title_en": "Zelas Brid",
+    "title_ru": "Зелас Брид",
+    "name_en": "Zelas Brid",
+    "name_ru": "ЗЕЛАС БРИД",
+    "title_jp": "ゼラス・ブリッド",
+    "desc_en": "Black magic effective\nagainst Mazoku.\n\nPasses through units to\nhit only the chosen foe.",
+    "desc_ru": "Чёрная магия, эффективная\nпротив мазоку.\n\nПроходит сквозь цели,\nпоражая только выбранную.",
+    "pages_en": [
+      "Black magic effective\nagainst Mazoku.",
+      "Passes through units to\nhit only the chosen foe."
+    ],
+    "pages_ru": [
+      "Чёрная магия, эффективная\nпротив мазоку.",
+      "Проходит сквозь цели,\nпоражая только выбранную."
+    ],
+    "menu_ru": "ЗЕЛАС БРИД"
+  },
+  {
+    "entry_index": 345,
+    "entry_hex": "0x159",
+    "title_en": "Elmekia Lance",
+    "title_ru": "Эльмекия Лэнс",
+    "name_en": "Elmekia Lance",
+    "name_ru": "ЭЛЬМЕК",
+    "title_jp": "エルメキア・ランス",
+    "desc_en": "Spirit magic that harms\nthe astral body.\nEffective on Mazoku.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Астральная магия духа.\nЭффективно против мазоку.\n\nПоражает выбранную цель.",
+    "pages_en": [
+      "Spirit magic that harms\nthe astral body.\nEffective on Mazoku.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Астральная магия духа.\nЭффективно против мазоку.",
+      "Поражает выбранную цель."
+    ],
+    "menu_ru": "ЭЛЬМЕК"
+  },
+  {
+    "entry_index": 346,
+    "entry_hex": "0x15A",
+    "title_en": "Bram Blazer",
+    "title_ru": "Брам Блейзер",
+    "name_en": "Bram Blazer",
+    "name_ru": "БРАМ БЛЕЙЗ",
+    "title_jp": "ブラム・ブレイザ-",
+    "desc_en": "Spirit magic effective\nagainst Mazoku.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Магия духа, эффективная\nпротив мазоку.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Spirit magic effective\nagainst Mazoku.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Магия духа, эффективная\nпротив мазоку.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "БРАМ БЛЕЙЗ"
+  },
+  {
+    "entry_index": 347,
+    "entry_hex": "0x15B",
+    "title_en": "Burst Rondo",
+    "title_ru": "Бёрст Рондо",
+    "name_en": "Burst Rondo",
+    "name_ru": "БЁРСТ РОНДО",
+    "title_jp": "バ-スト・ロンド",
+    "desc_en": "Fires many balls of light\nat the enemy.\n\nHits the chosen foe.\nUnits between may be hit.",
+    "desc_ru": "Запускает множество сфер света\nв сторону врага.\n\nПоражает выбранного врага,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Fires many balls of light\nat the enemy.",
+      "Hits the chosen foe.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Запускает множество сфер света\nв сторону врага.",
+      "Поражает выбранного врага,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "БЁРСТ РОНДО"
+  },
+  {
+    "entry_index": 348,
+    "entry_hex": "0x15C",
+    "title_en": "Resurrection E",
+    "title_ru": "Резоррекшн (Усил.)",
+    "name_en": "Resurrection E",
+    "name_ru": "РЕЗ-У",
+    "title_jp": "リザレクション [E]",
+    "desc_en": "Fully restores a unit\nfrom a distance.\n\nOnly affects the chosen\nunit.",
+    "desc_ru": "Полностью восстанавливает силы\nцели на расстоянии.\n\nДействует только\nна выбранную цель.",
+    "pages_en": [
+      "Fully restores a unit\nfrom a distance.",
+      "Only affects the chosen\nunit."
+    ],
+    "pages_ru": [
+      "Полностью восстанавливает силы\nцели на расстоянии.",
+      "Действует только\nна выбранную цель."
+    ],
+    "menu_ru": "РЕЗ-У"
+  },
+  {
+    "entry_index": 349,
+    "entry_hex": "0x15D",
+    "title_en": "Bomb Sprid",
+    "title_ru": "Бомб Сприд",
+    "name_en": "Bomb Sprid",
+    "name_ru": "БОМБ СПРИД",
+    "title_jp": "ボム・スプリッド",
+    "desc_en": "Explodes any chosen\nlocation.\n\nOnly hits the choern unit.",
+    "desc_ru": "Вызывает взрыв в выбранной\nточке поля боя.\n\nПоражает только\nвыбранную цель.",
+    "pages_en": [
+      "Explodes any chosen\nlocation.",
+      "Only hits the choern unit."
+    ],
+    "pages_ru": [
+      "Вызывает взрыв в выбранной\nточке поля боя.",
+      "Поражает только\nвыбранную цель."
+    ],
+    "menu_ru": "БОМБ СПРИД"
+  },
+  {
+    "entry_index": 350,
+    "entry_hex": "0x15E",
+    "title_en": "Dam Brass",
+    "title_ru": "Дам Брасс",
+    "name_en": "Dam Brass",
+    "name_ru": "ДАМБРАС",
+    "title_jp": "ダム・ブラス",
+    "desc_en": "A spirit-magic attack.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Ударная магия духа.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "A spirit-magic attack.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Ударная магия духа.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ДАМБРАС"
+  },
+  {
+    "entry_index": 351,
+    "entry_hex": "0x15F",
+    "title_en": "Dragon Slave C",
+    "title_ru": "Драгу Слейв (Кристалл)",
+    "name_en": "Dragon Slave C",
+    "name_ru": "ДРАГ-К",
+    "title_jp": "ドラグ・スレイブC",
+    "desc_en": "A concentrated version\nof Dragon Slave.\n\nHits the chosen unit.",
+    "desc_ru": "Сконцентрированная версия\nДрагу Слейва.\n\nПоражает выбранную цель.",
+    "pages_en": [
+      "A concentrated version\nof Dragon Slave.",
+      "Hits the chosen unit."
+    ],
+    "pages_ru": [
+      "Сконцентрированная версия\nДрагу Слейва.",
+      "Поражает выбранную цель."
+    ],
+    "menu_ru": "ДРАГ-К"
+  },
+  {
+    "entry_index": 352,
+    "entry_hex": "0x160",
+    "title_en": "Goz Vu Rou",
+    "title_ru": "Гоз Ву Роу",
+    "name_en": "Goz Vu Rou",
+    "name_ru": "ГОЗ-ВУ",
+    "title_jp": "ゴズヴ・ロ-",
+    "desc_en": "Spirit magic effective\nagainst Mazoku.\n\nHits the chosen unit.",
+    "desc_ru": "Магия духа, эффективная\nпротив мазоку.\n\nПоражает выбранную цель.",
+    "pages_en": [
+      "Spirit magic effective\nagainst Mazoku.",
+      "Hits the chosen unit."
+    ],
+    "pages_ru": [
+      "Магия духа, эффективная\nпротив мазоку.",
+      "Поражает выбранную цель."
+    ],
+    "menu_ru": "ГОЗ-ВУ"
+  },
+  {
+    "entry_index": 353,
+    "entry_hex": "0x161",
+    "title_en": "Ra Tilt",
+    "title_ru": "Ра Тильт",
+    "name_en": "Ra Tilt",
+    "name_ru": "РАТ",
+    "title_jp": "ラ・ティルト",
+    "desc_en": "The strongest attack\nin spirit magic.\n\nDirectly hits one unit.\nNo other units are hit.",
+    "desc_ru": "Сильнейшее боевое\nзаклинание магии духа.\n\nБьёт прямо по цели.\nОстальные цели не страдают.",
+    "pages_en": [
+      "The strongest attack\nin spirit magic.",
+      "Directly hits one unit.\nNo other units are hit."
+    ],
+    "pages_ru": [
+      "Сильнейшее боевое\nзаклинание магии духа.",
+      "Бьёт прямо по цели.\nОстальные цели не страдают."
+    ],
+    "menu_ru": "РАТ"
+  },
+  {
+    "entry_index": 354,
+    "entry_hex": "0x162",
+    "title_en": "Flare Arrow",
+    "title_ru": "Флейр Эрроу",
+    "name_en": "Flare Arrow",
+    "name_ru": "ФЛЕЙР ЭРРОУ",
+    "title_jp": "フレア・アロ-",
+    "desc_en": "Creates a flaming arrow\nand fires it at a foe.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Создаёт огненную стрелу и\nмечет её во врага.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Creates a flaming arrow\nand fires it at a foe.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Создаёт огненную стрелу и\nмечет её во врага.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ФЛЕЙР ЭРРОУ"
+  },
+  {
+    "entry_index": 355,
+    "entry_hex": "0x163",
+    "title_en": "Clay Bomb",
+    "title_ru": "Клей Бом",
+    "name_en": "Clay Bomb",
+    "name_ru": "КЛЕЙБОМ",
+    "title_jp": "クレイ・ボム",
+    "desc_en": "Creates light beneath a\nfoe, then detonates it.\n\nDirectly hits one unit.\nNo other units are hit.",
+    "desc_ru": "Создаёт свет под врагом,\nа затем взрывает его.\n\nБьёт прямо по цели.\nОстальные цели не страдают.",
+    "pages_en": [
+      "Creates light beneath a\nfoe, then detonates it.",
+      "Directly hits one unit.\nNo other units are hit."
+    ],
+    "pages_ru": [
+      "Создаёт свет под врагом,\nа затем взрывает его.",
+      "Бьёт прямо по цели.\nОстальные цели не страдают."
+    ],
+    "menu_ru": "КЛЕЙБОМ"
+  },
+  {
+    "entry_index": 356,
+    "entry_hex": "0x164",
+    "title_en": "Freeze Arrow",
+    "title_ru": "Фриз Эрроу",
+    "name_en": "Freeze Arrow",
+    "name_ru": "ФРИЗ ЭРРОУ",
+    "title_jp": "フリ-ズ・アロ-",
+    "desc_en": "Creates an icy arrow\nand fires it at a foe.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Создаёт ледяную стрелу и\nмечет её во врага.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Creates an icy arrow\nand fires it at a foe.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Создаёт ледяную стрелу и\nмечет её во врага.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ФРИЗ ЭРРОУ"
+  },
+  {
+    "entry_index": 357,
+    "entry_hex": "0x165",
+    "title_en": "Freeze Brid",
+    "title_ru": "Фриз Брид",
+    "name_en": "Freeze Brid",
+    "name_ru": "ФРИЗ БРИД",
+    "title_jp": "フリ-ズ・ブリッド",
+    "desc_en": "Hurls a ball of ice\nat the enemy.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Швыряет ледяную сферу\nво врага.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Hurls a ball of ice\nat the enemy.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Швыряет ледяную сферу\nво врага.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ФРИЗ БРИД"
+  },
+  {
+    "entry_index": 358,
+    "entry_hex": "0x166",
+    "title_en": "Bram Fang",
+    "title_ru": "Брам Фанг",
+    "name_en": "Bram Fang",
+    "name_ru": "БРАМ ФАНГ",
+    "title_jp": "ブラム・ファング",
+    "desc_en": "Slices a foe with\na blade of wind.\n\nDirectly hits one unit.\nNo other units are hit.",
+    "desc_ru": "Рассекает противника клинком\nиз сжатого ветра.\n\nБьёт прямо по цели.\nОстальные цели не страдают.",
+    "pages_en": [
+      "Slices a foe with\na blade of wind.",
+      "Directly hits one unit.\nNo other units are hit."
+    ],
+    "pages_ru": [
+      "Рассекает противника клинком\nиз сжатого ветра.",
+      "Бьёт прямо по цели.\nОстальные цели не страдают."
+    ],
+    "menu_ru": "БРАМ ФАНГ"
+  },
+  {
+    "entry_index": 359,
+    "entry_hex": "0x167",
+    "title_en": "Recovery",
+    "title_ru": "Рекавери",
+    "name_en": "Recovery",
+    "name_ru": "РЕКАВЕР",
+    "title_jp": "リカバリィ",
+    "desc_en": "Restores health to\nthe chosen unit.",
+    "desc_ru": "Восстанавливает здоровье\nвыбранному союзнику.",
+    "pages_en": [
+      "Restores health to\nthe chosen unit."
+    ],
+    "pages_ru": [
+      "Восстанавливает здоровье\nвыбранному союзнику."
+    ],
+    "menu_ru": "РЕКАВЕР"
+  },
+  {
+    "entry_index": 360,
+    "entry_hex": "0x168",
+    "title_en": "Dynast Breath",
+    "title_ru": "Дайнаст Брес",
+    "name_en": "Dynast Breath",
+    "name_ru": "ДАЙНАСТ",
+    "title_jp": "ダイナスト・ブレス",
+    "desc_en": "Black magic effective\nagainst Mazoku.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Чёрная магия, эффективная\nпротив мазоку.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Black magic effective\nagainst Mazoku.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Чёрная магия, эффективная\nпротив мазоку.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ДАЙНАСТ"
+  },
+  {
+    "entry_index": 361,
+    "entry_hex": "0x169",
+    "title_en": "Demona Crystal",
+    "title_ru": "Демона Кристал",
+    "name_en": "Demona Crystal",
+    "name_ru": "ДЕМОНА",
+    "title_jp": "デモナ・クリスタル",
+    "desc_en": "Freezes the enemy.\n\nHits the chosen unit.\nUnits between may be hit.",
+    "desc_ru": "Замораживает противника.\n\nПоражает выбранную цель,\nзадевая тех, кто на пути.",
+    "pages_en": [
+      "Freezes the enemy.",
+      "Hits the chosen unit.\nUnits between may be hit."
+    ],
+    "pages_ru": [
+      "Замораживает противника.",
+      "Поражает выбранную цель,\nзадевая тех, кто на пути."
+    ],
+    "menu_ru": "ДЕМОНА"
+  },
+  {
+    "entry_index": 362,
+    "entry_hex": "0x16A",
+    "title_en": "Mono Volt",
+    "title_ru": "Моно Вольт",
+    "name_en": "Mono Volt",
+    "name_ru": "МОНО-В",
+    "title_jp": "モノ・ヴォルト",
+    "desc_en": "A lightning attack that\ncan paralyze its target.\n\nDirectly hits one unit.\nNo other units are hit.",
+    "desc_ru": "Удар молнией, способный\nпарализовать цель.\n\nБьёт прямо по цели.\nОстальные цели не страдают.",
+    "pages_en": [
+      "A lightning attack that\ncan paralyze its target.",
+      "Directly hits one unit.\nNo other units are hit."
+    ],
+    "pages_ru": [
+      "Удар молнией, способный\nпарализовать цель.",
+      "Бьёт прямо по цели.\nОстальные цели не страдают."
+    ],
+    "menu_ru": "МОНО-В"
+  },
+  {
+    "entry_index": 363,
+    "entry_hex": "0x16B",
+    "title_en": "Lighting",
+    "title_ru": "Лайтинг",
+    "name_en": "Lighting",
+    "name_ru": "ЛАЙТ-А",
+    "title_jp": "ライティング",
+    "desc_en": "",
+    "desc_ru": "",
+    "pages_en": [],
+    "pages_ru": [],
+    "menu_ru": "ЛАЙТ-А"
+  },
+  {
+    "entry_index": 364,
+    "entry_hex": "0x16C",
+    "title_en": "Ragna Blade",
+    "title_ru": "Рагна Блейд",
+    "name_en": "Ragna Blade",
+    "name_ru": "РАГНА БЛЕЙД",
+    "title_jp": "ラグナ・ブレ-ド",
+    "desc_en": "Forms a powerful black\nblade in the caster'shed.\n\nCan only attack an\nadjacent unit.",
+    "desc_ru": "Создаёт грозный тёмный клинок\nв руках заклинателя.\n\nАтакует только соседнюю\nклетку.",
+    "pages_en": [
+      "Forms a powerful black\nblade in the caster'shed.",
+      "Can only attack an\nadjacent unit."
+    ],
+    "pages_ru": [
+      "Создаёт грозный тёмный клинок\nв руках заклинателя.",
+      "Атакует только соседнюю\nклетку."
+    ],
+    "menu_ru": "РАГНА БЛЕЙД"
+  },
+  {
+    "entry_index": 365,
+    "entry_hex": "0x16D",
+    "title_en": "Dig Volt",
+    "title_ru": "Диг Вольт",
+    "name_en": "Dig Volt",
+    "name_ru": "ДИГВОЛТ",
+    "title_jp": "ディグ・ヴォルト",
+    "desc_en": "A stronger Mono Volt.\nCan paralyze its target.\n\nCan only attack an\nadjacent unit.",
+    "desc_ru": "Усиленный Моно Вольт.\nМожет парализовать цель.\n\nАтакует только соседнюю\nклетку.",
+    "pages_en": [
+      "A stronger Mono Volt.\nCan paralyze its target.",
+      "Can only attack an\nadjacent unit."
+    ],
+    "pages_ru": [
+      "Усиленный Моно Вольт.\nМожет парализовать цель.",
+      "Атакует только соседнюю\nклетку."
+    ],
+    "menu_ru": "ДИГВОЛТ"
+  },
+  {
+    "entry_index": 366,
+    "entry_hex": "0x16E",
+    "title_en": "Diem Wind C",
+    "title_ru": "Дим Винд (Кристалл)",
+    "name_en": "Diem Wind C",
+    "name_ru": "ДИМ-К",
+    "title_jp": "ディム・ウィンC",
+    "desc_en": "A 1-hex version of\nDiem Wind.\n\nOnly affects an\nadjacent unit.",
+    "desc_ru": "Версия Дим Винда радиусом\nв 1 клетку.\n\nДействует только на соседнюю\nклетку.",
+    "pages_en": [
+      "A 1-hex version of\nDiem Wind.",
+      "Only affects an\nadjacent unit."
+    ],
+    "pages_ru": [
+      "Версия Дим Винда радиусом\nв 1 клетку.",
+      "Действует только на соседнюю\nклетку."
+    ],
+    "menu_ru": "ДИМ-К"
+  },
+  {
+    "entry_index": 367,
+    "entry_hex": "0x16F",
+    "title_en": "Lighting",
+    "title_ru": "Лайтинг",
+    "name_en": "Lighting",
+    "name_ru": "ЛАЙТ-Б",
+    "title_jp": "ライティング",
+    "desc_en": "",
+    "desc_ru": "",
+    "pages_en": [],
+    "pages_ru": [],
+    "menu_ru": "ЛАЙТ-Б"
+  },
+  {
+    "entry_index": 368,
+    "entry_hex": "0x170",
+    "title_en": "Sleeping",
+    "title_ru": "Слипинг",
+    "name_en": "Sleeping",
+    "name_ru": "СЛИПИНГ",
+    "title_jp": "スリ-ピング",
+    "desc_en": "Puts an adjacent unit\nto sleep.",
+    "desc_ru": "Усыпляет стоящего рядом\nпротивника.",
+    "pages_en": [
+      "Puts an adjacent unit\nto sleep."
+    ],
+    "pages_ru": [
+      "Усыпляет стоящего рядом\nпротивника."
+    ],
+    "menu_ru": "СЛИПИНГ"
+  },
+  {
+    "entry_index": 369,
+    "entry_hex": "0x171",
+    "title_en": "Resurrection",
+    "title_ru": "Резоррекшн",
+    "name_en": "Resurrection",
+    "name_ru": "РЕЗОРР",
+    "title_jp": "リザレクション",
+    "desc_en": "Fully restores an\nadjacent unit.",
+    "desc_ru": "Полностью восстанавливает силы\nсоседнего союзника.",
+    "pages_en": [
+      "Fully restores an\nadjacent unit."
+    ],
+    "pages_ru": [
+      "Полностью восстанавливает силы\nсоседнего союзника."
+    ],
+    "menu_ru": "РЕЗОРР"
+  },
+  {
+    "entry_index": 370,
+    "entry_hex": "0x172",
+    "title_en": "Dicleary",
+    "title_ru": "Диклиари",
+    "name_en": "Dicleary",
+    "name_ru": "ДИКЛИАР",
+    "title_jp": "ディクリアリィ",
+    "desc_en": "Cures fainting, sleep,\nand similar ailments.\n\nOnly affects an\nadjacent unit.",
+    "desc_ru": "Исцеляет от обморока, сна и\nпохожих недугов.\n\nДействует только на соседнюю\nклетку.",
+    "pages_en": [
+      "Cures fainting, sleep,\nand similar ailments.",
+      "Only affects an\nadjacent unit."
+    ],
+    "pages_ru": [
+      "Исцеляет от обморока, сна и\nпохожих недугов.",
+      "Действует только на соседнюю\nклетку."
+    ],
+    "menu_ru": "ДИКЛИАР"
+  },
+  {
+    "entry_index": 371,
+    "entry_hex": "0x173",
+    "title_en": "Burst Flare",
+    "title_ru": "Бёрст Флейр",
+    "name_en": "Burst Flare",
+    "name_ru": "БЁРСТ ФЛЕЙР",
+    "title_jp": "バ-スト・フレア",
+    "desc_en": "The strongest fire magic.\nIneffective on Mazoku.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Сильнейшая магия огня.\nНе действует на мазоку.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "The strongest fire magic.\nIneffective on Mazoku.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Сильнейшая магия огня.\nНе действует на мазоку.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "БЁРСТ ФЛЕЙР"
+  },
+  {
+    "entry_index": 372,
+    "entry_hex": "0x174",
+    "title_en": "Fireball",
+    "title_ru": "Файербол",
+    "name_en": "Fireball",
+    "name_ru": "ФАЕРБОЛ",
+    "title_jp": "ファイア-・ボ-ル",
+    "desc_en": "Strikes with the flames\nof justice and conviction.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Разит пламенем справедливости\nи твёрдой веры.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "Strikes with the flames\nof justice and conviction.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Разит пламенем справедливости\nи твёрдой веры.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "ФАЕРБОЛ"
+  },
+  {
+    "entry_index": 373,
+    "entry_hex": "0x175",
+    "title_en": "Blast Bomb",
+    "title_ru": "Бласт Бом",
+    "name_en": "Blast Bomb",
+    "name_ru": "БЛАСТ БОМБА",
+    "title_jp": "ブラスト・ボム",
+    "desc_en": "A powerful version of\nBurst Rondo.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Мощнейшая версия\nБёрст Рондо.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "A powerful version of\nBurst Rondo.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Мощнейшая версия\nБёрст Рондо.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "БЛАСТ БОМБА"
+  },
+  {
+    "entry_index": 374,
+    "entry_hex": "0x176",
+    "title_en": "Bomb Sprid B",
+    "title_ru": "Бомб Сприд B",
+    "name_en": "Bomb Sprid B",
+    "name_ru": "БОМБ-СБ",
+    "title_jp": "ボム・スプリッドB",
+    "desc_en": "Explodes a chosen\nlocation.\n\nDirectly hits the area\nwithout harming allies.",
+    "desc_ru": "Взрывает выбранную клетку.\n\nПоражает область вокруг точки,\nне задевая союзников.",
+    "pages_en": [
+      "Explodes a chosen\nlocation.",
+      "Directly hits the area\nwithout harming allies."
+    ],
+    "pages_ru": [
+      "Взрывает выбранную клетку.",
+      "Поражает область вокруг точки,\nне задевая союзников."
+    ],
+    "menu_ru": "БОМБ-СБ"
+  },
+  {
+    "entry_index": 375,
+    "entry_hex": "0x177",
+    "title_en": "Dam Brass B",
+    "title_ru": "Дам Брасс B",
+    "name_en": "Dam Brass B",
+    "name_ru": "ДАМ-Б Б",
+    "title_jp": "ダム・ブラスB",
+    "desc_en": "A wider-range version\nof Dam Brass.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Широкозонная версия\nДам Брасса.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "A wider-range version\nof Dam Brass.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Широкозонная версия\nДам Брасса.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "ДАМ-Б Б"
+  },
+  {
+    "entry_index": 376,
+    "entry_hex": "0x178",
+    "title_en": "Dynast Breath B",
+    "title_ru": "Дайнаст Брес B",
+    "name_en": "Dynast Breath B",
+    "name_ru": "ДАЙНАСТ Б",
+    "title_jp": "ダイナスト・ブレスB",
+    "desc_en": "A wide-area version of\nDynast Breath.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Широкозонная версия\nДайнаст Бреса.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "A wide-area version of\nDynast Breath.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Широкозонная версия\nДайнаст Бреса.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "ДАЙНАСТ Б"
+  },
+  {
+    "entry_index": 377,
+    "entry_hex": "0x179",
+    "title_en": "Ra Tilt B",
+    "title_ru": "Ра Тильт B",
+    "name_en": "Ra Tilt B",
+    "name_ru": "РА-Т Б",
+    "title_jp": "ラ・ティルトB",
+    "desc_en": "A wide-area version of\nRa Tilt.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Широкозонная версия\nРа Тильта.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "A wide-area version of\nRa Tilt.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Широкозонная версия\nРа Тильта.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "РА-Т Б"
+  },
+  {
+    "entry_index": 378,
+    "entry_hex": "0x17A",
+    "title_en": "Fireball",
+    "title_ru": "Файербол",
+    "name_en": "Fireball",
+    "name_ru": "ФАЕРБОЛ",
+    "title_jp": "ファイア-・ボ-ル",
+    "desc_en": "Hurls a ball of fire\nat the enemy.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Швыряет огненный шар\nво врагов.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nБойцы между заклинателем\nи целью могут пострадать.",
+    "pages_en": [
+      "Hurls a ball of fire\nat the enemy.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Швыряет огненный шар\nво врагов.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Бойцы между заклинателем\nи целью могут пострадать."
+    ],
+    "menu_ru": "ФАЕРБОЛ"
+  },
+  {
+    "entry_index": 379,
+    "entry_hex": "0x17B",
+    "title_en": "Aero Bomb",
+    "title_ru": "Аэро Бом",
+    "name_en": "Aero Bomb",
+    "name_ru": "АЭРО БОМБА",
+    "title_jp": "エアロ・ボム",
+    "desc_en": "Bursts a sphere of air.\n\nHits a chosen location\nand the area around it.\n\nUnits between the caster\nand target may be hit.",
+    "desc_ru": "Взрывает сферу сжатого воздуха.\n\nПоражает выбранную клетку и\nобласть вокруг неё.\n\nЗадевает тех, кто оказался\nв радиусе взрыва.",
+    "pages_en": [
+      "Bursts a sphere of air.",
+      "Hits a chosen location\nand the area around it.",
+      "Units between the caster\nand target may be hit."
+    ],
+    "pages_ru": [
+      "Взрывает сферу сжатого воздуха.",
+      "Поражает выбранную клетку и\nобласть вокруг неё.",
+      "Задевает тех, кто оказался\nв радиусе взрыва."
+    ],
+    "menu_ru": "АЭРО БОМБА"
+  },
+  {
+    "entry_index": 380,
+    "entry_hex": "0x17C",
+    "title_en": "Dill Brand B",
+    "title_ru": "Дилл Бранд B",
+    "name_en": "Dill Brand B",
+    "name_ru": "Д-Б",
+    "title_jp": "ディル・ブランドB",
+    "desc_en": "Dill Brand cast at a\nchosen location.\n\nDirectly hits the location\nand the area around it.",
+    "desc_ru": "Дилл Бранд, направленный\nв выбранную точку.\n\nПоражает саму клетку и\nобласть вокруг неё.",
+    "pages_en": [
+      "Dill Brand cast at a\nchosen location.",
+      "Directly hits the location\nand the area around it."
+    ],
+    "pages_ru": [
+      "Дилл Бранд, направленный\nв выбранную точку.",
+      "Поражает саму клетку и\nобласть вокруг неё."
+    ],
+    "menu_ru": "Д-Б"
+  },
+  {
+    "entry_index": 381,
+    "entry_hex": "0x17D",
+    "title_en": "Dug Haut B",
+    "title_ru": "Даг Хаут B",
+    "name_en": "Dug Haut B",
+    "name_ru": "Д-Х",
+    "title_jp": "ダグ・ハウトB",
+    "desc_en": "Dug Haut cast at a\nchosen location.\n\nDirectly hits the location\nand the area around it.",
+    "desc_ru": "Даг Хаут, направленный\nв выбранную точку.\n\nПоражает саму клетку и\nобласть вокруг неё.",
+    "pages_en": [
+      "Dug Haut cast at a\nchosen location.",
+      "Directly hits the location\nand the area around it."
+    ],
+    "pages_ru": [
+      "Даг Хаут, направленный\nв выбранную точку.",
+      "Поражает саму клетку и\nобласть вокруг неё."
+    ],
+    "menu_ru": "Д-Х"
+  },
+  {
+    "entry_index": 382,
+    "entry_hex": "0x17E",
+    "title_en": "Recovery B",
+    "title_ru": "Рекавери B",
+    "name_en": "Recovery B",
+    "name_ru": "РЕКАВ Б",
+    "title_jp": "リカバリィB",
+    "desc_en": "A wide-area version of\nRecovery.\n\nAffects a chosen location\nand the area around it.",
+    "desc_ru": "Массовая версия заклинания\nРекавери.\n\nИсцеляет выбранную клетку и\nсоюзников вокруг неё.",
+    "pages_en": [
+      "A wide-area version of\nRecovery.",
+      "Affects a chosen location\nand the area around it."
+    ],
+    "pages_ru": [
+      "Массовая версия заклинания\nРекавери.",
+      "Исцеляет выбранную клетку и\nсоюзников вокруг неё."
+    ],
+    "menu_ru": "РЕКАВ Б"
+  },
+  {
+    "entry_index": 383,
+    "entry_hex": "0x17F",
+    "title_en": "START",
+    "title_ru": "СТАРТ",
+    "name_en": "START",
+    "name_ru": "СТАРТ",
+    "title_jp": "戦態開始",
+    "desc_en": "Begins the attack.\n\nUnits follow their\nassigned commands.\n\nPause the battle to\nchange those commands.\n\nChoose Auto Setup to let\nunits act automatically.",
+    "desc_ru": "Начать атаку.\n\nБойцы выполняют отданные\nприказы.\n\nПоставьте бой на паузу,\nчтобы изменить приказы.\n\nВыберите авто-настройку,\nчтобы бойцы действовали сами.",
+    "pages_en": [
+      "Begins the attack.",
+      "Units follow their\nassigned commands.",
+      "Pause the battle to\nchange those commands.",
+      "Choose Auto Setup to let\nunits act automatically."
+    ],
+    "pages_ru": [
+      "Начать атаку.",
+      "Бойцы выполняют отданные\nприказы.",
+      "Поставьте бой на паузу,\nчтобы изменить приказы.",
+      "Выберите авто-настройку,\nчтобы бойцы действовали сами."
+    ],
+    "menu_ru": "СТАРТ"
+  },
+  {
+    "entry_index": 384,
+    "entry_hex": "0x180",
+    "title_en": "SETUP",
+    "title_ru": "НАСТРОЙКИ",
+    "name_en": "SETUP",
+    "name_ru": "НАСТРОЙКИ",
+    "title_jp": "コンフィグ",
+    "desc_en": "CHANGE GAME\nSETTINGS.",
+    "desc_ru": "ИЗМЕНИТЬ НАСТРОЙКИ ИГРЫ.",
+    "pages_en": [
+      "CHANGE GAME\nSETTINGS."
+    ],
+    "pages_ru": [
+      "ИЗМЕНИТЬ НАСТРОЙКИ ИГРЫ."
+    ],
+    "menu_ru": "НАСТРОЙКИ"
+  },
+  {
+    "entry_index": 385,
+    "entry_hex": "0x181",
+    "title_en": "ATTACK SETUP",
+    "title_ru": "НАСТРОЙКА АТАКИ",
+    "name_en": "ATTACK SETUP",
+    "name_ru": "НАСТРОЙКА АТАКИ",
+    "title_jp": "攻撃設定",
+    "desc_en": "Sets the attack method\nand target.",
+    "desc_ru": "Задать способ атаки\nи цель.",
+    "pages_en": [
+      "Sets the attack method\nand target."
+    ],
+    "pages_ru": [
+      "Задать способ атаки\nи цель."
+    ],
+    "menu_ru": "НАСТРОЙКА АТАКИ"
+  },
+  {
+    "entry_index": 386,
+    "entry_hex": "0x182",
+    "title_en": "COUNTER SETUP",
+    "title_ru": "НАСТРОЙКА КОНТРАТАКИ",
+    "name_en": "COUNTER SETUP",
+    "name_ru": "НАСТРОЙКА КОНТРАТАКИ",
+    "title_jp": "反撃設定",
+    "desc_en": "Sets how a unit responds\nwhen an enemy attacks.",
+    "desc_ru": "Задать действие бойца\nпри нападении врага.",
+    "pages_en": [
+      "Sets how a unit responds\nwhen an enemy attacks."
+    ],
+    "pages_ru": [
+      "Задать действие бойца\nпри нападении врага."
+    ],
+    "menu_ru": "НАСТРОЙКА КОНТРАТАКИ"
+  },
+  {
+    "entry_index": 387,
+    "entry_hex": "0x183",
+    "title_en": "SPELL SETUP",
+    "title_ru": "НАСТРОЙКА ЗАКЛИНАНИЙ",
+    "name_en": "SPELL SETUP",
+    "name_ru": "НАСТРОЙКА ЗАКЛИНАНИЙ",
+    "title_jp": "呪文設定",
+    "desc_en": "Selects a spell to use.",
+    "desc_ru": "Выбрать заклинание\nдля применения.",
+    "pages_en": [
+      "Selects a spell to use."
+    ],
+    "pages_ru": [
+      "Выбрать заклинание\nдля применения."
+    ],
+    "menu_ru": "НАСТРОЙКА ЗАКЛИНАНИЙ"
+  },
+  {
+    "entry_index": 388,
+    "entry_hex": "0x184",
+    "title_en": "ATTACK",
+    "title_ru": "АТАКА",
+    "name_en": "ATTACK",
+    "name_ru": "АТАКА",
+    "title_jp": "こうげきする",
+    "desc_en": "Attacks an enemy until\nit or the attacker falls.",
+    "desc_ru": "Атаковать врага, пока он\nили нападающий не падет.",
+    "pages_en": [
+      "Attacks an enemy until\nit or the attacker falls."
+    ],
+    "pages_ru": [
+      "Атаковать врага, пока он\nили нападающий не падет."
+    ],
+    "menu_ru": "АТАКА"
+  },
+  {
+    "entry_index": 389,
+    "entry_hex": "0x185",
+    "title_en": "HIT",
+    "title_ru": "УДАР",
+    "name_en": "HIT",
+    "name_ru": "УДАР",
+    "title_jp": "なぐる",
+    "desc_en": "Hits an enemy until it\nor the attacker falls.",
+    "desc_ru": "Бить врага, пока он\nили нападающий не падет.",
+    "pages_en": [
+      "Hits an enemy until it\nor the attacker falls."
+    ],
+    "pages_ru": [
+      "Бить врага, пока он\nили нападающий не падет."
+    ],
+    "menu_ru": "УДАР"
+  },
+  {
+    "entry_index": 390,
+    "entry_hex": "0x186",
+    "title_en": "RAM",
+    "title_ru": "ТАРАН",
+    "name_en": "RAM",
+    "name_ru": "ТАРАН",
+    "title_jp": "たいあたり",
+    "desc_en": "Knocks an enemy away.",
+    "desc_ru": "Оттолкнуть врага ударом тела.",
+    "pages_en": [
+      "Knocks an enemy away."
+    ],
+    "pages_ru": [
+      "Оттолкнуть врага ударом тела."
+    ],
+    "menu_ru": "ТАРАН"
+  },
+  {
+    "entry_index": 391,
+    "entry_hex": "0x187",
+    "title_en": "MOVE",
+    "title_ru": "ДВИЖЕНИЕ",
+    "name_en": "MOVE",
+    "name_ru": "ДВИЖЕНИЕ",
+    "title_jp": "いどう",
+    "desc_en": "Moves to the chosen\nposition, then stops.\n\nChoose a unit to\nfollow that unit.",
+    "desc_ru": "Перейти в выбранную точку\nи остановиться.\n\nВыберите бойца, чтобы следовать\nза ним.",
+    "pages_en": [
+      "Moves to the chosen\nposition, then stops.",
+      "Choose a unit to\nfollow that unit."
+    ],
+    "pages_ru": [
+      "Перейти в выбранную точку\nи остановиться.",
+      "Выберите бойца, чтобы следовать\nза ним."
+    ],
+    "menu_ru": "ДВИЖЕНИЕ"
+  },
+  {
+    "entry_index": 392,
+    "entry_hex": "0x188",
+    "title_en": "SLIPPER",
+    "title_ru": "ТАПОЧКА",
+    "name_en": "SLIPPER",
+    "name_ru": "ТАПОЧКА",
+    "title_jp": "スリッパ",
+    "desc_en": "Attacks with a slipper.",
+    "desc_ru": "Атаковать врага тапочкой.",
+    "pages_en": [
+      "Attacks with a slipper."
+    ],
+    "pages_ru": [
+      "Атаковать врага тапочкой."
+    ],
+    "menu_ru": "ТАПОЧКА"
+  },
+  {
+    "entry_index": 393,
+    "entry_hex": "0x189",
+    "title_en": "LAUGH",
+    "title_ru": "СМЕХ",
+    "name_en": "LAUGH",
+    "name_ru": "СМЕХ",
+    "title_jp": "高笑い",
+    "desc_en": "Laughs off an enemy\nattack.\n\nReduces damage and may\nstop further attacks.",
+    "desc_ru": "Высмеять вражескую атаку.\n\nСнижает урон и может остановить\nдальнейшие нападения.",
+    "pages_en": [
+      "Laughs off an enemy\nattack.",
+      "Reduces damage and may\nstop further attacks."
+    ],
+    "pages_ru": [
+      "Высмеять вражескую атаку.",
+      "Снижает урон и может остановить\nдальнейшие нападения."
+    ],
+    "menu_ru": "СМЕХ"
+  },
+  {
+    "entry_index": 394,
+    "entry_hex": "0x18A",
+    "title_en": "COUNTER",
+    "title_ru": "ОТВЕТ",
+    "name_en": "COUNTER",
+    "name_ru": "ОТВЕТ",
+    "title_jp": "やりかえす",
+    "desc_en": "Counters an enemy attack.",
+    "desc_ru": "Контратаковать врага при нападении.",
+    "pages_en": [
+      "Counters an enemy attack."
+    ],
+    "pages_ru": [
+      "Контратаковать врага при нападении."
+    ],
+    "menu_ru": "ОТВЕТ"
+  },
+  {
+    "entry_index": 395,
+    "entry_hex": "0x18B",
+    "title_en": "HIT BACK",
+    "title_ru": "ОТВЕТНЫЙ УДАР",
+    "name_en": "HIT BACK",
+    "name_ru": "ОТВЕТНЫЙ УДАР",
+    "title_jp": "なぐりかえす",
+    "desc_en": "Hits back after an\nenemy attack.",
+    "desc_ru": "Ударить в ответ на вражескую атаку.",
+    "pages_en": [
+      "Hits back after an\nenemy attack."
+    ],
+    "pages_ru": [
+      "Ударить в ответ на вражескую атаку."
+    ],
+    "menu_ru": "ОТВЕТНЫЙ УДАР"
+  },
+  {
+    "entry_index": 396,
+    "entry_hex": "0x18C",
+    "title_en": "EVADE",
+    "title_ru": "УКЛОНЕНИЕ",
+    "name_en": "EVADE",
+    "name_ru": "УКЛОНЕНИЕ",
+    "title_jp": "よける",
+    "desc_en": "Cannot counter, but makes\nattacks and spells miss.",
+    "desc_ru": "Контратака невозможна, но атаки\nи магия врага мажут.",
+    "pages_en": [
+      "Cannot counter, but makes\nattacks and spells miss."
+    ],
+    "pages_ru": [
+      "Контратака невозможна, но атаки\nи магия врага мажут."
+    ],
+    "menu_ru": "УКЛОНЕНИЕ"
+  },
+  {
+    "entry_index": 397,
+    "entry_hex": "0x18D",
+    "title_en": "FLEE",
+    "title_ru": "ПОБЕГ",
+    "name_en": "FLEE",
+    "name_ru": "ПОБЕГ",
+    "title_jp": "にげる",
+    "desc_en": "Makes most enemy\nattacks miss.\n\nCountering is disabled.",
+    "desc_ru": "Позволяет уйти от большинства атак.\n\nКонтратака отключена.",
+    "pages_en": [
+      "Makes most enemy\nattacks miss.",
+      "Countering is disabled."
+    ],
+    "pages_ru": [
+      "Позволяет уйти от большинства атак.",
+      "Контратака отключена."
+    ],
+    "menu_ru": "ПОБЕГ"
+  },
+  {
+    "entry_index": 398,
+    "entry_hex": "0x18E",
+    "title_en": "ENDURE",
+    "title_ru": "ТЕРПЕТЬ",
+    "name_en": "ENDURE",
+    "name_ru": "ТЕРПЕТЬ",
+    "title_jp": "がまんする",
+    "desc_en": "Endures the attack,\nreducing damage.",
+    "desc_ru": "Выдержать удар, снизив урон.",
+    "pages_en": [
+      "Endures the attack,\nreducing damage."
+    ],
+    "pages_ru": [
+      "Выдержать удар, снизив урон."
+    ],
+    "menu_ru": "ТЕРПЕТЬ"
+  },
+  {
+    "entry_index": 399,
+    "entry_hex": "0x18F",
+    "title_en": "DEFEND",
+    "title_ru": "ЗАЩИТА",
+    "name_en": "DEFEND",
+    "name_ru": "ЗАЩИТА",
+    "title_jp": "ぼうぎょ",
+    "desc_en": "Blocks most attacks made\nwith weapons.",
+    "desc_ru": "Блокирует большинство ударов оружием.",
+    "pages_en": [
+      "Blocks most attacks made\nwith weapons."
+    ],
+    "pages_ru": [
+      "Блокирует большинство ударов оружием."
+    ],
+    "menu_ru": "ЗАЩИТА"
+  },
+  {
+    "entry_index": 400,
+    "entry_hex": "0x190",
+    "title_en": "BARRIER",
+    "title_ru": "БАРЬЕР",
+    "name_en": "BARRIER",
+    "name_ru": "БАРЬЕР",
+    "title_jp": "バリア",
+    "desc_en": "Uses defensive magic\nagainst enemy spells.\n\nCannot block extremely\npowerful orspecial magic.",
+    "desc_ru": "Защитная магия против вражеских чар.\n\nНе блокирует сверхмощные\nили особые заклинания.",
+    "pages_en": [
+      "Uses defensive magic\nagainst enemy spells.",
+      "Cannot block extremely\npowerful orspecial magic."
+    ],
+    "pages_ru": [
+      "Защитная магия против вражеских чар.",
+      "Не блокирует сверхмощные\nили особые заклинания."
+    ],
+    "menu_ru": "БАРЬЕР"
+  },
+  {
+    "entry_index": 401,
+    "entry_hex": "0x191",
+    "title_en": "CAST",
+    "title_ru": "КАСТ",
+    "name_en": "CAST",
+    "name_ru": "КАСТ",
+    "title_jp": "となえる",
+    "desc_en": "Begins casting a spell.",
+    "desc_ru": "Начать чтение заклинания.",
+    "pages_en": [
+      "Begins casting a spell."
+    ],
+    "pages_ru": [
+      "Начать чтение заклинания."
+    ],
+    "menu_ru": "КАСТ"
+  },
+  {
+    "entry_index": 402,
+    "entry_hex": "0x192",
+    "title_en": "CANCEL",
+    "title_ru": "ОТМЕНА",
+    "name_en": "CANCEL",
+    "name_ru": "ОТМЕНА",
+    "title_jp": "やめる",
+    "desc_en": "Stops casting the spell.",
+    "desc_ru": "Прервать чтение заклинания.",
+    "pages_en": [
+      "Stops casting the spell."
+    ],
+    "pages_ru": [
+      "Прервать чтение заклинания."
+    ],
+    "menu_ru": "ОТМЕНА"
+  },
+  {
+    "entry_index": 403,
+    "entry_hex": "0x193",
+    "title_en": "MAGIC",
+    "title_ru": "МАГИЯ",
+    "name_en": "MAGIC",
+    "name_ru": "МАГИЯ",
+    "title_jp": "まほう",
+    "desc_en": "Uses magic.",
+    "desc_ru": "Использовать магию.",
+    "pages_en": [
+      "Uses magic."
+    ],
+    "pages_ru": [
+      "Использовать магию."
+    ],
+    "menu_ru": "МАГИЯ"
+  },
+  {
+    "entry_index": 404,
+    "entry_hex": "0x194",
+    "title_en": "AUTO SETUP",
+    "title_ru": "АВТО-НАСТРОЙКА",
+    "name_en": "AUTO SETUP",
+    "name_ru": "АВТО-НАСТРОЙКА",
+    "title_jp": "自動設定",
+    "desc_en": "Lets the unit act\nautomatically.",
+    "desc_ru": "Позволяет бойцу действовать\nавтоматически.",
+    "pages_en": [
+      "Lets the unit act\nautomatically."
+    ],
+    "pages_ru": [
+      "Позволяет бойцу действовать\nавтоматически."
+    ],
+    "menu_ru": "АВТО-НАСТРОЙКА"
+  },
+  {
+    "entry_index": 405,
+    "entry_hex": "0x195",
+    "title_en": "OFFENSE",
+    "title_ru": "АТАКУЮЩИЙ",
+    "name_en": "OFFENSE",
+    "name_ru": "АТАКУЮЩИЙ",
+    "title_jp": "こうげき型",
+    "desc_en": "Auto mode that prioritizes\ndefeating enemies.\n\nThis mode is active when\na battle begins.",
+    "desc_ru": "Авто-режим с упором на победу\nнад врагами.\n\nЭтот режим активен\nпри начале боя.",
+    "pages_en": [
+      "Auto mode that prioritizes\ndefeating enemies.",
+      "This mode is active when\na battle begins."
+    ],
+    "pages_ru": [
+      "Авто-режим с упором на победу\nнад врагами.",
+      "Этот режим активен\nпри начале боя."
+    ],
+    "menu_ru": "АТАКУЮЩИЙ"
+  },
+  {
+    "entry_index": 406,
+    "entry_hex": "0x196",
+    "title_en": "DEFENSE",
+    "title_ru": "ЗАЩИТНЫЙ",
+    "name_en": "DEFENSE",
+    "name_ru": "ЗАЩИТНЫЙ",
+    "title_jp": "ぼうぎょ型",
+    "desc_en": "Auto mode that prioritizes\nsupporting allies.",
+    "desc_ru": "Авто-режим с упором на поддержку\nсоюзников.",
+    "pages_en": [
+      "Auto mode that prioritizes\nsupporting allies."
+    ],
+    "pages_ru": [
+      "Авто-режим с упором на поддержку\nсоюзников."
+    ],
+    "menu_ru": "ЗАЩИТНЫЙ"
+  },
+  {
+    "entry_index": 407,
+    "entry_hex": "0x197",
+    "title_en": "AUTO",
+    "title_ru": "АВТО",
+    "name_en": "AUTO",
+    "name_ru": "АВТО",
+    "title_jp": "おまかせ型",
+    "desc_en": "Lets a unit decide its\nown actions.\n\nSome personalities make\ntheir actionWhunperdictable.\n\nSaving first is\nrecommended.",
+    "desc_ru": "Боец сам выбирает свои действия.\n\nНекоторые характеры делают\nповедение непредсказуемым.\n\nРекомендуется сначала\nсохраниться.",
+    "pages_en": [
+      "Lets a unit decide its\nown actions.",
+      "Some personalities make\ntheir actionWhunperdictable.",
+      "Saving first is\nrecommended."
+    ],
+    "pages_ru": [
+      "Боец сам выбирает свои действия.",
+      "Некоторые характеры делают\nповедение непредсказуемым.",
+      "Рекомендуется сначала\nсохраниться."
+    ],
+    "menu_ru": "АВТО"
+  },
+  {
+    "entry_index": 408,
+    "entry_hex": "0x198",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ЛИСЕЛЛИ)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ЛИСЕЛЛИ)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ЛИСЕЛЛИ)"
+  },
+  {
+    "entry_index": 409,
+    "entry_hex": "0x199",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ЛИНА)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ЛИНА)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ЛИНА)"
+  },
+  {
+    "entry_index": 410,
+    "entry_hex": "0x19A",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ГАУРИ)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ГАУРИ)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ГАУРИ)"
+  },
+  {
+    "entry_index": 411,
+    "entry_hex": "0x19B",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ЗЕЛГАДИС)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ЗЕЛГАДИС)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ЗЕЛГАДИС)"
+  },
+  {
+    "entry_index": 412,
+    "entry_hex": "0x19C",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (АМЕЛИЯ)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (АМЕЛИЯ)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (АМЕЛИЯ)"
+  },
+  {
+    "entry_index": 413,
+    "entry_hex": "0x19D",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (СИЛЬФИЛЬ)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (СИЛЬФИЛЬ)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (СИЛЬФИЛЬ)"
+  },
+  {
+    "entry_index": 414,
+    "entry_hex": "0x19E",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (НАГА)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (НАГА)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (НАГА)"
+  },
+  {
+    "entry_index": 415,
+    "entry_hex": "0x19F",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ЛАРК)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ЛАРК)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ЛАРК)"
+  },
+  {
+    "entry_index": 416,
+    "entry_hex": "0x1A0",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ДИОН)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ДИОН)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ДИОН)"
+  },
+  {
+    "entry_index": 417,
+    "entry_hex": "0x1A1",
+    "title_en": "MANUAL",
+    "title_ru": "РУЧНОЙ (ЗОДД)",
+    "name_en": "MANUAL",
+    "name_ru": "РУЧНОЙ (ЗОДД)",
+    "title_jp": "自分で操作",
+    "desc_en": "Turns off Auto mode for\ndirect control.",
+    "desc_ru": "Отключает авто-режим для\nпрямого управления.",
+    "pages_en": [
+      "Turns off Auto mode for\ndirect control."
+    ],
+    "pages_ru": [
+      "Отключает авто-режим для\nпрямого управления."
+    ],
+    "menu_ru": "РУЧНОЙ (ЗОДД)"
+  },
+  {
+    "entry_index": 418,
+    "entry_hex": "0x1A2",
+    "title_en": "SAVE",
+    "title_ru": "СОХРАНЕНИЕ",
+    "name_en": "SAVE",
+    "name_ru": "СОХРАНЕНИЕ",
+    "title_jp": "セ-ブ",
+    "desc_en": "SAVE GAME.\n\nKEEP POWER ON.",
+    "desc_ru": "СОХРАНИТЬ ИГРУ.\n\nНЕ ВЫКЛЮЧАЙТЕ ПИТАНИЕ.",
+    "pages_en": [
+      "SAVE GAME.",
+      "KEEP POWER ON."
+    ],
+    "pages_ru": [
+      "СОХРАНИТЬ ИГРУ.",
+      "НЕ ВЫКЛЮЧАЙТЕ ПИТАНИЕ."
+    ],
+    "menu_ru": "СОХРАНЕНИЕ"
+  },
+  {
+    "entry_index": 419,
+    "entry_hex": "0x1A3",
+    "title_en": "LOAD",
+    "title_ru": "ЗАГРУЗКА",
+    "name_en": "LOAD",
+    "name_ru": "ЗАГРУЗКА",
+    "title_jp": "ロ-ド",
+    "desc_en": "LOAD SAVED DATA.\n\nUNSAVED PROGRESS\nWILL BE LOST.",
+    "desc_ru": "ЗАГРУЗИТЬ ДАННЫЕ.\n\nНЕСОХРАНЁННЫЙ ПРОГРЕСС\nБУДЕТ ПОТЕРЯН.",
+    "pages_en": [
+      "LOAD SAVED DATA.",
+      "UNSAVED PROGRESS\nWILL BE LOST."
+    ],
+    "pages_ru": [
+      "ЗАГРУЗИТЬ ДАННЫЕ.",
+      "НЕСОХРАНЁННЫЙ ПРОГРЕСС\nБУДЕТ ПОТЕРЯН."
+    ],
+    "menu_ru": "ЗАГРУЗКА"
+  },
+  {
+    "entry_index": 420,
+    "entry_hex": "0x1A4",
+    "title_en": "★★ ANIMATION ★★",
+    "title_ru": "★★ АНИМАЦИЯ ★★",
+    "name_en": "★★ ANIMATION ★★",
+    "name_ru": "★★ АНИМАЦИЯ ★★",
+    "title_jp": "★★★★アニメ-ション★★★★",
+    "desc_en": "BATTLE ANIM ON",
+    "desc_ru": "АНИМАЦИЯ БОЯ: ВКЛ",
+    "pages_en": [
+      "BATTLE ANIM ON"
+    ],
+    "pages_ru": [
+      "АНИМАЦИЯ БОЯ: ВКЛ"
+    ],
+    "menu_ru": "★★ АНИМАЦИЯ ★★"
+  },
+  {
+    "entry_index": 421,
+    "entry_hex": "0x1A5",
+    "title_en": "★★ ANIMATION ★★",
+    "title_ru": "★★ АНИМАЦИЯ ★★",
+    "name_en": "★★ ANIMATION ★★",
+    "name_ru": "★★ АНИМАЦИЯ ★★",
+    "title_jp": "★★★★アニメ-ション★★★★",
+    "desc_en": "BATTLE ANIM OFF",
+    "desc_ru": "АНИМАЦИЯ БОЯ: ВЫКЛ",
+    "pages_en": [
+      "BATTLE ANIM OFF"
+    ],
+    "pages_ru": [
+      "АНИМАЦИЯ БОЯ: ВЫКЛ"
+    ],
+    "menu_ru": "★★ АНИМАЦИЯ ★★"
+  },
+  {
+    "entry_index": 422,
+    "entry_hex": "0x1A6",
+    "title_en": "★★ BATTLE TEXT ★★",
+    "title_ru": "★★ ТЕКСТ БОЯ ★★",
+    "name_en": "★★ BATTLE TEXT ★★",
+    "name_ru": "★★ ТЕКСТ БОЯ ★★",
+    "title_jp": "★★★★★戦態セリフ★★★★★",
+    "desc_en": "DIALOG EFFECTS\nON",
+    "desc_ru": "ДИАЛОГИ В БОЮ\nВКЛ",
+    "pages_en": [
+      "DIALOG EFFECTS\nON"
+    ],
+    "pages_ru": [
+      "ДИАЛОГИ В БОЮ\nВКЛ"
+    ],
+    "menu_ru": "★★ ТЕКСТ БОЯ ★★"
+  },
+  {
+    "entry_index": 423,
+    "entry_hex": "0x1A7",
+    "title_en": "★★ BATTLE TEXT ★★",
+    "title_ru": "★★ ТЕКСТ БОЯ ★★",
+    "name_en": "★★ BATTLE TEXT ★★",
+    "name_ru": "★★ ТЕКСТ БОЯ ★★",
+    "title_jp": "★★★★★戦態セリフ★★★★★",
+    "desc_en": "DIALOG EFFECTS\nOFF",
+    "desc_ru": "ДИАЛОГИ В БОЮ\nВЫКЛ",
+    "pages_en": [
+      "DIALOG EFFECTS\nOFF"
+    ],
+    "pages_ru": [
+      "ДИАЛОГИ В БОЮ\nВЫКЛ"
+    ],
+    "menu_ru": "★★ ТЕКСТ БОЯ ★★"
+  },
+  {
+    "entry_index": 424,
+    "entry_hex": "0x1A8",
+    "title_en": "★★★ GRID ★★★",
+    "title_ru": "★★★ СЕТКА ★★★",
+    "name_en": "★★★ GRID ★★★",
+    "name_ru": "★★★ СЕТКА ★★★",
+    "title_jp": "★★★★★グリッド★★★★★",
+    "desc_en": "MAP GRID LINES\nON",
+    "desc_ru": "ЛИНИИ СЕТКИ КАРТЫ\nВКЛ",
+    "pages_en": [
+      "MAP GRID LINES\nON"
+    ],
+    "pages_ru": [
+      "ЛИНИИ СЕТКИ КАРТЫ\nВКЛ"
+    ],
+    "menu_ru": "★★★ СЕТКА ★★★"
+  },
+  {
+    "entry_index": 425,
+    "entry_hex": "0x1A9",
+    "title_en": "★★★ GRID ★★★",
+    "title_ru": "★★★ СЕТКА ★★★",
+    "name_en": "★★★ GRID ★★★",
+    "name_ru": "★★★ СЕТКА ★★★",
+    "title_jp": "★★★★★グリッド★★★★★",
+    "desc_en": "MAP GRID LINES\nOFF",
+    "desc_ru": "ЛИНИИ СЕТКИ КАРТЫ\nВЫКЛ",
+    "pages_en": [
+      "MAP GRID LINES\nOFF"
+    ],
+    "pages_ru": [
+      "ЛИНИИ СЕТКИ КАРТЫ\nВЫКЛ"
+    ],
+    "menu_ru": "★★★ СЕТКА ★★★"
+  },
+  {
+    "entry_index": 426,
+    "entry_hex": "0x1AA",
+    "title_en": "★★★ SOUND ★★★",
+    "title_ru": "★★★ ЗВУК ★★★",
+    "name_en": "★★★ SOUND ★★★",
+    "name_ru": "★★★ ЗВУК ★★★",
+    "title_jp": "★★★★★サウンド★★★★★",
+    "desc_en": "SOUND ON",
+    "desc_ru": "МУЗЫКА ВКЛ",
+    "pages_en": [
+      "SOUND ON"
+    ],
+    "pages_ru": [
+      "МУЗЫКА ВКЛ"
+    ],
+    "menu_ru": "★★★ ЗВУК ★★★"
+  },
+  {
+    "entry_index": 427,
+    "entry_hex": "0x1AB",
+    "title_en": "★★★ SOUND ★★★",
+    "title_ru": "★★★ ЗВУК ★★★",
+    "name_en": "★★★ SOUND ★★★",
+    "name_ru": "★★★ ЗВУК ★★★",
+    "title_jp": "★★★★★サウンド★★★★★",
+    "desc_en": "SOUND OFF",
+    "desc_ru": "МУЗЫКА ВЫКЛ",
+    "pages_en": [
+      "SOUND OFF"
+    ],
+    "pages_ru": [
+      "МУЗЫКА ВЫКЛ"
+    ],
+    "menu_ru": "★★★ ЗВУК ★★★"
+  },
+  {
+    "entry_index": 428,
+    "entry_hex": "0x1AC",
+    "title_en": "★★★ SFX ★★★",
+    "title_ru": "★★★ ЭФФЕКТЫ ★★★",
+    "name_en": "★★★ SFX ★★★",
+    "name_ru": "★★★ ЭФФЕКТЫ ★★★",
+    "title_jp": "★★★★★★効果音★★★★★★",
+    "desc_en": "SOUND EFFECTS ON",
+    "desc_ru": "ЗВУКОВЫЕ ЭФФЕКТЫ ВКЛ",
+    "pages_en": [
+      "SOUND EFFECTS ON"
+    ],
+    "pages_ru": [
+      "ЗВУКОВЫЕ ЭФФЕКТЫ ВКЛ"
+    ],
+    "menu_ru": "★★★ ЭФФЕКТЫ ★★★"
+  },
+  {
+    "entry_index": 429,
+    "entry_hex": "0x1AD",
+    "title_en": "★★★ SFX ★★★",
+    "title_ru": "★★★ ЭФФЕКТЫ ★★★",
+    "name_en": "★★★ SFX ★★★",
+    "name_ru": "★★★ ЭФФЕКТЫ ★★★",
+    "title_jp": "★★★★★★効果音★★★★★★",
+    "desc_en": "SOUND EFFECTS OFF",
+    "desc_ru": "ЗВУКОВЫЕ ЭФФЕКТЫ ВЫКЛ",
+    "pages_en": [
+      "SOUND EFFECTS OFF"
+    ],
+    "pages_ru": [
+      "ЗВУКОВЫЕ ЭФФЕКТЫ ВЫКЛ"
+    ],
+    "menu_ru": "★★★ ЭФФЕКТЫ ★★★"
+  },
+  {
+    "entry_index": 430,
+    "entry_hex": "0x1AE",
+    "title_en": "★★ NAVIGATION ★★",
+    "title_ru": "★★ НАВИГАЦИЯ ★★",
+    "name_en": "★★ NAVIGATION ★★",
+    "name_ru": "★★ НАВИГАЦИЯ ★★",
+    "title_jp": "★★★★ナビゲ-ション★★★★",
+    "desc_en": "GUIDE MESSAGES\nON",
+    "desc_ru": "ПОДСКАЗКИ НАВИГАЦИИ\nВКЛ",
+    "pages_en": [
+      "GUIDE MESSAGES\nON"
+    ],
+    "pages_ru": [
+      "ПОДСКАЗКИ НАВИГАЦИИ\nВКЛ"
+    ],
+    "menu_ru": "★★ НАВИГАЦИЯ ★★"
+  },
+  {
+    "entry_index": 431,
+    "entry_hex": "0x1AF",
+    "title_en": "★★ NAVIGATION ★★",
+    "title_ru": "★★ НАВИГАЦИЯ ★★",
+    "name_en": "★★ NAVIGATION ★★",
+    "name_ru": "★★ НАВИГАЦИЯ ★★",
+    "title_jp": "★★★★ナビゲ-ション★★★★",
+    "desc_en": "GUIDE MESSAGES\nOFF",
+    "desc_ru": "ПОДСКАЗКИ НАВИГАЦИИ\nВЫКЛ",
+    "pages_en": [
+      "GUIDE MESSAGES\nOFF"
+    ],
+    "pages_ru": [
+      "ПОДСКАЗКИ НАВИГАЦИИ\nВЫКЛ"
+    ],
+    "menu_ru": "★★ НАВИГАЦИЯ ★★"
+  },
+  {
+    "entry_index": 432,
+    "entry_hex": "0x1B0",
+    "title_en": "★★ HINT DOTS ★★",
+    "title_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "name_en": "★★ HINT DOTS ★★",
+    "name_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "title_jp": "★★★★使用しません★★★★",
+    "desc_en": "SHOW HOTSPOTS",
+    "desc_ru": "ПОКАЗЫВАТЬ АКТИВНЫЕ ТОЧКИ",
+    "pages_en": [
+      "SHOW HOTSPOTS"
+    ],
+    "pages_ru": [
+      "ПОКАЗЫВАТЬ АКТИВНЫЕ ТОЧКИ"
+    ],
+    "menu_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★"
+  },
+  {
+    "entry_index": 433,
+    "entry_hex": "0x1B1",
+    "title_en": "★★ HINT DOTS ★★",
+    "title_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "name_en": "★★ HINT DOTS ★★",
+    "name_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "title_jp": "★★★★使用しません★★★★\nだから,使ってないんだってば",
+    "desc_en": "HIDE HOTSPOTS",
+    "desc_ru": "СКРЫВАТЬ АКТИВНЫЕ ТОЧКИ",
+    "pages_en": [
+      "HIDE HOTSPOTS"
+    ],
+    "pages_ru": [
+      "СКРЫВАТЬ АКТИВНЫЕ ТОЧКИ"
+    ],
+    "menu_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★"
+  },
+  {
+    "entry_index": 434,
+    "entry_hex": "0x1B2",
+    "title_en": "★★ TEXT SPEED ★★",
+    "title_ru": "★★ СКОРОСТЬ ТЕКСТА ★★",
+    "name_en": "★★ TEXT SPEED ★★",
+    "name_ru": "★★ СКОРОСТЬ ТЕКСТА ★★",
+    "title_jp": "★★★コメントスピ-ド★★★",
+    "desc_en": "ONE LINE AT ONCE\nFAST",
+    "desc_ru": "ВЫВОД ПО СТРОКАМ:\nБЫСТРО",
+    "pages_en": [
+      "ONE LINE AT ONCE\nFAST"
+    ],
+    "pages_ru": [
+      "ВЫВОД ПО СТРОКАМ:\nБЫСТРО"
+    ],
+    "menu_ru": "★★ СКОРОСТЬ ТЕКСТА ★★"
+  },
+  {
+    "entry_index": 435,
+    "entry_hex": "0x1B3",
+    "title_en": "★★ TEXT SPEED ★★",
+    "title_ru": "★★ СКОРОСТЬ ТЕКСТА ★★",
+    "name_en": "★★ TEXT SPEED ★★",
+    "name_ru": "★★ СКОРОСТЬ ТЕКСТА ★★",
+    "title_jp": "★★★コメントスピ-ド★★★",
+    "desc_en": "ONE LETTER AT A\nTIME - SLOW",
+    "desc_ru": "ВЫВОД ПО БУКВАМ:\nМЕДЛЕННО",
+    "pages_en": [
+      "ONE LETTER AT A\nTIME - SLOW"
+    ],
+    "pages_ru": [
+      "ВЫВОД ПО БУКВАМ:\nМЕДЛЕННО"
+    ],
+    "menu_ru": "★★ СКОРОСТЬ ТЕКСТА ★★"
+  },
+  {
+    "entry_index": 436,
+    "entry_hex": "0x1B4",
+    "title_en": "★★ NAVIGATION ★★",
+    "title_ru": "★★ НАВИГАЦИЯ ★★",
+    "name_en": "★★ NAVIGATION ★★",
+    "name_ru": "★★ НАВИГАЦИЯ ★★",
+    "title_jp": "★★★★ナビゲ-ション★★★★",
+    "desc_en": "GUIDE MESSAGES\nON",
+    "desc_ru": "ПОДСКАЗКИ НАВИГАЦИИ\nВКЛ",
+    "pages_en": [
+      "GUIDE MESSAGES\nON"
+    ],
+    "pages_ru": [
+      "ПОДСКАЗКИ НАВИГАЦИИ\nВКЛ"
+    ],
+    "menu_ru": "★★ НАВИГАЦИЯ ★★"
+  },
+  {
+    "entry_index": 437,
+    "entry_hex": "0x1B5",
+    "title_en": "★★ NAVIGATION ★★",
+    "title_ru": "★★ НАВИГАЦИЯ ★★",
+    "name_en": "★★ NAVIGATION ★★",
+    "name_ru": "★★ НАВИГАЦИЯ ★★",
+    "title_jp": "★★★★ナビゲ-ション★★★★",
+    "desc_en": "GUIDE MESSAGES\nOFF",
+    "desc_ru": "ПОДСКАЗКИ НАВИГАЦИИ\nВЫКЛ",
+    "pages_en": [
+      "GUIDE MESSAGES\nOFF"
+    ],
+    "pages_ru": [
+      "ПОДСКАЗКИ НАВИГАЦИИ\nВЫКЛ"
+    ],
+    "menu_ru": "★★ НАВИГАЦИЯ ★★"
+  },
+  {
+    "entry_index": 438,
+    "entry_hex": "0x1B6",
+    "title_en": "VOICE COMMENTS",
+    "title_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ",
+    "name_en": "VOICE COMMENTS",
+    "name_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ",
+    "title_jp": "★★★★音声コメント★★★★",
+    "desc_en": "PRESS O TO CANCEL",
+    "desc_ru": "НАЖМИТЕ КРУГ ДЛЯ ОТМЕНЫ",
+    "pages_en": [
+      "PRESS O TO CANCEL"
+    ],
+    "pages_ru": [
+      "НАЖМИТЕ КРУГ ДЛЯ ОТМЕНЫ"
+    ],
+    "menu_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ"
+  },
+  {
+    "entry_index": 439,
+    "entry_hex": "0x1B7",
+    "title_en": "VOICE COMMENTS",
+    "title_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ",
+    "name_en": "VOICE COMMENTS",
+    "name_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ",
+    "title_jp": "★★★★音声コメント★★★★",
+    "desc_en": "PRESS X TO CANCEL",
+    "desc_ru": "НАЖМИТЕ КРЕСТ ДЛЯ ОТМЕНЫ",
+    "pages_en": [
+      "PRESS X TO CANCEL"
+    ],
+    "pages_ru": [
+      "НАЖМИТЕ КРЕСТ ДЛЯ ОТМЕНЫ"
+    ],
+    "menu_ru": "ГОЛОСОВЫЕ КОММЕНТАРИИ"
+  },
+  {
+    "entry_index": 440,
+    "entry_hex": "0x1B8",
+    "title_en": "★★ HINT DOTS ★★",
+    "title_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "name_en": "★★ HINT DOTS ★★",
+    "name_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "title_jp": "★★★★使用しません★★★★",
+    "desc_en": "SHOW HOTSPOTS",
+    "desc_ru": "ПОКАЗЫВАТЬ АКТИВНЫЕ ТОЧКИ",
+    "pages_en": [
+      "SHOW HOTSPOTS"
+    ],
+    "pages_ru": [
+      "ПОКАЗЫВАТЬ АКТИВНЫЕ ТОЧКИ"
+    ],
+    "menu_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★"
+  },
+  {
+    "entry_index": 441,
+    "entry_hex": "0x1B9",
+    "title_en": "★★ HINT DOTS ★★",
+    "title_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "name_en": "★★ HINT DOTS ★★",
+    "name_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★",
+    "title_jp": "★★★★使用しません★★★★\nだから,使ってないんだってば",
+    "desc_en": "HIDE HOTSPOTS",
+    "desc_ru": "СКРЫВАТЬ АКТИВНЫЕ ТОЧКИ",
+    "pages_en": [
+      "HIDE HOTSPOTS"
+    ],
+    "pages_ru": [
+      "СКРЫВАТЬ АКТИВНЫЕ ТОЧКИ"
+    ],
+    "menu_ru": "★★ ТОЧКИ-ПОДСКАЗКИ ★★"
+  },
+  {
+    "entry_index": 442,
+    "entry_hex": "0x1BA",
+    "title_en": "★★★ SOUND ★★★",
+    "title_ru": "★★★ ЗВУК ★★★",
+    "name_en": "★★★ SOUND ★★★",
+    "name_ru": "★★★ ЗВУК ★★★",
+    "title_jp": "★★★★★サウンド★★★★★",
+    "desc_en": "OUTPUT: STEREO\nSELECTED",
+    "desc_ru": "ВЫХОД: СТЕРЕО\nВЫБРАНО",
+    "pages_en": [
+      "OUTPUT: STEREO\nSELECTED"
+    ],
+    "pages_ru": [
+      "ВЫХОД: СТЕРЕО\nВЫБРАНО"
+    ],
+    "menu_ru": "★★★ ЗВУК ★★★"
+  },
+  {
+    "entry_index": 443,
+    "entry_hex": "0x1BB",
+    "title_en": "★★★ SOUND ★★★",
+    "title_ru": "★★★ ЗВУК ★★★",
+    "name_en": "★★★ SOUND ★★★",
+    "name_ru": "★★★ ЗВУК ★★★",
+    "title_jp": "★★★★★サウンド★★★★★",
+    "desc_en": "OUTPUT: MONO\nSELECTED",
+    "desc_ru": "ВЫХОД: МОНО\nВЫБРАНО",
+    "pages_en": [
+      "OUTPUT: MONO\nSELECTED"
+    ],
+    "pages_ru": [
+      "ВЫХОД: МОНО\nВЫБРАНО"
+    ],
+    "menu_ru": "★★★ ЗВУК ★★★"
+  }
+]

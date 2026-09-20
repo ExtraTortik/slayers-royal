@@ -71,6 +71,7 @@ CANONICAL_PUNCTUATION: dict[str, int] = {
     ";": 0x0005,
     "=": 0x0006,
     "'": 0x031B,
+    "★": 0x0256,
 }
 
 # Typographic aliases mapped to canonical tiles

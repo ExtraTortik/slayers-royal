@@ -429,25 +429,23 @@ def render_cyrillic_glyph_2bpp(char: str, font_path: Path) -> bytes:
     return bytes(tile_bytes)
 
 
-def build_patched_combat_font(
+def apply_combat_font_patches(
     tim_decompressed: bytes,
     font_path: Path | None = None,
     template_path: Path | None = None,
-) -> tuple[bytes, bytes]:
-    """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
+) -> bytearray:
+    """Apply 2BPP Cyrillic glyph patches to combat font 0x142 Bank 1 only.
 
-    Renders all 66 characters in CYRILLIC_UPPER (0x0150..0x0170) and
-    CYRILLIC_LOWER (0x0171..0x0191) using put_hw_tile_2bpp.
+    Injections:
+    1. Bank 1: 0x0150..0x0170 (CYRILLIC_UPPER) and 0x0171..0x0191 (CYRILLIC_LOWER)
+       for 16-bit dialogue text and combat options.
 
-    If template_path is provided (or if data/combat_font_template.png exists),
-    user-painted tiles are imported. Any empty/untouched tiles fall back to
-    render_cyrillic_glyph_2bpp.
+    Bank 0 tiles are left untouched — the in-battle spell selection menu
+    renderer is hard-wired to the original 8-bit font tile set and cannot
+    display Cyrillic.
 
     Returns:
-        (patched_tim_decompressed, compressed_bytes)
-
-    Raises:
-        ValueError if compressed font exceeds 23 sectors (47,104 bytes).
+        bytearray of patched decompressed TIM (66,080 bytes).
     """
     if len(tim_decompressed) != TIM_DECOMPRESSED_SIZE:
         raise ValueError(f"Invalid TIM size: {len(tim_decompressed)} bytes (expected {TIM_DECOMPRESSED_SIZE})")
@@ -471,7 +469,7 @@ def build_patched_combat_font(
 
     patched_tim = bytearray(tim_decompressed)
 
-    # Render 33 uppercase Russian glyphs into 0x0150..0x0170
+    # 1. Bank 1: Render 33 uppercase Russian glyphs into 0x0150..0x0170
     for idx, ch in enumerate(CYRILLIC_UPPER):
         code = CYRILLIC_UPPER_BASE + idx
         tile_bytes = imported_tiles.get(ch)
@@ -479,14 +477,43 @@ def build_patched_combat_font(
             tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
         put_hw_tile_2bpp(patched_tim, code, tile_bytes)
 
-    # Render 33 lowercase Russian glyphs into 0x0171..0x0191
+    # 2. Bank 1: Render 33 lowercase Russian glyphs into 0x0171..0x0191
     for idx, ch in enumerate(CYRILLIC_LOWER):
         code = CYRILLIC_LOWER_BASE + idx
         tile_bytes = imported_tiles.get(ch)
         if tile_bytes is None or is_tile_empty(tile_bytes):
             tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
         put_hw_tile_2bpp(patched_tim, code, tile_bytes)
+    # 3. Spell menu: Render 26 8x10 Cyrillic glyphs for in-battle spell list
+    try:
+        from tools.patch_spell_names import patch_tim_with_cyrillic
+        patched_tim = patch_tim_with_cyrillic(patched_tim, fp)
+    except Exception:
+        pass
 
+    return patched_tim
+
+
+def build_patched_combat_font(
+    tim_decompressed: bytes,
+    font_path: Path | None = None,
+    template_path: Path | None = None,
+) -> tuple[bytes, bytes]:
+    """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
+
+    Injects Bank 1 (0x0150..0x0191) and Bank 0 (0x01..0x21, 0x00, 0x22).
+
+    Returns:
+        (patched_tim_decompressed, compressed_bytes)
+
+    Raises:
+        ValueError if compressed font exceeds 23 sectors (47,104 bytes).
+    """
+    patched_tim = apply_combat_font_patches(
+        tim_decompressed,
+        font_path=font_path,
+        template_path=template_path,
+    )
     patched_bytes = bytes(patched_tim)
 
     # Compress with unt_lz mode 1
@@ -554,42 +581,21 @@ def patch_combat_font(
     tim_decompressed: bytes,
     charmap: Mapping[str, int] | None = None,
     font_path: Path | None = None,
+    template_path: Path | None = None,
 ) -> tuple[bytes, dict[str, int]]:
-    """Patch decompressed TIM with Cyrillic glyphs.
+    """Patch decompressed TIM with Cyrillic glyphs in Bank 1 and Bank 0.
 
-    Preserves original TIM header (544 bytes) and CLUT completely,
-    while setting Color 15 in Palette 0 to white.
+    Preserves original TIM header (544 bytes) and CLUT completely.
+    Injects Bank 1 (0x0150..0x0191) and Bank 0 (0x01..0x21, 0x00, 0x22).
     """
-    if len(tim_decompressed) != TIM_DECOMPRESSED_SIZE:
-        raise ValueError(f"Invalid TIM size: {len(tim_decompressed)} bytes")
-
     cm = charmap if charmap is not None else build_combat_charmap()
     fp = font_path if font_path is not None else find_press_start_font()
-
-    patched = bytearray(tim_decompressed)
-
-    # 2. Space tile (0x007D) is an empty transparent tile (all 0s)
-    space_tile = cm.get(" ", 0x007D)
-    if space_tile < TOTAL_TILES:
-        put_tile(patched, space_tile, bytes(BYTES_PER_TILE))
-
-    # 3. Copy verified gourry-hacks Latin tiles
-    gourry_tiles = load_gourry_latin_tiles()
-    for tid, tile_data in gourry_tiles.items():
-        if tid < TOTAL_TILES:
-            put_tile(patched, tid, tile_data)
-
-    # 4. Render unique Russian glyphs into free kanji slots (0x01A0..0x01CF)
-    rendered_tiles: set[int] = {space_tile} | set(gourry_tiles.keys())
-    for char in CYRILLIC_UNIQUE_UPPER + CYRILLIC_UNIQUE_LOWER:
-        if char in cm:
-            tile_id = cm[char]
-            if tile_id < TOTAL_TILES and tile_id not in rendered_tiles:
-                tile_data = render_cyrillic_glyph(char, fp)
-                put_tile(patched, tile_id, tile_data)
-                rendered_tiles.add(tile_id)
-
-    return bytes(patched), cm
+    patched_tim = apply_combat_font_patches(
+        tim_decompressed,
+        font_path=fp,
+        template_path=template_path,
+    )
+    return bytes(patched_tim), cm
 
 
 def compress_combat_font(tim_bytes: bytes) -> bytes:

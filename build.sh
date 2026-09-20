@@ -13,6 +13,7 @@ ROOM_NAMES_JSON="$SCRIPT_DIR/translations/room_names_ru.json"
 CARDS_JSON="$SCRIPT_DIR/translations/lore_cards_ru.json"
 COMBAT_JSON="$SCRIPT_DIR/translations/combat_ru.json"
 COMBAT_DIALOGUES_JSON="$SCRIPT_DIR/translations/combat_dialogues_ru.json"
+SPELLS_JSON="$SCRIPT_DIR/translations/spells_ru.json"
 MAP_JSON="$SCRIPT_DIR/translations/world_map_ru.json"
 BANNERS_JSON="$SCRIPT_DIR/translations/location_banners_ru.json"
 TOWN_SERVICES_JSON="$SCRIPT_DIR/translations/town_services_ru.json"
@@ -46,7 +47,8 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     echo "  --banners    Обновить ТОЛЬКО графические плашки-баннеры локаций"
     echo "  --status-ui, --tabs  Обновить атлас меню персонажей из data/preview_basyog_162_ru.png"
     echo "  --cards      Обновить ТОЛЬКО энциклопедические карточки персонажей"
-    echo "  --combat, --combat-dialogues  Обновить боевые диалоги из translations/combat_dialogues_ru.json"
+    echo "  --combat, --combat-dialogues  Обновить боевые диалоги и заклинания"
+    echo "  --spells     Внедрить заклинания и боевое меню магии (PROG.UNT 0x007, 325..443)"
     echo "  --services, --town  Обновить городские службы, магазины и меню из translations/town_services_ru.json"
     echo "  --shops, --shop-dialogues  Обновить диалоги и меню магазинов из translations/shop_dialogues_ru.json"
     echo "  --minigames, --quiz Обновить правила 5 мини-игр, викторину и меню выбора мини-игр"
@@ -77,7 +79,11 @@ if [[ "$1" == "--validate" ]]; then
     echo "[*] Валидация боевого режима..."
     python3 "$SCRIPT_DIR/tools/combat_text.py" --verify
     echo "[*] Валидация боевых диалогов..."
-    python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" --verify
+    python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" --verify --bin "$RU_BIN"
+    python3 -m pytest tools/test_combat_font_and_text.py -q
+    echo "[*] Валидация заклинаний и боевого меню магии (PROG.UNT 0x007, 325..443)..."
+    python3 "$SCRIPT_DIR/tools/patch_spells.py" --verify --bin "$RU_BIN"
+    python3 -m pytest tools/test_patch_spells.py -q
     echo "[*] Валидация названий карты мира..."
     python3 "$SCRIPT_DIR/tools/patch_world_map.py" --verify
     echo "[*] Валидация графических плашек локаций..."
@@ -233,16 +239,35 @@ if [[ "$1" == "--status-ui" || "$1" == "--tabs" ]]; then
     exit 0
 fi
 if [[ "$1" == "--combat" || "$1" == "--combat-dialogues" ]]; then
-    echo "[1/1] Обновление боевых диалогов из translations/combat_dialogues_ru.json..."
+    echo "[1/3] Внедрение боевого шрифта и системных строк (PROG.UNT 0x142, 0x007)..."
     if [[ ! -f "$RU_BIN" ]]; then
         echo "Ошибка: базовый образ $RU_BIN не найден. Запустите сначала полную сборку ./build.sh" >&2
         exit 1
     fi
+    python3 "$SCRIPT_DIR/tools/patch_combat.py" --bin "$RU_BIN"
+    echo "[2/3] Обновление боевых диалогов из translations/combat_dialogues_ru.json..."
     python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" \
         --bin "$RU_BIN" \
         --catalog "$COMBAT_DIALOGUES_JSON"
+    echo "[3/3] Внедрение заклинаний и боевого меню магии (PROG.UNT 0x007, 325..443)..."
+    python3 "$SCRIPT_DIR/tools/patch_spells.py" \
+        --bin "$RU_BIN" \
+        --catalog "$SPELLS_JSON"
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
-    echo "[✓] Боевые диалоги успешно обновлены!"
+    echo "[✓] Боевые диалоги и заклинания успешно обновлены!"
+    exit 0
+fi
+if [[ "$1" == "--spells" ]]; then
+    echo "[1/1] Внедрение заклинаний и боевого меню магии (PROG.UNT 0x007, 325..443)..."
+    if [[ ! -f "$RU_BIN" ]]; then
+        echo "Ошибка: базовый образ $RU_BIN не найден. Запустите сначала полную сборку ./build.sh" >&2
+        exit 1
+    fi
+    python3 "$SCRIPT_DIR/tools/patch_spells.py" \
+        --bin "$RU_BIN" \
+        --catalog "$SPELLS_JSON"
+    cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
+    echo "[✓] Заклинания успешно обновлены!"
     exit 0
 fi
 if [[ "$1" == "--services" || "$1" == "--town" ]]; then
@@ -453,11 +478,14 @@ if [[ -f "$SCRIPT_DIR/data/preview_basyog_162_ru.png" ]]; then
     echo "[6.5/9] Внедрение атласа меню персонажей (BASYOG.UNT 162)..."
     python3 "$SCRIPT_DIR/tools/patch_basyog_162.py" --bin "$RU_BIN"
 fi
-echo "[7/9] Внедрение боевых диалогов и шрифта (PROG.UNT 0x007, 0x142)..."
+echo "[7/9] Внедрение боевых диалогов, шрифта и заклинаний (PROG.UNT 0x007, 0x142, 325..443)..."
+python3 "$SCRIPT_DIR/tools/patch_combat.py" --bin "$RU_BIN"
 python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" \
     --bin "$RU_BIN" \
     --catalog "$COMBAT_DIALOGUES_JSON"
-
+python3 "$SCRIPT_DIR/tools/patch_spells.py" \
+    --bin "$RU_BIN" \
+    --catalog "$SPELLS_JSON"
 echo "[8/9] Внедрение городских служб, магазинов, меню и валюты (PROG.UNT 0x003, 0x03A)..."
 python3 "$SCRIPT_DIR/tools/patch_town_services.py" \
     --bin "$RU_BIN" \

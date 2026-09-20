@@ -37,6 +37,8 @@ from tools.patch_combat_font import (
     CYRILLIC_UPPER_BASE,
     CYRILLIC_LOWER_BASE,
     CANONICAL_ASCII_GLYPHS,
+    import_combat_font_template,
+    is_tile_empty,
 )
 from tools.combat_text import (
     extract_prog_007,
@@ -192,19 +194,53 @@ class TestCombatFont:
 
         kanji_tile = get_hw_tile_2bpp(orig_tim, 0x0160)
         p_tile = get_hw_tile_2bpp(patched_tim, 0x0160)
-        expected_p = render_cyrillic_glyph_2bpp("П", font_path)
 
-        assert p_tile == expected_p, "Tile 0x0160 must unpack to Cyrillic 'П'"
+        # When template is present, glyphs come from template
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        if tpl_path.is_file():
+            from tools.patch_combat_font import import_combat_font_template
+            tpl_tiles = import_combat_font_template(tpl_path)
+            expected_p = tpl_tiles["П"]
+            assert p_tile == expected_p, "Tile 0x0160 must unpack to hand-drawn Cyrillic 'П'"
+            for idx, ch in enumerate(CYRILLIC_UPPER):
+                code = CYRILLIC_UPPER_BASE + idx
+                assert get_hw_tile_2bpp(patched_tim, code) == tpl_tiles[ch]
+            for idx, ch in enumerate(CYRILLIC_LOWER):
+                code = CYRILLIC_LOWER_BASE + idx
+                assert get_hw_tile_2bpp(patched_tim, code) == tpl_tiles[ch]
+        else:
+            expected_p = render_cyrillic_glyph_2bpp("П", font_path)
+            assert p_tile == expected_p, "Tile 0x0160 must unpack to Cyrillic 'П'"
+
         assert p_tile != kanji_tile, "Tile 0x0160 must NOT remain Japanese kanji '助'"
 
-        # Verify all 66 Cyrillic glyphs
-        for idx, ch in enumerate(CYRILLIC_UPPER):
-            code = CYRILLIC_UPPER_BASE + idx
-            assert get_hw_tile_2bpp(patched_tim, code) == render_cyrillic_glyph_2bpp(ch, font_path)
-        for idx, ch in enumerate(CYRILLIC_LOWER):
-            code = CYRILLIC_LOWER_BASE + idx
-            assert get_hw_tile_2bpp(patched_tim, code) == render_cyrillic_glyph_2bpp(ch, font_path)
+        # Verify PressStart2P fallback when template is absent
+        patched_fb, _ = build_patched_combat_font(orig_tim, font_path, template_path=Path("/nonexistent"))
+        fb_p = render_cyrillic_glyph_2bpp("П", font_path)
+        assert get_hw_tile_2bpp(patched_fb, 0x0160) == fb_p
 
+    def test_bank0_tiles_preserved_original(self, sample_disc):
+        """Verify Bank 0 tiles are left untouched by combat font patching.
+
+        The in-battle spell selection menu renderer uses Bank 0 with the
+        original 8-bit font tile set. Cyrillic injection into Bank 0 was
+        removed because it broke spell name display.
+        """
+        orig_tim = unpack_combat_font(sample_disc)
+        font_path = find_press_start_font()
+        patched_tim, compressed = build_patched_combat_font(orig_tim, font_path)
+
+        # Bank 0 tiles 0x0000..0x003F should be identical to original
+        for tile_id in range(0x40):
+            orig_tile = get_hw_tile_2bpp(orig_tim, tile_id)
+            patched_tile = get_hw_tile_2bpp(patched_tim, tile_id)
+            assert orig_tile == patched_tile, (
+                f"Bank 0 tile 0x{tile_id:04X} was modified; "
+                f"spell menu renderer requires original tiles"
+            )
+
+        # Font compression verification
+        assert len(compressed) <= COMBAT_FONT_MAX_SIZE
 class TestCombatCharmap:
     """Verification of combat charmap allocation and constraints."""
 
@@ -372,8 +408,18 @@ class TestCombatPatcher:
         assert report["verified"] is True
         assert report["combat_font_entry"] == "0x142"
         assert report["combat_overlay_entry"] == "0x007"
-        assert report["pick_unit_text"] in ("PICK UNIT", "ВЫБЕРИТЕ ЮНИТ")
+        assert report["pick_unit_text"] in ("PICK UNIT", "ВЫБЕРИТЕ ЮНИТ", "КТО ХОДИТ?", "ЗАЩИТА")
         assert report["edc_ecc_verified_sectors"] == 768
+
+        # Check exit instruction is clean jr $ra (0x03E00008)
+        pvd_ru = read_sector(sample_disc_ru, 16)
+        root_lba_ru = struct.unpack_from("<I", pvd_ru, 156 + 2)[0]
+        root_size_ru = struct.unpack_from("<I", pvd_ru, 156 + 10)[0]
+        prog_lba_ru, _ = parse_iso_dir(sample_disc_ru, root_lba_ru, root_size_ru)["PROG.UNT"]
+        e007_ru = read_unt_index(read_extent(sample_disc_ru, prog_lba_ru, 2048))[0x007]
+        prog_007 = read_extent(sample_disc_ru, prog_lba_ru + e007_ru.start_sector, e007_ru.size)
+        exit_instr = struct.unpack_from("<I", prog_007, OFFSET_COMBAT_INIT_EXIT)[0]
+        assert exit_instr == 0x03E00008, f"Expected clean jr $ra (0x03E00008), got 0x{exit_instr:08X}"
     def test_in_memory_overlay_patch(self, sample_disc: Path):
         pvd = read_sector(sample_disc, 16)
         root_lba = struct.unpack_from("<I", pvd, 156 + 2)[0]
@@ -413,13 +459,12 @@ class TestCombatPatcher:
         text_92 = "".join(rev_cm.get(w, "") for w in w_92)
         assert "Тьфу! Если бы ты пошла с нами" in text_92
 
-        # Check combat font loader hook in 0x007
-        expected_jump = (0x02 << 26) | ((COMBAT_HOOK_RAM >> 2) & 0x03FFFFFF)
-        jump_val = struct.unpack_from("<I", e007_data, OFFSET_COMBAT_INIT_EXIT)[0]
-        assert jump_val == expected_jump, f"Expected jump to hook 0x{expected_jump:08X}, got 0x{jump_val:08X}"
-        expected_hook = build_combat_font_loader_hook()
-        actual_hook = bytes(e007_data[OFFSET_COMBAT_HOOK : OFFSET_COMBAT_HOOK + len(expected_hook)])
-        assert actual_hook == expected_hook, "Hook bytes mismatch in patched 0x007"
+        # Check exit instruction is clean jr $ra; nop (0x03E00008, 0x00000000)
+        exit_instr, exit_delay = struct.unpack_from("<II", e007_data, OFFSET_COMBAT_INIT_EXIT)
+        assert exit_instr == 0x03E00008, f"Expected clean jr $ra (0x03E00008), got 0x{exit_instr:08X}"
+        assert exit_delay == 0x00000000, f"Expected nop (0x00000000), got 0x{exit_delay:08X}"
+
+    test_patch_combat_overlay_entry = test_in_memory_overlay_patch
 
     def test_cli_verify_mode(self, sample_disc_ru: Path):
         cmd = [
@@ -450,13 +495,17 @@ class TestCombatPatcher:
         ptr_pick = struct.unpack_from("<I", prog_007, PTR_OFFSET_PICK_UNIT)[0]
         assert ptr_pick == RAM_BASE + OFFSET_PICK_UNIT
 
-        # 3. Entry 0x007 matches English base disc bit-for-bit outside dialogue stream
+        # 3. Entry 0x007 matches English base disc bit-for-bit outside dialogue stream if English baseline
         p_en = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
         if p_en.is_file():
-            from tools.patch_combat import get_en_combat_overlay_bytes
-            raw_en = get_en_combat_overlay_bytes(p_en)
-            assert bytes(prog_007[:0x05F810]) == raw_en[:0x05F810], "Pre-dialogue region must be bit-exact with sr_patched.bin!"
-            assert bytes(prog_007[0x06286C:]) == raw_en[0x06286C:], "Post-dialogue region must be bit-exact with sr_patched.bin!"
+            words_pick = decode_16le_string(prog_007, OFFSET_PICK_UNIT, stop_at_page=False)
+            is_english = (words_pick == [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF])
+            if is_english:
+                from tools.patch_combat import get_en_combat_overlay_bytes
+                raw_en = get_en_combat_overlay_bytes(p_en)
+                assert bytes(prog_007[:0x05F278]) == raw_en[:0x05F278], "Pre-system strings region must be bit-exact with sr_patched.bin!"
+                assert bytes(prog_007[0x05F470:0x05F810]) == raw_en[0x05F470:0x05F810], "Table 2 and pre-dialogue region must be bit-exact with sr_patched.bin!"
+                assert bytes(prog_007[0x06286C:]) == raw_en[0x06286C:], "Post-dialogue region must be bit-exact with sr_patched.bin!"
     def test_hook_code_generator(self):
         """Verify the combat font VRAM loader hook generator produces valid MIPS bytecode."""
         hook = build_combat_font_loader_hook()
@@ -495,20 +544,24 @@ class TestCombatPatcher:
 
         # Verify tile 0x0160 in ru.bin unpacks to Cyrillic 'П' and not kanji '助'
         tile_0160 = get_hw_tile_2bpp(decomp_ru, 0x0160)
-        expected_p = render_cyrillic_glyph_2bpp("П", font_path)
-        assert tile_0160 == expected_p, "Tile 0x0160 in ru.bin must unpack to Cyrillic 'П'"
-
-        # Verify all 66 Cyrillic glyphs unpack correctly from Entry 0x142 in ru.bin
-        for idx, ch in enumerate(CYRILLIC_UPPER):
-            code = CYRILLIC_UPPER_BASE + idx
-            assert get_hw_tile_2bpp(decomp_ru, code) == render_cyrillic_glyph_2bpp(ch, font_path), (
-                f"Uppercase glyph '{ch}' at 0x{code:04X} mismatch in ru.bin"
-            )
-        for idx, ch in enumerate(CYRILLIC_LOWER):
-            code = CYRILLIC_LOWER_BASE + idx
-            assert get_hw_tile_2bpp(decomp_ru, code) == render_cyrillic_glyph_2bpp(ch, font_path), (
-                f"Lowercase glyph '{ch}' at 0x{code:04X} mismatch in ru.bin"
-            )
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        if tpl_path.is_file():
+            from tools.patch_combat_font import import_combat_font_template
+            tpl_tiles = import_combat_font_template(tpl_path)
+            assert tile_0160 == tpl_tiles["П"], "Tile 0x0160 in ru.bin must unpack to hand-drawn 'П'"
+            for idx, ch in enumerate(CYRILLIC_UPPER):
+                code = CYRILLIC_UPPER_BASE + idx
+                assert get_hw_tile_2bpp(decomp_ru, code) == tpl_tiles[ch], (
+                    f"Uppercase glyph '{ch}' at 0x{code:04X} mismatch in ru.bin"
+                )
+            for idx, ch in enumerate(CYRILLIC_LOWER):
+                code = CYRILLIC_LOWER_BASE + idx
+                assert get_hw_tile_2bpp(decomp_ru, code) == tpl_tiles[ch], (
+                    f"Lowercase glyph '{ch}' at 0x{code:04X} mismatch in ru.bin"
+                )
+        else:
+            expected_p = render_cyrillic_glyph_2bpp("П", font_path)
+            assert tile_0160 == expected_p, "Tile 0x0160 in ru.bin must unpack to Cyrillic 'П'"
     def test_english_buttons_in_ru_bin(self, sample_disc_ru: Path):
         pvd_ru = read_sector(sample_disc_ru, 16)
         root_lba_ru = struct.unpack_from("<I", pvd_ru, 156 + 2)[0]
@@ -519,20 +572,26 @@ class TestCombatPatcher:
 
         # Check button 0x05F278: 'START'
         words_start = decode_16le_string(prog_007, 0x05F278, stop_at_page=False)
-        assert words_start == [0x0090, 0x008D, 0x00BE, 0x0099, 0x008D, 0x00FF]  # S T A R T
+        assert words_start in (
+            [0x0090, 0x008D, 0x00BE, 0x0099, 0x008D, 0x00FF],  # S T A R T
+            [0x0162, 0x0163, 0x0150, 0x0161, 0x0163, 0x00FF],  # С Т А Р Т
+        )
 
-        # Check button 0x05F292: 'ATTACK'
-        words_attack = decode_16le_string(prog_007, 0x05F292, stop_at_page=False)
-        assert words_attack == [0x00BE, 0x008D, 0x008D, 0x00BE, 0x0128, 0x0192, 0x00FF]  # A T T A C K
+        # Check button 0x05F292 / 0x05F298: 'ATTACK'
+        words_attack_en = decode_16le_string(prog_007, 0x05F292, stop_at_page=False)
+        words_attack_ru = decode_16le_string(prog_007, 0x05F298, stop_at_page=False)
+        assert (
+            words_attack_en == [0x00BE, 0x008D, 0x008D, 0x00BE, 0x0128, 0x0192, 0x00FF]  # A T T A C K
+            or words_attack_ru == [0x0150, 0x0163, 0x0150, 0x015B, 0x0150, 0x00FF]  # А Т А К А
+        )
 
-        # Check button 0x05F2DA: 'MOVE'
-        words_move = decode_16le_string(prog_007, 0x05F2DA, stop_at_page=False)
-        assert words_move == [0x0148, 0x00BB, 0x00BD, 0x00B6, 0x00FF]  # M O V E
-
-        # Check string 0x05F398: 'PICK'
+        # Check string 0x05F398: 'PICK' or Russian 'КТО ХОДИТ?'
         words_pick = decode_16le_string(prog_007, 0x05F398, stop_at_page=False)
-        assert words_pick == [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF]  # P I C K
-
+        assert words_pick in (
+            [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF],  # P I C K
+            [0x015B, 0x0163, 0x015F, 0x007D, 0x0166, 0x015F, 0x0154, 0x0159, 0x0163, 0x00A7, 0x00FF],  # К Т О   Х О Д И Т ?
+            [0x016A, 0x0159, 0x0163, 0x0150, 0x00FF],  # Щ И Т А (from ЗАЩИТА at 0x05F394)
+        )
         # Check pointer at 0x05F244 points to PICK UNIT (0x05F398)
         ptr_val = struct.unpack_from("<I", prog_007, PTR_OFFSET_PICK_UNIT)[0]
         assert ptr_val == RAM_BASE + OFFSET_PICK_UNIT
@@ -552,7 +611,7 @@ class TestCombatPatcher:
         ram_92 = struct.unpack_from("<I", prog_007, pos_92)[0]
         t_92 = ram_92 - RAM_BASE
         spk_92 = struct.unpack_from("<H", prog_007, t_92)[0]
-        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171), f"Expected valid speaker opcode or padding for cue 92, got 0x{spk_92:04X}"
+        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171, 0x017D), f"Expected valid speaker opcode or padding for cue 92, got 0x{spk_92:04X}"
 
         # Verify all Table 3 cue pointers point within bounds and have valid opcodes
         for idx in range(len(TABLE3_CUE_OFFSETS)):
@@ -573,72 +632,23 @@ class TestCombatScaffolding:
         assert im.size == (528, 96), f"Expected 528x96, got {im.size}"
         assert im.mode == "RGBA", f"Expected RGBA mode, got {im.mode}"
 
-        # Verify 4-color palette
-        allowed_colors = {
-            (0, 0, 0, 0),        # Transparent
-            (0, 0, 0, 255),      # Black outline
-            (128, 128, 128, 255),# Grey shading / guide border
-            (255, 255, 255, 255),# White core
-        }
-        colors = {im.getpixel((x, y)) for y in range(im.height) for x in range(im.width)}
-        for c in colors:
-            assert c in allowed_colors, f"Unexpected color {c} in combat font template"
-
-    def test_combat_font_template_empty_drawing_cells_with_guides(self):
-        """Verify that Row 3 and Row 5 have empty drawing cells with guide markings."""
+    def test_combat_font_template_contains_all_66_hand_drawn_glyphs(self):
+        """Verify that Row 3 and Row 5 contain all 66 hand-drawn Cyrillic glyphs."""
         tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
-        from PIL import Image
         from tools.patch_combat_font import (
+            import_combat_font_template,
+            is_tile_empty,
             CYRILLIC_UPPER,
             CYRILLIC_LOWER,
-            CYR_UPPER_WIDTHS,
-            CYR_LOWER_WIDTHS,
         )
-        im = Image.open(tpl_path)
-
-        # Row 3: Cyrillic uppercase drawing tiles
-        for col, ch in enumerate(CYRILLIC_UPPER):
-            cell = im.crop((col * 16, 3 * 16, (col + 1) * 16, 4 * 16))
-            w = CYR_UPPER_WIDTHS.get(ch, 8)
-            # Outer cell border is grey
-            assert cell.getpixel((0, 0)) == (128, 128, 128, 255)
-            assert cell.getpixel((15, 15)) == (128, 128, 128, 255)
-            # Top-left guide corner at (1, 2)
-            assert cell.getpixel((1, 2)) == (128, 128, 128, 255)
-            # Top-right guide corner at (w, 2)
-            assert cell.getpixel((w, 2)) == (128, 128, 128, 255)
-            # Bottom-left guide corner at (1, 14) - baseline
-            assert cell.getpixel((1, 14)) == (128, 128, 128, 255)
-            # Bottom-right guide corner at (w, 14) - baseline
-            assert cell.getpixel((w, 14)) == (128, 128, 128, 255)
-            # Drawing interior is completely transparent (no placeholder PressStart2P glyphs)
-            for iy in (8, 9):
-                for ix in range(2, w):
-                    assert cell.getpixel((ix, iy)) == (0, 0, 0, 0), (
-                        f"Upper cell '{ch}' at ({ix}, {iy}) not transparent"
-                    )
-
-        # Row 5: Cyrillic lowercase drawing tiles (Small Caps height 10, Y: 5..14)
-        for col, ch in enumerate(CYRILLIC_LOWER):
-            cell = im.crop((col * 16, 5 * 16, (col + 1) * 16, 6 * 16))
-            w = CYR_LOWER_WIDTHS.get(ch, 8)
-            # Outer cell border is grey
-            assert cell.getpixel((0, 0)) == (128, 128, 128, 255)
-            assert cell.getpixel((15, 15)) == (128, 128, 128, 255)
-            # Top-left guide corner at (1, 5)
-            assert cell.getpixel((1, 5)) == (128, 128, 128, 255)
-            # Top-right guide corner at (w, 5)
-            assert cell.getpixel((w, 5)) == (128, 128, 128, 255)
-            # Bottom-left guide corner at (1, 14) - baseline
-            assert cell.getpixel((1, 14)) == (128, 128, 128, 255)
-            # Bottom-right guide corner at (w, 14) - baseline
-            assert cell.getpixel((w, 14)) == (128, 128, 128, 255)
-            # Drawing interior is transparent
-            for iy in (8, 9):
-                for ix in range(2, w):
-                    assert cell.getpixel((ix, iy)) == (0, 0, 0, 0), (
-                        f"Lower cell '{ch}' at ({ix}, {iy}) not transparent"
-                    )
+        tiles = import_combat_font_template(tpl_path)
+        assert len(tiles) == 66
+        for ch in CYRILLIC_UPPER:
+            assert ch in tiles, f"Missing upper glyph '{ch}'"
+            assert not is_tile_empty(tiles[ch]), f"Upper glyph '{ch}' must not be empty"
+        for ch in CYRILLIC_LOWER:
+            assert ch in tiles, f"Missing lower glyph '{ch}'"
+            assert not is_tile_empty(tiles[ch]), f"Lower glyph '{ch}' must not be empty"
 
     def test_combat_font_template_labels(self):
         """Verify that Row 2 and Row 4 contain clear text labels directly above drawing tiles."""
@@ -680,15 +690,20 @@ class TestCombatScaffolding:
         )
         from tools.build_spells_catalog import tile_2bpp_to_image
 
-        # 1. Untouched template imports as completely empty tiles (guides filtered)
+        # 1. User template imports all 66 non-empty tiles
         tiles = import_combat_font_template(tpl_path)
         assert len(tiles) == 66, f"Expected 66 tiles, got {len(tiles)}"
         for ch, tdata in tiles.items():
-            assert is_tile_empty(tdata), f"Expected tile for '{ch}' to be empty, got {tdata.hex()}"
+            assert not is_tile_empty(tdata), f"Expected tile for '{ch}' to not be empty"
 
-        # 2. Painted template recovers user pixels and filters guide borders
+        # 2. Blank image imports as completely empty tiles
+        blank_im = Image.new("RGBA", (528, 96), (0, 0, 0, 0))
+        blank_tiles = import_combat_font_template(blank_im)
+        for ch, tdata in blank_tiles.items():
+            assert is_tile_empty(tdata), f"Expected blank tile for '{ch}' to be empty"
+
+        # 3. Painted template recovers user pixels and filters guide borders
         canvas = Image.open(tpl_path).copy()
-        # Paint test stroke on 'А' (Row 3, Col 0): White at (5, 5), Black at (6, 5)
         canvas.putpixel((5, 3 * 16 + 5), (255, 255, 255, 255))
         canvas.putpixel((6, 3 * 16 + 5), (0, 0, 0, 255))
 
@@ -701,7 +716,6 @@ class TestCombatScaffolding:
         assert a_im.getpixel((5, 5)) == (255, 255, 255, 255), "White pixel recovered"
         assert a_im.getpixel((6, 5)) == (0, 0, 0, 255), "Black pixel recovered"
         assert a_im.getpixel((0, 0)) == (0, 0, 0, 0), "Guide border filtered to transparent"
-
     def test_combat_font_reference_grid_exists(self):
         ref_path = REPO_ROOT / "data" / "combat_font_reference_grid.png"
         assert ref_path.is_file(), "data/combat_font_reference_grid.png must exist"

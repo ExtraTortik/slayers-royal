@@ -71,7 +71,20 @@ from tools.patch_combat_dialogues import (
     verify_entry_7_invariants,
     patch_combat_dialogues,
     extract_entry_data_and_info,
+    OFFSET_SYSTEM_COMMANDS_START,
+    OFFSET_SYSTEM_COMMANDS_END,
+    OFFSET_PROMPT_STREAM_START,
+    OFFSET_PROMPT_STREAM_END,
+    PROMPT_STREAM_MAX_BYTES,
+    SYSTEM_COMMAND_SLOTS,
+    FIXED_PROMPT_SLOTS,
+    SYSTEM_PROMPT_STRINGS,
+    patch_combat_system_strings,
+    verify_combat_system_strings,
+    verify_entry_checksums,
+    patch_combat_dialogues_pipeline,
 )
+from tools.patch_combat_font import import_combat_font_template
 
 
 class TestCombatDialogueCharmap(unittest.TestCase):
@@ -197,28 +210,53 @@ class TestCombatFontGeneration(unittest.TestCase):
 
         kanji_tile = get_hw_tile_2bpp(orig_tim, 0x0160)
         p_tile = get_hw_tile_2bpp(patched_tim, 0x0160)
-        expected_p = render_cyrillic_glyph_2bpp("П", DEFAULT_FONT)
+
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        if tpl_path.is_file():
+            tpl_tiles = import_combat_font_template(tpl_path)
+            expected_p = tpl_tiles["П"]
+        else:
+            expected_p = render_cyrillic_glyph_2bpp("П", DEFAULT_FONT)
 
         self.assertEqual(p_tile, expected_p)
         self.assertNotEqual(p_tile, kanji_tile, "Tile 0x0160 must not remain Japanese kanji '助'")
+
+        # Verify PressStart2P fallback when template is absent
+        patched_fb, _ = build_patched_combat_font(orig_tim, DEFAULT_FONT, template_path=Path("/nonexistent"))
+        fb_p = render_cyrillic_glyph_2bpp("П", DEFAULT_FONT)
+        self.assertEqual(get_hw_tile_2bpp(patched_fb, 0x0160), fb_p)
 
     def test_all_66_cyrillic_glyphs_unpack_correctly(self):
         """Verify all 66 Cyrillic glyphs unpack correctly from patched Entry 0x142."""
         orig_tim = DEFAULT_TIM_CACHE.read_bytes()
         patched_tim, _ = build_patched_combat_font(orig_tim, DEFAULT_FONT)
 
-        for idx, ch in enumerate(CYRILLIC_UPPER):
-            code = CYRILLIC_UPPER_BASE + idx
-            expected = render_cyrillic_glyph_2bpp(ch, DEFAULT_FONT)
-            actual = get_hw_tile_2bpp(patched_tim, code)
-            self.assertEqual(actual, expected, f"Uppercase glyph '{ch}' at 0x{code:04X} mismatch")
+        tpl_path = REPO_ROOT / "data" / "combat_font_template.png"
+        if tpl_path.is_file():
+            tpl_tiles = import_combat_font_template(tpl_path)
+            for idx, ch in enumerate(CYRILLIC_UPPER):
+                code = CYRILLIC_UPPER_BASE + idx
+                expected = tpl_tiles[ch]
+                actual = get_hw_tile_2bpp(patched_tim, code)
+                self.assertEqual(actual, expected, f"Uppercase glyph '{ch}' at 0x{code:04X} mismatch")
 
-        for idx, ch in enumerate(CYRILLIC_LOWER):
-            code = CYRILLIC_LOWER_BASE + idx
-            expected = render_cyrillic_glyph_2bpp(ch, DEFAULT_FONT)
-            actual = get_hw_tile_2bpp(patched_tim, code)
-            self.assertEqual(actual, expected, f"Lowercase glyph '{ch}' at 0x{code:04X} mismatch")
+            for idx, ch in enumerate(CYRILLIC_LOWER):
+                code = CYRILLIC_LOWER_BASE + idx
+                expected = tpl_tiles[ch]
+                actual = get_hw_tile_2bpp(patched_tim, code)
+                self.assertEqual(actual, expected, f"Lowercase glyph '{ch}' at 0x{code:04X} mismatch")
+        else:
+            for idx, ch in enumerate(CYRILLIC_UPPER):
+                code = CYRILLIC_UPPER_BASE + idx
+                expected = render_cyrillic_glyph_2bpp(ch, DEFAULT_FONT)
+                actual = get_hw_tile_2bpp(patched_tim, code)
+                self.assertEqual(actual, expected, f"Uppercase glyph '{ch}' at 0x{code:04X} mismatch")
 
+            for idx, ch in enumerate(CYRILLIC_LOWER):
+                code = CYRILLIC_LOWER_BASE + idx
+                expected = render_cyrillic_glyph_2bpp(ch, DEFAULT_FONT)
+                actual = get_hw_tile_2bpp(patched_tim, code)
+                self.assertEqual(actual, expected, f"Lowercase glyph '{ch}' at 0x{code:04X} mismatch")
 class TestInPlaceDialoguePatching(unittest.TestCase):
     """Test in-place dialogue block encoding, formatting, and invariant preservation."""
 
@@ -537,16 +575,17 @@ class TestInPlaceDialoguePatching(unittest.TestCase):
             ],
         }
         patched_e7 = patch_dialogue_blocks(orig_e7, {"blocks": [block]})
+        patched_e7 = patch_combat_system_strings(bytearray(patched_e7))
 
         # Must verify without assertion error
         verify_entry_7_invariants(orig_e7, patched_e7)
 
         # Explicit checks
-        self.assertEqual(patched_e7[:0x05F810], orig_e7[:0x05F810])
-        self.assertEqual(patched_e7[0x06286C:], orig_e7[0x06286C:])
-        self.assertEqual(patched_e7[0x05F278:0x05F470], orig_e7[0x05F278:0x05F470])
-        self.assertEqual(patched_e7[0x02B78C:0x02B794], orig_e7[0x02B78C:0x02B794])
-
+        self.assertEqual(patched_e7[:OFFSET_SYSTEM_BUTTONS_START], orig_e7[:OFFSET_SYSTEM_BUTTONS_START])
+        self.assertEqual(patched_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START], orig_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START])
+        self.assertEqual(patched_e7[OFFSET_TABLE3_START:], orig_e7[OFFSET_TABLE3_START:])
+        self.assertEqual(patched_e7[OFFSET_MIPS_INIT_EXIT:OFFSET_MIPS_INIT_EXIT + 8], orig_e7[OFFSET_MIPS_INIT_EXIT:OFFSET_MIPS_INIT_EXIT + 8])
+        self.assertEqual(patched_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START], orig_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START])
     def test_all_114_blocks_in_catalog(self):
         """Verify all 114 conversation blocks in combat_dialogues_ru.json:
         - 114 blocks total.
@@ -696,6 +735,177 @@ class TestDryRunPipeline(unittest.TestCase):
             if mock_cat_path and mock_cat_path.is_file():
                 mock_cat_path.unlink()
 
+class TestCombatSystemStrings(unittest.TestCase):
+    """Verify combat system commands (18 fixed slots) and prompt stream (11 strings)."""
+
+    def test_all_18_system_command_slots_budget(self):
+        """Verify each of 18 fixed slots fits within 16 bytes when encoded."""
+        self.assertEqual(len(SYSTEM_COMMAND_SLOTS), 18)
+        for offset, text in SYSTEM_COMMAND_SLOTS:
+            self.assertGreaterEqual(offset, OFFSET_SYSTEM_COMMANDS_START)
+            self.assertLess(offset, OFFSET_SYSTEM_COMMANDS_END)
+            self.assertEqual((offset - OFFSET_SYSTEM_COMMANDS_START) % 16, 0)
+
+            encoded = encode_combat_dialogue_string(text, COMBAT_CHARMAP) + struct.pack("<H", OPCODE_BLOCK_END)
+            self.assertLessEqual(
+                len(encoded),
+                16,
+                f"Command '{text}' at 0x{offset:06X} length {len(encoded)} exceeds 16-byte slot!",
+            )
+            # Padded slot must be exactly 16 bytes
+            padded = encoded.ljust(16, b"\x00")
+            self.assertEqual(len(padded), 16)
+
+    def test_fixed_prompt_slots_offsets_and_budget(self):
+        """Verify exact fixed-offset prompt slots matching PS1 hardware pointers:
+        - Exactly 14 prompt slots.
+        - Each prompt encoded string + delimiter fits within its designated slot budget.
+        - Each prompt begins at its exact hardware pointer offset.
+        - Specific key offsets:
+          0x05F3BA -> 'КТО ХОДИТ'
+          0x05F3CE -> 'ДЕЙСТВИЕ'
+          0x05F3E2 -> 'МАГИЯ'
+        - Slots end at 0x05F46C with 4-byte padding margin before Table 2 boundary (0x05F470).
+        """
+        self.assertEqual(len(FIXED_PROMPT_SLOTS), 14)
+        expected_slots = {
+            0x05F394: (14, "ЗАЩИТА"),
+            0x05F3A2: (10, "АВТО"),
+            0x05F3AC: (14, "РУЧНОЙ"),
+            0x05F3BA: (20, "КТО ХОДИТ"),
+            0x05F3CE: (20, "ДЕЙСТВИЕ"),
+            0x05F3E2: (22, "МАГИЯ"),
+            0x05F3F8: (18, "КУДА?"),
+            0x05F40A: (16, "ЦЕЛЬ?"),
+            0x05F41A: (12, "ЗОНА?"),
+            0x05F426: (18, "ИДЕТ БОЙ"),
+            0x05F438: (12, "ЖДИТЕ"),
+            0x05F444: (20, "РЕЖИМ"),
+            0x05F458: (10, "СЕЙВ"),
+            0x05F462: (10, "ЛОАД"),
+        }
+
+        for offset, slot_len, text in FIXED_PROMPT_SLOTS:
+            self.assertIn(offset, expected_slots)
+            exp_len, exp_text = expected_slots[offset]
+            self.assertEqual(slot_len, exp_len)
+            self.assertEqual(text, exp_text)
+
+            encoded = encode_combat_dialogue_string(text, COMBAT_CHARMAP) + struct.pack("<H", OPCODE_BLOCK_END)
+            self.assertLessEqual(
+                len(encoded),
+                slot_len,
+                f"Prompt '{text}' at 0x{offset:06X} length {len(encoded)} exceeds {slot_len}-byte slot!",
+            )
+            padded = encoded.ljust(slot_len, b"\x00")
+            self.assertEqual(len(padded), slot_len)
+
+        # Verify key prompt offsets
+        prompt_dict = {off: (slen, txt) for off, slen, txt in FIXED_PROMPT_SLOTS}
+        self.assertEqual(prompt_dict[0x05F3BA][1], "КТО ХОДИТ")
+        self.assertEqual(prompt_dict[0x05F3CE][1], "ДЕЙСТВИЕ")
+        self.assertEqual(prompt_dict[0x05F3E2][1], "МАГИЯ")
+
+        # Verify boundary and margin before Table 2
+        last_offset, last_len, _ = FIXED_PROMPT_SLOTS[-1]
+        self.assertEqual(last_offset + last_len, 0x05F46C)
+        self.assertEqual(OFFSET_TABLE2_START, 0x05F470)
+        self.assertEqual(OFFSET_TABLE2_START - (last_offset + last_len), 4)
+
+    def test_patch_combat_system_strings_in_place(self):
+        """Verify in-place patching of system commands and prompts into Entry 0x007."""
+        dummy_size = 745 * 2048
+        dummy_e7 = bytearray(b"\xAA" * dummy_size)
+
+        # Set specific boundary canaries
+        canary_before = b"\x12\x34\x56\x78"
+        canary_table2 = b"\xDE\xAD\xBE\xEF"
+        dummy_e7[OFFSET_SYSTEM_COMMANDS_START - 4 : OFFSET_SYSTEM_COMMANDS_START] = canary_before
+        dummy_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 4] = canary_table2
+
+        patched = patch_combat_system_strings(dummy_e7)
+
+        # Verify canaries are 100% untouched
+        self.assertEqual(
+            patched[OFFSET_SYSTEM_COMMANDS_START - 4 : OFFSET_SYSTEM_COMMANDS_START],
+            canary_before,
+            "Canary before system commands was overwritten!",
+        )
+        self.assertEqual(
+            patched[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 4],
+            canary_table2,
+            "Canary at Table 2 boundary (0x05F470) was overwritten!",
+        )
+        enc_kto = encode_combat_dialogue_string("КТО ХОДИТ", COMBAT_CHARMAP)
+        self.assertEqual(
+            patched[0x05F3BA : 0x05F3BA + len(enc_kto)],
+            enc_kto,
+            "0x05F3BA does not start with 'КТО ХОДИТ'",
+        )
+
+        enc_mag = encode_combat_dialogue_string("МАГИЯ", COMBAT_CHARMAP)
+        self.assertEqual(
+            patched[0x05F3E2 : 0x05F3E2 + len(enc_mag)],
+            enc_mag,
+            "0x05F3E2 does not start with 'МАГИЯ'",
+        )
+
+        enc_act = encode_combat_dialogue_string("ДЕЙСТВИЕ", COMBAT_CHARMAP)
+        self.assertEqual(
+            patched[0x05F3CE : 0x05F3CE + len(enc_act)],
+            enc_act,
+            "0x05F3CE does not start with 'ДЕЙСТВИЕ'",
+        )
+
+        # Verify unallocated gap 0x05F46C..0x05F470 is zeroed
+        self.assertEqual(
+            patched[0x05F46C:0x05F470],
+            b"\x00\x00\x00\x00",
+            "Gap at 0x05F46C..0x05F470 is not zeroed!",
+        )
+
+        # Verify Russian strings via verify_combat_system_strings
+        verify_combat_system_strings(bytes(patched))
+
+    def test_table2_boundary_preservation(self):
+        """Verify Table 2 (0x05F470..0x05F504) is 100% byte-for-byte intact after patching."""
+        self.assertTrue(DEFAULT_BIN.is_file(), f"Binary not found: {DEFAULT_BIN}")
+        _, _, _, orig_e7 = extract_entry_data_and_info(DEFAULT_BIN, ENTRY_COMBAT_DATA)
+
+        table2_orig = orig_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 148]
+
+        patched_e7 = bytearray(orig_e7)
+        patch_combat_system_strings(patched_e7)
+
+        table2_patched = patched_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 148]
+        self.assertEqual(
+            table2_patched,
+            table2_orig,
+            "Table 2 was modified during combat system string injection!",
+        )
+
+    def test_command_slot_overflow_validation(self):
+        """Verify that a command exceeding 16 bytes raises ValueError."""
+        dummy_e7 = bytearray(745 * 2048)
+        huge_text = "СЛИШКОМ_ДЛИННАЯ_КОМАНДА"
+        from unittest.mock import patch
+        with patch("tools.patch_combat_dialogues.SYSTEM_COMMAND_SLOTS", [(0x05F278, huge_text)]):
+            with self.assertRaises(ValueError) as ctx:
+                patch_combat_system_strings(dummy_e7)
+            self.assertIn("exceeds 16-byte slot", str(ctx.exception))
+
+    def test_prompt_slot_overflow_validation(self):
+        """Verify that a prompt exceeding its fixed slot raises ValueError."""
+        dummy_e7 = bytearray(745 * 2048)
+        huge_text = "СЛИШКОМ_ДЛИННЫЙ_ПРОМПТ_ДЛЯ_СЛОТА"
+        from unittest.mock import patch
+        with patch("tools.patch_combat_dialogues.FIXED_PROMPT_SLOTS", [(0x05F394, 14, huge_text)]):
+            with self.assertRaises(ValueError) as ctx:
+                patch_combat_system_strings(dummy_e7)
+            self.assertIn("exceeds 14-byte slot", str(ctx.exception))
+    def test_pipeline_alias(self):
+        """Verify patch_combat_dialogues_pipeline alias is identical to patch_combat_dialogues."""
+        self.assertIs(patch_combat_dialogues_pipeline, patch_combat_dialogues)
 
 if __name__ == "__main__":
     unittest.main()
