@@ -439,106 +439,37 @@ SMINI_FONT_SPECS: dict[int, dict[str, Any]] = {
     },
 }
 
-# Authoritative Cyrillic charmap synchronized with PROG.UNT 0x03A / glyph_map.json
+# Locale glyph IDs are allocated dynamically by the toolkit at story-build time;
+# they are read from glyph_map.json / the committed snapshot (tools/vram_charmap.py)
+# and must never be spelled out in code.
+try:
+    from tools.vram_charmap import load_glyph_map as _load_glyph_map, load_vram_charmap as _load_vram_charmap
+except ImportError:  # executed as a script from tools/
+    from vram_charmap import load_glyph_map as _load_glyph_map, load_vram_charmap as _load_vram_charmap  # type: ignore
+
 AUTHORITATIVE_CYRILLIC_CHARMAP: dict[str, int] = {
-    # Russian Cyrillic Glyphs (Uppercase)
-    "Ё": 0x0006,
-    "А": 0x0007,
-    "Б": 0x0008,
-    "В": 0x0009,
-    "Г": 0x000A,
-    "Д": 0x000B,
-    "Е": 0x000C,
-    "Ж": 0x000D,
-    "З": 0x000E,
-    "И": 0x000F,
-    "Й": 0x0010,
-    "К": 0x0011,
-    "Л": 0x0012,
-    "М": 0x0013,
-    "Н": 0x0014,
-    "О": 0x0015,
-    "П": 0x0016,
-    "Р": 0x0018,
-    "С": 0x0019,
-    "Т": 0x001A,
-    "У": 0x001B,
-    "Ф": 0x001C,
-    "Х": 0x001D,
-    "Ц": 0x001E,
-    "Ч": 0x001F,
-    "Ш": 0x0020,
-    "Щ": 0x0021,
-    "Ъ": 0x0022,
-    "Ы": 0x0023,
-    "Ь": 0x0024,
-    "Э": 0x0025,
-    "Ю": 0x0026,
-    "Я": 0x0027,
-    # Russian Cyrillic Glyphs (Lowercase)
-    "а": 0x0028,
-    "б": 0x0029,
-    "в": 0x002A,
-    "г": 0x002B,
-    "д": 0x002C,
-    "е": 0x002D,
-    "ж": 0x002E,
-    "з": 0x002F,
-    "и": 0x0030,
-    "й": 0x0032,
-    "к": 0x0033,
-    "л": 0x0034,
-    "м": 0x0035,
-    "н": 0x0036,
-    "о": 0x0037,
-    "п": 0x0038,
-    "р": 0x0039,
-    "с": 0x003B,
-    "т": 0x003C,
-    "у": 0x003D,
-    "ф": 0x003E,
-    "х": 0x003F,
-    "ц": 0x0041,
-    "ч": 0x0042,
-    "ш": 0x0043,
-    "щ": 0x0044,
-    "ъ": 0x0045,
-    "ы": 0x0046,
-    "ь": 0x0047,
-    "э": 0x0049,
-    "ю": 0x004C,
-    "я": 0x004E,
-    "ё": 0x0050,
-    # Quotes & Typographic punctuation
-    "«": 0x0004,
-    "»": 0x0005,
-    "—": 0x0051,
-    "“": 0x0052,
-    "„": 0x0053,
-    "…": 0x0054,
+    ch: glyph for ch, glyph in _load_glyph_map().items() if "\u0400" <= ch <= "\u04ff" or ch in "«»—“„…"
 }
+
+# Highest cell a locale character may occupy: the SMINI font copies cells
+# 0x0004..0x0056 out of PROG.UNT 0x03A and protects 0x0057.. for controller icons.
+MAX_MINIGAME_LOCALE_GLYPH = 0x0056
 
 
 def build_minigames_charmap(glyph_map_path: Path | str | None = None) -> dict[str, int]:
-    """Build authoritative charmap for minigames synchronized with PROG.UNT 0x03A font.
+    """Charmap for minigame text: English base cells + the live locale allocation.
 
-    Overlay glyph_map.json (or AUTHORITATIVE_CYRILLIC_CHARMAP) onto base ASCII glyphs.
-    Strictly guarantees canonical mapping:
-      Ё = 0x0006, А..Я = 0x0007..0x0027, а..я = 0x0028..0x004E, ё = 0x0050
-      « = 0x0004, » = 0x0005, Space = 0x007D
-      Digits 0..9 = 0x00A8..0x00B1
-      Punctuation: . = 0x00A2, , = 0x00A1, ! = 0x00A6, ? = 0x00A7, : = 0x00BC, - = 0x00A4
+    Raises if no trustworthy glyph map exists or if a locale glyph lies above
+    ``MAX_MINIGAME_LOCALE_GLYPH`` (it would not be copied into the SMINI fonts).
     """
-    cm = dict(INSPECTION_DEFAULT_CHARMAP)
-    gm_p = Path(glyph_map_path) if glyph_map_path is not None else GLYPH_MAP_PATH
-    if gm_p.is_file():
-        try:
-            gm_data = json.loads(gm_p.read_text(encoding="utf-8"))
-            for item in gm_data.get("characters", []):
-                cm[item["text"]] = int(item["glyph"], 16)
-        except Exception:
-            pass
-    cm.update(AUTHORITATIVE_CYRILLIC_CHARMAP)
+    cm = _load_vram_charmap(glyph_map_path)
+    too_high = {ch: g for ch, g in cm.items() if ("\u0400" <= ch <= "\u04ff" or ch in "«»—“„…/()~") and g > MAX_MINIGAME_LOCALE_GLYPH}
+    if too_high:
+        listing = ", ".join(f"{ch!r}=0x{g:04X}" for ch, g in sorted(too_high.items(), key=lambda kv: kv[1]))
+        raise ValueError(
+            "locale glyphs above 0x%04X are not mirrored into the SMINI minigame fonts: %s"
+            % (MAX_MINIGAME_LOCALE_GLYPH, listing)
+        )
     cm[" "] = 0x007D
     return cm
 
@@ -570,7 +501,7 @@ SMINI_PROTECTED_GLYPHS = {
 
 # Bank 0 glyph IDs to extract and inject into minigame font TIMs:
 # Cyrillic letters and symbols 0x0004..0x0056 plus space 0x007D and all other Bank 0 glyphs in DEFAULT_CHARMAP,
-# strictly excluding the Latin collision range 0x0057..0x0076 (ASCII letters k..z and Katakana) so controller icons
+# strictly excluding the Latin collision range 0x0057..0x0077 (ASCII letters k..z, Katakana and ←) so controller icons
 # in SMINI.UNT are never clobbered.
 MINIGAME_FONT_GLYPH_IDS = tuple(
     sorted(
@@ -579,7 +510,7 @@ MINIGAME_FONT_GLYPH_IDS = tuple(
             + [
                 gid
                 for gid in DEFAULT_CHARMAP.values()
-                if gid < 256 and gid not in range(0x0057, 0x0077)
+                if gid < 256 and gid not in range(0x0057, 0x0078)
             ]
         )
     )

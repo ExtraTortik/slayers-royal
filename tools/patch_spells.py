@@ -192,8 +192,13 @@ def patch_spell_menu_in_entry_007(
             f"0x{mips_code[0]:08X}, 0x{mips_code[1]:08X}"
         )
 
-    payload = clean_bytes if clean_bytes is not None else ENTRY_007_RU_SPELL_MENU_BYTES
-    ptrs = pointer_bytes if pointer_bytes is not None else (ENTRY_007_RU_POINTER_BYTES if clean_bytes is None else None)
+    # The in-battle spell list is drawn by an 8-bit renderer bound to the
+    # original Bank-0 tiles of font 0x142; Cyrillic cannot be displayed there
+    # (hand_off §5.28).  Always restore the verified English bytes and leave
+    # the pointer table alone.  ENTRY_007_RU_* are kept only for --verify to
+    # recognise (and reject) images built by the earlier, broken variant.
+    payload = clean_bytes if clean_bytes is not None else ENTRY_007_CLEAN_SPELL_MENU_BYTES
+    ptrs = pointer_bytes
 
     if len(payload) != ENTRY_007_SPELL_MENU_SIZE:
         raise ValueError(f"Spell menu payload size mismatch: {len(payload)} != {ENTRY_007_SPELL_MENU_SIZE}")
@@ -444,7 +449,12 @@ def verify_spells_on_disc(
 
     # Verify Entry 0x007 spell menu (0x06F2CC..0x06F4D8) matches clean baseline
     menu_bytes = bytes(e7_bytes[ENTRY_007_SPELL_MENU_START : ENTRY_007_SPELL_MENU_START + ENTRY_007_SPELL_MENU_SIZE])
-    if menu_bytes == ENTRY_007_RU_SPELL_MENU_BYTES or menu_bytes == ENTRY_007_CLEAN_SPELL_MENU_BYTES:
+    if menu_bytes == ENTRY_007_RU_SPELL_MENU_BYTES:
+        raise AssertionError(
+            "Entry 0x007 spell list holds the Cyrillic Bank-0 encoding, which the 8-bit "
+            "in-battle renderer displays as garbage; rebuild (patch_spells restores the English bytes)"
+        )
+    if menu_bytes == ENTRY_007_CLEAN_SPELL_MENU_BYTES:
         results["entry_007_menu_valid"] = sum(len(ids) for ids in SECTION_SPELL_IDS)
     else:
         results["errors"].append(
@@ -500,7 +510,7 @@ def patch_spells(
     orig_e7 = bytearray(read_extent(work_bin, prog_lba_e7 + e7_start, e7_count * 2048))
     current_menu_bytes = bytes(orig_e7[ENTRY_007_SPELL_MENU_START : ENTRY_007_SPELL_MENU_START + ENTRY_007_SPELL_MENU_SIZE])
     current_ptrs = bytes(orig_e7[ENTRY_007_POINTER_TABLE_START : ENTRY_007_POINTER_TABLE_START + ENTRY_007_POINTER_TABLE_SIZE])
-    need_e7_write = (current_menu_bytes != ENTRY_007_RU_SPELL_MENU_BYTES or current_ptrs != ENTRY_007_RU_POINTER_BYTES)
+    need_e7_write = current_menu_bytes != ENTRY_007_CLEAN_SPELL_MENU_BYTES
     if not need_e7_write and not dry_run:
         # Verify EDC/ECC across all 745 sectors of Entry 0x007
         checksums = CdChecksums()
@@ -519,16 +529,7 @@ def patch_spells(
         if not dry_run:
             replace_extent_in_place(work_bin, prog_lba_e7 + e7_start, bytes(patched_e7))
 
-    # 3. Ensure Entry 0x142 combat font contains 8x10 Cyrillic glyphs for spell menu
-    prog_lba_e142, e142_start, e142_count = get_prog_unt_entry_extent(work_bin, ENTRY_COMBAT_FONT)
-    e142_raw = read_extent(work_bin, prog_lba_e142 + e142_start, e142_count * 2048)
-    tim_dec, _ = unt_lz.decompress(e142_raw)
-    from tools.patch_spell_names import patch_tim_with_cyrillic
-    patched_tim = patch_tim_with_cyrillic(tim_dec)
-    if patched_tim != tim_dec:
-        comp_tim = unt_lz.compress(bytes(patched_tim)).ljust(e142_count * 2048, b"\x00")
-        if not dry_run:
-            replace_extent_in_place(work_bin, prog_lba_e142 + e142_start, comp_tim)
+    # Font 0x142 Bank 0 is never modified (see patch_combat_font.apply_combat_font_patches).
 
     prog_lba, first_offset, sector_offsets = get_prog_unt_spells_extent(work_bin)
     # Check contiguity of 119 spells

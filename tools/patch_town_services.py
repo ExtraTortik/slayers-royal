@@ -63,21 +63,18 @@ GLYPH_MAP_PATH = REPO_ROOT / "patch_repo" / "localization-work" / "ru" / "build"
 
 
 def build_authoritative_vram_charmap(glyph_map_path: Path | str | None = None) -> dict[str, int]:
-    """Build authoritative charmap synchronized with PROG.UNT 0x03A runtime font and glyph_map.json.
+    """Charmap for the runtime font: English base cells + the live locale allocation.
 
-    Starts from base ASCII symbols (e.g. '/' = 0x0004) and overlays the exact glyph_map.json entries:
-    'Ё' = 0x0006, 'А' = 0x0007, 'Ч' = 0x001F, 'Ш' = 0x0020, 'Щ' = 0x0021, 'а' = 0x0028,
-    'ж' = 0x002E, 'н' = 0x0036, 'о' = 0x0037, 'т' = 0x003C, 'у' = 0x003D, '?' = 0x00A7, ' ' = 0x007D.
+    Locale glyph IDs (Cyrillic, quotes, dashes, '/', ...) are allocated by the
+    toolkit at story-build time and are read from glyph_map.json or the
+    committed snapshot via :mod:`tools.vram_charmap`; a missing or drifted map
+    raises instead of silently falling back to stale IDs.
     """
-    cm = dict(BASE_CHARMAP)
-    gm_p = Path(glyph_map_path) if glyph_map_path is not None else GLYPH_MAP_PATH
-    if gm_p.is_file():
-        try:
-            data = json.loads(gm_p.read_text(encoding="utf-8"))
-            for item in data.get("characters", []):
-                cm[item["text"]] = int(item["glyph"], 16)
-        except Exception:
-            pass
+    try:
+        from tools.vram_charmap import load_vram_charmap
+    except ImportError:  # executed as a script from tools/
+        from vram_charmap import load_vram_charmap  # type: ignore
+    cm = load_vram_charmap(glyph_map_path)
     cm[" "] = 0x007D
     return cm
 

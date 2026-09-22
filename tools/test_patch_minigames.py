@@ -850,23 +850,28 @@ class TestMinigamesPatching(unittest.TestCase):
         self.assertEqual(tile_a, dummy_tile)
 
     def test_authoritative_charmap_exact_mappings(self):
-        """Verify exact character mapping without +1 off-by-one shift."""
+        """The minigame charmap must equal the toolkit glyph map, never a literal table.
+
+        Glyph IDs are allocated dynamically per story build (tools/vram_charmap.py),
+        so this test checks structure and agreement with the snapshot rather than
+        fixed numbers.
+        """
+        from tools.vram_charmap import load_glyph_map
         cm = build_minigames_charmap()
-        # Cyrillic uppercase
-        self.assertEqual(cm["Ё"], 0x0006)
-        self.assertEqual(cm["А"], 0x0007)
-        self.assertEqual(cm["Б"], 0x0008)
-        self.assertEqual(cm["Я"], 0x0027)
+        glyph_map = load_glyph_map()
+        for ch, glyph in glyph_map.items():
+            self.assertEqual(cm[ch], glyph, ch)
+        # Toolkit allocation order: ascending by code point (cells owned by the
+        # English release are skipped, so IDs are increasing but not consecutive)
+        upper = "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+        for prev, cur in zip(upper, upper[1:]):
+            self.assertLess(cm[prev], cm[cur], cur)
+        self.assertLess(cm["Ё"], cm["А"])
+        self.assertLess(cm["«"], cm["Ё"])
+        self.assertLess(cm["»"], cm["Ё"])
+        self.assertLessEqual(max(cm[c] for c in upper + upper.lower() + "ё«»—…"), 0x0056)
 
-        # Cyrillic lowercase
-        self.assertEqual(cm["а"], 0x0028)
-        self.assertEqual(cm["б"], 0x0029)
-        self.assertEqual(cm["я"], 0x004E)
-        self.assertEqual(cm["ё"], 0x0050)
-
-        # Quotes & Typographic punctuation
-        self.assertEqual(cm["«"], 0x0004)
-        self.assertEqual(cm["»"], 0x0005)
+        # English base cells are static
         self.assertEqual(cm[" "], 0x007D)
         self.assertEqual(cm["."], 0x00A2)
         self.assertEqual(cm[","], 0x00A1)
@@ -874,23 +879,15 @@ class TestMinigamesPatching(unittest.TestCase):
         self.assertEqual(cm["?"], 0x00A7)
         self.assertEqual(cm[":"], 0x00BC)
         self.assertEqual(cm["-"], 0x00A4)
-
-        # Digits 0..9 = 0x00A8..0x00B1
         for i, d in enumerate("0123456789"):
             self.assertEqual(cm[d], 0x00A8 + i)
 
         # Reverse charmap priority
         rev = get_reverse_charmap(cm)
-        self.assertEqual(rev[0x0004], "«")
-        self.assertEqual(rev[0x0005], "»")
-        self.assertEqual(rev[0x0006], "Ё")
-        self.assertEqual(rev[0x0007], "А")
-        self.assertEqual(rev[0x0008], "Б")
-        self.assertEqual(rev[0x0027], "Я")
-        self.assertEqual(rev[0x0028], "а")
-        self.assertEqual(rev[0x0029], "б")
-        self.assertEqual(rev[0x004E], "я")
-        self.assertEqual(rev[0x0050], "ё")
+        self.assertEqual(rev[cm["«"]], "«")
+        self.assertEqual(rev[cm["»"]], "»")
+        for ch in "ЁАБЯаяё":
+            self.assertEqual(rev[cm[ch]], ch)
 
     def test_quiz_rules_exact_text_roundtrip(self):
         """Verify Quiz rules decode cleanly without shift, including «Рубак» quotes."""

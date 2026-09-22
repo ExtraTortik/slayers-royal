@@ -156,163 +156,24 @@ def extract_prog_from_path(path: str | Path) -> bytes:
     return p.read_bytes()
 
 
-# Canonical Russian charmap mapping characters to 16-bit glyph IDs
-# Derived from patch_repo glyph allocation for Slayers Royal PS1 Russian localization.
-DEFAULT_CHARMAP: dict[str, int] = {
-    # English / ASCII base glyphs
-    " ": 0x007D,
-    "!": 0x00A6,
-    '"': 0x00A3,
-    "'": 0x031B,
-    "(": 0x0001,
-    ")": 0x0002,
-    "*": 0x0003,
-    ",": 0x00A1,
-    "-": 0x00A4,
-    ".": 0x00A2,
-    "/": 0x0004,
-    ":": 0x00BC,
-    ";": 0x0005,
-    "?": 0x00A7,
-    "=": 0x0006,
-    "0": 0x00A8,
-    "1": 0x00A9,
-    "2": 0x00AA,
-    "3": 0x00AB,
-    "4": 0x00AC,
-    "5": 0x00AD,
-    "6": 0x00AE,
-    "7": 0x00AF,
-    "8": 0x00B0,
-    "9": 0x00B1,
-    "A": 0x00BE,
-    "B": 0x014C,
-    "C": 0x0128,
-    "D": 0x00BF,
-    "E": 0x00B6,
-    "F": 0x014D,
-    "G": 0x0088,
-    "H": 0x0091,
-    "I": 0x0081,
-    "J": 0x014F,
-    "K": 0x0192,
-    "L": 0x0082,
-    "M": 0x0148,
-    "N": 0x0086,
-    "O": 0x00BB,
-    "P": 0x019B,
-    "Q": 0x01A7,
-    "R": 0x0099,
-    "S": 0x0090,
-    "T": 0x008D,
-    "U": 0x01D2,
-    "V": 0x00BD,
-    "W": 0x008E,
-    "X": 0x01FD,
-    "Y": 0x009A,
-    "Z": 0x0209,
-    "a": 0x0017,
-    "b": 0x0031,
-    "c": 0x003A,
-    "d": 0x0040,
-    "e": 0x0048,
-    "f": 0x004A,
-    "g": 0x004B,
-    "h": 0x004D,
-    "i": 0x004F,
-    "j": 0x0055,
-    "k": 0x005F,
-    "l": 0x0060,
-    "m": 0x0062,
-    "n": 0x0063,
-    "o": 0x0067,
-    "p": 0x0068,
-    "q": 0x0069,
-    "r": 0x006B,
-    "s": 0x006D,
-    "t": 0x006E,
-    "u": 0x006F,
-    "v": 0x0070,
-    "w": 0x0071,
-    "x": 0x0074,
-    "y": 0x0075,
-    "z": 0x0076,
-    # Russian Cyrillic Glyphs (Uppercase)
-    "А": 0x0009,
-    "Б": 0x000A,
-    "В": 0x000B,
-    "Г": 0x000C,
-    "Д": 0x000D,
-    "Е": 0x000E,
-    "Ё": 0x0008,
-    "Ж": 0x000F,
-    "З": 0x0010,
-    "И": 0x0011,
-    "Й": 0x0012,
-    "К": 0x0013,
-    "Л": 0x0014,
-    "М": 0x0015,
-    "Н": 0x0016,
-    "О": 0x0018,
-    "П": 0x0019,
-    "Р": 0x001A,
-    "С": 0x001B,
-    "Т": 0x001C,
-    "У": 0x001D,
-    "Ф": 0x001E,
-    "Х": 0x001F,
-    "Ц": 0x0020,
-    "Ч": 0x0021,
-    "Ш": 0x0022,
-    "Щ": 0x0023,
-    "Ъ": 0x0024,
-    "Ы": 0x0025,
-    "Ь": 0x0026,
-    "Э": 0x0027,
-    "Ю": 0x0028,
-    "Я": 0x0029,
-    # Russian Cyrillic Glyphs (Lowercase)
-    "а": 0x002A,
-    "б": 0x002B,
-    "в": 0x002C,
-    "г": 0x002D,
-    "д": 0x002E,
-    "е": 0x002F,
-    "ё": 0x0052,
-    "ж": 0x0030,
-    "з": 0x0032,
-    "и": 0x0033,
-    "й": 0x0034,
-    "к": 0x0035,
-    "л": 0x0036,
-    "м": 0x0037,
-    "н": 0x0038,
-    "о": 0x0039,
-    "п": 0x003B,
-    "р": 0x003C,
-    "с": 0x003D,
-    "т": 0x003E,
-    "у": 0x003F,
-    "ф": 0x0041,
-    "х": 0x0042,
-    "ц": 0x0043,
-    "ч": 0x0044,
-    "ш": 0x0045,
-    "щ": 0x0046,
-    "ъ": 0x0047,
-    "ы": 0x0049,
-    "ь": 0x004C,
-    "э": 0x004E,
-    "ю": 0x0050,
-    "я": 0x0051,
-    # Typographic Punctuation
-    "«": 0x0053,
-    "»": 0x0054,
-    "—": 0x0056,
-    "…": 0x0057,
-    "„": 0x0058,
-    "“": 0x0059,
-}
+# Runtime-font charmap.  NEVER hard-code Cyrillic glyph IDs here: the toolkit
+# allocates them dynamically at story-build time (see tools/vram_charmap.py).
+# DEFAULT_CHARMAP is resolved from the live glyph_map.json / committed snapshot
+# at import time and fails loudly when neither is trustworthy.
+try:
+    from tools.vram_charmap import (
+        load_vram_charmap as _load_vram_charmap,
+        assert_encodable as _assert_encodable,
+        GlyphMapError,
+    )
+except ImportError:  # executed as a script from tools/
+    from vram_charmap import (  # type: ignore
+        load_vram_charmap as _load_vram_charmap,
+        assert_encodable as _assert_encodable,
+        GlyphMapError,
+    )
+
+DEFAULT_CHARMAP: dict[str, int] = _load_vram_charmap()
 
 
 @dataclass(frozen=True)
@@ -360,33 +221,24 @@ class InspectionPatchResult:
 
 
 def load_charmap(path: str | Path | None = None) -> dict[str, int]:
-    """Load character-to-glyph mapping dictionary from JSON, or return DEFAULT_CHARMAP."""
+    """Return the runtime-font charmap.
+
+    ``path`` may point at a toolkit ``glyph_map.json`` (``{"characters": [...]}``)
+    or at a flat ``{char: "0x...."}`` JSON.  Without ``path`` the map comes from
+    :mod:`tools.vram_charmap` (live build output or the committed snapshot),
+    which raises instead of silently falling back to stale IDs.
+    """
     if path is not None:
         p = Path(path)
-        if p.is_file():
-            data = json.loads(p.read_text(encoding="utf-8"))
-            if "characters" in data:
-                cm = dict(DEFAULT_CHARMAP)
-                for item in data["characters"]:
-                    cm[item["text"]] = int(item["glyph"], 16)
-                return cm
-            elif isinstance(data, dict):
-                return {k: int(v, 16) if isinstance(v, str) and v.startswith("0x") else int(v) for k, v in data.items()}
-
-    # Try default workspace path
-    default_build_map = PATCH_REPO / "localization-work" / "ru" / "build" / "glyph_map.json"
-    if default_build_map.is_file():
-        try:
-            data = json.loads(default_build_map.read_text(encoding="utf-8"))
-            if "characters" in data:
-                cm = dict(DEFAULT_CHARMAP)
-                for item in data["characters"]:
-                    cm[item["text"]] = int(item["glyph"], 16)
-                return cm
-        except Exception:
-            pass
-
-    return dict(DEFAULT_CHARMAP)
+        if not p.is_file():
+            raise FileNotFoundError(f"charmap file not found: {p}")
+        data = json.loads(p.read_text(encoding="utf-8"))
+        if "characters" in data:
+            return _load_vram_charmap(p)
+        if isinstance(data, dict):
+            return {k: int(v, 16) if isinstance(v, str) and v.startswith("0x") else int(v) for k, v in data.items()}
+        raise ValueError(f"unrecognised charmap format: {p}")
+    return _load_vram_charmap()
 
 
 def encode_string(
@@ -701,10 +553,15 @@ def rebuild_inspection_entry(
             rebuilt[rn_offset + len(rn_enc) : next_hdr] = b"\x00" * (next_hdr - (rn_offset + len(rn_enc)))
         else:
             new_rn_offset = (new_data_end + 3) & ~3
-            if new_rn_offset + len(rn_enc) <= allocated:
-                rebuilt[new_rn_offset : new_rn_offset + len(rn_enc)] = rn_enc
-                struct.pack_into(">I", rebuilt, HDR_ROOM_NAME_PTR, RAM_BASE + new_rn_offset)
-                new_data_end = new_rn_offset + len(rn_enc)
+            if new_rn_offset + len(rn_enc) > allocated:
+                raise ValueError(
+                    f"Entry {entry_index:#05x}: room name {room_name!r} does not fit in place "
+                    f"({len(rn_enc)} bytes > {next_hdr - rn_offset}) and relocation exceeds the "
+                    f"allocated entry size ({new_rn_offset + len(rn_enc)} > {allocated}); shorten it"
+                )
+            rebuilt[new_rn_offset : new_rn_offset + len(rn_enc)] = rn_enc
+            struct.pack_into(">I", rebuilt, HDR_ROOM_NAME_PTR, RAM_BASE + new_rn_offset)
+            new_data_end = new_rn_offset + len(rn_enc)
     result = InspectionPatchResult(
         entry_index=entry_index,
         allocated_size=allocated,

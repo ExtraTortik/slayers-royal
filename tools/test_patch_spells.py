@@ -380,14 +380,15 @@ class TestEntry007Invariants:
         assert patched[OFFSET_TABLE2_START:OFFSET_TABLE2_START + 148] == b"\x33" * 148
         assert patched[OFFSET_TABLE3_START:OFFSET_TABLE3_START + 200] == b"\x44" * 200
 
-        # 5. Spell menu region is patched and exactly 524 bytes matching Russian translation
+        # 5. Spell menu region holds the verified English bytes (8-bit Bank-0 renderer, hand_off §5.28)
         menu_bytes = patched[ENTRY_007_SPELL_MENU_START:ENTRY_007_SPELL_MENU_END]
         assert len(menu_bytes) == ENTRY_007_SPELL_MENU_SIZE
-        assert menu_bytes == ENTRY_007_RU_SPELL_MENU_BYTES
+        assert menu_bytes == ENTRY_007_CLEAN_SPELL_MENU_BYTES
+        assert menu_bytes != ENTRY_007_RU_SPELL_MENU_BYTES
 
-        # 6. Pointer table region is patched matching Russian pointer table
+        # 6. Pointer table region is left untouched
         ptr_bytes = patched[ENTRY_007_POINTER_TABLE_START:ENTRY_007_POINTER_TABLE_START + len(ENTRY_007_RU_POINTER_BYTES)]
-        assert ptr_bytes == ENTRY_007_RU_POINTER_BYTES
+        assert ptr_bytes == e7[ENTRY_007_POINTER_TABLE_START:ENTRY_007_POINTER_TABLE_START + len(ENTRY_007_RU_POINTER_BYTES)]
 
         # 7. Explicit clean English patch works as well
         patched_en = patch_spell_menu_in_entry_007(e7, clean_bytes=ENTRY_007_CLEAN_SPELL_MENU_BYTES)

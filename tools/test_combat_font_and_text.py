@@ -53,14 +53,11 @@ from tools.patch_combat import (
     patch_combat_overlay_entry,
     patch_combat_disc_image,
     verify_combat_patch,
-    OFFSET_PICK_UNIT,
-    OFFSET_CUE_092,
-    PTR_OFFSET_PICK_UNIT,
-    COMBAT_BUTTON_SLOTS,
+    check_pointer_tables,
     OFFSET_COMBAT_INIT_EXIT,
-    OFFSET_COMBAT_HOOK,
-    COMBAT_HOOK_RAM,
-    build_combat_font_loader_hook,
+    OFFSET_UI_POINTERS,
+    OFFSET_CUE_TABLE,
+    DESCRIPTOR_TABLE_ORIGINAL,
 )
 from tools.patch_inspection import parse_iso_dir, read_sector, read_unt_index
 from localization.disc import read_extent
@@ -262,41 +259,13 @@ class TestCombatCharmap:
         for ch in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz":
             assert ch in charmap
 
-    def test_canonical_codes(self):
+    def test_cyrillic_block_lives_in_battle_font(self):
+        """Battle text is rendered with font 0x142: Cyrillic occupies 0x0150..0x0191."""
         charmap = build_combat_charmap()
-        # Cyrillic uppercase: 0x0009..0x0029, Ё: 0x0008
-        assert charmap["Ё"] == 0x0008
-        assert charmap["А"] == 0x0009
-        assert charmap["Б"] == 0x000A
-        assert charmap["В"] == 0x000B
-        assert charmap["Г"] == 0x000C
-        assert charmap["Д"] == 0x000D
-        assert charmap["Е"] == 0x000E
-        assert charmap["Т"] == 0x001C
-        assert charmap["Я"] == 0x0029
-
-        # Cyrillic lowercase: 0x002A..0x0051, ё: 0x0052
-        assert charmap["а"] == 0x002A
-        assert charmap["б"] == 0x002B
-        assert charmap["у"] == 0x003F
-        assert charmap["ф"] == 0x0041
-        assert charmap["ь"] == 0x004C
-        assert charmap["я"] == 0x0051
-        assert charmap["ё"] == 0x0052
-
-        # Space and punctuation
-        assert charmap[" "] == 0x007D
-        assert charmap["!"] == 0x00A6
-        assert charmap["?"] == 0x00A7
-        assert charmap[","] == 0x00A1
-        assert charmap["."] == 0x00A2
-        assert charmap["-"] == 0x00A4
-        assert charmap[":"] == 0x00BC
-
-        # Forbid ANY Russian Cyrillic letter >= 0x0100 (kanji range)
         for ch in CYRILLIC_UPPER + CYRILLIC_LOWER:
-            assert 0x0008 <= charmap[ch] <= 0x0052, f"Letter {ch!r} out of range: 0x{charmap[ch]:04X}"
-            assert charmap[ch] < 0x0100, f"Letter {ch!r} has forbidden kanji code 0x{charmap[ch]:04X}"
+            assert 0x0150 <= charmap[ch] <= 0x0191, f"Letter {ch!r} out of range: 0x{charmap[ch]:04X}"
+        assert charmap["А"] == 0x0150
+        assert charmap["а"] == 0x0171
 
     def test_encode_text_canonical_charmap(self):
         enc = encode_text("ВЫБЕРИТЕ ЮНИТ")
@@ -306,10 +275,9 @@ class TestCombatCharmap:
 
     def test_no_ascii_overlap_with_cyrillic(self):
         charmap = build_combat_charmap()
-        # All Cyrillic characters are strictly in 0x0008..0x0052
+        latin = {charmap[c] for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"}
         for ch in CYRILLIC_UPPER + CYRILLIC_LOWER:
-            assert charmap[ch] < 0x0100
-            assert 0x0008 <= charmap[ch] <= 0x0052
+            assert charmap[ch] not in latin
 
 class TestCombatTextCatalog:
     """Verification of translations/combat_ru.json dataset."""
@@ -346,7 +314,8 @@ class TestCombatTextCatalog:
         pick_unit = next(s for s in sys_strings if s["id"] == "PICK_UNIT")
         assert pick_unit["text_en"] == "PICK UNIT"
         assert pick_unit["offset"] == "0x05F398"
-        assert "ВЫБЕРИТЕ" in pick_unit["text_ru"].upper()
+        assert "ВЫБЕРИТЕ" in pick_unit["text_ru_full"].upper()
+        assert [e["table2_index"] for e in sys_strings] == list(range(37))
 
         # Check START details
         start_cmd = next(s for s in sys_strings if s["id"] == "START")
@@ -405,21 +374,9 @@ class TestCombatPatcher:
 
     def test_verify_combat_patch_ru_bin(self, sample_disc_ru: Path):
         report = verify_combat_patch(sample_disc_ru, catalog_path=CATALOG_PATH)
-        assert report["verified"] is True
-        assert report["combat_font_entry"] == "0x142"
-        assert report["combat_overlay_entry"] == "0x007"
-        assert report["pick_unit_text"] in ("PICK UNIT", "ВЫБЕРИТЕ ЮНИТ", "КТО ХОДИТ?", "ЗАЩИТА")
-        assert report["edc_ecc_verified_sectors"] == 768
+        assert report["problems"] == []
+        assert report["font_decompressed_bytes"] == 66080
 
-        # Check exit instruction is clean jr $ra (0x03E00008)
-        pvd_ru = read_sector(sample_disc_ru, 16)
-        root_lba_ru = struct.unpack_from("<I", pvd_ru, 156 + 2)[0]
-        root_size_ru = struct.unpack_from("<I", pvd_ru, 156 + 10)[0]
-        prog_lba_ru, _ = parse_iso_dir(sample_disc_ru, root_lba_ru, root_size_ru)["PROG.UNT"]
-        e007_ru = read_unt_index(read_extent(sample_disc_ru, prog_lba_ru, 2048))[0x007]
-        prog_007 = read_extent(sample_disc_ru, prog_lba_ru + e007_ru.start_sector, e007_ru.size)
-        exit_instr = struct.unpack_from("<I", prog_007, OFFSET_COMBAT_INIT_EXIT)[0]
-        assert exit_instr == 0x03E00008, f"Expected clean jr $ra (0x03E00008), got 0x{exit_instr:08X}"
     def test_in_memory_overlay_patch(self, sample_disc: Path):
         pvd = read_sector(sample_disc, 16)
         root_lba = struct.unpack_from("<I", pvd, 156 + 2)[0]
@@ -431,38 +388,27 @@ class TestCombatPatcher:
         catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
         charmap = build_combat_charmap()
         rev_cm = build_reverse_charmap(charmap)
-
-        sys_cnt, dlg_cnt, ptrs_upd = patch_combat_overlay_entry(prog_archive, catalog, charmap)
-        assert sys_cnt == 37
-        assert dlg_cnt == 101
-        assert ptrs_upd >= 100
-
-        # Check entry 0x007 bytes in patched archive
         entries = read_unt_index(prog_archive)
         e007 = entries[7]
-        e007_data = prog_archive[e007.offset : e007.offset + e007.size]
+        before = bytes(prog_archive[e007.offset : e007.offset + e007.size])
 
-        # Check PICK_UNIT text at 0x05F398
-        w_pick = decode_16le_string(e007_data, OFFSET_PICK_UNIT, stop_at_page=False)
-        assert "".join(rev_cm.get(w, "") for w in w_pick) == "ВЫБЕРИТЕ ЮНИТ"
-        expected_pick_prefix = encode_text("ВЫБЕ", charmap)[:8]
-        assert e007_data[OFFSET_PICK_UNIT : OFFSET_PICK_UNIT + 8] == expected_pick_prefix
+        count = patch_combat_overlay_entry(prog_archive, catalog, charmap)
+        assert count == len(catalog["extra_combat_strings"])
+        e007_data = bytes(prog_archive[e007.offset : e007.offset + e007.size])
 
-        # Check pointer at 0x05F244
-        ptr_val = struct.unpack_from("<I", e007_data, PTR_OFFSET_PICK_UNIT)[0]
-        assert ptr_val == RAM_BASE + OFFSET_PICK_UNIT
+        # Auxiliary strings are written in place with the battle-font charmap
+        first = catalog["extra_combat_strings"][0]
+        words = decode_16le_string(e007_data, int(first["offset"], 16), stop_at_page=False)
+        assert "".join(rev_cm.get(w, "") for w in words) == first["text_ru"]
 
-        # Check Cue #92 at 0x06241C
-        spk_92 = struct.unpack_from("<H", e007_data, OFFSET_CUE_092)[0]
-        assert spk_92 == 0xD26A
-        w_92 = decode_16le_string(e007_data, OFFSET_CUE_092 + 2, stop_at_page=False)
-        text_92 = "".join(rev_cm.get(w, "") for w in w_92)
-        assert "Тьфу! Если бы ты пошла с нами" in text_92
+        # Pointer tables are never touched by this tool
+        assert e007_data[0x05F1FC:0x05F258] == DESCRIPTOR_TABLE_ORIGINAL
+        assert e007_data[OFFSET_UI_POINTERS:0x05F504] == before[OFFSET_UI_POINTERS:0x05F504]
+        assert e007_data[OFFSET_CUE_TABLE:0x062A10] == before[OFFSET_CUE_TABLE:0x062A10]
+        assert check_pointer_tables(e007_data) == []
 
-        # Check exit instruction is clean jr $ra; nop (0x03E00008, 0x00000000)
         exit_instr, exit_delay = struct.unpack_from("<II", e007_data, OFFSET_COMBAT_INIT_EXIT)
-        assert exit_instr == 0x03E00008, f"Expected clean jr $ra (0x03E00008), got 0x{exit_instr:08X}"
-        assert exit_delay == 0x00000000, f"Expected nop (0x00000000), got 0x{exit_delay:08X}"
+        assert (exit_instr, exit_delay) == (0x03E00008, 0x00000000)
 
     test_patch_combat_overlay_entry = test_in_memory_overlay_patch
 
@@ -476,8 +422,7 @@ class TestCombatPatcher:
         ]
         res = subprocess.run(cmd, capture_output=True, text=True)
         assert res.returncode == 0
-        assert "[✓] Combat mode verified successfully!" in res.stdout
-        assert "EDC/ECC Checksums:    Valid Mode 2 Form 1 on verified sectors" in res.stdout
+        assert "[✓] Combat verification passed" in res.stdout
     def test_combat_reverted_to_english_baseline(self, sample_disc_ru: Path):
         """Verify that slayers_royal_ru.bin preserves clean English combat baseline."""
         pvd_ru = read_sector(sample_disc_ru, 16)
@@ -491,29 +436,20 @@ class TestCombatPatcher:
         exit_instr = struct.unpack_from("<I", prog_007, OFFSET_COMBAT_INIT_EXIT)[0]
         assert exit_instr == 0x03E00008, f"Expected clean jr $ra (0x03E00008), got 0x{exit_instr:08X}"
 
-        # 2. Pointer at 0x05F244 points to PICK UNIT at 0x05F398
-        ptr_pick = struct.unpack_from("<I", prog_007, PTR_OFFSET_PICK_UNIT)[0]
-        assert ptr_pick == RAM_BASE + OFFSET_PICK_UNIT
+        # 2. The descriptor pointer table is never rewritten
+        assert prog_007[0x05F1FC:0x05F258] == DESCRIPTOR_TABLE_ORIGINAL
 
         # 3. Entry 0x007 matches English base disc bit-for-bit outside dialogue stream if English baseline
         p_en = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
         if p_en.is_file():
-            words_pick = decode_16le_string(prog_007, OFFSET_PICK_UNIT, stop_at_page=False)
-            is_english = (words_pick == [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF])
+            words_start = decode_16le_string(prog_007, 0x05F278, stop_at_page=False)
+            is_english = (words_start == [0x0090, 0x008D, 0x00BE, 0x0099, 0x008D, 0x00FF])
             if is_english:
                 from tools.patch_combat import get_en_combat_overlay_bytes
                 raw_en = get_en_combat_overlay_bytes(p_en)
                 assert bytes(prog_007[:0x05F278]) == raw_en[:0x05F278], "Pre-system strings region must be bit-exact with sr_patched.bin!"
                 assert bytes(prog_007[0x05F470:0x05F810]) == raw_en[0x05F470:0x05F810], "Table 2 and pre-dialogue region must be bit-exact with sr_patched.bin!"
                 assert bytes(prog_007[0x06286C:]) == raw_en[0x06286C:], "Post-dialogue region must be bit-exact with sr_patched.bin!"
-    def test_hook_code_generator(self):
-        """Verify the combat font VRAM loader hook generator produces valid MIPS bytecode."""
-        hook = build_combat_font_loader_hook()
-        assert len(hook) > 0
-        assert len(hook) % 4 == 0
-        hook_words = struct.unpack_from(f"<{len(hook)//4}I", hook, 0)
-        jal_targets = [((w & 0x03FFFFFF) << 2) | 0x80000000 for w in hook_words if (w >> 26) == 0x03]
-        assert jal_targets == [0x800118CC, 0x80012ACC, 0x80011A94]
     def test_entry_142_patched_in_ru_bin(self, sample_disc: Path, sample_disc_ru: Path):
         pvd_sr = read_sector(sample_disc, 16)
         pvd_ru = read_sector(sample_disc_ru, 16)
@@ -562,7 +498,7 @@ class TestCombatPatcher:
         else:
             expected_p = render_cyrillic_glyph_2bpp("П", font_path)
             assert tile_0160 == expected_p, "Tile 0x0160 in ru.bin must unpack to Cyrillic 'П'"
-    def test_english_buttons_in_ru_bin(self, sample_disc_ru: Path):
+    def test_ui_labels_resolve_through_pointer_table(self, sample_disc_ru: Path):
         pvd_ru = read_sector(sample_disc_ru, 16)
         root_lba_ru = struct.unpack_from("<I", pvd_ru, 156 + 2)[0]
         root_size_ru = struct.unpack_from("<I", pvd_ru, 156 + 10)[0]
@@ -570,55 +506,30 @@ class TestCombatPatcher:
         e007_ru = read_unt_index(read_extent(sample_disc_ru, prog_lba_ru, 2048))[0x007]
         prog_007 = read_extent(sample_disc_ru, prog_lba_ru + e007_ru.start_sector, e007_ru.size)
 
-        # Check button 0x05F278: 'START'
-        words_start = decode_16le_string(prog_007, 0x05F278, stop_at_page=False)
+        # UI pointer 0 (START) must resolve to either English 'START' or Russian 'СТАРТ'
+        target = struct.unpack_from("<I", prog_007, OFFSET_UI_POINTERS)[0] - RAM_BASE
+        words_start = decode_16le_string(prog_007, target, stop_at_page=False)
         assert words_start in (
             [0x0090, 0x008D, 0x00BE, 0x0099, 0x008D, 0x00FF],  # S T A R T
             [0x0162, 0x0163, 0x0150, 0x0161, 0x0163, 0x00FF],  # С Т А Р Т
         )
-
-        # Check button 0x05F292 / 0x05F298: 'ATTACK'
-        words_attack_en = decode_16le_string(prog_007, 0x05F292, stop_at_page=False)
-        words_attack_ru = decode_16le_string(prog_007, 0x05F298, stop_at_page=False)
-        assert (
-            words_attack_en == [0x00BE, 0x008D, 0x008D, 0x00BE, 0x0128, 0x0192, 0x00FF]  # A T T A C K
-            or words_attack_ru == [0x0150, 0x0163, 0x0150, 0x015B, 0x0150, 0x00FF]  # А Т А К А
-        )
-
-        # Check string 0x05F398: 'PICK' or Russian 'КТО ХОДИТ?'
-        words_pick = decode_16le_string(prog_007, 0x05F398, stop_at_page=False)
-        assert words_pick in (
-            [0x014D, 0x00B6, 0x0086, 0x00BF, 0x00FF],  # P I C K
-            [0x015B, 0x0163, 0x015F, 0x007D, 0x0166, 0x015F, 0x0154, 0x0159, 0x0163, 0x00A7, 0x00FF],  # К Т О   Х О Д И Т ?
-            [0x016A, 0x0159, 0x0163, 0x0150, 0x00FF],  # Щ И Т А (from ЗАЩИТА at 0x05F394)
-        )
-        # Check pointer at 0x05F244 points to PICK UNIT (0x05F398)
-        ptr_val = struct.unpack_from("<I", prog_007, PTR_OFFSET_PICK_UNIT)[0]
-        assert ptr_val == RAM_BASE + OFFSET_PICK_UNIT
+        # Every UI pointer must land on a string start and every cue pointer on a speaker opcode
+        assert check_pointer_tables(prog_007) == []
 
     def test_dialogues_baseline_integrity(self, sample_disc_ru: Path):
-        """Verify that all dialogue cue pointers in 0x007 point to valid speaker opcodes."""
+        """Every dialogue cue pointer in 0x007 must point at a speaker opcode (base 0x8004E5B0)."""
         pvd_ru = read_sector(sample_disc_ru, 16)
         root_lba_ru = struct.unpack_from("<I", pvd_ru, 156 + 2)[0]
         root_size_ru = struct.unpack_from("<I", pvd_ru, 156 + 10)[0]
         prog_lba_ru, _ = parse_iso_dir(sample_disc_ru, root_lba_ru, root_size_ru)["PROG.UNT"]
         e007_ru = read_unt_index(read_extent(sample_disc_ru, prog_lba_ru, 2048))[0x007]
         prog_007 = read_extent(sample_disc_ru, prog_lba_ru + e007_ru.start_sector, e007_ru.size)
-
-        # Check Cue 92
-        from tools.patch_combat import TABLE3_CUE_OFFSETS
-        pos_92 = 0x06286C + 91 * 4
-        ram_92 = struct.unpack_from("<I", prog_007, pos_92)[0]
-        t_92 = ram_92 - RAM_BASE
-        spk_92 = struct.unpack_from("<H", prog_007, t_92)[0]
-        assert spk_92 in (0x0048, 0x0000, 0xD26A, 0x0171, 0x017D), f"Expected valid speaker opcode or padding for cue 92, got 0x{spk_92:04X}"
-
-        # Verify all Table 3 cue pointers point within bounds and have valid opcodes
-        for idx in range(len(TABLE3_CUE_OFFSETS)):
-            pos = 0x06286C + idx * 4
-            ram_p = struct.unpack_from("<I", prog_007, pos)[0]
+        assert RAM_BASE == 0x8004E5B0
+        for idx in range(105):
+            ram_p = struct.unpack_from("<I", prog_007, OFFSET_CUE_TABLE + idx * 4)[0]
             t = ram_p - RAM_BASE
-            assert 0 <= t < len(prog_007) - 2, f"Cue {idx} pointer 0x{ram_p:08X} out of bounds"
+            assert 0x05F810 <= t < 0x06286A, f"Cue {idx} pointer 0x{ram_p:08X} outside the dialogue stream"
+            assert (struct.unpack_from("<H", prog_007, t)[0] >> 8) in (0x91, 0xD1, 0xD2)
 
 
 class TestCombatScaffolding:

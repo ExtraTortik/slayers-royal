@@ -103,53 +103,74 @@ OFFSET_SYSTEM_BUTTONS_END = 0x05F470
 OFFSET_TABLE2_START = 0x05F470
 OFFSET_TABLE3_START = 0x06286C
 
-OFFSET_SYSTEM_COMMANDS_START = 0x05F278
-OFFSET_SYSTEM_COMMANDS_END = 0x05F398
-OFFSET_PROMPT_SLOTS_START = 0x05F394
-OFFSET_PROMPT_SLOTS_END = 0x05F46C
-# Backward compatibility aliases
-OFFSET_PROMPT_STREAM_START = 0x05F394
-OFFSET_PROMPT_STREAM_END = 0x05F470
-PROMPT_STREAM_MAX_BYTES = 220  # 0x05F470 - 0x05F394 = 220 bytes
-SYSTEM_COMMAND_SLOTS: list[tuple[int, str]] = [
-    (0x05F278, "СТАРТ"),      # START
-    (0x05F288, "ОПЦИИ"),      # CONFIG
-    (0x05F298, "АТАКА"),      # ATTACK
-    (0x05F2A8, "ОТВЕТ"),      # COUNTER
-    (0x05F2B8, "МАГИЯ"),      # SPELL
-    (0x05F2C8, "УДАР"),       # HIT
-    (0x05F2D8, "ТАРАН"),      # RAM
-    (0x05F2E8, "ХОД"),        # MOVE
-    (0x05F2F8, "ТАПОК"),      # SLIPPER
-    (0x05F308, "ХОХОТ"),      # LAUGH
-    (0x05F318, "ОТВЕТ"),      # COUNTER_ACT
-    (0x05F328, "УКЛОН"),      # EVADE
-    (0x05F338, "ПОБЕГ"),      # FLEE
-    (0x05F348, "ТЕРПЕТЬ"),    # ENDURE
-    (0x05F358, "ЗАЩИТА"),     # GUARD
-    (0x05F368, "БАРЬЕР"),     # WARD
-    (0x05F378, "МАГИЯ"),      # CAST
-    (0x05F388, "НАЗАД"),      # BACK
-]
+# ---------------------------------------------------------------------------
+# Battle UI labels / prompts (37 strings)
+#
+# The engine addresses them through the pointer table at 0x05F470 (37 pointers,
+# RAM base 0x8004E5B0).  The original strings are packed back to back in
+# 0x05F278..0x05F470 with no fixed slot size, so the Russian strings are packed
+# the same way and the pointer table is rewritten.  Texts come from
+# translations/combat_ru.json ("system_strings", in pointer-table order).
+# ---------------------------------------------------------------------------
+UI_POINTER_COUNT = 37
+UI_POINTER_BASE = 0x8004E5B0
+UI_OVERFLOW_START = 0x082400   # zero region of entry 0x007 (verified zero in JP and EN)
+UI_OVERFLOW_END = 0x083000
+UI_MAX_VISIBLE_CHARS = 13      # longest label the widest UI box was observed to hold
+DEFAULT_SYSTEM_CATALOG = REPO_ROOT / "translations" / "combat_ru.json"
 
-FIXED_PROMPT_SLOTS: list[tuple[int, int, str]] = [
-    (0x05F394, 14, "ЗАЩИТА"),
-    (0x05F3A2, 10, "АВТО"),
-    (0x05F3AC, 14, "РУЧНОЙ"),
-    (0x05F3BA, 20, "КТО ХОДИТ"),
-    (0x05F3CE, 20, "ДЕЙСТВИЕ"),
-    (0x05F3E2, 22, "МАГИЯ"),
-    (0x05F3F8, 18, "КУДА?"),
-    (0x05F40A, 16, "ЦЕЛЬ?"),
-    (0x05F41A, 12, "ЗОНА?"),
-    (0x05F426, 18, "ИДЕТ БОЙ"),
-    (0x05F438, 12, "ЖДИТЕ"),
-    (0x05F444, 20, "РЕЖИМ"),
-    (0x05F458, 10, "СЕЙВ"),
-    (0x05F462, 10, "ЛОАД"),
-]
 
-SYSTEM_PROMPT_STRINGS: list[str] = [text for _, _, text in FIXED_PROMPT_SLOTS]
+def load_system_strings(catalog_path: Path | None = None) -> list[str]:
+    """Return the 37 UI strings in pointer-table order from combat_ru.json."""
+    path = catalog_path if catalog_path is not None else DEFAULT_SYSTEM_CATALOG
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    entries = doc.get("system_strings", [])
+    if len(entries) != UI_POINTER_COUNT:
+        raise ValueError(f"{path}: expected {UI_POINTER_COUNT} system_strings, found {len(entries)}")
+    ordered = sorted(entries, key=lambda e: int(e.get("table2_index", entries.index(e))))
+    return [str(e["text_ru"]) for e in ordered]
+
+
+def pack_ui_strings(
+    texts: list[str],
+    charmap: Mapping[str, int] | None = None,
+) -> tuple[bytes, bytes, list[int]]:
+    """Pack the UI strings and build the pointer table.
+
+    Returns ``(region_bytes, overflow_bytes, targets)`` where ``region_bytes``
+    fills 0x05F278..0x05F470 exactly, ``overflow_bytes`` goes to
+    ``UI_OVERFLOW_START`` when the region is full, and ``targets`` are the 37
+    entry offsets the pointer table must reference.  Identical strings share
+    one record.
+    """
+    cm = charmap if charmap is not None else COMBAT_CHARMAP
+    if len(texts) != UI_POINTER_COUNT:
+        raise ValueError(f"expected {UI_POINTER_COUNT} UI strings, got {len(texts)}")
+    region = bytearray()
+    overflow = bytearray()
+    placed: dict[str, int] = {}
+    targets: list[int] = []
+    region_capacity = OFFSET_SYSTEM_BUTTONS_END - OFFSET_SYSTEM_BUTTONS_START
+    for text in texts:
+        if len(text) > UI_MAX_VISIBLE_CHARS:
+            print(f"warning: UI label {text!r} has {len(text)} characters; the box fits about {UI_MAX_VISIBLE_CHARS}")
+        if text in placed:
+            targets.append(placed[text])
+            continue
+        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if len(region) + len(encoded) <= region_capacity:
+            target = OFFSET_SYSTEM_BUTTONS_START + len(region)
+            region.extend(encoded)
+        else:
+            if UI_OVERFLOW_START + len(overflow) + len(encoded) > UI_OVERFLOW_END:
+                raise ValueError("battle UI strings do not fit in the UI region nor in the overflow area; shorten them")
+            target = UI_OVERFLOW_START + len(overflow)
+            overflow.extend(encoded)
+        placed[text] = target
+        targets.append(target)
+    region.extend(b"\x00" * (region_capacity - len(region)))
+    return bytes(region), bytes(overflow), targets
+
 
 def render_cyrillic_glyph(char: str, font_path: Path) -> bytes:
     """Render a single character into a 16x16 4bpp tile using PressStart2P (size 11).
@@ -431,123 +452,39 @@ def validate_dialogue_formatting(
 def patch_combat_system_strings(
     e7_data: bytearray,
     charmap: Mapping[str, int] | None = None,
+    texts: list[str] | None = None,
 ) -> bytearray:
-    """Patch 18 fixed 16-byte command slots and 14 fixed prompt slots into Entry 0x007.
-
-    1. Slots 0x05F278..0x05F398: 18 fixed 16-byte (0x10) slots.
-       Each string is encoded with combat dialogue charmap, terminated with 0x00FF,
-       padded with 0x00, and verified to fit within 16 bytes.
-    2. Fixed prompt slots 0x05F394..0x05F46C:
-       14 fixed prompt slots in FIXED_PROMPT_SLOTS matching PS1 hardware pointers.
-       Each string is encoded with combat dialogue charmap, terminated with 0x00FF,
-       and padded with 0x00 up to its exact slot length.
-    3. Any unallocated gaps between slots up to 0x05F470 are zeroed.
-    4. Table 2 boundary at 0x05F470 is strictly preserved.
-    """
+    """Write the 37 battle UI strings and rewrite their pointer table (0x05F470)."""
     cm = charmap if charmap is not None else COMBAT_CHARMAP
     if not isinstance(e7_data, bytearray):
         e7_data = bytearray(e7_data)
-
-    # 1. 18 fixed 16-byte command slots (0x05F278..0x05F398)
-    for slot_offset, text in SYSTEM_COMMAND_SLOTS:
-        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
-        if len(encoded) > 16:
-            raise ValueError(
-                f"Command string '{text}' at 0x{slot_offset:06X} exceeds 16-byte slot: {len(encoded)} bytes > 16"
-            )
-        padded = encoded.ljust(16, b"\x00")
-        e7_data[slot_offset : slot_offset + 16] = padded
-
-    # 2. 14 fixed prompt slots in FIXED_PROMPT_SLOTS (0x05F394..0x05F46C)
-    for slot_offset, slot_len, text in FIXED_PROMPT_SLOTS:
-        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
-        if len(encoded) > slot_len:
-            raise ValueError(
-                f"Prompt string '{text}' at 0x{slot_offset:06X} exceeds {slot_len}-byte slot: {len(encoded)} bytes > {slot_len}"
-            )
-        padded = encoded.ljust(slot_len, b"\x00")
-        e7_data[slot_offset : slot_offset + slot_len] = padded
-
-    # 3. Zero out any unallocated gaps between slots up to 0x05F470
-    for i in range(len(FIXED_PROMPT_SLOTS) - 1):
-        curr_end = FIXED_PROMPT_SLOTS[i][0] + FIXED_PROMPT_SLOTS[i][1]
-        next_start = FIXED_PROMPT_SLOTS[i + 1][0]
-        if next_start > curr_end:
-            e7_data[curr_end : next_start] = b"\x00" * (next_start - curr_end)
-
-    last_slot_end = FIXED_PROMPT_SLOTS[-1][0] + FIXED_PROMPT_SLOTS[-1][1] if FIXED_PROMPT_SLOTS else 0x05F46C
-    if last_slot_end < OFFSET_TABLE2_START:
-        e7_data[last_slot_end : OFFSET_TABLE2_START] = b"\x00" * (OFFSET_TABLE2_START - last_slot_end)
-
-    # 4. Verify Table 2 at 0x05F470 is never touched
-    assert len(e7_data) >= OFFSET_TABLE2_START, "Entry 0x007 buffer too small"
-
+    strings = texts if texts is not None else load_system_strings()
+    region, overflow, targets = pack_ui_strings(strings, cm)
+    e7_data[OFFSET_SYSTEM_BUTTONS_START:OFFSET_SYSTEM_BUTTONS_END] = region
+    e7_data[UI_OVERFLOW_START:UI_OVERFLOW_END] = b"\x00" * (UI_OVERFLOW_END - UI_OVERFLOW_START)
+    e7_data[UI_OVERFLOW_START : UI_OVERFLOW_START + len(overflow)] = overflow
+    for k, target in enumerate(targets):
+        struct.pack_into("<I", e7_data, OFFSET_TABLE2_START + 4 * k, UI_POINTER_BASE + target)
     return e7_data
 
 
 def verify_combat_system_strings(
     e7_data: bytes,
     charmap: Mapping[str, int] | None = None,
+    texts: list[str] | None = None,
 ) -> None:
-    """Verify that Entry 0x007 contains correctly formatted Russian system strings.
-
-    1. Checks all 18 fixed command slots in 0x05F278..0x05F398.
-       For slots 0..16, checks the full 16-byte padded slot.
-       For slot 17 (0x05F388), checks the encoded command string ending at 0x05F394.
-    2. Checks all 14 fixed prompt slots in FIXED_PROMPT_SLOTS (0x05F394..0x05F46C).
-       Verifies each string starts at its exact offset and is padded with 0x00.
-    3. Confirms unallocated gaps between slots and up to 0x05F470 are zeroed.
-    4. Confirms Table 2 boundary at 0x05F470 is strictly preserved.
-    """
+    """Verify every UI pointer resolves to its catalogue string (decoded with font 0x142)."""
     cm = charmap if charmap is not None else COMBAT_CHARMAP
+    strings = texts if texts is not None else load_system_strings()
+    for k, text in enumerate(strings):
+        ptr = struct.unpack_from("<I", e7_data, OFFSET_TABLE2_START + 4 * k)[0]
+        target = ptr - UI_POINTER_BASE
+        expected = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
+        if not (OFFSET_SYSTEM_BUTTONS_START <= target < OFFSET_SYSTEM_BUTTONS_END or UI_OVERFLOW_START <= target < UI_OVERFLOW_END):
+            raise AssertionError(f"UI pointer {k} -> 0x{target:06X} is outside the UI string regions")
+        if e7_data[target : target + len(expected)] != expected:
+            raise AssertionError(f"UI pointer {k} -> 0x{target:06X} does not hold {text!r}")
 
-    # Verify 18 fixed command slots
-    first_prompt_offset = FIXED_PROMPT_SLOTS[0][0] if FIXED_PROMPT_SLOTS else 0x05F394
-    for slot_offset, text in SYSTEM_COMMAND_SLOTS:
-        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
-        if len(encoded) > 16:
-            raise AssertionError(f"Command '{text}' exceeds 16-byte budget: {len(encoded)} bytes")
-        if slot_offset + 16 <= first_prompt_offset:
-            expected_slot = encoded.ljust(16, b"\x00")
-            actual_slot = e7_data[slot_offset : slot_offset + 16]
-            if actual_slot != expected_slot:
-                raise AssertionError(
-                    f"Command '{text}' mismatch at 0x{slot_offset:06X}: expected {expected_slot.hex()}, got {actual_slot.hex()}"
-                )
-        else:
-            actual_str = e7_data[slot_offset : slot_offset + len(encoded)]
-            if actual_str != encoded:
-                raise AssertionError(
-                    f"Command '{text}' mismatch at 0x{slot_offset:06X}: expected {encoded.hex()}, got {actual_str.hex()}"
-                )
-
-    # Verify 14 fixed prompt slots
-    for slot_offset, slot_len, text in FIXED_PROMPT_SLOTS:
-        encoded = encode_combat_dialogue_string(text, cm) + struct.pack("<H", OPCODE_BLOCK_END)
-        if len(encoded) > slot_len:
-            raise AssertionError(f"Prompt '{text}' exceeds {slot_len}-byte budget: {len(encoded)} bytes")
-        expected_slot = encoded.ljust(slot_len, b"\x00")
-        actual_slot = e7_data[slot_offset : slot_offset + slot_len]
-        if actual_slot != expected_slot:
-            raise AssertionError(
-                f"Prompt '{text}' mismatch at 0x{slot_offset:06X}: expected {expected_slot.hex()}, got {actual_slot.hex()}"
-            )
-
-    # Verify unallocated gaps are zeroed
-    for i in range(len(FIXED_PROMPT_SLOTS) - 1):
-        curr_end = FIXED_PROMPT_SLOTS[i][0] + FIXED_PROMPT_SLOTS[i][1]
-        next_start = FIXED_PROMPT_SLOTS[i + 1][0]
-        if next_start > curr_end:
-            gap = e7_data[curr_end:next_start]
-            if gap != b"\x00" * (next_start - curr_end):
-                raise AssertionError(f"Gap at 0x{curr_end:06X}..0x{next_start:06X} is not zeroed: {gap.hex()}")
-
-    if FIXED_PROMPT_SLOTS:
-        last_slot_end = FIXED_PROMPT_SLOTS[-1][0] + FIXED_PROMPT_SLOTS[-1][1]
-        if last_slot_end < OFFSET_TABLE2_START:
-            gap = e7_data[last_slot_end:OFFSET_TABLE2_START]
-            if gap != b"\x00" * (OFFSET_TABLE2_START - last_slot_end):
-                raise AssertionError(f"Gap at 0x{last_slot_end:06X}..0x{OFFSET_TABLE2_START:06X} is not zeroed: {gap.hex()}")
 
 def verify_entry_checksums(bin_path: Path, prog_lba: int, start_sector: int, sector_count: int) -> int:
     """Verify Mode 2 Form 1 EDC and ECC checksums for all sectors of an entry."""
@@ -571,29 +508,34 @@ def verify_entry_checksums(bin_path: Path, prog_lba: int, start_sector: int, sec
 
 
 def verify_entry_7_invariants(orig_e7: bytes, patched_e7: bytes) -> None:
-    """Verify that all protected regions outside dialogue stream and system strings are 100% untouched."""
-    # 1. Everything before system strings (0..0x05F278) must be byte-exact identical
+    """Verify that nothing outside the owned regions changed and that pointers are sane.
+
+    Owned regions: UI strings 0x05F278..0x05F470, UI pointer table 0x05F470..0x05F504,
+    dialogue stream 0x05F810..0x06286A and the UI overflow area 0x082400..0x083000.
+    """
     if patched_e7[:OFFSET_SYSTEM_BUTTONS_START] != orig_e7[:OFFSET_SYSTEM_BUTTONS_START]:
         raise AssertionError("Invariant violation: Bytes before 0x05F278 were modified!")
-
-    # 2. Table 1 at 0x05F1FC..0x05F258 must be untouched
     if patched_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START] != orig_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START]:
-        raise AssertionError("Invariant violation: Table 1 was modified!")
-
-    # 3. MIPS instruction at 0x02B78C must be untouched
+        raise AssertionError("Invariant violation: descriptor table 0x05F1FC..0x05F258 was modified!")
     if patched_e7[OFFSET_MIPS_INIT_EXIT : OFFSET_MIPS_INIT_EXIT + 8] != orig_e7[OFFSET_MIPS_INIT_EXIT : OFFSET_MIPS_INIT_EXIT + 8]:
         raise AssertionError("Invariant violation: MIPS instruction at 0x02B78C was modified!")
-
-    # 4. Table 2 at 0x05F470..0x05F504 and pre-dialogue region (0x05F470..0x05F810) must be untouched
-    if patched_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START] != orig_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START]:
-        raise AssertionError("Invariant violation: Table 2 or pre-dialogue region (0x05F470..0x05F810) was modified!")
-
-    # 5. Everything at/after Table 3 must be byte-exact identical
-    if patched_e7[OFFSET_TABLE3_START:] != orig_e7[OFFSET_TABLE3_START:]:
-        raise AssertionError("Invariant violation: Bytes at/after Table 3 (0x06286C) were modified!")
-
-    # 6. Verify Russian system strings are correctly placed and formatted
+    ui_ptr_end = OFFSET_TABLE2_START + 4 * UI_POINTER_COUNT
+    if patched_e7[ui_ptr_end:DIALOGUE_STREAM_START] != orig_e7[ui_ptr_end:DIALOGUE_STREAM_START]:
+        raise AssertionError("Invariant violation: pre-dialogue region (0x05F504..0x05F810) was modified!")
+    if patched_e7[OFFSET_TABLE3_START:UI_OVERFLOW_START] != orig_e7[OFFSET_TABLE3_START:UI_OVERFLOW_START]:
+        raise AssertionError("Invariant violation: Bytes between Table 3 (0x06286C) and 0x082400 were modified!")
+    if patched_e7[UI_OVERFLOW_END:] != orig_e7[UI_OVERFLOW_END:]:
+        raise AssertionError("Invariant violation: Bytes after 0x083000 were modified!")
+    # Cue table: every pointer must land on a speaker opcode with the true RAM base.
+    for k in range(0, 0x062A10 - OFFSET_TABLE3_START, 4):
+        target = struct.unpack_from("<I", patched_e7, OFFSET_TABLE3_START + k)[0] - UI_POINTER_BASE
+        if not (DIALOGUE_STREAM_START <= target < DIALOGUE_STREAM_END):
+            raise AssertionError(f"cue pointer {k // 4} -> 0x{target:06X} is outside the dialogue stream")
+        opcode = struct.unpack_from("<H", patched_e7, target)[0]
+        if (opcode >> 8) not in (0x91, 0xD1, 0xD2):
+            raise AssertionError(f"cue pointer {k // 4} -> 0x{target:06X} does not start with a speaker opcode (0x{opcode:04X})")
     verify_combat_system_strings(patched_e7)
+
 
 def extract_entry_data_and_info(
     bin_path: Path,
@@ -696,8 +638,7 @@ def patch_combat_dialogues(
 
     return {
         "blocks_patched": len(blocks),
-        "system_commands_patched": len(SYSTEM_COMMAND_SLOTS),
-        "prompt_strings_patched": len(FIXED_PROMPT_SLOTS),
+        "ui_strings_patched": UI_POINTER_COUNT,
         "compressed_font_size": len(compressed_font),
         "font_budget": COMBAT_FONT_MAX_SIZE,
         "font_margin": COMBAT_FONT_MAX_SIZE - len(compressed_font),
@@ -735,20 +676,17 @@ def main() -> int:
             template_path=args.template,
         )
         print(f"Successfully processed {result['blocks_patched']} dialogue blocks.")
-        print(f"Patched {result['system_commands_patched']} combat command slots (0x05F278..0x05F398).")
-        print(f"Patched {result['prompt_strings_patched']} fixed prompt slots (0x05F394..0x05F46C).")
+        print(f"Packed {result['ui_strings_patched']} battle UI strings (0x05F278..0x05F470) and rewrote their pointer table.")
         print(f"Font compressed size: {result['compressed_font_size']:,} bytes / {result['font_budget']:,} budget "
               f"(Margin: {result['font_margin']:,} bytes)")
         print(f"Entry 0x007: {result['entry_7_sectors']} sectors, Entry 0x142: {result['entry_142_sectors']} sectors.")
-        print("Invariants: 100% verified (Table 1, Table 2, Table 3, System buttons, MIPS 0x02B78C intact).")
+        print("Invariants verified: descriptor table untouched, cue pointers valid (base 0x8004E5B0), MIPS 0x02B78C intact.")
         if args.verify and args.bin.is_file():
             prog_lba, e7_start, e7_count, disc_e7 = extract_entry_data_and_info(args.bin, ENTRY_COMBAT_DATA)
-            try:
-                verify_combat_system_strings(disc_e7)
-                sec_count = verify_entry_checksums(args.bin, prog_lba, e7_start, e7_count)
-                print(f"EDC/ECC verified on all {sec_count} sectors of Entry 0x007 on {args.bin.name}.")
-            except Exception:
-                pass
+            verify_combat_system_strings(disc_e7)
+            verify_entry_7_invariants(disc_e7, disc_e7)
+            sec_count = verify_entry_checksums(args.bin, prog_lba, e7_start, e7_count)
+            print(f"EDC/ECC verified on all {sec_count} sectors of Entry 0x007 on {args.bin.name}.")
         return 0
     except Exception as e:
         print(f"Error during patching: {e}", file=sys.stderr)

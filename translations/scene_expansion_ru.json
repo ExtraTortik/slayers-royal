@@ -1,0 +1,31 @@
+{
+ "schema": 1,
+ "comment": "Extra PROG.UNT sectors borrowed from donor entry 0x011 per story scene. Regenerate with: python3 tools/localize_ru.py measure. Every scene must stay <= 19 sectors (0x9800 bytes): the engine loads the scene at 0x80121000 and container 0x058 at 0x8012A800.",
+ "max_scene_sectors": 19,
+ "expansion_sectors": {
+  "0x03B": 5,
+  "0x03C": 6,
+  "0x03D": 6,
+  "0x03F": 1,
+  "0x040": 7,
+  "0x041": 6,
+  "0x042": 4,
+  "0x043": 4,
+  "0x044": 3,
+  "0x045": 3,
+  "0x046": 2,
+  "0x048": 1,
+  "0x049": 1,
+  "0x04C": 1,
+  "0x04D": 1,
+  "0x04F": 4,
+  "0x050": 1,
+  "0x051": 1,
+  "0x052": 1,
+  "0x053": 3,
+  "0x054": 1,
+  "0x055": 1,
+  "0x056": 1,
+  "0x057": 1
+ }
+}
