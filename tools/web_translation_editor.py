@@ -1095,6 +1095,7 @@ class CatalogManager:
 
     def update_entry(self, cat_id: str, entry_id: str, new_text_ru: str) -> dict[str, Any]:
         """Update an entry's Russian text and write atomically back to disk."""
+        new_text_ru = re.sub(r"\\f\r?\n?", "\f", new_text_ru)
         data = copy.deepcopy(self.load_raw_json(cat_id))
         found = False
 
@@ -1920,6 +1921,19 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       flex-wrap: wrap;
       gap: 6px;
     }
+    .page-meter-banner {
+      width: 100%;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      margin: 8px 0 2px 0;
+      padding-bottom: 2px;
+      border-bottom: 1px dashed rgba(59, 130, 246, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      gap: 6px;
+    }
     .line-meter {
       font-family: var(--font-mono);
       font-size: 11px;
@@ -2358,6 +2372,27 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
   </div>
 
   <script>
+    // Constants for clean page breaks without escape ambiguities
+    const FF = String.fromCharCode(12);
+    const LF = String.fromCharCode(10);
+    const PAGE_TAG = String.fromCharCode(92) + "f" + LF;
+
+    function toVisible(text) {
+      if (!text) return "";
+      return text.split(FF).join(PAGE_TAG);
+    }
+
+    function toInternal(text) {
+      if (!text) return "";
+      return text.split(PAGE_TAG).join(FF).split(String.fromCharCode(92) + "f").join(FF);
+    }
+
+    function splitPages(text) {
+      if (!text) return [""];
+      return toInternal(text).split(FF);
+    }
+
+    // State
     // State
     let currentCatalogId = "story_dialogues";
     let currentSceneId = null;
@@ -2577,7 +2612,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
       // Textarea
       const textarea = document.getElementById("ruEditorTextarea");
-      textarea.value = entry.text_ru || "";
+      textarea.value = toVisible(entry.text_ru);
 
       // Realtime validation
       updateRealtimeGauges();
@@ -2586,7 +2621,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
     function onEditorInput() {
       if (!activeEntry) return;
-      activeEntry.text_ru = document.getElementById("ruEditorTextarea").value;
+      activeEntry.text_ru = toInternal(document.getElementById("ruEditorTextarea").value);
       updateRealtimeGauges();
       updatePs1Preview();
       markUnsaved();
@@ -2607,7 +2642,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       alertBox.innerHTML = "";
       alertBox.style.display = "none";
 
-      const pages = text.split("\\f");
+      const pages = splitPages(text);
       let overallMax = 0;
       let totalLines = 0;
       let errors = [];
@@ -2617,7 +2652,13 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       }
 
       pages.forEach((p, pIdx) => {
-        const lines = p.split("\\n");
+        if (pages.length > 1) {
+          const banner = document.createElement("div");
+          banner.className = "page-meter-banner";
+          banner.textContent = `📄 Страница ${pIdx + 1} из ${pages.length}`;
+          metersContainer.appendChild(banner);
+        }
+        const lines = p.split(LF).map(l => l.endsWith(String.fromCharCode(13)) ? l.slice(0, -1) : l);
         totalLines += lines.length;
 
         if (lines.length > (limits.max_lines_per_page || 3) && !limits.single_line) {
@@ -2656,7 +2697,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
         linesGauge.textContent = "1 строка";
         linesGauge.className = text.includes("\\n") ? "gauge-pill bad" : "gauge-pill ok";
       } else {
-        const isLinesBad = pages.some(p => p.split("\\n").length > (limits.max_lines_per_page || 3));
+        const isLinesBad = pages.some(p => p.split(LF).length > (limits.max_lines_per_page || 3));
         linesGauge.textContent = `${totalLines} строк(и)`;
         linesGauge.className = `gauge-pill ${isLinesBad ? "bad" : "ok"}`;
       }
@@ -2673,7 +2714,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     function updatePs1Preview() {
       if (!activeEntry) return;
       const text = document.getElementById("ruEditorTextarea").value;
-      const pages = text.split("\\f");
+      const pages = splitPages(text);
 
       const speakerName = activeEntry.speaker_ru || activeEntry.speaker || "";
       const spTag = document.getElementById("ps1SpeakerTag");
@@ -2701,7 +2742,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
     function prevPs1Page() {
       const text = document.getElementById("ruEditorTextarea").value;
-      const pages = text.split("\\f");
+      const pages = splitPages(text);
       if (pages.length <= 1) return;
       ps1ActivePage = (ps1ActivePage - 1 + pages.length) % pages.length;
       updatePs1Preview();
@@ -2709,7 +2750,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
     function nextPs1Page() {
       const text = document.getElementById("ruEditorTextarea").value;
-      const pages = text.split("\\f");
+      const pages = splitPages(text);
       if (pages.length <= 1) return;
       ps1ActivePage = (ps1ActivePage + 1) % pages.length;
       updatePs1Preview();
@@ -2724,8 +2765,9 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       const val = textarea.value;
-      textarea.value = val.substring(0, start) + code + val.substring(end);
-      textarea.selectionStart = textarea.selectionEnd = start + code.length;
+      const insertText = code === "\\f" ? PAGE_TAG : code;
+      textarea.value = val.substring(0, start) + insertText + val.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + insertText.length;
       textarea.focus();
       onEditorInput();
     }
@@ -2737,9 +2779,9 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       const maxLen = (activeEntry.limits && activeEntry.limits.max_chars_per_line) || 15;
 
       // Smart auto-wrapper: splits into words and wraps at maxLen
-      const pages = text.split("\\f");
+      const pages = splitPages(text);
       const wrappedPages = pages.map(page => {
-        const words = page.replace(/\\n/g, " ").split(/\\s+/).filter(Boolean);
+        const words = page.split(LF).join(" ").split(String.fromCharCode(13)).join("").split(" ").filter(Boolean);
         const lines = [];
         let curLine = "";
         for (const w of words) {
@@ -2753,17 +2795,17 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
           }
         }
         if (curLine) lines.push(curLine);
-        return lines.join("\\n");
+        return lines.join(LF);
       });
 
-      textarea.value = wrappedPages.join("\\f");
+      textarea.value = wrappedPages.join(LF + PAGE_TAG);
       onEditorInput();
     }
 
     async function saveCurrentEntry() {
       if (!activeEntry) return;
-      const newText = document.getElementById("ruEditorTextarea").value;
-
+      const rawVal = document.getElementById("ruEditorTextarea").value;
+      const newText = toInternal(rawVal);
       setSaveStatus("saving");
       try {
         const res = await fetch("/api/entry", {
@@ -2797,7 +2839,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
     function revertCurrentEntry() {
       if (!activeEntry) return;
-      document.getElementById("ruEditorTextarea").value = activeEntry.text_ru || "";
+      document.getElementById("ruEditorTextarea").value = toVisible(activeEntry.text_ru);
       onEditorInput();
       setSaveStatus("saved");
     }
