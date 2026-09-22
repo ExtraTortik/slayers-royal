@@ -34,36 +34,28 @@ from tools.patch_inspection import (
 )
 from tools.patch_combat_font import CANONICAL_ASCII_GLYPHS
 
-GLYPH_MAP_PATH = REPO_ROOT / "patch_repo" / "localization-work" / "ru" / "build" / "glyph_map.json"
+# The battle overlay renders every 16-bit string of entry 0x007 (UI labels,
+# prompts, dialogue cues, save browser) with the battle-resident font 0x142.
+# That font mirrors the English Latin cells of the main font and carries the
+# Cyrillic block at 0x0150..0x0191 (tools/combat_dialogue_charmap.py).  It has
+# nothing to do with the main-font allocation in glyph_map.json.
 RUSSIAN_LETTERS = set("АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя")
 
 
 def load_combat_charmap(path: Path | str | None = None) -> dict[str, int]:
-    """Load official combat charmap synchronized with PROG.UNT 0x03A font (glyph_map.json).
+    """Return the font-0x142 charmap used for everything written into entry 0x007."""
+    if path is not None:
+        raise ValueError("combat text uses the fixed font-0x142 charmap; a glyph_map.json override is not applicable")
+    from tools.combat_dialogue_charmap import build_combat_dialogue_charmap
 
-    Strictly guarantees that all Russian letters are in 0x0008..0x0052,
-    and forbids any code >= 0x0100 for Russian letters.
-    """
-    cm = dict(DEFAULT_CHARMAP)
-    gm_path = Path(path) if path is not None else None
-    if gm_path is not None and gm_path.is_file():
-        gm_data = json.loads(gm_path.read_text(encoding="utf-8"))
-        for item in gm_data.get("characters", []):
-            cm[item["text"]] = int(item["glyph"], 16)
-
-    # Canonical space
+    cm = build_combat_dialogue_charmap()
     cm.setdefault(" ", 0x007D)
-
-    # Strict verification: all Russian letters must be 0x0008..0x0052 and < 0x0100
     for ch in RUSSIAN_LETTERS:
         code = cm.get(ch)
         if code is None:
             raise ValueError(f"Russian letter {ch!r} missing from combat charmap")
-        if code >= 0x0100:
-            raise ValueError(f"Russian letter {ch!r} has invalid kanji code 0x{code:04X} >= 0x0100")
-        if not (0x0008 <= code <= 0x0052):
-            raise ValueError(f"Russian letter {ch!r} code 0x{code:04X} outside canonical range 0x0008..0x0052")
-
+        if not (0x0150 <= code <= 0x0191):
+            raise ValueError(f"Russian letter {ch!r} has code 0x{code:04X} outside the font-0x142 Cyrillic block 0x0150..0x0191")
     return cm
 
 
@@ -83,7 +75,12 @@ def build_reverse_charmap(charmap: Mapping[str, int] | None = None) -> dict[int,
         if k in RUSSIAN_LETTERS:
             rev[v] = k
     return rev
-RAM_BASE = 0x8004E110
+# Entry 0x007 is loaded contiguously at 0x8004E5B0 (verified against the
+# original pointer tables: UI table 0x05F470, cue table 0x06286C and the spell
+# table 0x06F4D8 all resolve with this base).  The 23 words at 0x05F1FC are
+# NOT a string table: under this base they point at 16-byte descriptors at
+# 0x05EDD8 and must be left untouched.
+RAM_BASE = 0x8004E5B0
 PROG_ENTRY_COMBAT = 0x007
 
 JP_CHARMAP = build_charmap()
@@ -419,7 +416,7 @@ def encode_combat_string(text: str, charmap: Mapping[str, int] | None = None) ->
         0x00FE: newline ('\\n')
         0x00FF: string terminator (automatically appended)
 
-    Strictly prohibits codes >= 0x0100 for Russian letters (0x0008..0x0052).
+    Russian letters must come from the font-0x142 Cyrillic block (0x0150..0x0191).
     """
     cm = charmap if charmap is not None else load_combat_charmap()
     output = bytearray()
@@ -443,11 +440,11 @@ def encode_combat_string(text: str, charmap: Mapping[str, int] | None = None) ->
             output.extend(b"\xFD\x00")
         elif ch in cm:
             code = cm[ch]
-            if ch in RUSSIAN_LETTERS:
-                if code >= 0x0100:
-                    raise ValueError(f"Russian character {ch!r} has invalid kanji code 0x{code:04X} >= 0x0100")
-                if not (0x0008 <= code <= 0x0052):
-                    raise ValueError(f"Russian character {ch!r} code 0x{code:04X} outside canonical range 0x0008..0x0052")
+            if ch in RUSSIAN_LETTERS and not (0x0150 <= code <= 0x0191):
+                raise ValueError(
+                    f"Russian character {ch!r} code 0x{code:04X} is outside the font-0x142 Cyrillic block "
+                    "0x0150..0x0191 (battle text must use tools/combat_dialogue_charmap.py)"
+                )
             output.extend(code.to_bytes(2, "little"))
         else:
             raise ValueError(f"Character {ch!r} (U+{ord(ch):04X}) not in combat charmap")

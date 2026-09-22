@@ -7,7 +7,8 @@
     "ram_base": "0x8004E110",
     "system_strings_count": 37,
     "dialogues_count": 101,
-    "extra_combat_strings_count": 32
+    "extra_combat_strings_count": 32,
+    "system_strings_note": "37 entries in the order of the battle UI pointer table (entry 0x007 @0x05F470, RAM base 0x8004E5B0). 'text_ru' is what is written on disc (keep it short: the UI boxes were sized for <= 9 English characters); 'text_ru_full' is the unabridged translation for reference. tools/patch_combat_dialogues.py packs these strings and rewrites the pointer table."
   },
   "system_strings": [
     {
@@ -17,7 +18,9 @@
       "ram_address": "0x800AD388",
       "text_jp": "戦態開始",
       "text_en": "START",
-      "text_ru": "СТАРТ"
+      "text_ru": "СТАРТ",
+      "table2_index": 0,
+      "text_ru_full": "СТАРТ"
     },
     {
       "id": "CONFIG",
@@ -26,7 +29,9 @@
       "ram_address": "0x800AD394",
       "text_jp": "コンフィグ",
       "text_en": "CONFIG",
-      "text_ru": "НАСТРОЙКИ"
+      "text_ru": "ОПЦИИ",
+      "table2_index": 1,
+      "text_ru_full": "НАСТРОЙКИ"
     },
     {
       "id": "ATTACK_SET",
@@ -35,7 +40,9 @@
       "ram_address": "0x800AD3A0",
       "text_jp": "攻撃設定",
       "text_en": "ATTACK",
-      "text_ru": "АТАКА"
+      "text_ru": "АТАКА",
+      "table2_index": 2,
+      "text_ru_full": "АТАКА"
     },
     {
       "id": "COUNTER_SET",
@@ -44,7 +51,9 @@
       "ram_address": "0x800AD3AC",
       "text_jp": "反撃設定",
       "text_en": "COUNTER",
-      "text_ru": "КОНТРАТАКА"
+      "text_ru": "ОТВЕТ",
+      "table2_index": 3,
+      "text_ru_full": "КОНТРАТАКА"
     },
     {
       "id": "SPELL_SET",
@@ -53,7 +62,9 @@
       "ram_address": "0x800AD3B8",
       "text_jp": "呪文設定",
       "text_en": "SPELL",
-      "text_ru": "МАГИЯ"
+      "text_ru": "МАГИЯ",
+      "table2_index": 4,
+      "text_ru_full": "МАГИЯ"
     },
     {
       "id": "ATTACK_ACT",
@@ -62,7 +73,9 @@
       "ram_address": "0x800AD3C4",
       "text_jp": "こうげきする",
       "text_en": "ATTACK",
-      "text_ru": "АТАКОВАТЬ"
+      "text_ru": "АТАКОВАТЬ",
+      "table2_index": 5,
+      "text_ru_full": "АТАКОВАТЬ"
     },
     {
       "id": "HIT",
@@ -71,7 +84,9 @@
       "ram_address": "0x800AD3D4",
       "text_jp": "なぐる",
       "text_en": "HIT",
-      "text_ru": "УДАРИТЬ"
+      "text_ru": "УДАР",
+      "table2_index": 6,
+      "text_ru_full": "УДАРИТЬ"
     },
     {
       "id": "RAM",
@@ -80,7 +95,9 @@
       "ram_address": "0x800AD3DC",
       "text_jp": "たいあたり",
       "text_en": "RAM",
-      "text_ru": "ТАРАН"
+      "text_ru": "ТАРАН",
+      "table2_index": 7,
+      "text_ru_full": "ТАРАН"
     },
     {
       "id": "MOVE",
@@ -89,7 +106,9 @@
       "ram_address": "0x800AD3E8",
       "text_jp": "いどう",
       "text_en": "MOVE",
-      "text_ru": "ДВИЖЕНИЕ"
+      "text_ru": "ХОД",
+      "table2_index": 8,
+      "text_ru_full": "ДВИЖЕНИЕ"
     },
     {
       "id": "SLIPPER",
@@ -98,7 +117,9 @@
       "ram_address": "0x800AD3F0",
       "text_jp": "スリッパ",
       "text_en": "SLIPPER",
-      "text_ru": "ТАПОК"
+      "text_ru": "ТАПОК",
+      "table2_index": 9,
+      "text_ru_full": "ТАПОК"
     },
     {
       "id": "LAUGH",
@@ -107,7 +128,9 @@
       "ram_address": "0x800AD3FC",
       "text_jp": "高笑い",
       "text_en": "LAUGH",
-      "text_ru": "ХОХОТ"
+      "text_ru": "ХОХОТ",
+      "table2_index": 10,
+      "text_ru_full": "ХОХОТ"
     },
     {
       "id": "COUNTER_ACT",
@@ -116,7 +139,9 @@
       "ram_address": "0x800AD404",
       "text_jp": "やりかえす",
       "text_en": "COUNTER",
-      "text_ru": "ОТВЕТИТЬ"
+      "text_ru": "ОТВЕТ",
+      "table2_index": 11,
+      "text_ru_full": "ОТВЕТИТЬ"
     },
     {
       "id": "HIT_BACK",
@@ -125,7 +150,9 @@
       "ram_address": "0x800AD410",
       "text_jp": "なぐりかえす",
       "text_en": "HIT BACK",
-      "text_ru": "ОТВЕТНЫЙ УДАР"
+      "text_ru": "ОТВЕТНЫЙ УДАР",
+      "table2_index": 12,
+      "text_ru_full": "ОТВЕТНЫЙ УДАР"
     },
     {
       "id": "EVADE",
@@ -134,7 +161,9 @@
       "ram_address": "0x800AD420",
       "text_jp": "よける",
       "text_en": "EVADE",
-      "text_ru": "УКЛОНЕНИЕ"
+      "text_ru": "УКЛОН",
+      "table2_index": 13,
+      "text_ru_full": "УКЛОНЕНИЕ"
     },
     {
       "id": "FLEE",
@@ -143,7 +172,9 @@
       "ram_address": "0x800AD428",
       "text_jp": "にげる",
       "text_en": "FLEE",
-      "text_ru": "ПОБЕГ"
+      "text_ru": "ПОБЕГ",
+      "table2_index": 14,
+      "text_ru_full": "ПОБЕГ"
     },
     {
       "id": "ENDURE",
@@ -152,7 +183,9 @@
       "ram_address": "0x800AD430",
       "text_jp": "がまんする",
       "text_en": "ENDURE",
-      "text_ru": "ТЕРПЕТЬ"
+      "text_ru": "ТЕРПЕТЬ",
+      "table2_index": 15,
+      "text_ru_full": "ТЕРПЕТЬ"
     },
     {
       "id": "GUARD",
@@ -161,7 +194,9 @@
       "ram_address": "0x800AD43C",
       "text_jp": "ぼうぎょ",
       "text_en": "GUARD",
-      "text_ru": "ЗАЩИТА"
+      "text_ru": "ЗАЩИТА",
+      "table2_index": 16,
+      "text_ru_full": "ЗАЩИТА"
     },
     {
       "id": "WARD",
@@ -170,7 +205,9 @@
       "ram_address": "0x800AD448",
       "text_jp": "バリア",
       "text_en": "WARD",
-      "text_ru": "БАРЬЕР"
+      "text_ru": "БАРЬЕР",
+      "table2_index": 17,
+      "text_ru_full": "БАРЬЕР"
     },
     {
       "id": "CAST",
@@ -179,7 +216,9 @@
       "ram_address": "0x800AD450",
       "text_jp": "となえる",
       "text_en": "CAST",
-      "text_ru": "ПРИМЕНИТЬ"
+      "text_ru": "МАГИЯ",
+      "table2_index": 18,
+      "text_ru_full": "ПРИМЕНИТЬ"
     },
     {
       "id": "BACK",
@@ -188,7 +227,9 @@
       "ram_address": "0x800AD45C",
       "text_jp": "やめる",
       "text_en": "BACK",
-      "text_ru": "НАЗАД"
+      "text_ru": "НАЗАД",
+      "table2_index": 19,
+      "text_ru_full": "НАЗАД"
     },
     {
       "id": "MAGIC",
@@ -197,7 +238,9 @@
       "ram_address": "0x800AD464",
       "text_jp": "まほう",
       "text_en": "MAGIC",
-      "text_ru": "ЗАКЛИНАНИЕ"
+      "text_ru": "ЗАКЛИНАНИЕ",
+      "table2_index": 20,
+      "text_ru_full": "ЗАКЛИНАНИЕ"
     },
     {
       "id": "AUTO",
@@ -206,7 +249,9 @@
       "ram_address": "0x800AD46C",
       "text_jp": "自動設定",
       "text_en": "AUTO",
-      "text_ru": "АВТО"
+      "text_ru": "АВТО",
+      "table2_index": 21,
+      "text_ru_full": "АВТО"
     },
     {
       "id": "TYPE_ATTACK",
@@ -215,7 +260,9 @@
       "ram_address": "0x800AD478",
       "text_jp": "こうげき型",
       "text_en": "ATTACK",
-      "text_ru": "АТАКУЮЩИЙ"
+      "text_ru": "АТАКУЮЩИЙ",
+      "table2_index": 22,
+      "text_ru_full": "АТАКУЮЩИЙ"
     },
     {
       "id": "TYPE_DEFEND",
@@ -224,7 +271,9 @@
       "ram_address": "0x800AD484",
       "text_jp": "ぼうぎょ型",
       "text_en": "DEFEND",
-      "text_ru": "ЗАЩИТНЫЙ"
+      "text_ru": "ЗАЩИТА",
+      "table2_index": 23,
+      "text_ru_full": "ЗАЩИТНЫЙ"
     },
     {
       "id": "TYPE_AUTO",
@@ -233,7 +282,9 @@
       "ram_address": "0x800AD490",
       "text_jp": "おまかせ型",
       "text_en": "AUTO",
-      "text_ru": "СБАЛАНС."
+      "text_ru": "СБАЛАНС.",
+      "table2_index": 24,
+      "text_ru_full": "СБАЛАНС."
     },
     {
       "id": "MANUAL",
@@ -242,7 +293,9 @@
       "ram_address": "0x800AD49C",
       "text_jp": "自分で操作",
       "text_en": "MANUAL",
-      "text_ru": "ВРУЧНУЮ"
+      "text_ru": "РУЧНОЙ",
+      "table2_index": 25,
+      "text_ru_full": "ВРУЧНУЮ"
     },
     {
       "id": "PICK_UNIT",
@@ -251,7 +304,9 @@
       "ram_address": "0x800AD4A8",
       "text_jp": "ユニットをえらんでね.",
       "text_en": "PICK UNIT",
-      "text_ru": "ВЫБЕРИТЕ ЮНИТ"
+      "text_ru": "КТО ХОДИТ",
+      "table2_index": 26,
+      "text_ru_full": "ВЫБЕРИТЕ ЮНИТ"
     },
     {
       "id": "PICK_ICON",
@@ -260,7 +315,9 @@
       "ram_address": "0x800AD4C0",
       "text_jp": "アイコンをえらんでね.",
       "text_en": "PICK ICON",
-      "text_ru": "ВЫБЕРИТЕ ИКОНКУ"
+      "text_ru": "ДЕЙСТВИЕ",
+      "table2_index": 27,
+      "text_ru_full": "ВЫБЕРИТЕ ИКОНКУ"
     },
     {
       "id": "PICK_SPELL",
@@ -269,7 +326,9 @@
       "ram_address": "0x800AD4D8",
       "text_jp": "呪文をえらんでね.",
       "text_en": "PICK SPELL",
-      "text_ru": "ВЫБЕРИТЕ ЗАКЛИНАНИЕ"
+      "text_ru": "МАГИЯ",
+      "table2_index": 28,
+      "text_ru_full": "ВЫБЕРИТЕ ЗАКЛИНАНИЕ"
     },
     {
       "id": "MOVE_TO",
@@ -278,7 +337,9 @@
       "ram_address": "0x800AD4EC",
       "text_jp": "どこにいどうする?",
       "text_en": "MOVE TO?",
-      "text_ru": "КУДА ИДТИ?"
+      "text_ru": "КУДА?",
+      "table2_index": 29,
+      "text_ru_full": "КУДА ИДТИ?"
     },
     {
       "id": "TARGET",
@@ -287,7 +348,9 @@
       "ram_address": "0x800AD500",
       "text_jp": "だれをこうげきする?",
       "text_en": "TARGET?",
-      "text_ru": "КОГО АТАКОВАТЬ?"
+      "text_ru": "ЦЕЛЬ?",
+      "table2_index": 30,
+      "text_ru_full": "КОГО АТАКОВАТЬ?"
     },
     {
       "id": "AREA",
@@ -296,7 +359,9 @@
       "ram_address": "0x800AD518",
       "text_jp": "どこにこうげきする?",
       "text_en": "AREA?",
-      "text_ru": "КУДА АТАКОВАТЬ?"
+      "text_ru": "ЗОНА?",
+      "table2_index": 31,
+      "text_ru_full": "КУДА АТАКОВАТЬ?"
     },
     {
       "id": "FIGHTING",
@@ -305,7 +370,9 @@
       "ram_address": "0x800AD530",
       "text_jp": "ただいま戦闘中!",
       "text_en": "FIGHTING",
-      "text_ru": "ИДЕТ БОЙ!"
+      "text_ru": "ИДЕТ БОЙ",
+      "table2_index": 32,
+      "text_ru_full": "ИДЕТ БОЙ!"
     },
     {
       "id": "WAIT",
@@ -314,7 +381,9 @@
       "ram_address": "0x800AD544",
       "text_jp": "ちょっとまってね.",
       "text_en": "WAIT.",
-      "text_ru": "ПОДОЖДИТЕ."
+      "text_ru": "ЖДИТЕ",
+      "table2_index": 33,
+      "text_ru_full": "ПОДОЖДИТЕ."
     },
     {
       "id": "PICK_TYPE",
@@ -323,7 +392,9 @@
       "ram_address": "0x800AD558",
       "text_jp": "タイプをえらんでね.",
       "text_en": "PICK TYPE",
-      "text_ru": "ВЫБЕРИТЕ ТИП"
+      "text_ru": "РЕЖИМ",
+      "table2_index": 34,
+      "text_ru_full": "ВЫБЕРИТЕ ТИП"
     },
     {
       "id": "SAVE",
@@ -332,7 +403,9 @@
       "ram_address": "0x800AD570",
       "text_jp": "セ-ブ",
       "text_en": "SAVE",
-      "text_ru": "СОХРАНИТЬ"
+      "text_ru": "СЕЙВ",
+      "table2_index": 35,
+      "text_ru_full": "СОХРАНИТЬ"
     },
     {
       "id": "LOAD",
@@ -341,7 +414,9 @@
       "ram_address": "0x800AD578",
       "text_jp": "ロ-ド",
       "text_en": "LOAD",
-      "text_ru": "ЗАГРУЗИТЬ"
+      "text_ru": "ЛОАД",
+      "table2_index": 36,
+      "text_ru_full": "ЗАГРУЗИТЬ"
     }
   ],
   "extra_combat_strings": [

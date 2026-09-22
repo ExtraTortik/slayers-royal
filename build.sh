@@ -30,6 +30,31 @@ CUSTOM_SCREENS_DIR="$SCRIPT_DIR/data/custom_screens"
 EXTRA_SCREENS_DIR="$SCRIPT_DIR/data/extra_screens"
 PATCH_REPO_DIR="$SCRIPT_DIR/patch_repo"
 
+# --- Prerequisites -------------------------------------------------------
+# patch_repo/ is the unmodified English toolkit (gourry-hacks/slayers_royal_1_patch).
+# Everything Russian-specific lives in this repository and is applied by
+# tools/localize_ru.py; never edit files inside patch_repo/.
+if [[ "$1" != "--help" && "$1" != "-h" ]]; then
+    if [[ ! -f "$PATCH_REPO_DIR/localization/cli.py" ]]; then
+        echo "Ошибка: $PATCH_REPO_DIR отсутствует или неполный." >&2
+        echo "  git clone https://github.com/gourry-hacks/slayers_royal_1_patch \"$PATCH_REPO_DIR\"" >&2
+        echo "  (или создайте симлинк на существующий клон)" >&2
+        exit 1
+    fi
+fi
+
+# Guards that must pass after every build that touches the story or the fonts:
+# 1) tools/vram_charmap.py --check  – the glyph map produced by the story build
+#    must equal translations/glyph_map_ru.json (menus/inspection/minigames are
+#    encoded with that map);
+# 2) tools/verify_scene_budget.py    – no story scene may exceed 19 sectors.
+run_guards() {
+    echo "[*] Проверка карты глифов (glyph_map.json ↔ translations/glyph_map_ru.json)..."
+    python3 "$SCRIPT_DIR/tools/vram_charmap.py" --check
+    echo "[*] Проверка бюджета сцен PROG.UNT (≤ 19 секторов на сцену)..."
+    python3 "$SCRIPT_DIR/tools/verify_scene_budget.py" --bin "$RU_BIN"
+}
+
 echo "==========================================================="
 echo "   Slayers Royal (PS1) — Сборщик локализации"
 echo "==========================================================="
@@ -67,10 +92,10 @@ if [[ "$1" == "--validate" ]]; then
     echo "[*] Валидация каталога сюжетных диалогов (JSON)..."
     python3 "$SCRIPT_DIR/tools/sync_story_dialogues.py" --validate
     echo "[*] Валидация каталога диалогов..."
-    python3 "$PATCH_REPO_DIR/localize.py" validate \
-        --bin "$BIN_ORIG" \
-        --workspace "$PATCH_REPO_DIR/localization-work/ru" \
-        --locale ru
+    python3 "$SCRIPT_DIR/tools/localize_ru.py" validate --bin "$BIN_ORIG"
+    run_guards
+    echo "[*] Валидация боевого оверлея (таблицы указателей 0x007, шрифт 0x142)..."
+    python3 "$SCRIPT_DIR/tools/patch_combat.py" --verify --bin "$RU_BIN" --mode ru
     echo "[*] Валидация каталога комнат..."
     echo "[*] Валидация каталога названий комнат и локаций..."
     python3 -m pytest tools/test_room_names.py -q
@@ -126,13 +151,10 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
         exit 1
     fi
     mkdir -p "$RU_DIR"
-    python3 "$SCRIPT_DIR/tools/sync_story_dialogues.py" --sync-if-newer
-    python3 "$PATCH_REPO_DIR/localize.py" build \
+    python3 "$SCRIPT_DIR/tools/localize_ru.py" build \
         --bin "$BIN_ORIG" \
-        --workspace "$PATCH_REPO_DIR/localization-work/ru" \
-        --locale ru \
-        --output-dir "$RU_DIR" \
-        --force
+        --output-dir "$RU_DIR"
+    run_guards
     echo "Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
     python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
         --inject-disc "$RU_BIN" \
@@ -148,7 +170,9 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
     if [[ -f "$SCRIPT_DIR/data/preview_basyog_162_ru.png" ]]; then
         python3 "$SCRIPT_DIR/tools/patch_basyog_162.py" --bin "$RU_BIN"
     fi
+    python3 "$SCRIPT_DIR/tools/patch_combat.py" --bin "$RU_BIN"
     python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" --bin "$RU_BIN" --catalog "$COMBAT_DIALOGUES_JSON"
+    python3 "$SCRIPT_DIR/tools/patch_spells.py" --bin "$RU_BIN" --catalog "$SPELLS_JSON"
     python3 "$SCRIPT_DIR/tools/patch_town_services.py" --bin "$RU_BIN" --catalog "$TOWN_SERVICES_JSON" --shop-catalog "$SHOP_DIALOGUES_JSON"
     python3 "$SCRIPT_DIR/tools/patch_minigames.py" --bin "$RU_BIN" --catalog "$MINIGAMES_JSON"
     python3 "$SCRIPT_DIR/tools/patch_minigames_menu.py" --bin "$RU_BIN"
@@ -159,6 +183,15 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
     if [[ -d "$CUSTOM_HUD_DIR" ]] && compgen -G "$CUSTOM_HUD_DIR/*.png" > /dev/null 2>&1; then
         python3 "$SCRIPT_DIR/tools/patch_e8_textures.py" --bin "$RU_BIN"
     fi
+    python3 "$SCRIPT_DIR/tools/patch_title_logo.py" --bin "$RU_BIN"
+    if [[ -d "$CUSTOM_SCREENS_DIR" ]] && compgen -G "$CUSTOM_SCREENS_DIR/*.png" > /dev/null 2>&1; then
+        python3 "$SCRIPT_DIR/tools/patch_custom_screens.py" --bin "$RU_BIN" --screens-dir "$CUSTOM_SCREENS_DIR"
+    fi
+    if [[ -d "$EXTRA_SCREENS_DIR" ]] && compgen -G "$EXTRA_SCREENS_DIR/*.png" > /dev/null 2>&1; then
+        python3 "$SCRIPT_DIR/tools/patch_extra_screens.py" --bin "$RU_BIN"
+    fi
+    run_guards
+    mkdir -p "$PATCH_REPO_DIR/localization-output/ru"
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
     echo "==========================================================="
     echo "[✓] Сюжетные диалоги успешно обновлены в slayers_royal_ru.bin!"
@@ -439,18 +472,19 @@ fi
 mkdir -p "$RU_DIR"
 
 echo "[1/9] Сборка сюжетных диалогов (PROG.UNT)..."
-python3 "$SCRIPT_DIR/tools/sync_story_dialogues.py" --sync-if-newer
-python3 "$PATCH_REPO_DIR/localize.py" build \
+python3 "$SCRIPT_DIR/tools/localize_ru.py" build \
     --bin "$BIN_ORIG" \
-    --workspace "$PATCH_REPO_DIR/localization-work/ru" \
-    --locale ru \
-    --output-dir "$RU_DIR" \
-    --force
+    --output-dir "$RU_DIR"
+run_guards
 
 echo "[2/9] Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
-python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
-    --inject-disc "$RU_BIN" \
-    --movies-dir "$SCRIPT_DIR/build/movies"
+if compgen -G "$SCRIPT_DIR/build/movies/*" > /dev/null 2>&1; then
+    python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
+        --inject-disc "$RU_BIN" \
+        --movies-dir "$SCRIPT_DIR/build/movies"
+else
+    echo "    (build/movies отсутствует — видеоролики остаются оригинальными; см. docs/LOCALIZATION_GUIDE.md)"
+fi
 
 echo "[3/9] Внедрение описаний интерактивных объектов во все 149 комнат..."
 python3 "$SCRIPT_DIR/tools/patch_inspection.py" \
@@ -520,6 +554,7 @@ if [[ -d "$EXTRA_SCREENS_DIR" ]] && compgen -G "$EXTRA_SCREENS_DIR/*.png" > /dev
     echo "[14/14] Внедрение 13 дополнительных экранов/текстур (OPT 137..232, OPTCINE 01, PROG 54..57)..."
     python3 "$SCRIPT_DIR/tools/patch_extra_screens.py" --bin "$RU_BIN"
 fi
+run_guards
 mkdir -p "$PATCH_REPO_DIR/localization-output/ru"
 cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
 echo "==========================================================="

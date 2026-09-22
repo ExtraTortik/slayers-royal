@@ -484,13 +484,9 @@ def apply_combat_font_patches(
         if tile_bytes is None or is_tile_empty(tile_bytes):
             tile_bytes = render_cyrillic_glyph_2bpp(ch, fp)
         put_hw_tile_2bpp(patched_tim, code, tile_bytes)
-    # 3. Spell menu: Render 26 8x10 Cyrillic glyphs for in-battle spell list
-    try:
-        from tools.patch_spell_names import patch_tim_with_cyrillic
-        patched_tim = patch_tim_with_cyrillic(patched_tim, fp)
-    except Exception:
-        pass
-
+    # Bank 0 (8x10 spell-list tiles 0x00..0x3F) is deliberately left untouched:
+    # the in-battle spell list uses a separate 8-bit renderer bound to the
+    # original tile set, and Cyrillic there renders as garbage (hand_off §5.28).
     return patched_tim
 
 
@@ -501,7 +497,7 @@ def build_patched_combat_font(
 ) -> tuple[bytes, bytes]:
     """Render Cyrillic glyphs into font 0x142 in 2BPP and compress with unt_lz mode 1.
 
-    Injects Bank 1 (0x0150..0x0191) and Bank 0 (0x01..0x21, 0x00, 0x22).
+    Injects Bank 1 (0x0150..0x0191) only; Bank 0 keeps the English 8x10 tiles.
 
     Returns:
         (patched_tim_decompressed, compressed_bytes)
@@ -583,10 +579,10 @@ def patch_combat_font(
     font_path: Path | None = None,
     template_path: Path | None = None,
 ) -> tuple[bytes, dict[str, int]]:
-    """Patch decompressed TIM with Cyrillic glyphs in Bank 1 and Bank 0.
+    """Patch decompressed TIM with Cyrillic glyphs in Bank 1 (Bank 0 untouched).
 
     Preserves original TIM header (544 bytes) and CLUT completely.
-    Injects Bank 1 (0x0150..0x0191) and Bank 0 (0x01..0x21, 0x00, 0x22).
+    Injects Bank 1 (0x0150..0x0191) only; Bank 0 keeps the English 8x10 tiles.
     """
     cm = charmap if charmap is not None else build_combat_charmap()
     fp = font_path if font_path is not None else find_press_start_font()

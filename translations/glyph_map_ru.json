@@ -1,0 +1,403 @@
+{
+ "schema": 1,
+ "locale": "ru",
+ "renderer_max_glyph": "0x3E0",
+ "english_reserved_cells": 208,
+ "new_character_cells": 76,
+ "compact_cells": 0,
+ "characters": [
+  {
+   "text": " ",
+   "glyph": "0x07D"
+  },
+  {
+   "text": "!",
+   "glyph": "0x0A6"
+  },
+  {
+   "text": "'",
+   "glyph": "0x31B"
+  },
+  {
+   "text": "(",
+   "glyph": "0x001"
+  },
+  {
+   "text": ")",
+   "glyph": "0x002"
+  },
+  {
+   "text": ",",
+   "glyph": "0x0A1"
+  },
+  {
+   "text": "-",
+   "glyph": "0x0A4"
+  },
+  {
+   "text": ".",
+   "glyph": "0x0A2"
+  },
+  {
+   "text": "/",
+   "glyph": "0x003"
+  },
+  {
+   "text": "0",
+   "glyph": "0x0A8"
+  },
+  {
+   "text": "1",
+   "glyph": "0x0A9"
+  },
+  {
+   "text": "2",
+   "glyph": "0x0AA"
+  },
+  {
+   "text": "3",
+   "glyph": "0x0AB"
+  },
+  {
+   "text": "4",
+   "glyph": "0x0AC"
+  },
+  {
+   "text": "5",
+   "glyph": "0x0AD"
+  },
+  {
+   "text": "6",
+   "glyph": "0x0AE"
+  },
+  {
+   "text": "8",
+   "glyph": "0x0B0"
+  },
+  {
+   "text": "9",
+   "glyph": "0x0B1"
+  },
+  {
+   "text": ":",
+   "glyph": "0x0BC"
+  },
+  {
+   "text": "?",
+   "glyph": "0x0A7"
+  },
+  {
+   "text": "B",
+   "glyph": "0x14C"
+  },
+  {
+   "text": "C",
+   "glyph": "0x128"
+  },
+  {
+   "text": "c",
+   "glyph": "0x03A"
+  },
+  {
+   "text": "~",
+   "glyph": "0x004"
+  },
+  {
+   "text": "«",
+   "glyph": "0x005"
+  },
+  {
+   "text": "»",
+   "glyph": "0x006"
+  },
+  {
+   "text": "Ё",
+   "glyph": "0x007"
+  },
+  {
+   "text": "А",
+   "glyph": "0x008"
+  },
+  {
+   "text": "Б",
+   "glyph": "0x009"
+  },
+  {
+   "text": "В",
+   "glyph": "0x00A"
+  },
+  {
+   "text": "Г",
+   "glyph": "0x00B"
+  },
+  {
+   "text": "Д",
+   "glyph": "0x00C"
+  },
+  {
+   "text": "Е",
+   "glyph": "0x00D"
+  },
+  {
+   "text": "Ж",
+   "glyph": "0x00E"
+  },
+  {
+   "text": "З",
+   "glyph": "0x00F"
+  },
+  {
+   "text": "И",
+   "glyph": "0x010"
+  },
+  {
+   "text": "Й",
+   "glyph": "0x011"
+  },
+  {
+   "text": "К",
+   "glyph": "0x012"
+  },
+  {
+   "text": "Л",
+   "glyph": "0x013"
+  },
+  {
+   "text": "М",
+   "glyph": "0x014"
+  },
+  {
+   "text": "Н",
+   "glyph": "0x015"
+  },
+  {
+   "text": "О",
+   "glyph": "0x016"
+  },
+  {
+   "text": "П",
+   "glyph": "0x018"
+  },
+  {
+   "text": "Р",
+   "glyph": "0x019"
+  },
+  {
+   "text": "С",
+   "glyph": "0x01A"
+  },
+  {
+   "text": "Т",
+   "glyph": "0x01B"
+  },
+  {
+   "text": "У",
+   "glyph": "0x01C"
+  },
+  {
+   "text": "Ф",
+   "glyph": "0x01D"
+  },
+  {
+   "text": "Х",
+   "glyph": "0x01E"
+  },
+  {
+   "text": "Ц",
+   "glyph": "0x01F"
+  },
+  {
+   "text": "Ч",
+   "glyph": "0x020"
+  },
+  {
+   "text": "Ш",
+   "glyph": "0x021"
+  },
+  {
+   "text": "Щ",
+   "glyph": "0x022"
+  },
+  {
+   "text": "Ъ",
+   "glyph": "0x023"
+  },
+  {
+   "text": "Ы",
+   "glyph": "0x024"
+  },
+  {
+   "text": "Ь",
+   "glyph": "0x025"
+  },
+  {
+   "text": "Э",
+   "glyph": "0x026"
+  },
+  {
+   "text": "Ю",
+   "glyph": "0x027"
+  },
+  {
+   "text": "Я",
+   "glyph": "0x028"
+  },
+  {
+   "text": "а",
+   "glyph": "0x029"
+  },
+  {
+   "text": "б",
+   "glyph": "0x02A"
+  },
+  {
+   "text": "в",
+   "glyph": "0x02B"
+  },
+  {
+   "text": "г",
+   "glyph": "0x02C"
+  },
+  {
+   "text": "д",
+   "glyph": "0x02D"
+  },
+  {
+   "text": "е",
+   "glyph": "0x02E"
+  },
+  {
+   "text": "ж",
+   "glyph": "0x02F"
+  },
+  {
+   "text": "з",
+   "glyph": "0x030"
+  },
+  {
+   "text": "и",
+   "glyph": "0x032"
+  },
+  {
+   "text": "й",
+   "glyph": "0x033"
+  },
+  {
+   "text": "к",
+   "glyph": "0x034"
+  },
+  {
+   "text": "л",
+   "glyph": "0x035"
+  },
+  {
+   "text": "м",
+   "glyph": "0x036"
+  },
+  {
+   "text": "н",
+   "glyph": "0x037"
+  },
+  {
+   "text": "о",
+   "glyph": "0x038"
+  },
+  {
+   "text": "п",
+   "glyph": "0x039"
+  },
+  {
+   "text": "р",
+   "glyph": "0x03B"
+  },
+  {
+   "text": "с",
+   "glyph": "0x03C"
+  },
+  {
+   "text": "т",
+   "glyph": "0x03D"
+  },
+  {
+   "text": "у",
+   "glyph": "0x03E"
+  },
+  {
+   "text": "ф",
+   "glyph": "0x03F"
+  },
+  {
+   "text": "х",
+   "glyph": "0x041"
+  },
+  {
+   "text": "ц",
+   "glyph": "0x042"
+  },
+  {
+   "text": "ч",
+   "glyph": "0x043"
+  },
+  {
+   "text": "ш",
+   "glyph": "0x044"
+  },
+  {
+   "text": "щ",
+   "glyph": "0x045"
+  },
+  {
+   "text": "ъ",
+   "glyph": "0x046"
+  },
+  {
+   "text": "ы",
+   "glyph": "0x047"
+  },
+  {
+   "text": "ь",
+   "glyph": "0x049"
+  },
+  {
+   "text": "э",
+   "glyph": "0x04C"
+  },
+  {
+   "text": "ю",
+   "glyph": "0x04E"
+  },
+  {
+   "text": "я",
+   "glyph": "0x050"
+  },
+  {
+   "text": "ё",
+   "glyph": "0x051"
+  },
+  {
+   "text": "—",
+   "glyph": "0x052"
+  },
+  {
+   "text": "“",
+   "glyph": "0x053"
+  },
+  {
+   "text": "„",
+   "glyph": "0x054"
+  },
+  {
+   "text": "…",
+   "glyph": "0x056"
+  },
+  {
+   "text": "♥",
+   "glyph": "0x0B4"
+  },
+  {
+   "text": "♪",
+   "glyph": "0x0B5"
+  }
+ ],
+ "compact_tokens": []
+}

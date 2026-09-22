@@ -71,14 +71,10 @@ from tools.patch_combat_dialogues import (
     verify_entry_7_invariants,
     patch_combat_dialogues,
     extract_entry_data_and_info,
-    OFFSET_SYSTEM_COMMANDS_START,
-    OFFSET_SYSTEM_COMMANDS_END,
-    OFFSET_PROMPT_STREAM_START,
-    OFFSET_PROMPT_STREAM_END,
-    PROMPT_STREAM_MAX_BYTES,
-    SYSTEM_COMMAND_SLOTS,
-    FIXED_PROMPT_SLOTS,
-    SYSTEM_PROMPT_STRINGS,
+    UI_POINTER_COUNT,
+    UI_POINTER_BASE,
+    load_system_strings,
+    pack_ui_strings,
     patch_combat_system_strings,
     verify_combat_system_strings,
     verify_entry_checksums,
@@ -582,7 +578,8 @@ class TestInPlaceDialoguePatching(unittest.TestCase):
 
         # Explicit checks
         self.assertEqual(patched_e7[:OFFSET_SYSTEM_BUTTONS_START], orig_e7[:OFFSET_SYSTEM_BUTTONS_START])
-        self.assertEqual(patched_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START], orig_e7[OFFSET_TABLE2_START:DIALOGUE_STREAM_START])
+        ui_table_end = OFFSET_TABLE2_START + 4 * UI_POINTER_COUNT
+        self.assertEqual(patched_e7[ui_table_end:DIALOGUE_STREAM_START], orig_e7[ui_table_end:DIALOGUE_STREAM_START])
         self.assertEqual(patched_e7[OFFSET_TABLE3_START:], orig_e7[OFFSET_TABLE3_START:])
         self.assertEqual(patched_e7[OFFSET_MIPS_INIT_EXIT:OFFSET_MIPS_INIT_EXIT + 8], orig_e7[OFFSET_MIPS_INIT_EXIT:OFFSET_MIPS_INIT_EXIT + 8])
         self.assertEqual(patched_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START], orig_e7[OFFSET_TABLE1_START:OFFSET_SYSTEM_BUTTONS_START])
@@ -730,179 +727,64 @@ class TestDryRunPipeline(unittest.TestCase):
             res = subprocess.run(cmd, capture_output=True, text=True)
             self.assertEqual(res.returncode, 0, f"CLI dry-run failed:\nSTDOUT:\n{res.stdout}\nSTDERR:\n{res.stderr}")
             self.assertIn("DRY RUN", res.stdout)
-            self.assertIn("Invariants: 100% verified", res.stdout)
+            self.assertIn("Invariants verified", res.stdout)
         finally:
             if mock_cat_path and mock_cat_path.is_file():
                 mock_cat_path.unlink()
 
 class TestCombatSystemStrings(unittest.TestCase):
-    """Verify combat system commands (18 fixed slots) and prompt stream (11 strings)."""
+    """Battle UI labels: 37 strings packed in 0x05F278..0x05F470, addressed via the table at 0x05F470."""
 
-    def test_all_18_system_command_slots_budget(self):
-        """Verify each of 18 fixed slots fits within 16 bytes when encoded."""
-        self.assertEqual(len(SYSTEM_COMMAND_SLOTS), 18)
-        for offset, text in SYSTEM_COMMAND_SLOTS:
-            self.assertGreaterEqual(offset, OFFSET_SYSTEM_COMMANDS_START)
-            self.assertLess(offset, OFFSET_SYSTEM_COMMANDS_END)
-            self.assertEqual((offset - OFFSET_SYSTEM_COMMANDS_START) % 16, 0)
+    def test_catalog_has_37_strings_in_table_order(self):
+        texts = load_system_strings()
+        self.assertEqual(len(texts), UI_POINTER_COUNT)
+        self.assertEqual(texts[0], "СТАРТ")
 
-            encoded = encode_combat_dialogue_string(text, COMBAT_CHARMAP) + struct.pack("<H", OPCODE_BLOCK_END)
-            self.assertLessEqual(
-                len(encoded),
-                16,
-                f"Command '{text}' at 0x{offset:06X} length {len(encoded)} exceeds 16-byte slot!",
-            )
-            # Padded slot must be exactly 16 bytes
-            padded = encoded.ljust(16, b"\x00")
-            self.assertEqual(len(padded), 16)
+    def test_pack_fits_region_and_dedupes(self):
+        texts = load_system_strings()
+        region, overflow, targets = pack_ui_strings(texts)
+        self.assertEqual(len(region), OFFSET_SYSTEM_BUTTONS_END - OFFSET_SYSTEM_BUTTONS_START)
+        self.assertEqual(len(targets), UI_POINTER_COUNT)
+        self.assertEqual(overflow, b"")
+        # identical labels share one record
+        dup = [i for i, t in enumerate(texts) if texts.index(t) != i]
+        for i in dup:
+            self.assertEqual(targets[i], targets[texts.index(texts[i])])
+        # every target starts right after a terminator (or at the region start)
+        for t in targets:
+            self.assertTrue(OFFSET_SYSTEM_BUTTONS_START <= t < OFFSET_SYSTEM_BUTTONS_END)
+            if t > OFFSET_SYSTEM_BUTTONS_START:
+                rel = t - OFFSET_SYSTEM_BUTTONS_START
+                self.assertEqual(region[rel - 2 : rel], struct.pack("<H", OPCODE_BLOCK_END))
 
-    def test_fixed_prompt_slots_offsets_and_budget(self):
-        """Verify exact fixed-offset prompt slots matching PS1 hardware pointers:
-        - Exactly 14 prompt slots.
-        - Each prompt encoded string + delimiter fits within its designated slot budget.
-        - Each prompt begins at its exact hardware pointer offset.
-        - Specific key offsets:
-          0x05F3BA -> 'КТО ХОДИТ'
-          0x05F3CE -> 'ДЕЙСТВИЕ'
-          0x05F3E2 -> 'МАГИЯ'
-        - Slots end at 0x05F46C with 4-byte padding margin before Table 2 boundary (0x05F470).
-        """
-        self.assertEqual(len(FIXED_PROMPT_SLOTS), 14)
-        expected_slots = {
-            0x05F394: (14, "ЗАЩИТА"),
-            0x05F3A2: (10, "АВТО"),
-            0x05F3AC: (14, "РУЧНОЙ"),
-            0x05F3BA: (20, "КТО ХОДИТ"),
-            0x05F3CE: (20, "ДЕЙСТВИЕ"),
-            0x05F3E2: (22, "МАГИЯ"),
-            0x05F3F8: (18, "КУДА?"),
-            0x05F40A: (16, "ЦЕЛЬ?"),
-            0x05F41A: (12, "ЗОНА?"),
-            0x05F426: (18, "ИДЕТ БОЙ"),
-            0x05F438: (12, "ЖДИТЕ"),
-            0x05F444: (20, "РЕЖИМ"),
-            0x05F458: (10, "СЕЙВ"),
-            0x05F462: (10, "ЛОАД"),
-        }
-
-        for offset, slot_len, text in FIXED_PROMPT_SLOTS:
-            self.assertIn(offset, expected_slots)
-            exp_len, exp_text = expected_slots[offset]
-            self.assertEqual(slot_len, exp_len)
-            self.assertEqual(text, exp_text)
-
-            encoded = encode_combat_dialogue_string(text, COMBAT_CHARMAP) + struct.pack("<H", OPCODE_BLOCK_END)
-            self.assertLessEqual(
-                len(encoded),
-                slot_len,
-                f"Prompt '{text}' at 0x{offset:06X} length {len(encoded)} exceeds {slot_len}-byte slot!",
-            )
-            padded = encoded.ljust(slot_len, b"\x00")
-            self.assertEqual(len(padded), slot_len)
-
-        # Verify key prompt offsets
-        prompt_dict = {off: (slen, txt) for off, slen, txt in FIXED_PROMPT_SLOTS}
-        self.assertEqual(prompt_dict[0x05F3BA][1], "КТО ХОДИТ")
-        self.assertEqual(prompt_dict[0x05F3CE][1], "ДЕЙСТВИЕ")
-        self.assertEqual(prompt_dict[0x05F3E2][1], "МАГИЯ")
-
-        # Verify boundary and margin before Table 2
-        last_offset, last_len, _ = FIXED_PROMPT_SLOTS[-1]
-        self.assertEqual(last_offset + last_len, 0x05F46C)
-        self.assertEqual(OFFSET_TABLE2_START, 0x05F470)
-        self.assertEqual(OFFSET_TABLE2_START - (last_offset + last_len), 4)
-
-    def test_patch_combat_system_strings_in_place(self):
-        """Verify in-place patching of system commands and prompts into Entry 0x007."""
-        dummy_size = 745 * 2048
-        dummy_e7 = bytearray(b"\xAA" * dummy_size)
-
-        # Set specific boundary canaries
+    def test_patch_combat_system_strings_rewrites_pointer_table(self):
+        dummy_e7 = bytearray(b"\xAA" * (745 * 2048))
         canary_before = b"\x12\x34\x56\x78"
-        canary_table2 = b"\xDE\xAD\xBE\xEF"
-        dummy_e7[OFFSET_SYSTEM_COMMANDS_START - 4 : OFFSET_SYSTEM_COMMANDS_START] = canary_before
-        dummy_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 4] = canary_table2
+        dummy_e7[OFFSET_SYSTEM_BUTTONS_START - 4 : OFFSET_SYSTEM_BUTTONS_START] = canary_before
+        canary_after = b"\xDE\xAD\xBE\xEF"
+        table_end = OFFSET_TABLE2_START + 4 * UI_POINTER_COUNT
+        dummy_e7[table_end : table_end + 4] = canary_after
 
         patched = patch_combat_system_strings(dummy_e7)
-
-        # Verify canaries are 100% untouched
-        self.assertEqual(
-            patched[OFFSET_SYSTEM_COMMANDS_START - 4 : OFFSET_SYSTEM_COMMANDS_START],
-            canary_before,
-            "Canary before system commands was overwritten!",
-        )
-        self.assertEqual(
-            patched[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 4],
-            canary_table2,
-            "Canary at Table 2 boundary (0x05F470) was overwritten!",
-        )
-        enc_kto = encode_combat_dialogue_string("КТО ХОДИТ", COMBAT_CHARMAP)
-        self.assertEqual(
-            patched[0x05F3BA : 0x05F3BA + len(enc_kto)],
-            enc_kto,
-            "0x05F3BA does not start with 'КТО ХОДИТ'",
-        )
-
-        enc_mag = encode_combat_dialogue_string("МАГИЯ", COMBAT_CHARMAP)
-        self.assertEqual(
-            patched[0x05F3E2 : 0x05F3E2 + len(enc_mag)],
-            enc_mag,
-            "0x05F3E2 does not start with 'МАГИЯ'",
-        )
-
-        enc_act = encode_combat_dialogue_string("ДЕЙСТВИЕ", COMBAT_CHARMAP)
-        self.assertEqual(
-            patched[0x05F3CE : 0x05F3CE + len(enc_act)],
-            enc_act,
-            "0x05F3CE does not start with 'ДЕЙСТВИЕ'",
-        )
-
-        # Verify unallocated gap 0x05F46C..0x05F470 is zeroed
-        self.assertEqual(
-            patched[0x05F46C:0x05F470],
-            b"\x00\x00\x00\x00",
-            "Gap at 0x05F46C..0x05F470 is not zeroed!",
-        )
-
-        # Verify Russian strings via verify_combat_system_strings
+        self.assertEqual(patched[OFFSET_SYSTEM_BUTTONS_START - 4 : OFFSET_SYSTEM_BUTTONS_START], canary_before)
+        self.assertEqual(patched[table_end : table_end + 4], canary_after)
+        texts = load_system_strings()
+        for k, text in enumerate(texts):
+            ptr = struct.unpack_from("<I", patched, OFFSET_TABLE2_START + 4 * k)[0]
+            target = ptr - UI_POINTER_BASE
+            expected = encode_combat_dialogue_string(text, COMBAT_CHARMAP) + struct.pack("<H", OPCODE_BLOCK_END)
+            self.assertEqual(bytes(patched[target : target + len(expected)]), expected, text)
         verify_combat_system_strings(bytes(patched))
 
-    def test_table2_boundary_preservation(self):
-        """Verify Table 2 (0x05F470..0x05F504) is 100% byte-for-byte intact after patching."""
-        self.assertTrue(DEFAULT_BIN.is_file(), f"Binary not found: {DEFAULT_BIN}")
-        _, _, _, orig_e7 = extract_entry_data_and_info(DEFAULT_BIN, ENTRY_COMBAT_DATA)
-
-        table2_orig = orig_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 148]
-
-        patched_e7 = bytearray(orig_e7)
-        patch_combat_system_strings(patched_e7)
-
-        table2_patched = patched_e7[OFFSET_TABLE2_START : OFFSET_TABLE2_START + 148]
-        self.assertEqual(
-            table2_patched,
-            table2_orig,
-            "Table 2 was modified during combat system string injection!",
-        )
-
-    def test_command_slot_overflow_validation(self):
-        """Verify that a command exceeding 16 bytes raises ValueError."""
+    def test_overflow_goes_to_free_area_or_raises(self):
         dummy_e7 = bytearray(745 * 2048)
-        huge_text = "СЛИШКОМ_ДЛИННАЯ_КОМАНДА"
-        from unittest.mock import patch
-        with patch("tools.patch_combat_dialogues.SYSTEM_COMMAND_SLOTS", [(0x05F278, huge_text)]):
-            with self.assertRaises(ValueError) as ctx:
-                patch_combat_system_strings(dummy_e7)
-            self.assertIn("exceeds 16-byte slot", str(ctx.exception))
+        long_texts = [f"ОЧЕНЬДЛИННАЯ{i:02d}" for i in range(UI_POINTER_COUNT)]
+        patched = patch_combat_system_strings(dummy_e7, texts=long_texts)
+        verify_combat_system_strings(bytes(patched), texts=long_texts)
+        way_too_long = ["Ж" * 60 + f"{i:02d}" for i in range(UI_POINTER_COUNT)]
+        with self.assertRaises(ValueError):
+            patch_combat_system_strings(bytearray(745 * 2048), texts=way_too_long)
 
-    def test_prompt_slot_overflow_validation(self):
-        """Verify that a prompt exceeding its fixed slot raises ValueError."""
-        dummy_e7 = bytearray(745 * 2048)
-        huge_text = "СЛИШКОМ_ДЛИННЫЙ_ПРОМПТ_ДЛЯ_СЛОТА"
-        from unittest.mock import patch
-        with patch("tools.patch_combat_dialogues.FIXED_PROMPT_SLOTS", [(0x05F394, 14, huge_text)]):
-            with self.assertRaises(ValueError) as ctx:
-                patch_combat_system_strings(dummy_e7)
-            self.assertIn("exceeds 14-byte slot", str(ctx.exception))
     def test_pipeline_alias(self):
         """Verify patch_combat_dialogues_pipeline alias is identical to patch_combat_dialogues."""
         self.assertIs(patch_combat_dialogues_pipeline, patch_combat_dialogues)

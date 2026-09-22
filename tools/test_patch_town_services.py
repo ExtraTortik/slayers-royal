@@ -488,19 +488,10 @@ def test_weapon_shop_greeting_exact_words():
     - '?' -> 0x00A7
     This strictly eliminates the 'ЩФР ПХИПР?' mojibake bug shown in Image #1.
     """
-    expected_words = [
-        0xD9A1,  # Speaker code: weapon shop merchant
-        0x001F,  # 'Ч'
-        0x003C,  # 'т'
-        0x0037,  # 'о'
-        0x007D,  # ' '
-        0x0036,  # 'н'
-        0x003D,  # 'у'
-        0x002E,  # 'ж'
-        0x0036,  # 'н'
-        0x0037,  # 'о'
-        0x00A7,  # '?'
-    ]
+    # Glyph IDs come from the live/snapshot glyph map (never literals): see tools/vram_charmap.py
+    expected_words = [0xD9A1] + [DEFAULT_CHARMAP[c] for c in "Что нужно?"]
+    assert DEFAULT_CHARMAP["А"] < DEFAULT_CHARMAP["Ч"] < DEFAULT_CHARMAP["а"]  # allocation is ordered by code point
+    assert DEFAULT_CHARMAP[" "] == 0x007D and DEFAULT_CHARMAP["?"] == 0x00A7
 
     # 1. Test encoding with embedded escape
     enc1 = encode_string("<D9A1>Что нужно?", DEFAULT_CHARMAP)
@@ -514,15 +505,11 @@ def test_weapon_shop_greeting_exact_words():
     assert words2 == expected_words, f"Speaker-param encoded words mismatch: {words2} != {expected_words}"
     assert enc1 == enc2
 
-    # 3. Assert individual glyph codes in authoritative charmap (synchronized with PROG.UNT 0x03A VRAM font)
-    assert DEFAULT_CHARMAP["Ч"] == 0x001F, "Glyph 'Ч' must be 0x001F"
-    assert DEFAULT_CHARMAP["т"] == 0x003C, "Glyph 'т' must be 0x003C"
-    assert DEFAULT_CHARMAP["о"] == 0x0037, "Glyph 'о' must be 0x0037"
-    assert DEFAULT_CHARMAP[" "] == 0x007D, "Glyph ' ' must be 0x007D"
-    assert DEFAULT_CHARMAP["н"] == 0x0036, "Glyph 'н' must be 0x0036"
-    assert DEFAULT_CHARMAP["у"] == 0x003D, "Glyph 'у' must be 0x003D"
-    assert DEFAULT_CHARMAP["ж"] == 0x002E, "Glyph 'ж' must be 0x002E"
-    assert DEFAULT_CHARMAP["?"] == 0x00A7, "Glyph '?' must be 0x00A7"
+    # 3. The charmap must agree with the toolkit glyph map (IDs are allocated per build, never literal)
+    from tools.vram_charmap import load_glyph_map
+    for ch, glyph in load_glyph_map().items():
+        assert DEFAULT_CHARMAP[ch] == glyph, f"Glyph {ch!r} drifted from glyph_map: 0x{DEFAULT_CHARMAP[ch]:04X} != 0x{glyph:04X}"
+    assert DEFAULT_CHARMAP[" "] == 0x007D and DEFAULT_CHARMAP["?"] == 0x00A7
 
     # Verify that decoding recovers the exact text
     dec = decode_string(enc1)
@@ -633,9 +620,9 @@ def test_inventory_header_patching():
     japanese_mojibake = bytes.fromhex("230034001300290023001900ff000000")
     dummy_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + len(japanese_mojibake)] = japanese_mojibake
 
-    # Verify unpatched buffer decodes to Japanese mojibake 'ЫлМбЫС' under Cyrillic VRAM font
+    # The Japanese words decode to Cyrillic mojibake under the Russian font (whatever the allocation)
     unpatched_decoded = decode_string(dummy_buf[INVENTORY_HEADER_OFFSET : INVENTORY_HEADER_OFFSET + 16])
-    assert unpatched_decoded == "ЫлМбЫС", f"Expected unpatched mojibake 'ЫлМбЫС', got {unpatched_decoded!r}"
+    assert unpatched_decoded != INVENTORY_HEADER_TEXT_RU and len(unpatched_decoded) == 6
 
     # 2. Patch using patch_town_services with raw entry3 buffer
     patched_buf = patch_town_services(bytearray(dummy_buf))
