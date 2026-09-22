@@ -183,7 +183,9 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
     if [[ -d "$CUSTOM_HUD_DIR" ]] && compgen -G "$CUSTOM_HUD_DIR/*.png" > /dev/null 2>&1; then
         python3 "$SCRIPT_DIR/tools/patch_e8_textures.py" --bin "$RU_BIN"
     fi
-    python3 "$SCRIPT_DIR/tools/patch_title_logo.py" --bin "$RU_BIN"
+    if [[ "$*" == *"--title-logo"* || "$*" == *"--logo"* ]]; then
+        python3 "$SCRIPT_DIR/tools/patch_title_logo.py" --bin "$RU_BIN"
+    fi
     if [[ -d "$CUSTOM_SCREENS_DIR" ]] && compgen -G "$CUSTOM_SCREENS_DIR/*.png" > /dev/null 2>&1; then
         python3 "$SCRIPT_DIR/tools/patch_custom_screens.py" --bin "$RU_BIN" --screens-dir "$CUSTOM_SCREENS_DIR"
     fi
@@ -536,8 +538,10 @@ echo "[10/10] Внедрение меню бонусов и заголовков
 python3 "$SCRIPT_DIR/tools/patch_bonus_menu.py" \
     --bin "$RU_BIN" \
     --catalog "$BONUS_MENU_JSON"
-echo "[11/11] Внедрение русского логотипа титульного экрана (PROG.UNT 314)..."
-python3 "$SCRIPT_DIR/tools/patch_title_logo.py" --bin "$RU_BIN"
+if [[ "$*" == *"--title-logo"* || "$*" == *"--logo"* ]]; then
+    echo "[11/11] Внедрение русского логотипа титульного экрана (PROG.UNT 314)..."
+    python3 "$SCRIPT_DIR/tools/patch_title_logo.py" --bin "$RU_BIN"
+fi
 if compgen -G "$TOWN_MAPS_DIR/*.png" > /dev/null 2>&1 || compgen -G "$TOWN_MAPS_DIR/*.PNG" > /dev/null 2>&1; then
     echo "[11/11] Внедрение пользовательских карт городов (BASYOG.UNT 467..476)..."
     python3 "$SCRIPT_DIR/tools/patch_town_maps.py" --bin "$RU_BIN" --maps-dir "$TOWN_MAPS_DIR"

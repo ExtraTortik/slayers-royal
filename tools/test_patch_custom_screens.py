@@ -5,6 +5,7 @@ Validates:
 1. Catalog loading and specifications in translations/custom_screens_ru.json:
    - OPT 203: "БЕСКОНЕЧНАЯ ИГРА" (LBA 228713, 1 sec, 4bpp, 64x16)
    - OPT 221: "ХОД" (LBA 228916, 3 sec, 8bpp, 80x64)
+   - OPT 224: "СТОП / СНОВА" (LBA 228925, 1 sec, 4bpp, 64x32)
    - OPT 225: "СТАРТ" (LBA 228926, 1 sec, 4bpp, 64x16)
    - PROG 323: "КОНЕЦ ИГРЫ" (LBA 233202, 5 sec, 8bpp, 320x240, LZSS mode 1)
 2. Discovery of custom screen PNG files in data/custom_screens/ and alias parsing.
@@ -40,12 +41,16 @@ from tools.patch_custom_screens import (
     DEFAULT_PREVIEW_PATH,
     DEFAULT_SCREENS_DIR,
     DEFAULT_TARGET_BIN,
+    ENTRY_ALIASES,
     ENTRY_ID_MAP,
     RAW_SECTOR_SIZE,
     USER_DATA_OFFSET,
     USER_DATA_SIZE,
+    build_custom_screens_tim,
+    encode_opt_224,
     encode_custom_screen,
     encode_opt_203,
+    encode_opt_220,
     encode_opt_221,
     encode_opt_225,
     encode_prog_323,
@@ -82,10 +87,10 @@ class TestCustomScreensCatalog:
         assert "metadata" in data
         assert "screens" in data
         screens = data["screens"]
-        assert len(screens) == 4
+        assert len(screens) == 6
 
         entry_indices = {s["entry_index"] for s in screens}
-        assert entry_indices == {203, 221, 225, 323}
+        assert entry_indices == {203, 220, 221, 224, 225, 323}
 
     def test_entry_specifications(self):
         data = load_catalog(DEFAULT_CATALOG)
@@ -103,6 +108,18 @@ class TestCustomScreensCatalog:
         assert s203["clut_colors"] == 16
         assert s203["compressed"] is False
 
+
+        # 2. OPT 220
+        s220 = screens_by_idx[220]
+        assert s220["archive"] == "OPT.UNT"
+        assert s220["lba"] == 228880
+        assert s220["sectors"] == 36
+        assert s220["budget"] == 73728
+        assert s220["width"] == 320
+        assert s220["height"] == 224
+        assert s220["bpp"] == 8
+        assert s220["clut_colors"] == 256
+        assert s220["compressed"] is False
         # 2. OPT 221
         s221 = screens_by_idx[221]
         assert s221["archive"] == "OPT.UNT"
@@ -114,6 +131,19 @@ class TestCustomScreensCatalog:
         assert s221["bpp"] == 8
         assert s221["clut_colors"] == 256
         assert s221["compressed"] is False
+
+        # 3. OPT 224
+        s224 = screens_by_idx[224]
+        assert s224["archive"] == "OPT.UNT"
+        assert s224["lba"] == 228925
+        assert s224["sectors"] == 1
+        assert s224["budget"] == 2048
+        assert s224["width"] == 64
+        assert s224["height"] == 32
+        assert s224["bpp"] == 4
+        assert s224["clut_y"] == 499
+        assert s224["clut_colors"] == 16
+        assert s224["compressed"] is False
 
         # 3. OPT 225
         s225 = screens_by_idx[225]
@@ -145,8 +175,8 @@ class TestDiscoveryAndIdentifiers:
 
     def test_find_custom_screens(self):
         found = find_custom_screens(DEFAULT_SCREENS_DIR)
-        assert len(found) == 4, f"Expected 4 custom screens in {DEFAULT_SCREENS_DIR}, got {len(found)}: {found}"
-        assert set(found.keys()) == {203, 221, 225, 323}
+        assert len(found) == 6, f"Expected 6 custom screens in {DEFAULT_SCREENS_DIR}, got {len(found)}: {found}"
+        assert set(found.keys()) == {203, 220, 221, 224, 225, 323}
         for idx, p in found.items():
             assert p.is_file(), f"File for entry {idx} does not exist: {p}"
 
@@ -156,9 +186,19 @@ class TestDiscoveryAndIdentifiers:
         assert parse_entry_id("turn") == 203
         assert parse_entry_id("opt_203") == 203
 
+
+        assert parse_entry_id(220) == 220
+        assert parse_entry_id("220") == 220
+        assert parse_entry_id("slot_bg") == 220
+        assert parse_entry_id("opt_220") == 220
         assert parse_entry_id(221) == 221
         assert parse_entry_id("unlimited_play") == 221
         assert parse_entry_id("opt_221") == 221
+
+        assert parse_entry_id(224) == 224
+        assert parse_entry_id("slot_buttons") == 224
+        assert parse_entry_id("opt_224") == 224
+        assert parse_entry_id("stop_replay") == 224
 
         assert parse_entry_id(225) == 225
         assert parse_entry_id("start") == 225
@@ -178,7 +218,7 @@ class TestTimEncoding:
     @pytest.fixture
     def screens_files(self):
         found = find_custom_screens(DEFAULT_SCREENS_DIR)
-        assert len(found) == 4
+        assert len(found) == 6
         return found
 
     def test_encode_opt_203(self, screens_files):
@@ -203,6 +243,36 @@ class TestTimEncoding:
         # Trailing bytes in sector must be zero padded
         assert all(b == 0 for b in payload[1088:])
 
+    def test_encode_opt_220(self, screens_files):
+        payload = encode_opt_220(screens_files[220])
+        assert len(payload) == 73728, "Payload must be padded to 73,728 bytes (36 sectors)"
+
+        magic, flag = struct.unpack_from("<II", payload, 0)
+        assert magic == 0x10
+        assert flag == 0x09  # 8bpp with CLUT
+
+        clut_len, cx, cy, cw, ch = struct.unpack_from("<IHHHH", payload, 8)
+        assert clut_len == 524
+        assert (cx, cy, cw, ch) == (0, 480, 256, 1)
+
+        img_len, ix, iy, iw, ih = struct.unpack_from("<IHHHH", payload, 8 + clut_len)
+        assert img_len == 71692
+        assert (ix, iy, iw, ih) == (320, 0, 160, 224)
+
+        # Trailing 1504 bytes in 36th sector must be zero padded
+        assert all(b == 0 for b in payload[72224:])
+
+        # Roundtrip decoding test
+        decoded = tim_to_rgba(payload[:72224])
+        assert decoded.size == (320, 224)
+        assert decoded.mode == "RGBA"
+
+    def test_build_custom_screens_tim_220(self, screens_files):
+        tim_bytes, payload = build_custom_screens_tim(220, screens_files[220])
+        assert len(tim_bytes) == 72224
+        assert len(payload) == 73728
+        assert payload[:72224] == tim_bytes
+
     def test_encode_opt_221(self, screens_files):
         payload = encode_opt_221(screens_files[221])
         assert len(payload) == 6144, "Payload must be padded to 6144 bytes (3 sectors)"
@@ -220,6 +290,39 @@ class TestTimEncoding:
         assert (ix, iy, iw, ih) == (960, 0, 40, 64)
 
         assert all(b == 0 for b in payload[5664:])
+
+    def test_encode_opt_224(self, screens_files):
+        payload = encode_opt_224(screens_files[224])
+        assert len(payload) == 2048, "Payload must be padded to 2048 bytes (1 sector)"
+
+        magic, flag = struct.unpack_from("<II", payload, 0)
+        assert magic == 0x10
+        assert flag == 0x08  # 4bpp with CLUT
+
+        clut_len, cx, cy, cw, ch = struct.unpack_from("<IHHHH", payload, 8)
+        assert clut_len == 44
+        assert (cx, cy, cw, ch) == (0, 499, 16, 1)
+
+        img_len, ix, iy, iw, ih = struct.unpack_from("<IHHHH", payload, 8 + clut_len)
+        assert img_len == 1036
+        assert (ix, iy, iw, ih) == (1000, 16, 16, 32)
+
+        assert all(b == 0 for b in payload[1088:])
+        # Verify non-zero pixels map to bright red indices (1..4)
+        img_data = payload[8 + clut_len + 12 : 8 + clut_len + img_len]
+        indices = []
+        for b in img_data:
+            indices.append(b & 0x0F)
+            indices.append((b >> 4) & 0x0F)
+        non_zero = [idx for idx in indices if idx != 0]
+        assert len(non_zero) > 0, "Expected non-zero text pixels"
+        assert all(idx in (1, 2, 3, 4) for idx in non_zero), f"Expected indices 1..4, got {set(non_zero)}"
+
+    def test_build_custom_screens_tim_224(self, screens_files):
+        tim_bytes, payload = build_custom_screens_tim(224, screens_files[224])
+        assert len(tim_bytes) == 1088
+        assert len(payload) == 2048
+        assert payload[:1088] == tim_bytes
 
     def test_encode_opt_225(self, screens_files):
         payload = encode_opt_225(screens_files[225])
@@ -270,7 +373,7 @@ class TestDiscVerificationAndEdcEcc:
             pytest.skip("Target disc image not available")
 
         results = verify_custom_screens(DEFAULT_TARGET_BIN)
-        assert len(results) == 4
+        assert len(results) == 6
         for r in results:
             assert r["edc_ecc_valid"] is True
             assert r["tim_valid"] is True
@@ -337,7 +440,7 @@ class TestPreviewAndCli:
             screens_dir=DEFAULT_SCREENS_DIR,
             dry_run=True,
         )
-        assert len(results) == 4
+        assert len(results) == 6
         for r in results:
             assert r["dry_run"] is True
             assert r["status"] == "dry_run"

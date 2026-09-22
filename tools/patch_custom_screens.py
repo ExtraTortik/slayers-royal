@@ -81,7 +81,7 @@ DEFAULT_EN_BIN = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
 DEFAULT_SCREENS_DIR = REPO_ROOT / "data" / "custom_screens"
 DEFAULT_PREVIEW_PATH = REPO_ROOT / "data" / "preview_custom_screens_ru.png"
 
-# Specifications for the 4 custom screens
+# Specifications for the custom screens
 CUSTOM_SCREENS_SPECS: dict[int, dict[str, Any]] = {
     203: {
         "id": "turn",
@@ -115,6 +115,38 @@ CUSTOM_SCREENS_SPECS: dict[int, dict[str, Any]] = {
             "turn.png",
         ],
     },
+    220: {
+        "id": "slot_bg",
+        "entry_index": 220,
+        "hex_index": "0xDC",
+        "archive": "OPT.UNT",
+        "archive_lba": 226000,
+        "sector_offset": 2880,
+        "lba": 228880,
+        "sectors": 36,
+        "budget": 73728,
+        "width": 320,
+        "height": 224,
+        "bpp": 8,
+        "vram_x": 320,
+        "vram_y": 0,
+        "vram_w_words": 160,
+        "clut_x": 0,
+        "clut_y": 480,
+        "clut_colors": 256,
+        "clut_block_len": 524,
+        "img_block_len": 71692,
+        "raw_tim_len": 72224,
+        "compressed": False,
+        "name_en": "SLOT MACHINE BACKGROUND",
+        "name_ru": "ФОН СЛОТ-МАШИНЫ",
+        "aliases": [
+            "opt_220_320x224_uncompressed.png",
+            "opt_220.png",
+            "220.png",
+            "slot_bg.png",
+        ],
+    },
     221: {
         "id": "unlimited_play",
         "entry_index": 221,
@@ -145,6 +177,39 @@ CUSTOM_SCREENS_SPECS: dict[int, dict[str, Any]] = {
             "opt_221.png",
             "221.png",
             "unlimited_play.png",
+        ],
+    },
+    224: {
+        "id": "slot_buttons",
+        "entry_index": 224,
+        "hex_index": "0xE0",
+        "archive": "OPT.UNT",
+        "archive_lba": 226000,
+        "sector_offset": 2925,
+        "lba": 228925,
+        "sectors": 1,
+        "budget": 2048,
+        "width": 64,
+        "height": 32,
+        "bpp": 4,
+        "vram_x": 1000,
+        "vram_y": 16,
+        "vram_w_words": 16,
+        "clut_x": 0,
+        "clut_y": 499,
+        "clut_colors": 16,
+        "clut_block_len": 44,
+        "img_block_len": 1036,
+        "raw_tim_len": 1088,
+        "compressed": False,
+        "name_en": "STOP / REPLAY",
+        "name_ru": "СТОП / СНОВА",
+        "aliases": [
+            "opt_224_64x32_uncompressed.png",
+            "opt_224.png",
+            "224.png",
+            "slot_buttons.png",
+            "stop_replay.png",
         ],
     },
     225: {
@@ -219,15 +284,27 @@ ENTRY_ID_MAP: dict[str, int] = {
     "turn": 203,
     "opt_203": 203,
     "203": 203,
+    "slot_bg": 220,
+    "opt_220": 220,
+    "220": 220,
     "unlimited_play": 221,
     "opt_221": 221,
     "221": 221,
+    "slot_buttons": 224,
+    "stop_replay": 224,
+    "opt_224": 224,
+    "224": 224,
     "start": 225,
     "opt_225": 225,
     "225": 225,
     "game_over": 323,
     "prog_323": 323,
     "323": 323,
+}
+
+# Entry aliases mapping
+ENTRY_ALIASES: dict[int, list[str]] = {
+    entry_idx: list(spec["aliases"]) for entry_idx, spec in CUSTOM_SCREENS_SPECS.items()
 }
 
 # Verified default hardware CLUT tables for standalone execution without source BIN
@@ -237,6 +314,19 @@ FALLBACK_CLUT_203: bytes = bytes.fromhex(
 FALLBACK_CLUT_225: bytes = bytes.fromhex(
     "00001f001d003b001c003a00570038005600740055007200900071008f008e00"
 )
+FALLBACK_CLUT_224: bytes = FALLBACK_CLUT_225
+FALLBACK_CLUT_220: bytes = bytes.fromhex(
+    "0000ef3dad358c316b2d4a292925e71cc618a5148410630c4208772a35261622f5251522f329"
+    "1326f51df321d321f419b321d31df415b31db419d121f2199319b119af21901d711991156f1d7"
+    "115521171116f195111710d900d3111510d6f11500d4e156f0d2f114f0d4d156d110f112e114e"
+    "0d4d110e110f0d2e0d2f090d112d0d2c11ed10ef080c110d0d2d09ed0c0c0d0b11ec0c0a11eb"
+    "0cec08ee00cb0ccc08ed00eb08ea0cab0cae00cb08ea08ab08ad00ca08e9088d00a90cca04c9"
+    "08e9048c00a80ca908aa04ab00c904c80889088b00a808a904aa006b0088088a00a804870888"
+    "044a006900860887048800850c49006608670466048600280046046600270064042600440445"
+    "0006002500240043000400230003000200e610e514e510c514c410a40ca30c820841084104df"
+    "579f3f7f273f0ffc0277065506340a120e0e0dab0022002300450067008900ab0001"
+).ljust(512, b"\x00")
+
 
 
 def get_candidate_bins(custom_bin: Path | str | None = None) -> list[Path]:
@@ -403,6 +493,75 @@ def encode_opt_203(
     return tim_bytes.ljust(2048, b"\x00")
 
 
+def encode_opt_220(
+    image_path: Path | str,
+    orig_tim: bytes | None = None,
+) -> bytes:
+    """Encode 320x224 PNG image to 8bpp TIM for OPT.UNT Entry 220 (Slot machine background).
+
+    Specifications:
+    - TIM Magic: 0x10, Flag: 0x09 (8bpp with CLUT)
+    - CLUT: len=524, x=0, y=480, w=256, h=1 (512 bytes BGR555)
+    - IMG: len=71692, x=320, y=0, w=160 words (320 px), h=224 lines
+    - IMG data: 71,680 bytes 8bpp pixel data
+    - Total TIM size: 72,224 bytes. Padded to 73,728 bytes (36 sectors).
+    """
+    img = Image.open(image_path).convert("RGBA")
+    if img.size == (322, 224):
+        img = img.crop((0, 0, 320, 224))
+    elif img.size != (320, 224):
+        img = img.resize((320, 224), Image.Resampling.LANCZOS)
+    arr = np.array(img)
+
+    clut_raw: bytes | None = None
+    if orig_tim and len(orig_tim) >= 532:
+        clut_len = struct.unpack_from("<I", orig_tim, 8)[0]
+        if clut_len == 524:
+            clut_raw = orig_tim[20:532]
+
+    if clut_raw is None:
+        clut_raw = FALLBACK_CLUT_220
+
+    if clut_raw is None or len(clut_raw) != 512:
+        # Generate 256-color palette with STP=1
+        img_rgb = img.convert("RGB")
+        img_p = img_rgb.quantize(colors=256, method=Image.Quantize.MEDIANCUT)
+        pal = img_p.getpalette() or []
+        while len(pal) < 256 * 3:
+            pal.extend([0, 0, 0])
+        clut_ba = bytearray()
+        for i in range(256):
+            r, g, b = pal[i * 3], pal[i * 3 + 1], pal[i * 3 + 2]
+            val = 0x8000 | ((b >> 3) << 10) | ((g >> 3) << 5) | (r >> 3)
+            clut_ba.extend(struct.pack("<H", val))
+        clut_raw = bytes(clut_ba)
+
+    clut_rgbs = clut_bytes_to_rgbs(clut_raw, 256)
+    clut_arr = np.array(clut_rgbs, dtype=np.int32)
+
+    # Map pixels to closest color in 256-color CLUT
+    flat_arr = arr[:, :, :3].reshape(-1, 3).astype(np.int32)
+    # Chunked distance calculation to conserve memory
+    chunk_size = 8192
+    indices = np.empty(len(flat_arr), dtype=np.uint8)
+    for i in range(0, len(flat_arr), chunk_size):
+        chunk = flat_arr[i : i + chunk_size]
+        dists = np.sum((chunk[:, np.newaxis, :] - clut_arr[np.newaxis, :, :]) ** 2, axis=2)
+        indices[i : i + chunk_size] = np.argmin(dists, axis=1)
+
+    # Force transparent pixels (e.g. slot reel window) to index 0
+    alpha_flat = arr[:, :, 3].reshape(-1)
+    indices[alpha_flat == 0] = 0
+
+    header = b"\x10\x00\x00\x00\x09\x00\x00\x00"
+    clut_block = struct.pack("<IHHHH", 524, 0, 480, 256, 1) + clut_raw
+    img_block = struct.pack("<IHHHH", 71692, 320, 0, 160, 224) + indices.tobytes()
+
+    tim_bytes = header + clut_block + img_block
+    if len(tim_bytes) != 72224:
+        raise ValueError(f"Unexpected OPT 220 TIM length: {len(tim_bytes)} (expected 72224)")
+    return tim_bytes.ljust(73728, b"\x00")
+
 def encode_opt_221(
     image_path: Path | str,
     orig_tim: bytes | None = None,
@@ -459,6 +618,77 @@ def encode_opt_221(
     if len(tim_bytes) != 5664:
         raise ValueError(f"Unexpected OPT 221 TIM length: {len(tim_bytes)} (expected 5664)")
     return tim_bytes.ljust(6144, b"\x00")
+
+
+def encode_opt_224(
+    image_path: Path | str,
+    orig_tim: bytes | None = None,
+) -> bytes:
+    """Encode 64x32 PNG image to 4bpp TIM for OPT.UNT Entry 224.
+
+    Specifications:
+    - TIM Magic: 0x10, Flag: 0x08 (4bpp with CLUT)
+    - CLUT: len=44, x=0, y=499, w=16, h=1 (32 bytes BGR555, bright red palette)
+    - IMG: len=1036, x=1000, y=16, w=16 words (64 px), h=32
+    - IMG data: 1024 bytes packed 4bpp pixel data
+    - Total TIM size: 1088 bytes. Padded to 2048 bytes (1 sector).
+    - Color mapping: Index 0 is transparent background. If pixel alpha == 0
+      or max(R,G,B) <= 20, map to index 0. Text pixels map to bright red indices 1..4 (R >= 216).
+    """
+    img = Image.open(image_path).convert("RGBA")
+    if img.size != (64, 32):
+        img = img.resize((64, 32), Image.Resampling.LANCZOS)
+    arr = np.array(img)
+
+    clut_raw = FALLBACK_CLUT_225
+
+    clut_rgbs = clut_bytes_to_rgbs(clut_raw, 16)
+    # Indices 1..15 for text
+    text_clut_arr = np.array(clut_rgbs[1:], dtype=np.int32)
+
+    # Boost contrast of text pixels so letters are solid and clear (indices 1..4, R >= 216)
+    non_black = (arr[:, :, 3] > 0) & (np.max(arr[:, :, :3], axis=2) > 20)
+    if np.any(non_black):
+        intensity = np.max(arr[:, :, :3], axis=2).astype(np.float32)
+        min_val = float(np.min(intensity[non_black]))
+        max_val = float(np.max(intensity[non_black]))
+        if max_val > min_val:
+            stretched_r = 220.0 + (intensity - min_val) / (max_val - min_val) * (255.0 - 220.0)
+        else:
+            stretched_r = np.full_like(intensity, 255.0)
+    else:
+        stretched_r = np.zeros((32, 64), dtype=np.float32)
+
+    pixels_packed = bytearray(1024)
+    for y in range(32):
+        for x in range(0, 64, 2):
+            px0 = arr[y, x]
+            px1 = arr[y, x + 1]
+
+            if px0[3] == 0 or np.max(px0[:3]) <= 20:
+                idx0 = 0
+            else:
+                rgb0 = np.array([stretched_r[y, x], 0, 0], dtype=np.int32)
+                d0 = np.sum((text_clut_arr - rgb0) ** 2, axis=1)
+                idx0 = int(np.argmin(d0)) + 1
+
+            if px1[3] == 0 or np.max(px1[:3]) <= 20:
+                idx1 = 0
+            else:
+                rgb1 = np.array([stretched_r[y, x + 1], 0, 0], dtype=np.int32)
+                d1 = np.sum((text_clut_arr - rgb1) ** 2, axis=1)
+                idx1 = int(np.argmin(d1)) + 1
+
+            pixels_packed[y * 32 + x // 2] = (idx0 & 0x0F) | ((idx1 & 0x0F) << 4)
+
+    header = b"\x10\x00\x00\x00\x08\x00\x00\x00"
+    clut_block = struct.pack("<IHHHH", 44, 0, 499, 16, 1) + clut_raw
+    img_block = struct.pack("<IHHHH", 1036, 1000, 16, 16, 32) + bytes(pixels_packed)
+
+    tim_bytes = header + clut_block + img_block
+    if len(tim_bytes) != 1088:
+        raise ValueError(f"Unexpected OPT 224 TIM length: {len(tim_bytes)} (expected 1088)")
+    return tim_bytes.ljust(2048, b"\x00")
 
 
 def encode_opt_225(
@@ -646,9 +876,19 @@ def encode_custom_screen(
         tim_bytes = payload[: CUSTOM_SCREENS_SPECS[203]["raw_tim_len"]]
         return tim_bytes, payload
 
+    elif entry_index == 220:
+        payload = encode_opt_220(image_path, orig_tim)
+        tim_bytes = payload[: CUSTOM_SCREENS_SPECS[220]["raw_tim_len"]]
+        return tim_bytes, payload
+
     elif entry_index == 221:
         payload = encode_opt_221(image_path, orig_tim)
         tim_bytes = payload[: CUSTOM_SCREENS_SPECS[221]["raw_tim_len"]]
+        return tim_bytes, payload
+
+    elif entry_index == 224:
+        payload = encode_opt_224(image_path, orig_tim)
+        tim_bytes = payload[: CUSTOM_SCREENS_SPECS[224]["raw_tim_len"]]
         return tim_bytes, payload
 
     elif entry_index == 225:
@@ -661,6 +901,18 @@ def encode_custom_screen(
         return tim_bytes, payload
 
     raise ValueError(f"Unhandled entry: {entry_index}")
+
+def build_custom_screens_tim(
+    entry_index: int,
+    image_path: Path | str,
+    candidate_bins: Sequence[Path | str] | None = None,
+) -> tuple[bytes, bytes]:
+    """Build custom screen TIM and sector payload for entry.
+
+    Alias for encode_custom_screen.
+    """
+    return encode_custom_screen(entry_index, image_path, candidate_bins)
+
 
 
 def patch_disc_extent(bin_path: Path, lba: int, payload: bytes) -> None:
@@ -985,7 +1237,7 @@ def generate_preview(
 
     # Encode TIMs
     tims: dict[int, bytes] = {}
-    for e_idx in (203, 221, 225, 323):
+    for e_idx in (203, 221, 224, 225, 323):
         if e_idx in images:
             tim_b, _ = encode_custom_screen(e_idx, images[e_idx], candidate_bins=candidates)
             tims[e_idx] = tim_b
@@ -1000,6 +1252,7 @@ def generate_preview(
     img_203 = tim_to_rgba(tims[203]) if 203 in tims else Image.new("RGBA", (64, 16), (0, 0, 0, 255))
     img_225 = tim_to_rgba(tims[225]) if 225 in tims else Image.new("RGBA", (64, 16), (0, 0, 0, 255))
     img_221 = tim_to_rgba(tims[221]) if 221 in tims else Image.new("RGBA", (80, 64), (0, 0, 0, 255))
+    img_224 = tim_to_rgba(tims[224]) if 224 in tims else Image.new("RGBA", (64, 32), (0, 0, 0, 255))
 
     # Canvas: 640x360 dark luxury styling
     canvas = Image.new("RGBA", (640, 360), (16, 20, 28, 255))
@@ -1031,6 +1284,12 @@ def generate_preview(
             draw.rectangle([360 + cx, 108 + cy, 360 + cx + 7, 108 + cy + 7], fill=c)
     draw.rectangle([359, 107, 360 + 128, 108 + 32], outline=(70, 80, 100, 255), width=1)
     canvas.alpha_composite(scaled_225, (360, 108))
+    # OPT 224
+    draw.text((500, 28), "OPT 224: STOP/REPLAY (2x)", fill=(200, 210, 220, 255), font=font)
+    scaled_224 = img_224.resize((128, 64), Image.Resampling.NEAREST)
+    draw.rectangle([499, 41, 500 + 128, 42 + 64], outline=(70, 80, 100, 255), width=1)
+    canvas.paste(scaled_224, (500, 42))
+
 
     # OPT 221
     draw.text((360, 160), "OPT.UNT 221: UNLIMITED PLAY (80x64 8bpp, 2x)", fill=(200, 210, 220, 255), font=font)
@@ -1039,8 +1298,8 @@ def generate_preview(
     canvas.paste(scaled_221, (360, 176))
 
     # Footer
-    draw.text((16, 318), "Mode 2 Form 1 EDC/ECC repair - Sector Budgets: 203: 1sec | 221: 3sec | 225: 1sec | 323: 5sec", fill=(120, 130, 150, 255), font=font)
-    draw.text((16, 334), "Entries: 203 (Turn), 221 (Unlimited Play), 225 (Start), 323 (Game Over)", fill=(100, 180, 120, 255), font=font)
+    draw.text((16, 318), "Mode 2 Form 1 EDC/ECC repair - Sector Budgets: 203: 1sec | 221: 3sec | 224: 1sec | 225: 1sec | 323: 5sec", fill=(120, 130, 150, 255), font=font)
+    draw.text((16, 334), "Entries: 203 (Turn), 221 (Unlimited Play), 224 (Stop/Replay), 225 (Start), 323 (Game Over)", fill=(100, 180, 120, 255), font=font)
 
     canvas.save(out_file)
     return out_file
@@ -1068,7 +1327,7 @@ def parse_cli_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
         "--entry",
         type=str,
         default=None,
-        help="Specific entry to patch (203, 221, 225, 323 or unlimited_play, turn, start, game_over)",
+        help="Specific entry to patch (203, 221, 224, 225, 323 or unlimited_play, turn, slot_buttons, start, game_over)",
     )
     parser.add_argument(
         "--image",
@@ -1108,7 +1367,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         print(f"[*] Verifying custom screens on {args.bin}...")
         try:
             results = verify_custom_screens(args.bin, entry_index=args.entry)
-            print(f"[✓] Verification SUCCESSFUL: {len(results)}/4 entries verified.")
+            total_expected = 1 if args.entry else len(CUSTOM_SCREENS_SPECS)
+            print(f"[✓] Verification SUCCESSFUL: {len(results)}/{total_expected} entries verified.")
             for r in results:
                 print(
                     f"    Entry {r['entry_index']:3d} ({r['id']:14s}): "

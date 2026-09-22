@@ -13,7 +13,7 @@
         "lba": 229020
       }
     ],
-    "total_screens": 4
+    "total_screens": 6
   },
   "screens": [
     {
@@ -46,6 +46,35 @@
       ]
     },
     {
+      "id": "slot_bg",
+      "entry_index": 220,
+      "hex_index": "0xDC",
+      "archive": "OPT.UNT",
+      "archive_lba": 226000,
+      "sector_offset": 2880,
+      "lba": 228880,
+      "sectors": 36,
+      "budget": 73728,
+      "width": 320,
+      "height": 224,
+      "bpp": 8,
+      "vram_x": 320,
+      "vram_y": 0,
+      "vram_w_words": 160,
+      "clut_x": 0,
+      "clut_y": 480,
+      "clut_colors": 256,
+      "compressed": false,
+      "name_en": "SLOT MACHINE BACKGROUND",
+      "name_ru": "ФОН СЛОТ-МАШИНЫ",
+      "aliases": [
+        "opt_220_320x224_uncompressed.png",
+        "opt_220.png",
+        "220.png",
+        "slot_bg.png"
+      ]
+    },
+    {
       "id": "unlimited_play",
       "entry_index": 221,
       "hex_index": "0xDD",
@@ -72,6 +101,36 @@
         "opt_221.png",
         "221.png",
         "unlimited_play.png"
+      ]
+    },
+    {
+      "id": "slot_buttons",
+      "entry_index": 224,
+      "hex_index": "0xE0",
+      "archive": "OPT.UNT",
+      "archive_lba": 226000,
+      "sector_offset": 2925,
+      "lba": 228925,
+      "sectors": 1,
+      "budget": 2048,
+      "width": 64,
+      "height": 32,
+      "bpp": 4,
+      "vram_x": 1000,
+      "vram_y": 16,
+      "vram_w_words": 16,
+      "clut_x": 0,
+      "clut_y": 499,
+      "clut_colors": 16,
+      "compressed": false,
+      "name_en": "STOP / REPLAY",
+      "name_ru": "СТОП / СНОВА",
+      "aliases": [
+        "opt_224_64x32_uncompressed.png",
+        "opt_224.png",
+        "224.png",
+        "slot_buttons.png",
+        "stop_replay.png"
       ]
     },
     {

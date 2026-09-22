@@ -3684,5 +3684,60 @@
         }
       }
     ]
+  },
+  "system_prompts": {
+    "entry_4": {
+      "prog_entry": 4,
+      "prompts": {
+        "e4_prompt_replay": {
+          "offset_hex": "0x5AF2",
+          "offset": 23282,
+          "budget": 28,
+          "text_en": "Play again?",
+          "text_ru": "Сыграть ещё?"
+        },
+        "e4_choice_replay": {
+          "offset_hex": "0x5B10",
+          "offset": 23312,
+          "budget": 26,
+          "text_en": "Play\nNo",
+          "choices": [
+            "Да",
+            "Нет"
+          ],
+          "text_ru": "Да\nНет"
+        }
+      }
+    },
+    "entry_5": {
+      "prog_entry": 5,
+      "prompts": {
+        "e5_prompt_replay": {
+          "offset_hex": "0x881E",
+          "offset": 34846,
+          "budget": 18,
+          "text_en": "Replay?",
+          "text_ru": "Снова?"
+        },
+        "e5_choice_replay": {
+          "offset_hex": "0x8830",
+          "offset": 34864,
+          "budget": 46,
+          "text_en": "Play again\nQuit game",
+          "choices": [
+            "Ещё раз",
+            "Выйти"
+          ],
+          "text_ru": "Ещё раз\nВыйти"
+        },
+        "e5_prompt_go_ahead": {
+          "offset_hex": "0x8862",
+          "offset": 34914,
+          "budget": 20,
+          "text_en": "Go ahead.",
+          "text_ru": "Твой ход."
+        }
+      }
+    }
   }
 }

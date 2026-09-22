@@ -59,6 +59,8 @@ try:
         RAW_SECTOR_SIZE,
         USER_DATA_OFFSET,
         USER_DATA_SIZE,
+        read_extent,
+        replace_extent_in_place,
     )
 except ImportError:
     try:
@@ -67,13 +69,18 @@ except ImportError:
             RAW_SECTOR_SIZE,
             USER_DATA_OFFSET,
             USER_DATA_SIZE,
+            read_extent,
+            replace_extent_in_place,
         )
     except ImportError:
         RAW_SECTOR_SIZE = 2352
         USER_DATA_OFFSET = 24
         USER_DATA_SIZE = 2048
         CdChecksums = None
+        read_extent = None
+        replace_extent_in_place = None
 
+DEFAULT_ORIG_BIN = REPO_ROOT / "downloads" / "sr.bin"
 DEFAULT_TARGET_BIN = REPO_ROOT / "localization-output" / "ru" / "slayers_royal_ru.bin"
 DEFAULT_PATCH_REPO_BIN = REPO_ROOT / "patch_repo" / "localization-output" / "ru" / "slayers_royal_ru.bin"
 DEFAULT_SAVESTATES_DIR = Path(os.path.expanduser("~/.local/share/duckstation/savestates"))
@@ -335,6 +342,66 @@ def patch_disc_title_logo(
     return list(PATCHED_SECTORS)
 
 
+def extract_orig_sprites(orig_bin: Path | str = DEFAULT_ORIG_BIN) -> tuple[bytes, bytes, bytes]:
+    """Extract original Japanese title logo sprites from orig_bin."""
+    op = Path(orig_bin)
+    with op.open("rb") as f:
+        # Part 1 (3672 bytes): LBA 232865 offset 0x4E (1970 bytes) + LBA 232866 (1702 bytes)
+        f.seek(232865 * RAW_SECTOR_SIZE + USER_DATA_OFFSET + 0x4E)
+        p1_1 = f.read(1970)
+        f.seek(232866 * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+        p1_2 = f.read(1702)
+        raw_p1 = p1_1 + p1_2
+
+        # Part 2 (3672 bytes): LBA 232866 offset 0x724 (220 bytes) + LBA 232867 (2048 bytes) + LBA 232868 (1404 bytes)
+        f.seek(232866 * RAW_SECTOR_SIZE + USER_DATA_OFFSET + 0x724)
+        p2_1 = f.read(220)
+        f.seek(232867 * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+        p2_2 = f.read(2048)
+        f.seek(232868 * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+        p2_3 = f.read(1404)
+        raw_p2 = p2_1 + p2_2 + p2_3
+
+        # Subtitle (3784 bytes): LBA 232951 offset 0x798 (104 bytes) + LBA 232952 (2048 bytes) + LBA 232953 (1632 bytes)
+        f.seek(232951 * RAW_SECTOR_SIZE + USER_DATA_OFFSET + 0x798)
+        sub_1 = f.read(104)
+        f.seek(232952 * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+        sub_2 = f.read(2048)
+        f.seek(232953 * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+        sub_3 = f.read(1632)
+        raw_sub = sub_1 + sub_2 + sub_3
+
+    return raw_p1, raw_p2, raw_sub
+
+
+def restore_orig_title_logo(
+    target_bin: Path | str,
+    orig_bin: Path | str = DEFAULT_ORIG_BIN,
+) -> list[int]:
+    """Restore the 7 title logo sectors in target_bin from orig_bin and recalculate EDC/ECC."""
+    target_p = Path(target_bin)
+    orig_p = Path(orig_bin)
+    if not target_p.is_file():
+        raise FileNotFoundError(f"Target disc image not found: {target_p}")
+    if not orig_p.is_file():
+        raise FileNotFoundError(f"Original disc image not found: {orig_p}")
+
+    if replace_extent_in_place is not None and read_extent is not None:
+        chunk1_data = read_extent(orig_p, 232865, 4 * USER_DATA_SIZE)
+        replace_extent_in_place(target_p, 232865, chunk1_data)
+
+        chunk2_data = read_extent(orig_p, 232951, 3 * USER_DATA_SIZE)
+        replace_extent_in_place(target_p, 232951, chunk2_data)
+    else:
+        chk = CdChecksums()
+        with orig_p.open("rb") as f_orig, target_p.open("r+b") as f_target:
+            for lba in PATCHED_SECTORS:
+                f_orig.seek(lba * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+                payload = f_orig.read(USER_DATA_SIZE)
+                patch_sector_data(f_target, lba, 0, payload, chk)
+
+    return list(PATCHED_SECTORS)
+
 def sync_savestate_title_logo(
     sav_path: Path | str,
     raw_p1: bytes,
@@ -513,10 +580,42 @@ def verify_disc_title_logo(bin_path: Path | str, raw_p1: bytes, raw_p2: bytes, r
 
     return True
 
+def verify_orig_title_logo(
+    bin_path: Path | str,
+    orig_bin: Path | str = DEFAULT_ORIG_BIN,
+) -> bool:
+    """Verify that all 7 sectors on CD-ROM match the original Japanese disc and have valid EDC/ECC."""
+    bp = Path(bin_path)
+    op = Path(orig_bin)
+    if not bp.is_file() or not op.is_file():
+        return False
+
+    chk = CdChecksums()
+    with bp.open("rb") as f_target, op.open("rb") as f_orig:
+        for lba in PATCHED_SECTORS:
+            f_target.seek(lba * RAW_SECTOR_SIZE)
+            sec = f_target.read(RAW_SECTOR_SIZE)
+            if sec[0x818:0x81C] != chk.compute_edc(sec[0x10:0x818]):
+                return False
+            if sec[0x81C:0x8C8] != chk.compute_ecc(sec[0x10:], 86, 24, 2, 86):
+                return False
+            if sec[0x8C8:0x930] != chk.compute_ecc(sec[0x10:], 52, 43, 86, 88):
+                return False
+
+            f_orig.seek(lba * RAW_SECTOR_SIZE + USER_DATA_OFFSET)
+            orig_user = f_orig.read(USER_DATA_SIZE)
+            target_user = sec[USER_DATA_OFFSET : USER_DATA_OFFSET + USER_DATA_SIZE]
+            if orig_user != target_user:
+                return False
+
+    return True
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Patch title screen logo in Slayers Royal (PS1)")
     parser.add_argument("--bin", type=Path, default=DEFAULT_TARGET_BIN, help="Path to target disc image")
+    parser.add_argument("--orig", "--orig-bin", dest="orig_bin", type=Path, default=DEFAULT_ORIG_BIN, help="Path to original Japanese disc image")
+    parser.add_argument("--restore-orig", "--japanese", dest="restore_orig", action="store_true", help="Restore original Japanese title logo from original disc")
     parser.add_argument("--top", type=Path, default=None, help="Path to custom top logo PNG (272x54)")
     parser.add_argument("--bottom", type=Path, default=None, help="Path to custom bottom logo PNG (176x43)")
     parser.add_argument("--savestates", type=Path, default=DEFAULT_SAVESTATES_DIR, help="DuckStation savestates directory")
@@ -526,21 +625,49 @@ def main() -> int:
 
     args = parser.parse_args()
 
-    raw_p1, raw_p2, raw_sub, preview = extract_and_render_sprites(args.top, args.bottom)
-    if args.preview:
-        args.preview.parent.mkdir(parents=True, exist_ok=True)
-        preview.save(args.preview)
-        print(f"[✓] Title logo preview saved to {args.preview}")
+    if args.restore_orig:
+        targets = [args.bin]
+        if DEFAULT_PATCH_REPO_BIN.is_file() and DEFAULT_PATCH_REPO_BIN.resolve() != args.bin.resolve():
+            targets.append(DEFAULT_PATCH_REPO_BIN)
+
+        if args.dry_run:
+            print("[*] Dry-run mode: no changes written to disc.")
+            return 0
+
+        for target in targets:
+            patched_lbas = restore_orig_title_logo(target, args.orig_bin)
+            print(f"[✓] Restored Japanese title logo on {target.name}: {len(patched_lbas)} sectors restored (LBAs: {patched_lbas})")
+
+        # Sync DuckStation savestates if available
+        if args.savestates and args.savestates.is_dir():
+            orig_p1, orig_p2, orig_sub = extract_orig_sprites(args.orig_bin)
+            synced = 0
+            for s in args.savestates.glob("SLPS-01363_*.sav"):
+                if sync_savestate_title_logo(s, orig_p1, orig_p2, orig_sub, preview_fb=None):
+                    synced += 1
+            print(f"[✓] Synchronized {synced} DuckStation savestate(s) with Japanese logo")
+
+        return 0
 
     if args.verify:
+        if args.orig_bin and args.orig_bin.is_file() and verify_orig_title_logo(args.bin, args.orig_bin):
+            print(f"[✓] Title logo verification SUCCESSFUL (Japanese original) on {args.bin}")
+            return 0
+
+        raw_p1, raw_p2, raw_sub, preview = extract_and_render_sprites(args.top, args.bottom)
         ok = verify_disc_title_logo(args.bin, raw_p1, raw_p2, raw_sub)
         if ok:
-            print(f"[✓] Title logo verification SUCCESSFUL on {args.bin}")
+            print(f"[✓] Title logo verification SUCCESSFUL (Russian patched) on {args.bin}")
             return 0
         else:
             print(f"[✗] Title logo verification FAILED on {args.bin}")
             return 1
 
+    raw_p1, raw_p2, raw_sub, preview = extract_and_render_sprites(args.top, args.bottom)
+    if args.preview:
+        args.preview.parent.mkdir(parents=True, exist_ok=True)
+        preview.save(args.preview)
+        print(f"[✓] Title logo preview saved to {args.preview}")
     if args.dry_run:
         print("[*] Dry-run mode: no changes written to disc.")
         return 0

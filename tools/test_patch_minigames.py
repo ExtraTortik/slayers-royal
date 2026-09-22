@@ -38,6 +38,8 @@ from tools.patch_minigames import (
     DEFAULT_CATALOG,
     DEFAULT_CHARMAP,
     DEFAULT_TARGET_BIN,
+    ENTRY_4_SYSTEM_PROMPTS,
+    ENTRY_5_SYSTEM_PROMPTS,
     EATING_STATUS_SPECS,
     MINIGAME_CHARMAP,
     MINIGAME_FONT_GLYPH_IDS,
@@ -55,6 +57,7 @@ from tools.patch_minigames import (
     GLYPH_UP,
     PRISTINE_BUTTON_TILES,
     QUIZ_UI_SPECS,
+    SYSTEM_PROMPT_SPECS,
     REVERSE_CHARMAP,
     SMINI_DEFAULT_LBA,
     SMINI_FONT_SPECS,
@@ -84,6 +87,7 @@ from tools.patch_minigames import (
     load_prog_entries_data,
     load_smini_entries_data,
     locate_smini_unt,
+    patch_minigame_system_prompts,
     patch_minigames_memory,
     patch_smini_fonts_memory,
     verify_minigames,
@@ -1070,6 +1074,157 @@ class TestMinigamesPatching(unittest.TestCase):
         bad_labels = {"header": "О" * 50}
         with self.assertRaises(ValueError):
             encode_amelia_combo_block(1, bad_labels)
+
+    # ==========================================================================
+    # System Prompts (Entry 4 and Entry 5) tests
+    # ==========================================================================
+
+    def test_system_prompts_catalog_structure(self):
+        """Verify catalog contains 'system_prompts' with 'entry_4' and 'entry_5' specs."""
+        self.assertIn("system_prompts", self.catalog)
+        sys_prompts = self.catalog["system_prompts"]
+        self.assertIn("entry_4", sys_prompts)
+        self.assertIn("entry_5", sys_prompts)
+
+        e4 = sys_prompts["entry_4"]
+        e5 = sys_prompts["entry_5"]
+        self.assertEqual(e4.get("prog_entry"), 4)
+        self.assertEqual(e5.get("prog_entry"), 5)
+
+        e4_prompts = e4.get("prompts", e4)
+        e5_prompts = e5.get("prompts", e5)
+
+        for p_id, spec in ENTRY_4_SYSTEM_PROMPTS.items():
+            self.assertIn(p_id, e4_prompts)
+            p = e4_prompts[p_id]
+            self.assertEqual(p["budget"], spec["budget"])
+            self.assertEqual(int(p["offset_hex"], 16), spec["offset"])
+            self.assertEqual(p["text_en"], spec["text_en"])
+            self.assertEqual(p["text_ru"], spec["default_ru"])
+            if "choices" in spec:
+                self.assertEqual(p.get("choices"), spec["choices"])
+
+        for p_id, spec in ENTRY_5_SYSTEM_PROMPTS.items():
+            self.assertIn(p_id, e5_prompts)
+            p = e5_prompts[p_id]
+            self.assertEqual(p["budget"], spec["budget"])
+            self.assertEqual(int(p["offset_hex"], 16), spec["offset"])
+            self.assertEqual(p["text_en"], spec["text_en"])
+            self.assertEqual(p["text_ru"], spec["default_ru"])
+            if "choices" in spec:
+                self.assertEqual(p.get("choices"), spec["choices"])
+    def test_system_prompts_encoding_and_roundtrip(self):
+        """Verify all Entry 4 and Entry 5 prompts encode to budget and decode bit-exact."""
+        rev = get_reverse_charmap(DEFAULT_CHARMAP)
+        sys_prompts = self.catalog.get("system_prompts", {})
+
+        for entry_idx, specs in ((4, ENTRY_4_SYSTEM_PROMPTS), (5, ENTRY_5_SYSTEM_PROMPTS)):
+            entry_cfg = sys_prompts.get(f"entry_{entry_idx}", {})
+            prompts = entry_cfg.get("prompts", entry_cfg)
+            for p_id, spec in specs.items():
+                p_info = prompts[p_id]
+                text_ru = p_info["text_ru"]
+                budget = spec["budget"]
+
+                encoded = encode_minigame_string(text_ru, budget, DEFAULT_CHARMAP)
+                self.assertEqual(len(encoded), budget, f"{p_id} encoded length != budget {budget}")
+
+                if "choices" in spec or "\n" in text_ru:
+                    self.assertIn(b"\xfe\x00", encoded, f"{p_id} missing 0x00FE choice separator")
+
+                # Check 0x00FF terminator
+                term_pos = (len(text_ru)) * 2
+                self.assertEqual(encoded[term_pos : term_pos + 2], b"\xff\x00", f"{p_id} missing 0x00FF terminator")
+
+                # Check padding bytes are 0x00
+                padding = encoded[term_pos + 2 :]
+                self.assertEqual(padding, b"\x00" * len(padding), f"{p_id} padding is not zero-filled")
+
+                # Check round-trip decoding
+                decoded = decode_minigame_string(encoded, budget, rev)
+                self.assertEqual(decoded, text_ru, f"{p_id} decode mismatch")
+
+    def test_system_prompts_budget_overflow_protection(self):
+        """Verify that system prompts exceeding their byte budgets raise ValueError."""
+        for specs in (ENTRY_4_SYSTEM_PROMPTS, ENTRY_5_SYSTEM_PROMPTS):
+            for p_id, spec in specs.items():
+                budget = spec["budget"]
+                overflow_text = "А" * (budget // 2 + 1)
+                with self.assertRaises(ValueError, msg=f"{p_id} did not raise on overflow"):
+                    encode_minigame_string(overflow_text, budget, DEFAULT_CHARMAP)
+
+    def test_patch_minigame_system_prompts_in_memory(self):
+        """Verify patch_minigame_system_prompts patches mock buffers and produces correct stats."""
+        mock_e4 = bytearray(b"\xCC" * 0x6000)
+        mock_e5 = bytearray(b"\xCC" * 0x9000)
+        entries = {4: mock_e4, 5: mock_e5}
+        rev = get_reverse_charmap(DEFAULT_CHARMAP)
+
+        stats = patch_minigame_system_prompts(entries, self.catalog)
+
+        for p_id, spec in ENTRY_4_SYSTEM_PROMPTS.items():
+            self.assertIn(p_id, stats)
+            stat = stats[p_id]
+            self.assertEqual(stat["entry"], 4)
+            self.assertEqual(stat["offset"], spec["offset"])
+            self.assertEqual(stat["budget"], spec["budget"])
+
+            off = spec["offset"]
+            bud = spec["budget"]
+            dec = decode_minigame_string(mock_e4[off : off + bud], bud, rev)
+            self.assertEqual(dec, spec["default_ru"])
+
+        for p_id, spec in ENTRY_5_SYSTEM_PROMPTS.items():
+            self.assertIn(p_id, stats)
+            stat = stats[p_id]
+            self.assertEqual(stat["entry"], 5)
+            self.assertEqual(stat["offset"], spec["offset"])
+            self.assertEqual(stat["budget"], spec["budget"])
+
+            off = spec["offset"]
+            bud = spec["budget"]
+            dec = decode_minigame_string(mock_e5[off : off + bud], bud, rev)
+            self.assertEqual(dec, spec["default_ru"])
+
+        # Verify bytes before and after patched areas remain untouched
+        self.assertEqual(mock_e4[0x5AE0:0x5AF2], b"\xCC" * (0x5AF2 - 0x5AE0))
+        self.assertEqual(mock_e4[0x5B2A:0x5C00], b"\xCC" * (0x5C00 - 0x5B2A))
+        self.assertEqual(mock_e5[0x8800:0x881E], b"\xCC" * (0x881E - 0x8800))
+        self.assertEqual(mock_e5[0x8876:0x8900], b"\xCC" * (0x8900 - 0x8876))
+
+        # Verify choice separators in patched buffers
+        self.assertIn(b"\xfe\x00", mock_e4[0x5B10 : 0x5B10 + 26])
+        self.assertIn(b"\xfe\x00", mock_e5[0x8830 : 0x8830 + 46])
+    def test_patch_minigames_memory_includes_system_prompts(self):
+        """Verify patch_minigames_memory patches system prompts when entries 4 and 5 are provided."""
+        entries = {
+            4: bytearray(b"\x00" * 0x6000),
+            5: bytearray(b"\x00" * 0x9000),
+            13: bytearray(b"\x00" * 2048),
+            14: bytearray(b"\x00" * 2048),
+            15: bytearray(b"\x00" * 2048),
+            16: bytearray(b"\x00" * 65536),
+            17: bytearray(b"\x00" * 2048),
+        }
+        rev = get_reverse_charmap(DEFAULT_CHARMAP)
+        stats = patch_minigames_memory(entries, self.catalog)
+
+        for p_id in ENTRY_4_SYSTEM_PROMPTS:
+            self.assertIn(p_id, stats)
+        for p_id in ENTRY_5_SYSTEM_PROMPTS:
+            self.assertIn(p_id, stats)
+
+        for p_id, spec in ENTRY_4_SYSTEM_PROMPTS.items():
+            off = spec["offset"]
+            bud = spec["budget"]
+            dec = decode_minigame_string(entries[4][off : off + bud], bud, rev)
+            self.assertEqual(dec, spec["default_ru"])
+
+        for p_id, spec in ENTRY_5_SYSTEM_PROMPTS.items():
+            off = spec["offset"]
+            bud = spec["budget"]
+            dec = decode_minigame_string(entries[5][off : off + bud], bud, rev)
+            self.assertEqual(dec, spec["default_ru"])
 
 if __name__ == "__main__":
     unittest.main()

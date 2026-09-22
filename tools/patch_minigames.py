@@ -30,6 +30,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 import struct
+import re
 import sys
 from typing import Any, Sequence
 
@@ -393,6 +394,60 @@ QUIZ_SPEC: dict[str, Any] = {
     "ram_base": 0x80056898,
 }
 
+# Minigame Entry 4 and Entry 5 System Prompts (replay, choices, messages)
+ENTRY_4_SYSTEM_PROMPTS: dict[str, dict[str, Any]] = {
+    "e4_prompt_replay": {
+        "id": "e4_prompt_replay",
+        "entry": 4,
+        "offset": 0x5AF2,
+        "budget": 28,
+        "text_en": "Play again?",
+        "default_ru": "Сыграть ещё?",
+    },
+    "e4_choice_replay": {
+        "id": "e4_choice_replay",
+        "entry": 4,
+        "offset": 0x5B10,
+        "budget": 26,
+        "text_en": "Play\nNo",
+        "choices": ["Да", "Нет"],
+        "default_ru": "Да\nНет",
+    },
+}
+
+ENTRY_5_SYSTEM_PROMPTS: dict[str, dict[str, Any]] = {
+    "e5_prompt_replay": {
+        "id": "e5_prompt_replay",
+        "entry": 5,
+        "offset": 0x881E,
+        "budget": 18,
+        "text_en": "Replay?",
+        "default_ru": "Снова?",
+    },
+    "e5_choice_replay": {
+        "id": "e5_choice_replay",
+        "entry": 5,
+        "offset": 0x8830,
+        "budget": 46,
+        "text_en": "Play again\nQuit game",
+        "choices": ["Ещё раз", "Выйти"],
+        "default_ru": "Ещё раз\nВыйти",
+    },
+    "e5_prompt_go_ahead": {
+        "id": "e5_prompt_go_ahead",
+        "entry": 5,
+        "offset": 0x8862,
+        "budget": 20,
+        "text_en": "Go ahead.",
+        "default_ru": "Твой ход.",
+    },
+}
+
+SYSTEM_PROMPT_SPECS: dict[int, dict[str, dict[str, Any]]] = {
+    4: ENTRY_4_SYSTEM_PROMPTS,
+    5: ENTRY_5_SYSTEM_PROMPTS,
+}
+
 # SMINI.UNT and font injection constants
 SMINI_DEFAULT_LBA = 223787
 PROG_FONT_ENTRY = 0x03A
@@ -593,7 +648,7 @@ def locate_prog_unt(bin_path: Path | str) -> tuple[int, list[ProgEntryInfo]]:
 
 def load_prog_entries_data(
     bin_path: Path | str,
-    target_entries: Sequence[int] = (13, 14, 15, 16, 17),
+    target_entries: Sequence[int] = (4, 5, 13, 14, 15, 16, 17),
 ) -> tuple[int, dict[int, dict[str, Any]]]:
     """Read data and info for specified PROG.UNT entries from disc image.
 
@@ -863,17 +918,30 @@ def encode_minigame_string(
 ) -> bytes:
     """Encode minigame UI string into 16-bit little-endian words.
 
+    - If text contains '\n' or '\f', options are separated by 0x00FE (CHAR_PAGE).
     - Characters mapped through charmap.
-    - Terminated with 0x00FF.
+    - Terminated with 0x00FF (CHAR_TERMINATOR).
     - Zero-padded up to budget.
     """
-    words: list[int] = []
-    for ch in text:
-        if ch not in charmap:
-            raise ValueError(f"Character {ch!r} not in charmap for string: {text!r}")
-        words.append(charmap[ch])
-    words.append(CHAR_TERMINATOR)
-    raw = struct.pack(f"<{len(words)}H", *words)
+    if "\n" in text or "\f" in text:
+        opts = re.split(r"[\n\f]", text)
+        encoded_opts: list[bytes] = []
+        for opt in opts:
+            words = []
+            for ch in opt:
+                if ch not in charmap:
+                    raise ValueError(f"Character {ch!r} not in charmap for string: {text!r}")
+                words.append(charmap[ch])
+            encoded_opts.append(struct.pack(f"<{len(words)}H", *words))
+        raw = struct.pack("<H", CHAR_PAGE).join(encoded_opts) + struct.pack("<H", CHAR_TERMINATOR)
+    else:
+        words = []
+        for ch in text:
+            if ch not in charmap:
+                raise ValueError(f"Character {ch!r} not in charmap for string: {text!r}")
+            words.append(charmap[ch])
+        words.append(CHAR_TERMINATOR)
+        raw = struct.pack(f"<{len(words)}H", *words)
     if len(raw) > budget:
         raise ValueError(
             f"String text {text!r} encoded to {len(raw)} bytes > budget {budget} bytes"
@@ -894,12 +962,13 @@ def decode_minigame_string(
     for w in words:
         if w in (CHAR_TERMINATOR, 0x0000):
             break
+        elif w in (CHAR_PAGE, CHAR_NEWLINE):
+            chars.append("\n")
         elif w in cm:
             chars.append(cm[w])
         else:
             chars.append(f"[{w:#06x}]")
     return "".join(chars)
-
 
 def encode_minigame_dialogue(
     text: str,
@@ -1624,15 +1693,95 @@ def check_font_size(
 # In-memory & Disc Patching
 # ==============================================================================
 
+def patch_minigame_system_prompts(
+    raw_entries: dict[int, bytearray],
+    catalog: dict[str, Any],
+    charmap: dict[str, int] = DEFAULT_CHARMAP,
+) -> dict[str, Any]:
+    """Patch Entry 4 and Entry 5 system prompts (replay, choices, messages) in-place in memory.
+
+    - Entry 4 (0x004):
+      - e4_prompt_replay @ 0x5AF2 (budget 28): "Сыграть ещё?" ("Play again?")
+      - e4_choice_replay @ 0x5B10 (budget 26): "Да\nНет" ("Play\nNo", options separated by 0x00FE)
+    - Entry 5 (0x005):
+      - e5_prompt_replay @ 0x881E (budget 18): "Снова?" ("Replay?")
+      - e5_choice_replay @ 0x8830 (budget 46): "Ещё раз\nВыйти" ("Play again\nQuit game", options separated by 0x00FE)
+      - e5_prompt_go_ahead @ 0x8862 (budget 20): "Твой ход." ("Go ahead.")
+    """
+    sys_prompts = catalog.get("system_prompts", {})
+    stats: dict[str, Any] = {}
+
+    for entry_idx in (4, 5):
+        if entry_idx not in raw_entries:
+            continue
+        target = raw_entries[entry_idx]
+        entry_key = f"entry_{entry_idx}"
+        entry_cfg = sys_prompts.get(entry_key, {})
+        prompts_dict = entry_cfg.get("prompts", entry_cfg) if isinstance(entry_cfg, dict) else {}
+        specs = SYSTEM_PROMPT_SPECS.get(entry_idx, {})
+
+        for prompt_id, spec in specs.items():
+            p_data = prompts_dict.get(prompt_id, {})
+            choices = p_data.get("choices") or spec.get("choices")
+            text = (
+                p_data.get("text_ru")
+                or p_data.get("text")
+                or spec.get("default_ru", "")
+            )
+            offset = p_data.get("offset")
+            if offset is None and "offset_hex" in p_data:
+                offset = int(p_data["offset_hex"], 16)
+            if offset is None:
+                offset = spec["offset"]
+
+            budget = p_data.get("budget", spec["budget"])
+
+            if len(target) < offset + budget:
+                target.extend(b"\x00" * (offset + budget - len(target)))
+
+            target[offset : offset + budget] = b"\x00" * budget
+            if choices or "\n" in text or "\f" in text:
+                opts = choices if choices else re.split(r"[\n\f]", text)
+                encoded_opts: list[bytes] = []
+                for opt in opts:
+                    words = []
+                    for ch in opt:
+                        if ch not in charmap:
+                            raise ValueError(f"Character {ch!r} not in charmap for prompt {prompt_id!r}")
+                        words.append(charmap[ch])
+                    encoded_opts.append(struct.pack(f"<{len(words)}H", *words))
+                enc = struct.pack("<H", CHAR_PAGE).join(encoded_opts) + struct.pack("<H", CHAR_TERMINATOR)
+                if len(enc) > budget:
+                    raise ValueError(f"Prompt {prompt_id!r} encoded to {len(enc)} bytes > budget {budget} bytes")
+                enc = enc.ljust(budget, b"\x00")
+            else:
+                enc = encode_minigame_string(text, budget, charmap)
+
+            target[offset : offset + len(enc)] = enc
+
+            stat_item = {
+                "entry": entry_idx,
+                "offset": offset,
+                "bytes": len(enc),
+                "budget": budget,
+                "text": text,
+            }
+            stats[prompt_id] = stat_item
+            stats[f"entry_{entry_idx}_{prompt_id}"] = stat_item
+
+    return stats
+
 def patch_minigames_memory(
     entries: dict[int, bytearray],
     catalog: dict[str, Any],
     charmap: dict[str, int] = DEFAULT_CHARMAP,
     font_size: str | int = "auto",
 ) -> dict[str, Any]:
-    """Patch PROG.UNT entries 13..17 in-place in memory.
+    """Patch PROG.UNT entries 4, 5, 13..17 in-place in memory.
 
     Modifies:
+    - Entry 4: offset 0x5AF2..0x5B46 (Entry 4 system prompts and choices, budget 84B total)
+    - Entry 5: offset 0x8830..0x88BC (Entry 5 system prompts, choices, and messages, budget 140B total)
     - Entry 13: offset 0x07320..0x07468 (Eating contest continuous stream, budget 328B)
     - Entry 14: offset 0x11318..0x1147A (Amelia climb continuous stream, budget 354B)
     - Entry 15: offset 0x07EB4..0x07FC6 (Naga laugh continuous stream, budget 274B)
@@ -1643,6 +1792,7 @@ def patch_minigames_memory(
     - Entry 16: offset 0x082C6..0x082E8 (Quiz results avg speed, budget 34B)
     - Entry 16: offset 0x082E8 (Quiz questions, 100 structs * 164B = 16,400B)
     - Entry 17: offset 0x082B8..0x08412 (Bandit bullying continuous stream, budget 346B)
+    - Entry 17: offset 0x08414..0x08428 (Bandit bullying time bonus, budget 20B)
 
     Returns:
         Report dictionary of patched offsets and sizes.
@@ -1974,6 +2124,11 @@ def patch_minigames_memory(
             "budget": tb_bud,
         }
 
+
+    # 7. Patch Entry 4 & Entry 5 system prompts if present in entries
+    if 4 in entries or 5 in entries:
+        sys_stats = patch_minigame_system_prompts(entries, catalog, charmap)
+        patch_stats.update(sys_stats)
     return patch_stats
 
 
@@ -2013,11 +2168,12 @@ def patch_minigames(
         shutil.copyfile(p, out_p)
         work_bin = out_p
 
-    # Read PROG.UNT entries 13..17
-    prog_lba, entries_dict = load_prog_entries_data(work_bin, [13, 14, 15, 16, 17])
+    # Read PROG.UNT entries 4, 5, 13..17
+    target_prog_entries = (4, 5, 13, 14, 15, 16, 17)
+    prog_lba, entries_dict = load_prog_entries_data(work_bin, target_prog_entries)
 
     raw_entries: dict[int, bytearray] = {
-        idx: entries_dict[idx]["data"] for idx in (13, 14, 15, 16, 17)
+        idx: entries_dict[idx]["data"] for idx in target_prog_entries
     }
 
     # Patch minigame rules & quiz in memory
@@ -2040,8 +2196,8 @@ def patch_minigames(
     # Write patched sectors to disc
     total_sectors = 0
     if not dry_run:
-        # 1. Write PROG.UNT entries 13..17
-        for idx in (13, 14, 15, 16, 17):
+        # 1. Write PROG.UNT entries 4, 5, 13..17
+        for idx in target_prog_entries:
             start_sec = entries_dict[idx]["start_sector"]
             sec_count = entries_dict[idx]["sector_count"]
             data = bytes(raw_entries[idx])
@@ -2056,7 +2212,7 @@ def patch_minigames(
             replace_extent_in_place(work_bin, smini_lba + start_sec, data)
             total_sectors += sec_count
     else:
-        total_sectors = sum(entries_dict[i]["sector_count"] for i in (13, 14, 15, 16, 17)) + sum(
+        total_sectors = sum(entries_dict[i]["sector_count"] for i in target_prog_entries) + sum(
             smini_entries_dict[i]["sector_count"] for i in smini_target_entries
         )
 
@@ -2065,7 +2221,7 @@ def patch_minigames(
         "dry_run": dry_run,
         "prog_lba": prog_lba,
         "smini_lba": smini_lba,
-        "patched_entries": [13, 14, 15, 16, 17],
+        "patched_entries": list(target_prog_entries),
         "patched_smini_entries": list(smini_target_entries),
         "total_sectors_patched": total_sectors,
         "patch_stats": patch_stats,
@@ -2102,8 +2258,9 @@ def verify_minigames(
     catalog = json.loads(cat_path.read_text(encoding="utf-8"))
     rev_charmap = get_reverse_charmap(charmap)
 
-    # Read entries 13..17 from disc
-    prog_lba, entries_dict = load_prog_entries_data(p, [13, 14, 15, 16, 17])
+    # Read entries 4, 5, 13..17 from disc
+    target_prog_entries = (4, 5, 13, 14, 15, 16, 17)
+    prog_lba, entries_dict = load_prog_entries_data(p, target_prog_entries)
 
     # 1. Verify Minigames Continuous Unified Streams
     minigames = catalog["minigames"]
@@ -2376,6 +2533,55 @@ def verify_minigames(
             )
         verified_bandit_bonus += 1
 
+    # 8. Verify System Prompts in Entry 4 and Entry 5
+    sys_prompts = catalog.get("system_prompts", {})
+    verified_system_prompts = 0
+    for entry_idx in (4, 5):
+        if entry_idx not in entries_dict:
+            continue
+        entry_data = entries_dict[entry_idx]["data"]
+        entry_key = f"entry_{entry_idx}"
+        entry_cfg = sys_prompts.get(entry_key, {})
+        prompts_dict = entry_cfg.get("prompts", entry_cfg) if isinstance(entry_cfg, dict) else {}
+        specs = SYSTEM_PROMPT_SPECS.get(entry_idx, {})
+
+        for prompt_id, spec in specs.items():
+            p_data = prompts_dict.get(prompt_id, {})
+            choices = p_data.get("choices") or spec.get("choices")
+            expected_text = (
+                p_data.get("text_ru")
+                or p_data.get("text")
+                or spec.get("default_ru", "")
+            )
+            offset = p_data.get("offset")
+            if offset is None and "offset_hex" in p_data:
+                offset = int(p_data["offset_hex"], 16)
+            if offset is None:
+                offset = spec["offset"]
+            budget = p_data.get("budget", spec["budget"])
+
+            raw_bytes = entry_data[offset : offset + budget]
+            decoded_text = decode_minigame_string(raw_bytes, budget, rev_charmap)
+
+            if choices:
+                exp_joined = "\n".join(choices)
+                if decoded_text != exp_joined and decoded_text != expected_text:
+                    raise AssertionError(
+                        f"System prompt choice '{prompt_id}' mismatch in Entry {entry_idx} at 0x{offset:05X}:\n"
+                        f"  Expected: {exp_joined!r}\n"
+                        f"  Found:    {decoded_text!r}"
+                    )
+                if b"\xfe\x00" not in raw_bytes:
+                    raise AssertionError(
+                        f"System prompt choice '{prompt_id}' missing 0x00FE separator in Entry {entry_idx} at 0x{offset:05X}"
+                    )
+            elif decoded_text != expected_text:
+                raise AssertionError(
+                    f"System prompt '{prompt_id}' mismatch in Entry {entry_idx} at 0x{offset:05X}:\n"
+                    f"  Expected: {expected_text!r}\n"
+                    f"  Found:    {decoded_text!r}"
+                )
+            verified_system_prompts += 1
     # 8. Verify SMINI.UNT font tiles against PROG.UNT 0x03A
     _, font_entry_dict = load_prog_entries_data(p, [PROG_FONT_ENTRY])
     decomp_03a, _ = unt_lz.decompress(bytes(font_entry_dict[PROG_FONT_ENTRY]["data"]))
@@ -2424,7 +2630,7 @@ def verify_minigames(
     verified_sectors = 0
     with p.open("rb") as f:
         # Check PROG.UNT sectors
-        for idx in (13, 14, 15, 16, 17):
+        for idx in target_prog_entries:
             start_sec = entries_dict[idx]["start_sector"]
             count_sec = entries_dict[idx]["sector_count"]
             for s in range(count_sec):
@@ -2472,7 +2678,8 @@ def verify_minigames(
         "verified_font_entries": len(smini_target_entries),
         "verified_font_tiles": len(MINIGAME_FONT_GLYPH_IDS),
         "verified_sectors": verified_sectors,
-        "entries": [13, 14, 15, 16, 17],
+        "verified_system_prompts": verified_system_prompts,
+        "entries": list(target_prog_entries),
         "smini_entries": list(smini_target_entries),
     }
 
@@ -2538,7 +2745,8 @@ def main() -> int:
                 f"    Quiz UI strings: {res['verified_quiz_ui']} / 4 verified.\n"
                 f"    Quiz questions:  {res['verified_questions']} / 100 verified.\n"
                 f"    SMINI fonts:     {res['verified_font_entries']} entries ({res['verified_font_tiles']} tiles each) verified.\n"
-                f"    Disc sectors:    {res['verified_sectors']} sectors verified with 100% valid EDC/ECC."
+                f"    Disc sectors:    {res['verified_sectors']} sectors verified with 100% valid EDC/ECC.\n"
+                f"    System prompts:  {res.get('verified_system_prompts', 0)} / {sum(len(s) for s in SYSTEM_PROMPT_SPECS.values())} verified.\n"
             )
             return 0
         except Exception as e:

@@ -33,6 +33,8 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 PATCH_REPO = REPO_ROOT / "patch_repo"
 WORKSPACE = PATCH_REPO / "localization-work" / "ru"
 LANGUAGE_PRESET = REPO_ROOT / "translations" / "language_ru.json"
@@ -52,7 +54,8 @@ def _require_patch_repo() -> None:
         )
     if str(PATCH_REPO) not in sys.path:
         sys.path.insert(0, str(PATCH_REPO))
-
+    if str(REPO_ROOT) not in sys.path:
+        sys.path.insert(0, str(REPO_ROOT))
 
 def _load_expansion() -> dict[int, int]:
     doc = json.loads(EXPANSION_FILE.read_text(encoding="utf-8"))
@@ -112,8 +115,11 @@ def _install_expansion(table: dict[int, int]) -> None:
     from localization import script, cli  # type: ignore
 
     script.DEFAULT_EXPANSION_SECTORS = dict(table)
+    if hasattr(script, "EXTRA_EXPANSION_SECTORS"):
+        script.EXTRA_EXPANSION_SECTORS.clear()
+    if hasattr(cli, "EXTRA_EXPANSION_SECTORS"):
+        cli.EXTRA_EXPANSION_SECTORS.clear()
     cli.copy_dialogue_entries = _relayout_copy_dialogue_entries
-
 
 def ensure_workspace(source_bin: Path) -> None:
     """Create/refresh the PO workspace from the repository catalogues."""

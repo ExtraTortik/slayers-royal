@@ -274,7 +274,7 @@ def update_data_previews(
     for pe, filename in [(37, "preview_card_37_ru.png"), (38, "preview_card_38_ru.png"), (41, "preview_card_41_ru.png")]:
         card = next((c for c in cards_data if c["prog_entry"] == pe), None)
         if card:
-            tim_bytes = render_combined_card_8bpp(card, font_bold_path=font_bold_path, font_reg_path=font_reg_path)
+            tim_bytes = render_combined_card_8bpp(card, font_bold_path=font_bold_path, font_reg_path=font_reg_path, data_dir=d)
             im = tim_to_rgba(tim_bytes, transparent_zero=False)
             if im:
                 im.save(d / filename)
@@ -657,6 +657,7 @@ def render_combined_card_8bpp(
     card_data: dict[str, Any],
     font_bold_path: str | Path | None = None,
     font_reg_path: str | Path | None = None,
+    data_dir: str | Path | None = None,
 ) -> bytes:
     """Render a combined 8bpp lore card (entries 37, 38, 41) directly as an 8bpp TIM."""
     pe = card_data["prog_entry"]
@@ -665,6 +666,54 @@ def render_combined_card_8bpp(
     vram_y = spec.get("vram_y", 0)
     clut_x = spec.get("clut_x", 0)
     clut_y = spec.get("clut_y", 480)
+
+    if data_dir is None:
+        data_dir = REPO_ROOT / "data"
+    else:
+        data_dir = Path(data_dir)
+
+    if pe == 37:
+        custom_path = data_dir / "lore_card_37_custom.png"
+        if custom_path.exists():
+            im = Image.open(custom_path)
+            im = im.crop((0, 0, OVERLAY_WIDTH, OVERLAY_HEIGHT))
+            if im.mode == "P":
+                palette = im.getpalette() or []
+                num_colors = len(palette) // 3
+                clut_words = []
+                for i in range(256):
+                    if i < num_colors:
+                        r = palette[i * 3]
+                        g = palette[i * 3 + 1]
+                        b = palette[i * 3 + 2]
+                        clut_words.append(rgb_to_bgr555(r, g, b))
+                    else:
+                        clut_words.append(0)
+                pixels = bytes(im.tobytes())
+            else:
+                im_p = im.convert("RGB").quantize(colors=256)
+                palette = im_p.getpalette() or []
+                num_colors = len(palette) // 3
+                clut_words = []
+                for i in range(256):
+                    if i < num_colors:
+                        r = palette[i * 3]
+                        g = palette[i * 3 + 1]
+                        b = palette[i * 3 + 2]
+                        clut_words.append(rgb_to_bgr555(r, g, b))
+                    else:
+                        clut_words.append(0)
+                pixels = bytes(im_p.tobytes())
+            return build_tim_8bpp(
+                pixels,
+                OVERLAY_WIDTH,
+                OVERLAY_HEIGHT,
+                clut_words,
+                vram_x=vram_x,
+                vram_y=vram_y,
+                clut_x=clut_x,
+                clut_y=clut_y,
+            )
 
     bg_im, clut_words = get_combined_card_assets(pe)
 
