@@ -2609,7 +2609,9 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
         // Select active entry
         if (currentEntries.length > 0) {
-          if (keepActiveEntryId) {
+          if (keepActiveEntryId === "__LAST__") {
+            setActiveEntry(currentEntries[currentEntries.length - 1]);
+          } else if (keepActiveEntryId) {
             const found = currentEntries.find(e => e.id === keepActiveEntryId);
             setActiveEntry(found || currentEntries[0]);
           } else {
@@ -2733,6 +2735,11 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
         }
       });
 
+      const activeRow = document.querySelector(".entry-row.active");
+      if (activeRow) {
+        activeRow.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      }
+
       if (!entry) {
         document.getElementById("editorCard").style.display = "none";
         return;
@@ -2801,6 +2808,36 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     function selectEntry(entry) {
       setActiveEntry(entry);
     }
+    function selectNextEntry() {
+      if (!currentEntries || currentEntries.length === 0) return;
+      if (!activeEntry) {
+        selectEntry(currentEntries[0]);
+        return;
+      }
+      const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
+      if (idx !== -1 && idx < currentEntries.length - 1) {
+        selectEntry(currentEntries[idx + 1]);
+      } else if (currentPage < totalPages) {
+        currentPage++;
+        loadCurrentCatalog();
+      }
+    }
+
+    function selectPrevEntry() {
+      if (!currentEntries || currentEntries.length === 0) return;
+      if (!activeEntry) {
+        selectEntry(currentEntries[currentEntries.length - 1]);
+        return;
+      }
+      const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
+      if (idx > 0) {
+        selectEntry(currentEntries[idx - 1]);
+      } else if (currentPage > 1) {
+        currentPage--;
+        loadCurrentCatalog("__LAST__");
+      }
+    }
+
 
     function onEditorInput() {
       if (!activeEntry) return;
@@ -3327,24 +3364,50 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
           return;
         }
 
-        // Alt+Down: Next entry
-        if (e.altKey && e.key === "ArrowDown") {
+        // Check if any modal is open
+        const issuesModal = document.getElementById("issuesModal");
+        const validationModal = document.getElementById("validationModal");
+        const isModalOpen = (issuesModal && issuesModal.style.display !== "none") ||
+                            (validationModal && validationModal.style.display !== "none");
+
+        const activeEl = document.activeElement;
+        const isInsideTextarea = activeEl && activeEl.id === "ruEditorTextarea";
+        const isInsideInput = activeEl && (
+          activeEl.tagName === "TEXTAREA" ||
+          (activeEl.tagName === "INPUT" && (activeEl.type === "text" || !activeEl.type || activeEl.type === "search"))
+        );
+
+        // Escape inside textarea: blur to return control to navigation
+        if (e.key === "Escape" && isInsideTextarea) {
           e.preventDefault();
-          if (activeEntry && currentEntries.length > 0) {
-            const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
-            if (idx !== -1 && idx < currentEntries.length - 1) {
-              selectEntry(currentEntries[idx + 1]);
-            }
-          }
+          const ruTextarea = document.getElementById("ruEditorTextarea");
+          if (ruTextarea) ruTextarea.blur();
+          return;
         }
-        // Alt+Up: Prev entry
-        if (e.altKey && e.key === "ArrowUp") {
+
+        // Alt+Arrow / Ctrl+Arrow: Direct jumping while editing or anywhere
+        if ((e.altKey || e.ctrlKey) && e.key === "ArrowDown") {
           e.preventDefault();
-          if (activeEntry && currentEntries.length > 0) {
-            const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
-            if (idx > 0) {
-              selectEntry(currentEntries[idx - 1]);
-            }
+          selectNextEntry();
+          return;
+        }
+        if ((e.altKey || e.ctrlKey) && e.key === "ArrowUp") {
+          e.preventDefault();
+          selectPrevEntry();
+          return;
+        }
+
+        // Plain ArrowDown / ArrowUp when not typing in an input/textarea and no modal is open
+        if (!isModalOpen && !isInsideInput) {
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            selectNextEntry();
+            return;
+          }
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            selectPrevEntry();
+            return;
           }
         }
       }, true); // Use capture phase!

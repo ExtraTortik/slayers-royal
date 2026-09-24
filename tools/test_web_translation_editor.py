@@ -323,6 +323,15 @@ class TestHttpServer(unittest.TestCase):
         indicator_idx = html.find('id="ps1PageIndicator"')
         self.assertGreater(indicator_idx, close_dialogue_idx)
 
+        # Verify arrow navigation, escape shortcut, and scrollIntoView features
+        self.assertIn("selectNextEntry()", html)
+        self.assertIn("selectPrevEntry()", html)
+        self.assertIn("scrollIntoView", html)
+        self.assertIn("ruEditorTextarea", html)
+        self.assertIn("ArrowDown", html)
+        self.assertIn("ArrowUp", html)
+        self.assertIn("Escape", html)
+
     def test_api_catalogs(self):
         status, headers, body = self._get("/api/catalogs")
         self.assertEqual(status, 200)
