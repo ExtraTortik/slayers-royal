@@ -179,6 +179,79 @@ class TestCatalogManager(unittest.TestCase):
         finally:
             shutil.rmtree(temp_dir)
 
+    def test_update_entries_batch_single_catalog(self):
+        temp_dir = Path(tempfile.mkdtemp(prefix="test_batch_single_"))
+        try:
+            src_file = MANAGER.translations_dir / "world_map_ru.json"
+            dst_file = temp_dir / "world_map_ru.json"
+            shutil.copy2(src_file, dst_file)
+
+            custom_mgr = CatalogManager(translations_dir=temp_dir)
+            items = [
+                {"catalog_id": "world_map", "id": "LAKEWOOD", "text_ru": "НОВЫЙ ЛЕЙКВУД"},
+                {"catalog_id": "world_map", "id": "BARKLAND", "text_ru": "НОВЫЙ БАРКЛЕНД"},
+            ]
+            res = custom_mgr.update_entries_batch(items)
+            self.assertTrue(res["success"])
+            self.assertEqual(res["updated_count"], 2)
+            self.assertEqual(res["catalogs_updated"], ["world_map"])
+            self.assertEqual(len(res["entries"]), 2)
+
+            with open(dst_file, "r", encoding="utf-8") as fp:
+                saved_json = json.load(fp)
+            locs = {l["id"]: l["text_ru"] for l in saved_json["locations"]}
+            self.assertEqual(locs["LAKEWOOD"], "НОВЫЙ ЛЕЙКВУД")
+            self.assertEqual(locs["BARKLAND"], "НОВЫЙ БАРКЛЕНД")
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_update_entries_batch_multiple_catalogs(self):
+        temp_dir = Path(tempfile.mkdtemp(prefix="test_batch_multi_"))
+        try:
+            shutil.copy2(MANAGER.translations_dir / "world_map_ru.json", temp_dir / "world_map_ru.json")
+            shutil.copy2(MANAGER.translations_dir / "room_names_ru.json", temp_dir / "room_names_ru.json")
+
+            custom_mgr = CatalogManager(translations_dir=temp_dir)
+            items = [
+                {"catalog_id": "world_map", "id": "LAKEWOOD", "text_ru": "ПАКЕТ_ЛЕЙКВУД"},
+                {"catalog_id": "room_names", "id": "0x059", "text_ru": "ВХОД ТЕСТ"},
+            ]
+            res = custom_mgr.update_entries_batch(items)
+            self.assertTrue(res["success"])
+            self.assertEqual(res["updated_count"], 2)
+            self.assertIn("world_map", res["catalogs_updated"])
+            self.assertIn("room_names", res["catalogs_updated"])
+
+            with open(temp_dir / "world_map_ru.json", "r", encoding="utf-8") as fp:
+                map_json = json.load(fp)
+            with open(temp_dir / "room_names_ru.json", "r", encoding="utf-8") as fp:
+                room_json = json.load(fp)
+
+            lakewood = next(l for l in map_json["locations"] if l["id"] == "LAKEWOOD")
+            self.assertEqual(lakewood["text_ru"], "ПАКЕТ_ЛЕЙКВУД")
+            self.assertEqual(room_json["entries"]["0x059"]["name_ru"], "ВХОД ТЕСТ")
+        finally:
+            shutil.rmtree(temp_dir)
+
+    def test_update_entries_batch_empty_and_unknown(self):
+        temp_dir = Path(tempfile.mkdtemp(prefix="test_batch_empty_"))
+        try:
+            custom_mgr = CatalogManager(translations_dir=temp_dir)
+            # Empty list
+            res_empty = custom_mgr.update_entries_batch([])
+            self.assertTrue(res_empty["success"])
+            self.assertEqual(res_empty["updated_count"], 0)
+            self.assertEqual(res_empty["catalogs_updated"], [])
+
+            # Unknown catalog or entry
+            res_unknown = custom_mgr.update_entries_batch([
+                {"catalog_id": "nonexistent_catalog", "id": "FOO", "text_ru": "BAR"},
+            ])
+            self.assertTrue(res_unknown["success"])
+            self.assertEqual(res_unknown["updated_count"], 0)
+        finally:
+            shutil.rmtree(temp_dir)
+
 
 class TestHttpServer(unittest.TestCase):
     """Test HTTP Server REST API endpoints."""
@@ -304,6 +377,76 @@ class TestHttpServer(unittest.TestCase):
         restore_data = json.loads(restore_body.decode("utf-8"))
         self.assertEqual(restore_data["entry"]["text_ru"], orig_text)
 
+
+    def test_api_batch_save_and_restore(self):
+        # Read two entries from room_names
+        status, _, body = self._get("/api/catalog/room_names?limit=2")
+        self.assertEqual(status, 200)
+        data = json.loads(body.decode("utf-8"))
+        e1 = data["entries"][0]
+        e2 = data["entries"][1]
+        orig_text1 = e1["text_ru"]
+        orig_text2 = e2["text_ru"]
+
+        # POST batch_save
+        status, _, post_body = self._post(
+            "/api/batch_save",
+            {
+                "items": [
+                    {"catalog_id": e1["catalog_id"], "id": e1["id"], "text_ru": "ТЕСТ_БАТЧ1"},
+                    {"catalog_id": e2["catalog_id"], "id": e2["id"], "text_ru": "ТЕСТ_БАТЧ2"},
+                ]
+            },
+        )
+        self.assertEqual(status, 200)
+        post_data = json.loads(post_body.decode("utf-8"))
+        self.assertTrue(post_data["success"])
+        self.assertEqual(post_data["updated_count"], 2)
+        self.assertIn("room_names", post_data["catalogs_updated"])
+
+        # Verify via GET
+        status, _, verify_body = self._get("/api/catalog/room_names?limit=2")
+        self.assertEqual(status, 200)
+        verify_data = json.loads(verify_body.decode("utf-8"))
+        self.assertEqual(verify_data["entries"][0]["text_ru"], "ТЕСТ_БАТЧ1")
+        self.assertEqual(verify_data["entries"][1]["text_ru"], "ТЕСТ_БАТЧ2")
+
+        # Restore original texts via batch_save
+        status, _, restore_body = self._post(
+            "/api/batch_save",
+            {
+                "items": [
+                    {"catalog_id": e1["catalog_id"], "id": e1["id"], "text_ru": orig_text1},
+                    {"catalog_id": e2["catalog_id"], "id": e2["id"], "text_ru": orig_text2},
+                ]
+            },
+        )
+        self.assertEqual(status, 200)
+        restore_data = json.loads(restore_body.decode("utf-8"))
+        self.assertTrue(restore_data["success"])
+        self.assertEqual(restore_data["updated_count"], 2)
+
+        # Confirm restored
+        status, _, final_body = self._get("/api/catalog/room_names?limit=2")
+        self.assertEqual(status, 200)
+        final_data = json.loads(final_body.decode("utf-8"))
+        self.assertEqual(final_data["entries"][0]["text_ru"], orig_text1)
+        self.assertEqual(final_data["entries"][1]["text_ru"], orig_text2)
+
+    def test_api_batch_save_empty_and_list_payload(self):
+        # Test empty payload items
+        status, _, body = self._post("/api/batch_save", {"items": []})
+        self.assertEqual(status, 200)
+        data = json.loads(body.decode("utf-8"))
+        self.assertTrue(data["success"])
+        self.assertEqual(data["updated_count"], 0)
+
+        # Test direct list payload
+        status, _, body2 = self._post("/api/batch_save", [])
+        self.assertEqual(status, 200)
+        data2 = json.loads(body2.decode("utf-8"))
+        self.assertTrue(data2["success"])
+        self.assertEqual(data2["updated_count"], 0)
     def test_not_found_route(self):
         status, _, body = self._get("/api/nonexistent")
         self.assertEqual(status, 404)

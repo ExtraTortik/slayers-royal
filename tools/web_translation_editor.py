@@ -26,6 +26,7 @@ Features:
 from __future__ import annotations
 
 import argparse
+import collections
 import copy
 import http.server
 import json
@@ -1093,10 +1094,9 @@ class CatalogManager:
             "catalogs": catalogs_stat,
         }
 
-    def update_entry(self, cat_id: str, entry_id: str, new_text_ru: str) -> dict[str, Any]:
-        """Update an entry's Russian text and write atomically back to disk."""
+    def _apply_entry_update(self, cat_id: str, data: Any, entry_id: str, new_text_ru: str) -> bool:
+        """Apply an update to in-memory catalog data structure. Returns True if found."""
         new_text_ru = re.sub(r"\\f\r?\n?", "\f", new_text_ru)
-        data = copy.deepcopy(self.load_raw_json(cat_id))
         found = False
 
         if cat_id == "story_dialogues":
@@ -1185,6 +1185,7 @@ class CatalogManager:
                     if p_k in data.get("system_prompts", {}):
                         data["system_prompts"][p_k] = new_text_ru
                         found = True
+
         elif cat_id == "town_services":
             if entry_id.startswith("tavern:"):
                 k = entry_id.split(":", 1)[1]
@@ -1251,6 +1252,12 @@ class CatalogManager:
                     found = True
                     break
 
+        return found
+
+    def update_entry(self, cat_id: str, entry_id: str, new_text_ru: str) -> dict[str, Any]:
+        """Update an entry's Russian text and write atomically back to disk."""
+        data = copy.deepcopy(self.load_raw_json(cat_id))
+        found = self._apply_entry_update(cat_id, data, entry_id, new_text_ru)
         if not found:
             raise KeyError(f"Entry {entry_id} not found in catalog {cat_id}")
 
@@ -1260,6 +1267,53 @@ class CatalogManager:
         entries = self.get_all_entries(cat_id)
         updated = next((e for e in entries if e["id"] == entry_id), None)
         return updated or {}
+
+    def update_entries_batch(self, items: list[dict[str, Any]]) -> dict[str, Any]:
+        """Update multiple entries across one or more catalogs and write each catalog atomically back to disk in one pass."""
+        if not items:
+            return {"success": True, "updated_count": 0, "catalogs_updated": [], "entries": []}
+
+        # Group items by catalog_id
+        by_catalog: dict[str, list[dict[str, Any]]] = collections.defaultdict(list)
+        for it in items:
+            cat_id = it.get("catalog_id")
+            if not cat_id or not it.get("id"):
+                continue
+            by_catalog[cat_id].append(it)
+
+        catalogs_updated: list[str] = []
+        updated_entries: list[dict[str, Any]] = []
+        total_updated = 0
+
+        for cat_id, cat_items in by_catalog.items():
+            if cat_id not in CATALOG_DEFS:
+                continue
+            data = copy.deepcopy(self.load_raw_json(cat_id))
+            cat_modified = False
+            modified_ids: set[str] = set()
+
+            for item in cat_items:
+                e_id = item["id"]
+                new_text = item.get("text_ru", "")
+                if self._apply_entry_update(cat_id, data, e_id, new_text):
+                    cat_modified = True
+                    total_updated += 1
+                    modified_ids.add(e_id)
+
+            if cat_modified:
+                self.save_raw_json(cat_id, data)
+                catalogs_updated.append(cat_id)
+                all_entries = {e["id"]: e for e in self.get_all_entries(cat_id)}
+                for e_id in modified_ids:
+                    if e_id in all_entries:
+                        updated_entries.append(all_entries[e_id])
+
+        return {
+            "success": True,
+            "updated_count": total_updated,
+            "catalogs_updated": catalogs_updated,
+            "entries": updated_entries,
+        }
 
 
 # Global Catalog Manager instance
@@ -1371,6 +1425,19 @@ class TranslationEditorHandler(http.server.BaseHTTPRequestHandler):
 
                 updated = MANAGER.update_entry(cat_id, entry_id, text_ru)
                 self._send_json(200, {"success": True, "entry": updated})
+                return
+
+            if path == "/api/batch_save":
+                if isinstance(payload, list):
+                    items = payload
+                elif isinstance(payload, dict):
+                    items = payload.get("items")
+                    if items is None:
+                        items = []
+                else:
+                    items = []
+                result = MANAGER.update_entries_batch(items)
+                self._send_json(200, result)
                 return
 
             if path == "/api/run_validate":
@@ -1581,11 +1648,20 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       align-items: center;
       gap: 6px;
       font-size: 12px;
-      padding: 4px 8px;
-      border-radius: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
       background: rgba(16, 185, 129, 0.1);
       color: var(--accent-green);
       border: 1px solid rgba(16, 185, 129, 0.3);
+      font-weight: 600;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .btn-has-changes {
+      background: #d97706 !important;
+      border-color: #f59e0b !important;
+      color: #fff !important;
+      box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
     }
 
     /* Main Workspace Layout */
@@ -1725,6 +1801,10 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     .entry-row.active {
       background: var(--bg-card);
       box-shadow: inset 3px 0 0 var(--accent-cyan);
+    }
+    .entry-row.has-unsaved {
+      border-left: 3px solid #f59e0b;
+      background: rgba(245, 158, 11, 0.05);
     }
     .entry-row-header {
       display: flex;
@@ -2039,16 +2119,58 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     }
     .ps1-page-indicator {
       position: absolute;
-      bottom: 8px;
-      right: 12px;
-      font-size: 11px;
+      bottom: 10px;
+      left: 14px;
+      right: auto;
+      font-size: 13px;
+      font-weight: bold;
       color: #93c5fd;
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(0,0,0,0.5);
-      padding: 2px 8px;
-      border-radius: 4px;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 4px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      z-index: 10;
+    }
+    .ps1-page-btn {
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      border: 1px solid #3b82f6;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      padding: 0;
+      line-height: 1;
+    }
+    .ps1-page-btn:hover {
+      background: #3b82f6;
+      border-color: #60a5fa;
+      transform: scale(1.08);
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
+    }
+    .ps1-page-btn:active {
+      transform: scale(0.94);
+      background: #1d4ed8;
+    }
+    .ps1-page-num {
+      font-size: 13px;
+      font-weight: bold;
+      color: #bfdbfe;
+      letter-spacing: 0.5px;
+      min-width: 65px;
+      text-align: center;
     }
     .scanlines-overlay {
       position: absolute;
@@ -2177,7 +2299,7 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
         <span>⚙️ Валидация build.sh</span>
       </button>
 
-      <div id="saveIndicator" class="save-indicator">
+      <div id="saveIndicator" class="save-indicator" onclick="saveAllSessionChanges()" style="cursor:pointer;" title="Сохранить все несохраненные изменения (Ctrl+S)">
         <span>✓</span>
         <span>Сохранено</span>
       </div>
@@ -2243,8 +2365,8 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
               </div>
 
               <div>
-                <button class="btn btn-primary" onclick="saveCurrentEntry()">
-                  <span>💾 Сохранить (Ctrl+S)</span>
+                <button id="saveButton" class="btn btn-primary" onclick="saveAllSessionChanges()">
+                  <span id="saveButtonText">💾 Сохранить (Ctrl+S)</span>
                 </button>
               </div>
             </div>
@@ -2314,9 +2436,9 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
               <div id="ps1DialogueText" class="ps1-dialogue-text">На вкус прямо
 недурно.</div>
               <div id="ps1PageIndicator" class="ps1-page-indicator" style="display:none;">
-                <span onclick="prevPs1Page()" style="cursor:pointer;">◀</span>
-                <span id="ps1PageNum">Стр. 1 / 1</span>
-                <span onclick="nextPs1Page()" style="cursor:pointer;">▶</span>
+                <button type="button" class="ps1-page-btn" onclick="prevPs1Page()" title="Предыдущая страница">◀</button>
+                <span id="ps1PageNum" class="ps1-page-num">Стр. 1 / 1</span>
+                <button type="button" class="ps1-page-btn" onclick="nextPs1Page()" title="Следующая страница">▶</button>
               </div>
             </div>
 
@@ -2393,7 +2515,6 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     }
 
     // State
-    // State
     let currentCatalogId = "story_dialogues";
     let currentSceneId = null;
     let currentSearch = "";
@@ -2405,6 +2526,13 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     let ps1ActivePage = 0;
     let allCatalogsMeta = [];
 
+    // Session-wide unsaved changes tracker
+    // key: `${catId}:::${entryId}`, value: { catalog_id, id, text_ru }
+    const sessionChanges = new Map();
+
+    function getSessionChangeKey(catId, entryId) {
+      return `${catId}:::${entryId}`;
+    }
     // Colors mapping
     const SPEAKER_COLORS = {
       "Lina": "#ef4444", "Лина": "#ef4444",
@@ -2463,6 +2591,16 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
         totalPages = data.total_pages || 1;
         currentPage = data.page || 1;
 
+        // Synchronize baseline and pending session changes
+        currentEntries.forEach(e => {
+          if (e._saved_text_ru === undefined) {
+            e._saved_text_ru = e.text_ru;
+          }
+          const key = getSessionChangeKey(e.catalog_id, e.id);
+          if (sessionChanges.has(key)) {
+            e.text_ru = sessionChanges.get(key).text_ru;
+          }
+        });
         // Update Breadcrumb & Header info
         document.getElementById("breadcrumbCurrent").textContent = `${data.catalog.title} (${data.filtered_entries} из ${data.total_entries})`;
         document.getElementById("pageInfo").textContent = `Стр. ${currentPage} из ${totalPages}`;
@@ -2525,23 +2663,36 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       }
 
       currentEntries.forEach(e => {
+        const changeKey = getSessionChangeKey(e.catalog_id, e.id);
+        const hasUnsaved = sessionChanges.has(changeKey);
+        const textToDisplay = hasUnsaved ? sessionChanges.get(changeKey).text_ru : e.text_ru;
+        if (hasUnsaved) {
+          e.text_ru = textToDisplay;
+        }
+
         const row = document.createElement("div");
-        row.className = `entry-row ${activeEntry && activeEntry.id === e.id ? "active" : ""}`;
-        row.onclick = () => setActiveEntry(e);
+        row.className = `entry-row ${activeEntry && activeEntry.id === e.id ? "active" : ""}${hasUnsaved ? " has-unsaved" : ""}`;
+        row.dataset.id = e.id;
+        row.onclick = () => selectEntry(e);
 
         const speakerName = e.speaker_ru || e.speaker || "—";
         const speakerColor = SPEAKER_COLORS[speakerName] || SPEAKER_COLORS[e.speaker] || "#64748b";
 
-        const isErr = e.validation.exceeds_limits;
+        const isErr = e.validation ? e.validation.exceeds_limits : false;
         const statusClass = isErr ? "status-err" : "status-ok";
         const statusText = isErr ? "ОШИБКА ЛИМИТА" : "OK";
 
+        const unsavedMarker = hasUnsaved ? `<span class="unsaved-dot" title="Несохраненные изменения" style="color:#f59e0b;font-weight:bold;margin-right:6px;">●</span>` : "";
+
         row.innerHTML = `
           <div class="entry-row-header">
-            ${e.speaker ? `<span class="speaker-pill" style="background:${speakerColor}">${speakerName}</span>` : `<span></span>`}
+            <div style="display:flex;align-items:center;">
+              ${unsavedMarker}
+              ${e.speaker ? `<span class="speaker-pill" style="background:${speakerColor}">${speakerName}</span>` : `<span></span>`}
+            </div>
             <span class="ctx-pill">${e.id}</span>
           </div>
-          <div class="entry-row-text">${escapeHtml(e.text_ru || "—")}</div>
+          <div class="entry-row-text">${escapeHtml(textToDisplay || "—")}</div>
           <div class="entry-row-status">
             <span class="status-badge ${statusClass}">${statusText}</span>
             <span style="font-size:11px;color:var(--text-dim);">${e.category || ""}</span>
@@ -2551,7 +2702,30 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       });
     }
 
+    function syncCurrentActiveToSessionChanges() {
+      if (!activeEntry) return;
+      const textarea = document.getElementById("ruEditorTextarea");
+      if (!textarea) return;
+      const currentVal = toInternal(textarea.value);
+      const key = getSessionChangeKey(activeEntry.catalog_id, activeEntry.id);
+      const orig = activeEntry._saved_text_ru !== undefined ? activeEntry._saved_text_ru : activeEntry.text_ru;
+
+      if (currentVal !== orig) {
+        activeEntry.text_ru = currentVal;
+        sessionChanges.set(key, {
+          catalog_id: activeEntry.catalog_id,
+          id: activeEntry.id,
+          text_ru: currentVal
+        });
+      } else if (sessionChanges.has(key)) {
+        sessionChanges.delete(key);
+      }
+      updateSaveButtonState();
+      updateHeaderSaveStatus();
+    }
+
     function setActiveEntry(entry) {
+      syncCurrentActiveToSessionChanges();
       activeEntry = entry;
       ps1ActivePage = 0;
 
@@ -2570,6 +2744,10 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       }
 
       document.getElementById("editorCard").style.display = "block";
+
+      if (entry._saved_text_ru === undefined) {
+        entry._saved_text_ru = entry.text_ru;
+      }
 
       // Speaker & ID
       const speakerName = entry.speaker_ru || entry.speaker || "—";
@@ -2599,9 +2777,9 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
       // Limits description
       let limDesc = "";
-      if (entry.limits.single_line) {
+      if (entry.limits && entry.limits.single_line) {
         limDesc = `Лимит: одна строка ≤ ${entry.limits.max_chars_total || entry.limits.max_chars_per_line} симв.`;
-      } else {
+      } else if (entry.limits) {
         limDesc = `Лимит: ≤ ${entry.limits.max_chars_per_line || 15} симв./строку, 1..${entry.limits.max_lines_page || 3} строки`;
       }
       document.getElementById("editorLimitsInfo").textContent = limDesc;
@@ -2610,23 +2788,117 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       document.getElementById("textJpBox").textContent = entry.text_jp || "—";
       document.getElementById("textEnBox").textContent = entry.text_en || "—";
 
-      // Textarea
+      // Textarea: check sessionChanges for pending text before loading entry.text_ru
+      const changeKey = getSessionChangeKey(entry.catalog_id, entry.id);
+      let textToLoad = entry.text_ru;
+      if (sessionChanges.has(changeKey)) {
+        textToLoad = sessionChanges.get(changeKey).text_ru;
+        entry.text_ru = textToLoad;
+      }
       const textarea = document.getElementById("ruEditorTextarea");
-      textarea.value = toVisible(entry.text_ru);
+      textarea.value = toVisible(textToLoad);
 
       // Realtime validation
       updateRealtimeGauges();
       updatePs1Preview();
     }
 
-    function onEditorInput() {
-      if (!activeEntry) return;
-      activeEntry.text_ru = toInternal(document.getElementById("ruEditorTextarea").value);
-      updateRealtimeGauges();
-      updatePs1Preview();
-      markUnsaved();
+    function selectEntry(entry) {
+      setActiveEntry(entry);
     }
 
+    function onEditorInput() {
+      if (!activeEntry) return;
+      const currentVal = toInternal(document.getElementById("ruEditorTextarea").value);
+      activeEntry.text_ru = currentVal;
+
+      const key = getSessionChangeKey(activeEntry.catalog_id, activeEntry.id);
+      const orig = activeEntry._saved_text_ru;
+
+      if (orig !== undefined && currentVal === orig) {
+        sessionChanges.delete(key);
+      } else {
+        sessionChanges.set(key, {
+          catalog_id: activeEntry.catalog_id,
+          id: activeEntry.id,
+          text_ru: currentVal
+        });
+      }
+
+      updateRealtimeGauges();
+      updatePs1Preview();
+      updateSaveButtonState();
+      updateHeaderSaveStatus();
+      updateEntryRowInList(activeEntry);
+    }
+
+    function updateEntryRowInList(entry) {
+      if (!entry) return;
+      const key = getSessionChangeKey(entry.catalog_id, entry.id);
+      const hasUnsaved = sessionChanges.has(key);
+      const rows = document.querySelectorAll(".entry-row");
+      rows.forEach(row => {
+        if (row.dataset.id === entry.id) {
+          if (hasUnsaved) {
+            row.classList.add("has-unsaved");
+          } else {
+            row.classList.remove("has-unsaved");
+          }
+          const textEl = row.querySelector(".entry-row-text");
+          if (textEl) textEl.textContent = entry.text_ru || "—";
+
+          let dotEl = row.querySelector(".unsaved-dot");
+          const headerLeft = row.querySelector(".entry-row-header > div");
+          if (hasUnsaved && !dotEl && headerLeft) {
+            dotEl = document.createElement("span");
+            dotEl.className = "unsaved-dot";
+            dotEl.title = "Несохраненные изменения";
+            dotEl.style.cssText = "color:#f59e0b;font-weight:bold;margin-right:6px;";
+            dotEl.textContent = "●";
+            headerLeft.prepend(dotEl);
+          } else if (!hasUnsaved && dotEl) {
+            dotEl.remove();
+          }
+        }
+      });
+    }
+
+    function updateSaveButtonState() {
+      const btnText = document.getElementById("saveButtonText");
+      const btn = document.getElementById("saveButton");
+      const count = sessionChanges.size;
+      if (btnText) {
+        if (count > 0) {
+          btnText.textContent = `💾 Сохранить все (${count})`;
+        } else {
+          btnText.textContent = `💾 Сохранить (Ctrl+S)`;
+        }
+      }
+      if (btn) {
+        if (count > 0) {
+          btn.classList.add("btn-has-changes");
+        } else {
+          btn.classList.remove("btn-has-changes");
+        }
+      }
+    }
+
+    function updateHeaderSaveStatus() {
+      const count = sessionChanges.size;
+      const ind = document.getElementById("saveIndicator");
+      if (!ind) return;
+      if (count > 0) {
+        ind.style.background = "rgba(245, 158, 11, 0.15)";
+        ind.style.borderColor = "rgba(245, 158, 11, 0.4)";
+        ind.style.color = "var(--accent-gold, #f59e0b)";
+        ind.innerHTML = `<span>●</span><span>${count} не сохранено</span>`;
+      } else {
+        ind.style.background = "rgba(16, 185, 129, 0.1)";
+        ind.style.borderColor = "rgba(16, 185, 129, 0.3)";
+        ind.style.color = "var(--accent-green, #10b981)";
+        ind.innerHTML = "<span>✓</span><span>Сохранено</span>";
+      }
+    }
     function updateRealtimeGauges() {
       if (!activeEntry) return;
       const text = document.getElementById("ruEditorTextarea").value;
@@ -2802,31 +3074,50 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       onEditorInput();
     }
 
-    async function saveCurrentEntry() {
-      if (!activeEntry) return;
-      const rawVal = document.getElementById("ruEditorTextarea").value;
-      const newText = toInternal(rawVal);
+    async function saveAllSessionChanges() {
+      syncCurrentActiveToSessionChanges();
+
+      if (sessionChanges.size === 0) {
+        updateHeaderSaveStatus();
+        return;
+      }
+
       setSaveStatus("saving");
+      const itemsToSave = Array.from(sessionChanges.values());
+      const totalCount = itemsToSave.length;
+
       try {
-        const res = await fetch("/api/entry", {
+        const res = await fetch("/api/batch_save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            catalog_id: activeEntry.catalog_id,
-            id: activeEntry.id,
-            text_ru: newText
-          })
+          body: JSON.stringify({ items: itemsToSave })
         });
 
         const data = await res.json();
-        if (data.success && data.entry) {
-          activeEntry = data.entry;
-          // Update in entries array
-          const idx = currentEntries.findIndex(e => e.id === activeEntry.id);
-          if (idx !== -1) currentEntries[idx] = activeEntry;
-          renderEntryList();
-          setSaveStatus("saved");
-          loadCatalogsList(); // refresh issue counters
+        if (data.success) {
+          const savedCount = data.updated_count !== undefined ? data.updated_count : totalCount;
+
+          // Update saved baseline for current entries
+          currentEntries.forEach(e => {
+            const key = getSessionChangeKey(e.catalog_id, e.id);
+            if (sessionChanges.has(key)) {
+              e._saved_text_ru = sessionChanges.get(key).text_ru;
+            }
+          });
+
+          sessionChanges.clear();
+          updateSaveButtonState();
+
+          const ind = document.getElementById("saveIndicator");
+          if (ind) {
+            ind.style.background = "rgba(16, 185, 129, 0.15)";
+            ind.style.borderColor = "rgba(16, 185, 129, 0.4)";
+            ind.style.color = "var(--accent-green, #10b981)";
+            ind.innerHTML = `<span>✓</span><span>Сохранено (${savedCount} реплик)</span>`;
+          }
+
+          await loadCatalogsList();
+          await loadCurrentCatalog(activeEntry ? activeEntry.id : null);
         } else {
           setSaveStatus("error");
           alert("Ошибка сохранения: " + (data.error || "Неизвестная ошибка"));
@@ -2834,41 +3125,48 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       } catch (err) {
         console.error("Save failed:", err);
         setSaveStatus("error");
+        alert("Ошибка сети при сохранении: " + err.message);
       }
+    }
+
+    async function saveCurrentEntry() {
+      await saveAllSessionChanges();
     }
 
     function revertCurrentEntry() {
       if (!activeEntry) return;
-      document.getElementById("ruEditorTextarea").value = toVisible(activeEntry.text_ru);
-      onEditorInput();
-      setSaveStatus("saved");
+      const orig = activeEntry._saved_text_ru !== undefined ? activeEntry._saved_text_ru : activeEntry.text_ru;
+      const key = getSessionChangeKey(activeEntry.catalog_id, activeEntry.id);
+      sessionChanges.delete(key);
+      activeEntry.text_ru = orig;
+      document.getElementById("ruEditorTextarea").value = toVisible(orig);
+      updateRealtimeGauges();
+      updatePs1Preview();
+      updateSaveButtonState();
+      updateHeaderSaveStatus();
+      updateEntryRowInList(activeEntry);
     }
 
     function markUnsaved() {
-      setSaveStatus("unsaved");
+      updateHeaderSaveStatus();
     }
 
     function setSaveStatus(status) {
       const ind = document.getElementById("saveIndicator");
+      if (!ind) return;
       if (status === "saved") {
-        ind.style.background = "rgba(16, 185, 129, 0.1)";
-        ind.style.borderColor = "rgba(16, 185, 129, 0.3)";
-        ind.style.color = "var(--accent-green)";
-        ind.innerHTML = "<span>✓</span><span>Сохранено</span>";
+        updateHeaderSaveStatus();
       } else if (status === "saving") {
         ind.style.background = "rgba(0, 229, 255, 0.1)";
         ind.style.borderColor = "rgba(0, 229, 255, 0.3)";
-        ind.style.color = "var(--accent-cyan)";
+        ind.style.color = "var(--accent-cyan, #00e5ff)";
         ind.innerHTML = "<span>⏳</span><span>Сохранение...</span>";
       } else if (status === "unsaved") {
-        ind.style.background = "rgba(245, 158, 11, 0.1)";
-        ind.style.borderColor = "rgba(245, 158, 11, 0.3)";
-        ind.style.color = "var(--accent-gold)";
-        ind.innerHTML = "<span>●</span><span>Не сохранено</span>";
+        updateHeaderSaveStatus();
       } else if (status === "error") {
         ind.style.background = "rgba(239, 68, 68, 0.1)";
         ind.style.borderColor = "rgba(239, 68, 68, 0.3)";
-        ind.style.color = "var(--accent-red)";
+        ind.style.color = "var(--accent-red, #ef4444)";
         ind.innerHTML = "<span>✕</span><span>Ошибка сохранения</span>";
       }
     }
@@ -3021,18 +3319,26 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
 
     function setupKeyboardShortcuts() {
       window.addEventListener("keydown", (e) => {
-        // Ctrl+S / Cmd+S: Save
-        if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        // Ctrl+S / Cmd+S: Save all session changes across all platforms and layouts
+        const isSKey = e.code === "KeyS" ||
+                      e.key === "s" || e.key === "S" ||
+                      e.key === "ы" || e.key === "Ы" ||
+                      (e.key && (e.key.toLowerCase() === "s" || e.key.toLowerCase() === "ы"));
+
+        if ((e.ctrlKey || e.metaKey) && isSKey) {
           e.preventDefault();
-          saveCurrentEntry();
+          e.stopPropagation();
+          saveAllSessionChanges();
+          return;
         }
+
         // Alt+Down: Next entry
         if (e.altKey && e.key === "ArrowDown") {
           e.preventDefault();
           if (activeEntry && currentEntries.length > 0) {
             const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
             if (idx !== -1 && idx < currentEntries.length - 1) {
-              setActiveEntry(currentEntries[idx + 1]);
+              selectEntry(currentEntries[idx + 1]);
             }
           }
         }
@@ -3042,11 +3348,11 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
           if (activeEntry && currentEntries.length > 0) {
             const idx = currentEntries.findIndex(item => item.id === activeEntry.id);
             if (idx > 0) {
-              setActiveEntry(currentEntries[idx - 1]);
+              selectEntry(currentEntries[idx - 1]);
             }
           }
         }
-      });
+      }, true); // Use capture phase!
     }
 
     function escapeHtml(text) {
