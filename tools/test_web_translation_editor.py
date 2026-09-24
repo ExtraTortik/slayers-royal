@@ -316,6 +316,12 @@ class TestHttpServer(unittest.TestCase):
         self.assertIn("Translation Studio", html)
         self.assertIn("ruEditorTextarea", html)
         self.assertIn("ps1-sim-container", html)
+        self.assertIn("ps1PageIndicator", html)
+        # Verify ps1PageIndicator is located after ps1-dialogue-window closing tag
+        dialogue_idx = html.find('class="ps1-dialogue-window"')
+        close_dialogue_idx = html.find('</div>', dialogue_idx)
+        indicator_idx = html.find('id="ps1PageIndicator"')
+        self.assertGreater(indicator_idx, close_dialogue_idx)
 
     def test_api_catalogs(self):
         status, headers, body = self._get("/api/catalogs")

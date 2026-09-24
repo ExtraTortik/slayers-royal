@@ -2118,26 +2118,21 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
       white-space: pre;
     }
     .ps1-page-indicator {
-      position: absolute;
-      bottom: 10px;
-      left: 14px;
-      right: auto;
-      font-size: 13px;
-      font-weight: bold;
-      color: #93c5fd;
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.75);
-      padding: 4px 10px;
+      justify-content: flex-start;
+      gap: 12px;
+      margin-top: 12px;
+      padding: 6px 14px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(59, 130, 246, 0.35);
       border-radius: 8px;
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      z-index: 10;
+      width: fit-content;
+      z-index: 5;
     }
     .ps1-page-btn {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       font-size: 18px;
       font-weight: bold;
       border-radius: 6px;
@@ -2166,8 +2161,8 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
     }
     .ps1-page-num {
       font-size: 13px;
-      font-weight: bold;
-      color: #bfdbfe;
+      font-weight: 700;
+      color: #93c5fd;
       letter-spacing: 0.5px;
       min-width: 65px;
       text-align: center;
@@ -2435,13 +2430,13 @@ EMBEDDED_SPA_HTML = """<!DOCTYPE html>
               <div id="ps1SpeakerTag" class="ps1-speaker-tag">ЛИHА</div>
               <div id="ps1DialogueText" class="ps1-dialogue-text">На вкус прямо
 недурно.</div>
-              <div id="ps1PageIndicator" class="ps1-page-indicator" style="display:none;">
-                <button type="button" class="ps1-page-btn" onclick="prevPs1Page()" title="Предыдущая страница">◀</button>
-                <span id="ps1PageNum" class="ps1-page-num">Стр. 1 / 1</span>
-                <button type="button" class="ps1-page-btn" onclick="nextPs1Page()" title="Следующая страница">▶</button>
-              </div>
             </div>
 
+            <div id="ps1PageIndicator" class="ps1-page-indicator" style="display:none;">
+              <button type="button" class="ps1-page-btn" onclick="prevPs1Page()" title="Предыдущая страница">◀</button>
+              <span id="ps1PageNum" class="ps1-page-num">Стр. 1 / 1</span>
+              <button type="button" class="ps1-page-btn" onclick="nextPs1Page()" title="Следующая страница">▶</button>
+            </div>
             <div id="scanlinesOverlay" class="scanlines-overlay"></div>
           </div>
 
