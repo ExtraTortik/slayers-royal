@@ -60,7 +60,7 @@ class TestTokensMetadata(unittest.TestCase):
 
     def test_tokens_count_and_fields(self):
         tokens = load_tokens_metadata()
-        self.assertEqual(len(tokens), 220, "Must return exactly 220 compact tokens")
+        self.assertEqual(len(tokens), 420, "Must return exactly 420 compact tokens")
 
         for idx, item in enumerate(tokens):
             self.assertEqual(item["index"], idx)
@@ -85,7 +85,7 @@ class TestTokensMetadata(unittest.TestCase):
             self.assertEqual(item["col"], expected_col)
             self.assertEqual(item["x"], expected_col * 16)
             self.assertEqual(item["y"], expected_row * 16)
-            self.assertLess(item["row"], 14)
+            self.assertLess(item["row"], 27)
             self.assertLess(item["col"], 16)
 
     def test_known_tokens_present(self):
@@ -93,7 +93,7 @@ class TestTokensMetadata(unittest.TestCase):
         token_texts = {t["token"] for t in tokens}
         # Tokens explicitly noted in the specification
         for expected in ["то", "ни", "ел", "де", "ре", "лу", "во", "мы", " в"]:
-            self.assertIn(expected, token_texts, f"Token {expected!r} should be present in 220 tokens")
+            self.assertIn(expected, token_texts, f"Token {expected!r} should be present in 420 tokens")
 
 
 class TestPixelConversion(unittest.TestCase):
@@ -170,7 +170,7 @@ class TestAtlasManager(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.manager.get_tile(-1)
         with self.assertRaises(ValueError):
-            self.manager.get_tile(220)
+            self.manager.get_tile(420)
         with self.assertRaises(ValueError):
             self.manager.get_tile(999)
 
@@ -209,7 +209,7 @@ class TestAtlasManager(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.manager.save_tile(-1, px)
         with self.assertRaises(ValueError):
-            self.manager.save_tile(220, px)
+            self.manager.save_tile(420, px)
 
     def test_save_invalid_pixels_shape(self):
         with self.assertRaises(ValueError):
@@ -311,7 +311,7 @@ class TestHTTPServerAPI(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertIn("application/json", headers.get("Content-Type", ""))
         tokens = json.loads(body.decode("utf-8"))
-        self.assertEqual(len(tokens), 220)
+        self.assertEqual(len(tokens), 420)
         self.assertEqual(tokens[0]["index"], 0)
         self.assertEqual(tokens[0]["token"], "то")
 

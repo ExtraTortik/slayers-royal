@@ -82,6 +82,7 @@ add_glyph(
     2,
 )  # y=2..9
 add_glyph("-", ["####"], 7)  # y=7
+add_glyph("—", ["######"], 7)  # y=7, 6px wide em-dash
 add_glyph("…", ["##.##.##", "##.##.##"], 9)  # 8px wide, y=9..10
 
 # Lowercase Cyrillic (waistline y=4, baseline y=10, descenders to y=11, ascenders y=1..2)
@@ -1180,7 +1181,7 @@ def apply_text_style(
 # ---------------------------------------------------------------------------
 
 
-def get_scene_03e_tokens() -> tuple[list[str], Counter[str], dict[str, str]]:
+def get_scene_03e_tokens(limit: int = 420) -> tuple[list[str], Counter[str], dict[str, str]]:
     po_path = REPO_ROOT / "patch_repo" / "localization-work" / "ru" / "dialogue.po"
     entries = read_po(po_path)
     compact_entries = [
@@ -1190,7 +1191,7 @@ def get_scene_03e_tokens() -> tuple[list[str], Counter[str], dict[str, str]]:
     ]
 
     lines = _translation_lines(compact_entries)
-    tokens = choose_compact_tokens(lines, 220)
+    tokens = choose_compact_tokens(lines, limit)
 
     counts: Counter[str] = Counter()
     for line in lines:
@@ -1290,7 +1291,7 @@ def create_dialogue_window(
 
 def generate_raw_atlas(tokens: list[str]) -> Image.Image:
     cols = 16
-    rows = 14
+    rows = 27
     raw_atlas = Image.new("RGBA", (cols * 16, rows * 16), (0, 0, 0, 0))
 
     for idx, token in enumerate(tokens):
@@ -1474,8 +1475,8 @@ def generate_compact_font_preview() -> None:
 
     # Master canvas layout
     canvas_w = 1760
-    # Sections heights: Header (100) + Section 1 (510) + Section 2 (1620) + Footer (70)
-    canvas_h = 2300
+    # Sections heights: Header (100) + Section 1 (510) + Section 2 (2880) + Footer (70)
+    canvas_h = 3600
 
     master = Image.new("RGBA", (canvas_w, canvas_h), (14, 15, 18, 255))
     draw = ImageDraw.Draw(master)
@@ -1508,15 +1509,14 @@ def generate_compact_font_preview() -> None:
         font=font_main_title,
         fill=(255, 215, 100, 255),
     )
-
-    sub_text = "Evaluation of 220 Scoped Compact Tokens • Dialogue Window Comparison (2x Scale) • Complete 16x14 Atlas Grid"
+    sub_text = "Evaluation of 420 Scoped Compact Tokens • Dialogue Window Comparison (2x Scale) • Complete 16x27 Atlas Grid"
     draw.text((32, 42), sub_text, font=font_sub_title, fill=(180, 195, 220, 255))
 
     # Metadata badges
     badges = [
         ("SCENE", "0x03E (Sonia City)", (40, 70, 120), (160, 200, 255)),
         ("BUDGET", "19 Sectors (38,912 B)", (60, 40, 90), (220, 170, 255)),
-        ("DTE LIMIT", "220 Tokens", (25, 75, 45), (140, 230, 170)),
+        ("DTE LIMIT", "420 Tokens", (25, 75, 45), (140, 230, 170)),
         ("FONT BASE", "Press Start 2P (11pt)", (80, 60, 20), (255, 210, 120)),
         ("ADVANCE", "X += 16 px (Fixed)", (75, 30, 30), (255, 160, 160)),
     ]
@@ -1782,13 +1782,13 @@ def generate_compact_font_preview() -> None:
     sec2_y = zoom_y + 96
     draw.text(
         (32, sec2_y),
-        "SECTION 2: COMPLETE ATLAS GRID OF ALL 220 COMPACT GLYPHS (SCENE 0x03E)",
+        "SECTION 2: COMPLETE ATLAS GRID OF ALL 420 COMPACT GLYPHS (SCENE 0x03E)",
         font=font_sec_title,
         fill=(140, 200, 255, 255),
     )
     draw.text(
         (32, sec2_y + 20),
-        "Frequency-Ordered Allocation (16 Columns x 14 Rows = 224 Cells) • Displaying 3X Zoomed Pixel Art + 1X In-Game Scale Tile",
+        "Frequency-Ordered Allocation (16 Columns x 27 Rows = 432 Cells) • Displaying 3X Zoomed Pixel Art + 1X In-Game Scale Tile",
         font=font_sec_sub,
         fill=(140, 155, 180, 255),
     )
@@ -1798,7 +1798,7 @@ def generate_compact_font_preview() -> None:
     cell_h = 104
     grid_gap = 2
 
-    for idx in range(224):
+    for idx in range(432):
         col = idx % 16
         row = idx // 16
         gx = 32 + col * (cell_w + grid_gap)
@@ -1810,7 +1810,7 @@ def generate_compact_font_preview() -> None:
             g_hex = token_to_glyph.get(tok, f"0x{0x057+idx:03X}")
             atlas_m = (
                 extract_mask_from_atlas(loaded_raw_atlas, idx)
-                if loaded_raw_atlas is not None
+                if loaded_raw_atlas is not None and (idx // 16) * 16 + 16 <= loaded_raw_atlas.height
                 else None
             )
             cell_im = create_grid_cell(
@@ -1834,7 +1834,7 @@ def generate_compact_font_preview() -> None:
     # -----------------------------------------------------------------------
     # Footer Summary Bar
     # -----------------------------------------------------------------------
-    footer_y = grid_start_y + 14 * (cell_h + grid_gap) + 16
+    footer_y = grid_start_y + 27 * (cell_h + grid_gap) + 16
     draw.rectangle(
         [0, footer_y, canvas_w, canvas_h],
         fill=(16, 18, 24, 255),
@@ -1845,7 +1845,7 @@ def generate_compact_font_preview() -> None:
     draw.text((32, footer_y + 12), f_left, font=font_sub_title, fill=(180, 190, 210, 255))
 
     f_right = (
-        f"220 Glyphs Generated (150 Lowercase Pairs, 41 Spaces, 24 Punctuation, 11 Uppercase) • Image: {canvas_w}x{canvas_h}"
+        f"420 Glyphs Generated (Scene 0x03E) • Image: {canvas_w}x{canvas_h}"
     )
     draw.text((32, footer_y + 32), f_right, font=font_diag, fill=(130, 170, 140, 255))
 
