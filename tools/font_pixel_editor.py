@@ -1136,7 +1136,7 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
     <main class="editor-center">
       <div class="toolbar-top">
         <div class="tool-group">
-          <button class="tool-btn active" id="toolPencil" onclick="setTool('pencil')" title="Карандаш (P)">✏️</button>
+          <button class="tool-btn active" id="toolPencil" onclick="setTool('pencil')" title="Кисть / Карандаш (Q)">✏️</button>
           <button class="tool-btn" id="toolEraser" onclick="setTool('eraser')" title="Ластик (E)">🧹</button>
         </div>
 
@@ -1699,9 +1699,9 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
         } else if (e.key === "]" || e.key === "PageDown") {
           e.preventDefault();
           navToken(1);
-        } else if (e.key.toLowerCase() === "p") {
+        } else if (e.key.toLowerCase() === "q" || e.key.toLowerCase() === "й" || e.key.toLowerCase() === "p" || e.key.toLowerCase() === "з") {
           setTool("pencil");
-        } else if (e.key.toLowerCase() === "e") {
+        } else if (e.key.toLowerCase() === "e" || e.key.toLowerCase() === "у") {
           setTool("eraser");
         }
       });
