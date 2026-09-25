@@ -241,6 +241,20 @@ class AtlasManager:
             "pixels": pixels,
         }
 
+    def get_all_tiles(self) -> dict[int, list[list[int]]]:
+        """Extracts all 420 16x16 tiles in one fast pass."""
+        with self.lock:
+            with Image.open(self.atlas_path) as atlas:
+                atlas_rgba = atlas.convert("RGBA")
+                result: dict[int, list[list[int]]] = {}
+                for idx in range(min(420, len(self.tokens_meta))):
+                    meta = self.tokens_meta[idx]
+                    col = meta["col"]
+                    row = meta["row"]
+                    crop = atlas_rgba.crop((col * 16, row * 16, (col + 1) * 16, (row + 1) * 16))
+                    result[idx] = rgba_tile_to_pixels(crop)
+                return result
+
     def save_tile(self, index: int, pixels: list[list[int]]) -> None:
         """Saves a single 16x16 tile atomically to the atlas."""
         self.save_all({index: pixels})
@@ -359,6 +373,7 @@ class FontPixelEditorHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(payload)
 
     def _send_bytes(self, status: int, content_type: str, data: bytes) -> None:
+
         self.send_response(status)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(data)))
@@ -373,6 +388,9 @@ class FontPixelEditorHandler(http.server.BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
         self.end_headers()
+    def do_HEAD(self) -> None:
+        self.do_GET()
+
 
     def do_GET(self) -> None:
         parsed = urllib.parse.urlparse(self.path)
@@ -387,6 +405,11 @@ class FontPixelEditorHandler(http.server.BaseHTTPRequestHandler):
                 tokens = MANAGER.get_tokens()
                 self._send_json(200, tokens)
                 return
+            if path == "/api/all_tiles":
+                tiles = MANAGER.get_all_tiles()
+                self._send_json(200, {"success": True, "tiles": tiles})
+                return
+
 
             if path.startswith("/api/tile/"):
                 idx_str = path[len("/api/tile/"):]
@@ -1366,8 +1389,8 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
     let activeTokenIndex = 0;
     let currentPixels = Array.from({ length: 16 }, () => Array(16).fill(0));
     let originalPixels = Array.from({ length: 16 }, () => Array(16).fill(0));
-    const cachedTiles = {}; // index -> 16x16 matrix
-    const dirtyTiles = {};  // index -> 16x16 matrix
+    let cachedTiles = {};  // index -> 16x16 matrix
+    let dirtyTiles = {};   // index -> 16x16 matrix
 
     let currentTool = "pencil"; // 'pencil' | 'eraser'
     let isMouseDown = false;
@@ -1398,8 +1421,15 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
 
     async function loadTokens() {
       try {
-        const res = await fetch("/api/tokens");
-        tokensList = await res.json();
+        const [tokRes, tilesRes] = await Promise.all([
+          fetch("/api/tokens"),
+          fetch("/api/all_tiles")
+        ]);
+        tokensList = await tokRes.json();
+        const tilesData = await tilesRes.json();
+        if (tilesData.tiles) {
+          cachedTiles = tilesData.tiles;
+        }
         renderGallery();
       } catch (err) {
         showToast("Ошибка загрузки токенов: " + err, "error");
@@ -1957,17 +1987,9 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
       }
     }
 
-    async function fetchTileQuietly(index) {
-      if (cachedTiles[index]) return;
-      try {
-        const res = await fetch(`/api/tile/${index}`);
-        const data = await res.json();
-        cachedTiles[index] = data.pixels;
-        renderDialoguePreview();
-        renderMiniPreview(index);
-      } catch (_) {}
+    function fetchTileQuietly(index) {
+      // All 420 tiles are loaded in bulk at startup into cachedTiles
     }
-
     // -----------------------------------------------------------------------
     // Saving & Rebuilding API Calls
     // -----------------------------------------------------------------------
@@ -2111,8 +2133,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--host",
         type=str,
-        default="127.0.0.1",
-        help="Host address to bind local server (default: 127.0.0.1)",
+        default="0.0.0.0",
+        help="Host address to bind local server (default: 0.0.0.0)",
     )
     parser.add_argument(
         "--port",
@@ -2133,21 +2155,23 @@ def main() -> None:
     args = parse_args()
     server_address = (args.host, args.port)
 
-    # Allow immediate address reuse
-    socketserver.TCPServer.allow_reuse_address = True
+    # Allow immediate address reuse with non-blocking multi-threaded server
+    socketserver.ThreadingTCPServer.allow_reuse_address = True
 
     try:
-        httpd = socketserver.TCPServer(server_address, FontPixelEditorHandler)
+        httpd = socketserver.ThreadingTCPServer(server_address, FontPixelEditorHandler)
     except OSError as exc:
         print(f"[ERROR] Failed to bind to {args.host}:{args.port}: {exc}", file=sys.stderr)
         print("[HINT] Make sure no other editor instance is running on this port.", file=sys.stderr)
         sys.exit(1)
 
-    url = f"http://{args.host}:{args.port}/"
     print("=" * 68)
     print("  Slayers Royal (PS1) — Редактор пиксельных шрифтов (16x16 Canvas)")
     print("=" * 68)
-    print(f"[*] Сервер запущен: {url}")
+    print(f"[*] Сервер запущен:")
+    print(f"    -> http://127.0.0.1:{args.port}/")
+    print(f"    -> http://localhost:{args.port}/")
+    print(f"    -> http://192.168.1.79:{args.port}/")
     print("[*] Для завершения нажмите Ctrl+C")
     print("=" * 68)
 
