@@ -5,5 +5,5 @@
   "output_stem": "slayers_royal_ru",
   "data_preparer": "RUSSIAN LOCALIZATION",
   "required_characters": "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя«»„“—…/",
-  "compact_glyph_limit": 0
+  "compact_glyph_limit": 220
 }

@@ -27,8 +27,10 @@ from localization.disc import ENGLISH_PROG_SHA256, read_prog
 from localization.glyphs import allocate_glyphs
 from localization.po import PoEntry, write_po
 from localization.script import (
+    RUNTIME_BASE,
     SCENE_ENTRIES,
     SPECIAL_ENTRIES,
+    _footer_end,
     _patch_regular_scene,
     _patch_special_scene,
     expand_for_dialogue,
@@ -96,6 +98,17 @@ def tighten_entry_to_lines(text: str, max_lines: int, context: str) -> str:
     parse_target(result, 0x00FF, context)
     return result
 
+def compute_headroom(source: bytes, scene: object, patched: bytes) -> int:
+    footer_len = _footer_end(source, scene.table_end) - scene.table_offset
+    new_table = int.from_bytes(patched[0x04:0x08], "big") - RUNTIME_BASE
+    new_footer_end = new_table + footer_len
+    return len(source) - new_footer_end
+
+
+def compute_special_headroom(source: bytes, scene: object, patched: bytes) -> int:
+    new_table = int.from_bytes(patched[:4], "big") - RUNTIME_BASE
+    end = new_table + len(scene.pointers) * 4
+    return len(source) - end
 
 def fit_scene_budget(
     source_bin: Path,
@@ -158,7 +171,7 @@ def fit_scene_budget(
         free_bytes = 0
         try:
             patched = _patch_regular_scene(source, scene, translations, charmap, comp)
-            free_bytes = allocated - len(patched)
+            free_bytes = compute_headroom(source, scene, patched)
             fits = True
             status = "OK (initial)"
         except Exception as exc:
@@ -186,7 +199,7 @@ def fit_scene_budget(
                 patched = _patch_regular_scene(
                     source, scene, translations, charmap, comp
                 )
-                free_bytes = allocated - len(patched)
+                free_bytes = compute_headroom(source, scene, patched)
                 fits = True
                 status = f"OK after Phase 1 (capped {phase1_count} entries to 2 pages)"
             except Exception:
@@ -214,7 +227,7 @@ def fit_scene_budget(
                     patched = _patch_regular_scene(
                         source, scene, translations, charmap, comp
                     )
-                    free_bytes = allocated - len(patched)
+                    free_bytes = compute_headroom(source, scene, patched)
                     fits = True
                     status = (
                         f"OK after Phase 2 ({phase1_count} >2p, {phase2_count} 2p->1p)"
@@ -246,7 +259,7 @@ def fit_scene_budget(
                     patched = _patch_regular_scene(
                         source, scene, translations, charmap, comp
                     )
-                    free_bytes = allocated - len(patched)
+                    free_bytes = compute_headroom(source, scene, patched)
                     fits = True
                     status = (
                         f"OK after Phase 3 ({phase1_count} >2p, {phase2_count} 2p->1p, {phase3_count} 3L->2L)"
@@ -276,7 +289,7 @@ def fit_scene_budget(
         scene = parse_special(entry, expanded)
         source = entry.extract(expanded)
         patched = _patch_special_scene(source, scene, translations, charmap, {})
-        free_bytes = len(source) - len(patched)
+        free_bytes = compute_special_headroom(source, scene, patched)
         scene_reports.append(
             {
                 "entry_index": f"0x{special_index:03X} (special)",
