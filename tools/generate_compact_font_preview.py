@@ -1314,6 +1314,21 @@ def generate_raw_atlas(tokens: list[str]) -> Image.Image:
 # ---------------------------------------------------------------------------
 
 
+def extract_mask_from_atlas(atlas: Image.Image, idx: int) -> Image.Image:
+    col = (idx % 16) * 16
+    row = (idx // 16) * 16
+    crop = atlas.crop((col, row, col + 16, row + 16))
+    px_in = crop.load()
+    mask = Image.new("L", (16, 16), 0)
+    px_out = mask.load()
+    for py in range(16):
+        for px in range(16):
+            r, g, b, a = px_in[px, py]
+            if a > 30 and (r > 40 or g > 40 or b > 40):
+                px_out[px, py] = 255
+    return mask
+
+
 def create_grid_cell(
     index: int,
     token: str,
@@ -1321,6 +1336,7 @@ def create_grid_cell(
     glyph_hex: str,
     cell_w: int = 104,
     cell_h: int = 104,
+    atlas_mask: Image.Image | None = None,
 ) -> Image.Image:
     im = Image.new("RGBA", (cell_w, cell_h), (22, 24, 30, 255))
     draw = ImageDraw.Draw(im)
@@ -1330,8 +1346,11 @@ def create_grid_cell(
     draw.rectangle([2, 2, cell_w - 3, cell_h - 3], fill=(16, 17, 22, 255))
 
     # Render token mask
-    mat = render_compact(token)
-    mask = Image.fromarray(mat, mode="L")
+    if atlas_mask is not None:
+        mask = atlas_mask
+    else:
+        mat = render_compact(token)
+        mask = Image.fromarray(mat, mode="L")
     styled_1x = apply_text_style(
         mask, text_color=(220, 200, 150), shadow_color=(8, 8, 12)
     )
@@ -1393,6 +1412,14 @@ def create_grid_cell(
 def generate_compact_font_preview() -> None:
     tokens, counts, token_to_glyph = get_scene_03e_tokens()
 
+    raw_atlas_path = REPO_ROOT / "compact_font_atlas_raw.png"
+    loaded_raw_atlas: Image.Image | None = None
+    if raw_atlas_path.is_file():
+        loaded_raw_atlas = Image.open(raw_atlas_path).convert("RGBA")
+        print(f"Loaded existing custom tiles from {raw_atlas_path}")
+
+    token_to_idx = {tok: idx for idx, tok in enumerate(tokens)}
+
     # Dialogue text
     dialogue_lines = ["Ну вот мы и в", "Сонии. Слушай,", "Зел, прежде чем"]
 
@@ -1422,8 +1449,11 @@ def generate_compact_font_preview() -> None:
                 m_bin = Image.eval(m, lambda p: 255 if p >= 80 else 0)
                 im.paste(m_bin, (i * 16, 0))
             else:
-                mat = render_compact(tok)
-                m_bin = Image.fromarray(mat, mode="L")
+                if loaded_raw_atlas is not None and tok in token_to_idx:
+                    m_bin = extract_mask_from_atlas(loaded_raw_atlas, token_to_idx[tok])
+                else:
+                    mat = render_compact(tok)
+                    m_bin = Image.fromarray(mat, mode="L")
                 im.paste(m_bin, (i * 16, 0))
         lines_B.append(im)
 
@@ -1684,7 +1714,10 @@ def generate_compact_font_preview() -> None:
     mask_vo_A = Image.eval(
         _render_mask("во"), lambda p: 255 if p >= 80 else 0
     )
-    mask_vo_B = Image.fromarray(render_compact("во"), mode="L")
+    if loaded_raw_atlas is not None and "во" in token_to_idx:
+        mask_vo_B = extract_mask_from_atlas(loaded_raw_atlas, token_to_idx["во"])
+    else:
+        mask_vo_B = Image.fromarray(render_compact("во"), mode="L")
     crop_vo_A = apply_text_style(mask_vo_A).resize(
         (64, 64), Image.Resampling.NEAREST
     )
@@ -1696,7 +1729,10 @@ def generate_compact_font_preview() -> None:
     mask_ni_A = Image.eval(
         _render_mask("ни"), lambda p: 255 if p >= 80 else 0
     )
-    mask_ni_B = Image.fromarray(render_compact("ни"), mode="L")
+    if loaded_raw_atlas is not None and "ни" in token_to_idx:
+        mask_ni_B = extract_mask_from_atlas(loaded_raw_atlas, token_to_idx["ни"])
+    else:
+        mask_ni_B = Image.fromarray(render_compact("ни"), mode="L")
     crop_ni_A = apply_text_style(mask_ni_A).resize(
         (64, 64), Image.Resampling.NEAREST
     )
@@ -1708,7 +1744,10 @@ def generate_compact_font_preview() -> None:
     mask_yj_A = Image.eval(
         _render_mask("й,"), lambda p: 255 if p >= 80 else 0
     )
-    mask_yj_B = Image.fromarray(render_compact("й,"), mode="L")
+    if loaded_raw_atlas is not None and "й," in token_to_idx:
+        mask_yj_B = extract_mask_from_atlas(loaded_raw_atlas, token_to_idx["й,"])
+    else:
+        mask_yj_B = Image.fromarray(render_compact("й,"), mode="L")
     crop_yj_A = apply_text_style(mask_yj_A).resize(
         (64, 64), Image.Resampling.NEAREST
     )
@@ -1769,8 +1808,13 @@ def generate_compact_font_preview() -> None:
             tok = tokens[idx]
             cnt = counts[tok]
             g_hex = token_to_glyph.get(tok, f"0x{0x057+idx:03X}")
+            atlas_m = (
+                extract_mask_from_atlas(loaded_raw_atlas, idx)
+                if loaded_raw_atlas is not None
+                else None
+            )
             cell_im = create_grid_cell(
-                idx, tok, cnt, g_hex, cell_w=cell_w, cell_h=cell_h
+                idx, tok, cnt, g_hex, cell_w=cell_w, cell_h=cell_h, atlas_mask=atlas_m
             )
             master.alpha_composite(cell_im, (gx, gy))
         else:
@@ -1812,9 +1856,12 @@ def generate_compact_font_preview() -> None:
 
     # Save compact_font_atlas_raw.png
     out_raw = REPO_ROOT / "compact_font_atlas_raw.png"
-    raw_im = generate_raw_atlas(tokens)
-    raw_im.save(out_raw)
-    print(f"Generated {out_raw} ({raw_im.size[0]}x{raw_im.size[1]}) successfully!")
+    if not out_raw.exists():
+        raw_im = generate_raw_atlas(tokens)
+        raw_im.save(out_raw)
+        print(f"Generated {out_raw} ({raw_im.size[0]}x{raw_im.size[1]}) successfully!")
+    else:
+        print(f"Preserving existing custom {out_raw}")
 
 
 if __name__ == "__main__":
