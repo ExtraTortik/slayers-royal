@@ -1679,32 +1679,51 @@ EMBEDDED_SPA_HTML = r"""<!DOCTYPE html>
       // Prevent context menu
       paintCanvas.addEventListener("contextmenu", (e) => e.preventDefault());
 
-      // Global keyboard shortcuts
+      // Global keyboard shortcuts (using capture: true to reliably intercept before browser defaults)
       window.addEventListener("keydown", (e) => {
-        // If typing in input, ignore shortcuts
-        if (e.target.tagName === "INPUT") return;
+        const isCtrl = e.ctrlKey || e.metaKey;
+        const key = e.key ? e.key.toLowerCase() : "";
+        const code = e.code || "";
 
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+        // Ctrl + S (Save) - ALWAYS catch and prevent browser "Save Page As" in any layout
+        if (isCtrl && (code === "KeyS" || key === "s" || key === "ы")) {
           e.preventDefault();
+          e.stopPropagation();
           saveCurrentTile();
-        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+          return;
+        }
+
+        // Ctrl + Z (Undo) / Ctrl + Shift + Z (Redo)
+        if (isCtrl && (code === "KeyZ" || key === "z" || key === "я")) {
           e.preventDefault();
+          e.stopPropagation();
           if (e.shiftKey) redo(); else undo();
-        } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "y") {
+          return;
+        }
+
+        // Ctrl + Y (Redo)
+        if (isCtrl && (code === "KeyY" || key === "y" || key === "н")) {
           e.preventDefault();
+          e.stopPropagation();
           redo();
-        } else if (e.key === "[" || e.key === "PageUp") {
+          return;
+        }
+
+        // Ignore single-key shortcuts while typing in inputs
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+        if (code === "BracketLeft" || key === "[" || key === "х" || key === "pageup") {
           e.preventDefault();
           navToken(-1);
-        } else if (e.key === "]" || e.key === "PageDown") {
+        } else if (code === "BracketRight" || key === "]" || key === "ъ" || key === "pagedown") {
           e.preventDefault();
           navToken(1);
-        } else if (e.key.toLowerCase() === "q" || e.key.toLowerCase() === "й" || e.key.toLowerCase() === "p" || e.key.toLowerCase() === "з") {
+        } else if (code === "KeyQ" || key === "q" || key === "й" || code === "KeyP" || key === "p" || key === "з") {
           setTool("pencil");
-        } else if (e.key.toLowerCase() === "e" || e.key.toLowerCase() === "у") {
+        } else if (code === "KeyE" || key === "e" || key === "у") {
           setTool("eraser");
         }
-      });
+      }, true);
     }
 
     function getCanvasCoords(e) {
