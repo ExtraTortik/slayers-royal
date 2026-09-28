@@ -171,6 +171,7 @@ BANNER_TRANSLATIONS: dict[str, str] = {
     "ROYAL PALACE": "ДВОРЕЦ",
     "MAYOR'S HOUSE": "ДОМ МЭРА",
     "MAGE GUILD": "ГИЛЬДИЯ",
+    "PORT": "ПОРТ",
     "PORT STALL": "ПРИСТАНЬ",
     "ROYAL LIBRARY": "БИБЛИОТЕКА",
     "MAGIC CLINIC": "ЛЕЧЕБНИЦА",
@@ -190,10 +191,12 @@ BANNER_LAYOUT: list[tuple[str, str, tuple[int, int, int, int], tuple[int, int]]]
     # Band 1 (Row 1): Y=24..48
     # BAR is at X=10..60. Clear up to X=74 to prevent bleeding into BAR's sprite window!
     ("BAR", "BAR", (0, 24, 74, 48), (22, 31)),
-    # ARMORY starts at X=75
-    ("ARMORY", "ARMORY", (75, 24, 155, 48), (78, 31)),
-    # PORT STALL at X=156..255
-    ("PORT STALL", "PORT STALL", (156, 24, 255, 48), (165, 31)),
+    # ARMORY starts at X=75, ends at 143 (before PORT)
+    ("ARMORY", "ARMORY", (75, 24, 143, 48), (76, 31)),
+    # PORT (Sprite 132 in Sonia town map, X=144..167)
+    ("PORT", "PORT", (144, 24, 167, 48), (145, 31)),
+    # PORT STALL (Sprite 126, X=168..255)
+    ("PORT STALL", "PORT STALL", (168, 24, 255, 48), (171, 31)),
 
     # Band 2 (Row 2): Y=48..72
     ("BACK ST", "BACK ST", (0, 48, 85, 72), (6, 55)),

@@ -63,15 +63,25 @@
       "max_hardware_width_px": 75,
       "description": "Оружейная лавка"
     },
+    "PORT": {
+      "text_en": "PORT",
+      "text_ru": "ПОРТ",
+      "font_size": "5",
+      "align": "center",
+      "offset_x": 0,
+      "offset_y": 0,
+      "max_hardware_width_px": 24,
+      "description": "Порт (городская карта Сонии, спрайт 132)"
+    },
     "PORT STALL": {
       "text_en": "PORT STALL",
       "text_ru": "ПРИСТАНЬ",
       "font_size": "5",
       "align": "center",
-      "offset_x": -15,
+      "offset_x": 0,
       "offset_y": 0,
-      "max_hardware_width_px": 80,
-      "description": "Портовая пристань / прилавок"
+      "max_hardware_width_px": 48,
+      "description": "Портовая пристань / прилавок (спрайт 126)"
     },
     "BACK ST": {
       "text_en": "BACK ST",

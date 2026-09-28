@@ -163,7 +163,7 @@
       "en": "SEA"
     },
     "港": {
-      "ru": "ПРИСТАНЬ",
+      "ru": "ПОРТ",
       "en": "PORT"
     },
     "王立図書館": {
@@ -439,8 +439,8 @@
       "entry_index": 122,
       "name_jp": "港",
       "name_en": "PORT",
-      "name_ru": "ПРИСТАНЬ",
-      "description": "Портовая пристань"
+      "name_ru": "ПОРТ",
+      "description": "Порт города Сония"
     },
     "0x07B": {
       "entry_index": 123,
