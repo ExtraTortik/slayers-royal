@@ -175,6 +175,90 @@ class TestShopCatalog(unittest.TestCase):
                             f"In {d_id}, line '{line}' contains <00BF> but does not start with it!",
                         )
 
+    def test_no_word_overflow_in_wrong_category_dialogues(self):
+        """Regression test for §5.10 / §5.30 hardware buffer overflow.
+
+        Verifies that:
+        1. All 3 wrong-category/out-of-stock dialogue replicas (buy_out_of_stock_weapon,
+           buy_out_of_stock_item, buy_out_of_stock_magic) start strictly with '<00BF>?'
+           on their own line with no trailing text, preventing GPU coordinate overflow.
+        2. Across ALL 98 dialogue slots, the first segment (line 1 before 0x00FE) has
+           word count <= 15 (accounting for 1 word speaker code and 8-char max item name expansion).
+        3. Across ALL 98 dialogue slots, every line on every page with <00BF> expanded to 8 chars
+           has length <= 15 chars (matching the 240px hardware window limit).
+        4. No page in any dialogue exceeds 3 lines.
+        """
+        dialogues = self.data.get("dialogues", {})
+        MAX_ITEM_LEN = 8
+
+        # 1. Check all 3 wrong-category refusal dialogues
+        refusal_ids = [
+            "buy_out_of_stock_weapon",
+            "buy_out_of_stock_item",
+            "buy_out_of_stock_magic",
+        ]
+        for r_id in refusal_ids:
+            self.assertIn(r_id, dialogues, f"Missing refusal dialogue {r_id}")
+            d = dialogues[r_id]
+            lines = d["text_ru"].split("\f")[0].split("\n")
+            self.assertEqual(
+                lines[0],
+                "<00BF>?",
+                f"In {r_id}, line 1 must be strictly '<00BF>?' to isolate token: got {lines[0]!r}",
+            )
+
+        # 2. Comprehensive check across all 98 dialogue slots
+        for d_id, d in dialogues.items():
+            text_ru = d.get("text_ru", "")
+            spk = d.get("speaker_code_hex")
+
+            pages = text_ru.split("\f")
+            for p_idx, page in enumerate(pages):
+                lines = page.split("\n")
+                self.assertLessEqual(
+                    len(lines),
+                    3,
+                    f"Too many lines ({len(lines)} > 3) in {d_id} page {p_idx}: {lines}",
+                )
+
+                for l_idx, line in enumerate(lines):
+                    # Check <00BF> positioning rule (§2.12)
+                    if "<00BF>" in line:
+                        self.assertTrue(
+                            line.startswith("<00BF>"),
+                            f"In {d_id} [p{p_idx}, l{l_idx}], '<00BF>' must be at start of line: '{line}'",
+                        )
+
+                    # Check expanded character length <= 15
+                    expanded_line = line.replace("<00BF>", "X" * MAX_ITEM_LEN)
+                    clean_expanded = re.sub(r"<[0-9A-Fa-f]{4}>", "X", expanded_line)
+                    self.assertLessEqual(
+                        len(clean_expanded),
+                        15,
+                        f"Line too long ({len(clean_expanded)} > 15) in {d_id} [p{p_idx}, l{l_idx}]: '{line}'",
+                    )
+
+                    # Check first segment word count (Page 0, Line 0) <= 15 words (§5.10 / §5.30)
+                    if p_idx == 0 and l_idx == 0:
+                        words_cnt = 1 if spk else 0
+                        i = 0
+                        while i < len(line):
+                            if line[i : i + 6] == "<00BF>":
+                                words_cnt += MAX_ITEM_LEN
+                                i += 6
+                            elif line[i] == "<" and i + 5 < len(line) and line[i + 5] == ">":
+                                words_cnt += 1
+                                i += 6
+                            else:
+                                words_cnt += 1
+                                i += 1
+
+                        self.assertLessEqual(
+                            words_cnt,
+                            15,
+                            f"First segment word count ({words_cnt} > 15) in {d_id} with speaker {spk}: '{line}'",
+                        )
+
 
 
 if __name__ == "__main__":

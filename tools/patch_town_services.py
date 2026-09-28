@@ -139,7 +139,7 @@ CHAR_NEWLINE = 0x00FE
 CHAR_PAGE_CONTINUE = 0x00FD
 
 # Dynamic allocation start for strings relocated from original slots
-DYNAMIC_ALLOC_START = 0x0327E0
+DYNAMIC_ALLOC_START = 0x036000
 DYNAMIC_ALLOC_LIMIT = 0x094000  # End of Entry 3 (397KB free space)
 
 # Shop pointer table offsets in Entry 3
@@ -635,11 +635,15 @@ def patch_shop_dialogues_buffer(
         speaker_hex = item_data.get("speaker_code_hex")
 
         # Format speaker prefix if provided and not already in text
-        if speaker_hex and not text.startswith("<"):
+        if speaker_hex:
             try:
                 raw_spk = str(speaker_hex).translate(CYRILLIC_HEX_NORMALIZE)
                 spk_val = int(raw_spk, 16) if isinstance(speaker_hex, str) else int(speaker_hex)
-                formatted_text = f"<{spk_val:04X}>{text}"
+                spk_prefix = f"<{spk_val:04X}>"
+                if not text.upper().translate(CYRILLIC_HEX_NORMALIZE).startswith(spk_prefix):
+                    formatted_text = f"{spk_prefix}{text}"
+                else:
+                    formatted_text = text
             except ValueError:
                 formatted_text = text
         else:
@@ -1226,9 +1230,17 @@ def verify_town_services(
         for d_id, d_data in shop_cat["dialogues"].items():
             text = d_data.get("text_ru") or d_data.get("ru") or ""
             spk = d_data.get("speaker_code_hex")
-            if spk and not text.startswith("<"):
-                spk_val = int(str(spk).translate(CYRILLIC_HEX_NORMALIZE), 16)
-                fmt_text = f"<{spk_val:04X}>{text}"
+            if spk:
+                try:
+                    raw_spk = str(spk).translate(CYRILLIC_HEX_NORMALIZE)
+                    spk_val = int(raw_spk, 16) if isinstance(spk, str) else int(spk)
+                    spk_prefix = f"<{spk_val:04X}>"
+                    if not text.upper().translate(CYRILLIC_HEX_NORMALIZE).startswith(spk_prefix):
+                        fmt_text = f"{spk_prefix}{text}"
+                    else:
+                        fmt_text = text
+                except ValueError:
+                    fmt_text = text
             else:
                 fmt_text = text
             expected_encoded = encode_string(fmt_text, cm)

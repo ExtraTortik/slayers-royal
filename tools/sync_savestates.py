@@ -58,7 +58,7 @@ DEFAULT_SAVESTATES_DIR = Path(os.path.expanduser("~/.local/share/duckstation/sav
 
 ZSTD_MAGIC = b"\x28\xb5\x2f\xfd"
 OLD_GREETING_BYTES = bytes.fromhex("a1d9 2100 3e00 3900")  # "<D9A1>ЩФР..." (mojibake)
-NEW_GREETING_BYTES = bytes.fromhex("a1d9 1f00 3c00 3700")  # "<D9A1>Что..." (authoritative)
+NEW_GREETING_BYTES = bytes.fromhex("a1d9 2000 3d00 3800")  # "<D9A1>Что..." (authoritative)
 GREETING_OFFSET_ENTRY3 = 0x030F88
 LEGACY_SHOP_HUD_OFFSET = 0x017F48
 
