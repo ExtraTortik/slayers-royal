@@ -198,33 +198,24 @@ def sync_hud_vram_in_payload(
 
 def sync_combat_in_payload(
     decomp: bytearray,
-    ru_spell_menu: bytes | None = None,
-    ru_pointers: bytes | None = None,
     ru_combat_font_tim: bytes | None = None,
 ) -> bool:
-    """Find and synchronize Entry 0x007 spell menu and Entry 0x142 combat font in RAM."""
-    e7_head = bytes.fromhex("0a000000bcfd04804cfe0480c4ff0480")
-    pos = decomp.find(e7_head)
-    if pos == -1:
+    """Synchronize the Entry 0x142 combat font TIM in a decompressed savestate payload.
+
+    The in-battle spell list lives in Entry 0x007 and its compact font in
+    Entry 0x13F; both are restored from the disc when a state is created/loaded
+    and are intentionally not rewritten here.
+    """
+    if not ru_combat_font_tim:
         return False
-
-    updated = False
-    if ru_spell_menu is not None and ru_pointers is not None:
-        menu_off = pos + 0x06F2CC
-        ptr_off = pos + 0x06F4D8
-        if decomp[menu_off : menu_off + len(ru_spell_menu)] != ru_spell_menu:
-            decomp[menu_off : menu_off + len(ru_spell_menu)] = ru_spell_menu
-            decomp[ptr_off : ptr_off + len(ru_pointers)] = ru_pointers
-            updated = True
-
-    if ru_combat_font_tim:
-        tim_head = ru_combat_font_tim[:16]
-        tim_pos = decomp.find(tim_head)
-        if tim_pos != -1 and decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] != ru_combat_font_tim:
-            decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] = ru_combat_font_tim
-            updated = True
-
-    return updated
+    tim_head = ru_combat_font_tim[:16]
+    tim_pos = decomp.find(tim_head)
+    if tim_pos == -1:
+        return False
+    if decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] == ru_combat_font_tim:
+        return False
+    decomp[tim_pos : tim_pos + len(ru_combat_font_tim)] = ru_combat_font_tim
+    return True
 
 def sync_all_hud_savestates(
     bin_path: Path | str = DEFAULT_BIN,
@@ -548,15 +539,9 @@ def sync_single_savestate(
     # Synchronize Combat Mode (Entry 0x007 spell menu and Entry 0x142 combat font) if present in RAM
     combat_updated = False
     try:
-        from tools.patch_spells import ENTRY_007_RU_SPELL_MENU_BYTES, ENTRY_007_RU_POINTER_BYTES
         from tools.patch_combat_font import unpack_combat_font, apply_combat_font_patches
         combat_tim = bytes(apply_combat_font_patches(unpack_combat_font()))
-        combat_updated = sync_combat_in_payload(
-            decomp,
-            ru_spell_menu=ENTRY_007_RU_SPELL_MENU_BYTES,
-            ru_pointers=ENTRY_007_RU_POINTER_BYTES,
-            ru_combat_font_tim=combat_tim,
-        )
+        combat_updated = sync_combat_in_payload(decomp, ru_combat_font_tim=combat_tim)
     except Exception:
         pass
     result["combat_updated"] = combat_updated

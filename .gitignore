@@ -1,3 +1,7 @@
+# local toolchains / research dumps (never needed to build; hundreds of MB)
+jpsxdec_v2.1-beta/
+slayers_royal_transfer_bundle/
+chaiNNer-*/
 .superpowers/
 downloads/
 renpy_raw/
@@ -12,3 +16,5 @@ patch_repo/
 tools/bin/
 build/
 *.str
+debug00.log
+index.log

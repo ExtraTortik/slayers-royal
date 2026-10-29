@@ -35,12 +35,7 @@ PATCH_REPO_DIR="$SCRIPT_DIR/patch_repo"
 # Everything Russian-specific lives in this repository and is applied by
 # tools/localize_ru.py; never edit files inside patch_repo/.
 if [[ "$1" != "--help" && "$1" != "-h" ]]; then
-    if [[ ! -f "$PATCH_REPO_DIR/localization/cli.py" ]]; then
-        echo "Ошибка: $PATCH_REPO_DIR отсутствует или неполный." >&2
-        echo "  git clone https://github.com/gourry-hacks/slayers_royal_1_patch \"$PATCH_REPO_DIR\"" >&2
-        echo "  (или создайте симлинк на существующий клон)" >&2
-        exit 1
-    fi
+    python3 "$SCRIPT_DIR/tools/ensure_patch_repo.py" || exit 1
 fi
 
 # Guards that must pass after every build that touches the story or the fonts:
@@ -73,7 +68,7 @@ if [[ "$1" == "--help" || "$1" == "-h" ]]; then
     echo "  --status-ui, --tabs  Обновить атлас меню персонажей из data/preview_basyog_162_ru.png"
     echo "  --cards      Обновить ТОЛЬКО энциклопедические карточки персонажей"
     echo "  --combat, --combat-dialogues  Обновить боевые диалоги и заклинания"
-    echo "  --spells     Внедрить заклинания и боевое меню магии (PROG.UNT 0x007, 325..443)"
+    echo "  --spells     Внедрить заклинания и боевое меню магии (PROG.UNT 0x007, 0x13F, 325..443)"
     echo "  --services, --town  Обновить городские службы, магазины и меню из translations/town_services_ru.json"
     echo "  --shops, --shop-dialogues  Обновить диалоги и меню магазинов из translations/shop_dialogues_ru.json"
     echo "  --minigames, --quiz Обновить правила 5 мини-игр, викторину и меню выбора мини-игр"
@@ -108,7 +103,8 @@ if [[ "$1" == "--validate" ]]; then
     python3 -m pytest tools/test_combat_font_and_text.py -q
     echo "[*] Валидация заклинаний и боевого меню магии (PROG.UNT 0x007, 325..443)..."
     python3 "$SCRIPT_DIR/tools/patch_spells.py" --verify --bin "$RU_BIN"
-    python3 -m pytest tools/test_patch_spells.py -q
+    python3 "$SCRIPT_DIR/tools/patch_spell_menu_ru.py" --verify --bin "$RU_BIN" --catalog "$SPELLS_JSON"
+    python3 -m pytest tools/test_patch_spells.py tools/test_patch_spell_menu_ru.py -q
     echo "[*] Валидация названий карты мира..."
     python3 "$SCRIPT_DIR/tools/patch_world_map.py" --verify
     echo "[*] Валидация графических плашек локаций..."
@@ -155,10 +151,14 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
         --bin "$BIN_ORIG" \
         --output-dir "$RU_DIR"
     run_guards
-    echo "Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
-    python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
-        --inject-disc "$RU_BIN" \
-        --movies-dir "$SCRIPT_DIR/build/movies"
+    if compgen -G "$SCRIPT_DIR/build/movies/*" > /dev/null 2>&1; then
+        echo "Внедрение видеороликов с русскими субтитрами (build/movies/MOVIE.STR)..."
+        python3 "$SCRIPT_DIR/tools/fmv_pipeline.py" \
+            --inject-disc "$RU_BIN" \
+            --movies-dir "$SCRIPT_DIR/build/movies"
+    else
+        echo "(build/movies отсутствует — видеоролики остаются оригинальными)"
+    fi
 
     echo "==========================================================="
     echo "[2/2] Накатывание сопутствующих патчей (инспекция, карты, плашки, бой, службы, мини-игры)..."
@@ -173,6 +173,7 @@ if [[ "$1" == "--story" || "$1" == "--dialogues" ]]; then
     python3 "$SCRIPT_DIR/tools/patch_combat.py" --bin "$RU_BIN"
     python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" --bin "$RU_BIN" --catalog "$COMBAT_DIALOGUES_JSON"
     python3 "$SCRIPT_DIR/tools/patch_spells.py" --bin "$RU_BIN" --catalog "$SPELLS_JSON"
+    python3 "$SCRIPT_DIR/tools/patch_spell_menu_ru.py" --bin "$RU_BIN" --catalog "$SPELLS_JSON"
     python3 "$SCRIPT_DIR/tools/patch_town_services.py" --bin "$RU_BIN" --catalog "$TOWN_SERVICES_JSON" --shop-catalog "$SHOP_DIALOGUES_JSON"
     python3 "$SCRIPT_DIR/tools/patch_minigames.py" --bin "$RU_BIN" --catalog "$MINIGAMES_JSON"
     python3 "$SCRIPT_DIR/tools/patch_minigames_menu.py" --bin "$RU_BIN"
@@ -288,6 +289,9 @@ if [[ "$1" == "--combat" || "$1" == "--combat-dialogues" ]]; then
     python3 "$SCRIPT_DIR/tools/patch_spells.py" \
         --bin "$RU_BIN" \
         --catalog "$SPELLS_JSON"
+    python3 "$SCRIPT_DIR/tools/patch_spell_menu_ru.py" \
+        --bin "$RU_BIN" \
+        --catalog "$SPELLS_JSON"
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
     echo "[✓] Боевые диалоги и заклинания успешно обновлены!"
     exit 0
@@ -299,6 +303,9 @@ if [[ "$1" == "--spells" ]]; then
         exit 1
     fi
     python3 "$SCRIPT_DIR/tools/patch_spells.py" \
+        --bin "$RU_BIN" \
+        --catalog "$SPELLS_JSON"
+    python3 "$SCRIPT_DIR/tools/patch_spell_menu_ru.py" \
         --bin "$RU_BIN" \
         --catalog "$SPELLS_JSON"
     cp -a "$RU_DIR/." "$PATCH_REPO_DIR/localization-output/ru/"
@@ -520,6 +527,9 @@ python3 "$SCRIPT_DIR/tools/patch_combat_dialogues.py" \
     --bin "$RU_BIN" \
     --catalog "$COMBAT_DIALOGUES_JSON"
 python3 "$SCRIPT_DIR/tools/patch_spells.py" \
+    --bin "$RU_BIN" \
+    --catalog "$SPELLS_JSON"
+python3 "$SCRIPT_DIR/tools/patch_spell_menu_ru.py" \
     --bin "$RU_BIN" \
     --catalog "$SPELLS_JSON"
 echo "[8/9] Внедрение городских служб, магазинов, меню и валюты (PROG.UNT 0x003, 0x03A)..."

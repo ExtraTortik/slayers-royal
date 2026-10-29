@@ -122,6 +122,7 @@ COMBINED_CARD_CLUTS: dict[int, str] = {
 
 DEFAULT_FONT_SEARCH = {
     "bold": [
+        str(REPO_ROOT / "fonts" / "LiberationSans-Bold.ttf"),
         "/usr/share/fonts/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans-Bold.ttf",
@@ -131,6 +132,7 @@ DEFAULT_FONT_SEARCH = {
         "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
     ],
     "regular": [
+        str(REPO_ROOT / "fonts" / "LiberationSans-Regular.ttf"),
         "/usr/share/fonts/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf",
         "/usr/share/fonts/dejavu/DejaVuSans.ttf",

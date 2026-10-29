@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "metadata": {
+    "title": "Шаблон каталога сюжетных диалогов PS1",
+    "description": "Единый каталог реплик и указателей для текстового пайплайна"
+  },
+  "scenes": [
+    {
+      "scene_id": "001",
+      "ram_base_hex": "0x80100000",
+      "max_sectors": 10,
+      "dialogues": [
+        {
+          "id": 0,
+          "speaker": "Герой",
+          "text_original": "Hello, world!",
+          "text_ru": "Привет, мир!\nДобро пожаловать\nв игру!",
+          "max_lines": 3,
+          "max_chars_per_line": 20
+        },
+        {
+          "id": 1,
+          "speaker": "Старейшина",
+          "text_original": "Take this sword.",
+          "text_ru": "Возьми этот меч,\nон защитит тебя\nв пути.",
+          "max_lines": 3,
+          "max_chars_per_line": 20
+        }
+      ]
+    }
+  ]
+}

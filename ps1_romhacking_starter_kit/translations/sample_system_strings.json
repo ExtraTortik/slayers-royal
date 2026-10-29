@@ -1,0 +1,14 @@
+{
+  "menu_strings": [
+    { "id": "START", "en": "START", "ru": "СТАРТ", "max_chars": 8 },
+    { "id": "LOAD", "en": "LOAD", "ru": "ЗАГРУЗКА", "max_chars": 8 },
+    { "id": "OPTIONS", "en": "OPTIONS", "ru": "ОПЦИИ", "max_chars": 8 },
+    { "id": "QUIT", "en": "QUIT", "ru": "ВЫХОД", "max_chars": 8 }
+  ],
+  "combat_strings": [
+    { "id": "ATTACK", "en": "ATTACK", "ru": "АТАКА", "max_chars": 8 },
+    { "id": "DEFEND", "en": "DEFEND", "ru": "ЗАЩИТА", "max_chars": 8 },
+    { "id": "MAGIC", "en": "MAGIC", "ru": "МАГИЯ", "max_chars": 8 },
+    { "id": "ITEM", "en": "ITEM", "ru": "ВЕЩЬ", "max_chars": 8 }
+  ]
+}

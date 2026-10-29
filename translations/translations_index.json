@@ -6,8 +6,8 @@
     "description": "Сводный индекс всех 14 каталогов локализации в translations/: сюжет, бой, интерактивные комнаты, мини-игры, городские службы, диалоги магазинов, справочные карточки, карта мира, вывески локаций, названия комнат, меню выбора мини-игр, меню бонусов, карты городов и пользовательские экраны.",
     "target_disc": "slayers_royal_ru.bin",
     "locale": "ru",
-    "total_catalogs": 14,
-    "last_updated": "2026-09-19"
+    "total_catalogs": 15,
+    "last_updated": "2026-10-21"
   },
   "catalogs": [
     {
@@ -238,6 +238,23 @@
       "patcher_tool": "tools/patch_custom_screens.py",
       "build_flag": "--custom-screens, --screens",
       "validation_command": "python3 tools/patch_custom_screens.py --verify"
+    },
+    {
+      "id": "spells",
+      "file": "translations/spells_ru.json",
+      "name": "Заклинания, справка и боевое меню магии",
+      "description": "119 записей справки по магии (PROG.UNT 0x145..0x1BB) и 57 коротких имён для внутрибоевого меню (PROG.UNT 0x007, компактный шрифт 0x13F).",
+      "target_archive": "PROG.UNT",
+      "target_entries": "0x007, 0x13F, 325..443",
+      "total_entries": 119,
+      "constraints": {
+        "menu_name_max_glyphs": 10,
+        "menu_name_region_bytes": 524,
+        "menu_font": "4bpp TIM 128x256, Entry 0x13F",
+        "encoding": "8-bit compact-font codes, 0x5F = blank space"
+      },
+      "injector": "tools/patch_spells.py + tools/patch_spell_menu_ru.py",
+      "validator": "tools/patch_spell_menu_ru.py --verify"
     }
   ]
 }

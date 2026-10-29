@@ -107,6 +107,8 @@ REVERSE_SPELL_NAME_CHARMAP: dict[int, str] = {v: k for k, v in SPELL_NAME_CHARMA
 
 # Font search paths
 FONT_SEARCH = [
+    REPO_ROOT / "fonts" / "LiberationSans-Regular.ttf",
+    REPO_ROOT / "fonts" / "LiberationSans-Bold.ttf",
     REPO_ROOT / "fonts" / "NotoSans-Regular.ttf",
     Path("/usr/share/fonts/noto/NotoSans-Regular.ttf"),
     Path("/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf"),

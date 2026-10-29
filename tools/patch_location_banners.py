@@ -702,7 +702,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         translations_path=args.translations,
     )
     print(f"Uncompressed TIM: {len(tim_data):,} bytes")
-    print(f"Compressed size: {len(compressed_payload.rstrip(b'\x00')):,} bytes (budget: {ENTRY_466_BUDGET_BYTES:,} bytes)")
+    compressed_size = len(compressed_payload.rstrip(b"\x00"))
+    print(f"Compressed size: {compressed_size:,} bytes (budget: {ENTRY_466_BUDGET_BYTES:,} bytes)")
 
     if args.dump_tim:
         args.dump_tim.parent.mkdir(parents=True, exist_ok=True)

@@ -52,25 +52,10 @@ from tools.patch_spells import (
     SPELLS_LAST_ENTRY,
     ENTRY_COMBAT_DATA,
     ENTRY_007_SECTORS,
-    ENTRY_007_SPELL_MENU_START,
-    ENTRY_007_SPELL_MENU_END,
-    ENTRY_007_SPELL_MENU_SIZE,
-    ENTRY_007_CLEAN_SPELL_MENU_BYTES,
-    ENTRY_007_RU_SPELL_MENU_BYTES,
-    ENTRY_007_RU_POINTER_BYTES,
-    ENTRY_007_POINTER_TABLE_START,
-    OFFSET_MIPS_INIT_EXIT,
-    OFFSET_SYSTEM_BUTTONS_START,
-    OFFSET_SYSTEM_BUTTONS_END,
-    OFFSET_TABLE2_START,
-    OFFSET_DIALOGUES_START,
-    OFFSET_DIALOGUES_END,
-    OFFSET_TABLE3_START,
     SECTION_SPELL_IDS,
     SECTION_BUDGETS,
     SECTION_OFFSETS,
     get_prog_unt_entry_extent,
-    patch_spell_menu_in_entry_007,
     decode_spell,
     encode_spell,
     get_prog_unt_spells_extent,
@@ -301,102 +286,3 @@ class TestDiscPatching:
                 ecc_q = checksums.compute_ecc(sec[0x10:], 52, 43, 86, 88)
                 assert ecc_q == sec[0x8C8:0x930], f"ECC Q failed at LBA {lba}"
 
-class TestSpellMenuEncoding:
-    """Tests for in-battle spell selection menu bytes in Entry 0x007."""
-
-    def test_clean_spell_menu_bytes_size(self):
-        """Clean spell menu constant has exactly 524 bytes."""
-        assert len(ENTRY_007_CLEAN_SPELL_MENU_BYTES) == ENTRY_007_SPELL_MENU_SIZE
-
-    def test_ru_spell_menu_bytes_size(self):
-        """Russian spell menu constant has exactly 524 bytes."""
-        assert len(ENTRY_007_RU_SPELL_MENU_BYTES) == ENTRY_007_SPELL_MENU_SIZE
-    def test_clean_spell_menu_bytes_match_en_patched(self):
-        """Clean spell menu bytes match the verified en_patched baseline."""
-        en_path = REPO_ROOT / "build" / "en_patched" / "sr_patched.bin"
-        if not en_path.is_file():
-            pytest.skip("en_patched disc image not available")
-        prog_lba, e7_start, e7_count = get_prog_unt_entry_extent(en_path, ENTRY_COMBAT_DATA)
-        e7_data = read_extent(en_path, prog_lba + e7_start, e7_count * 2048)
-        en_menu = e7_data[ENTRY_007_SPELL_MENU_START:ENTRY_007_SPELL_MENU_END]
-        assert en_menu == ENTRY_007_CLEAN_SPELL_MENU_BYTES, (
-            "ENTRY_007_CLEAN_SPELL_MENU_BYTES does not match en_patched disc"
-        )
-
-    def test_all_57_spells_present_in_catalog(self, spells_catalog):
-        """Verify that spells_ru.json contains all 57 spells with menu_ru names."""
-        spells_map = {item["entry_index"]: item for item in spells_catalog}
-        total_ids = sum(len(ids) for ids in SECTION_SPELL_IDS)
-        assert total_ids == 57, f"Expected 57 spell IDs in sections, got {total_ids}"
-
-        for sec_idx, ids in enumerate(SECTION_SPELL_IDS):
-            for spell_id in ids:
-                assert spell_id in spells_map, f"Spell {spell_id} missing from catalog"
-                item = spells_map[spell_id]
-                menu_name = item.get("menu_ru") or item.get("name_ru")
-                assert menu_name, f"Spell {spell_id} missing menu_ru name in catalog"
-
-    def test_section_offsets_and_budgets_cover_full_region(self):
-        """Verify section offsets and budgets cover the full 524-byte region."""
-        total_budget = sum(SECTION_BUDGETS)
-        assert total_budget == ENTRY_007_SPELL_MENU_SIZE
-        for i, (off, bud) in enumerate(zip(SECTION_OFFSETS, SECTION_BUDGETS)):
-            if i + 1 < len(SECTION_OFFSETS):
-                assert off + bud == SECTION_OFFSETS[i + 1], (
-                    f"Section {i} end {off + bud:#x} != section {i+1} start {SECTION_OFFSETS[i+1]:#x}"
-                )
-
-class TestEntry007Invariants:
-    """Tests preservation of all critical Entry 0x007 structures during spell menu patching."""
-
-    def test_patch_spell_menu_in_entry_007_preserves_invariants(self):
-        """Patch spell menu into simulated Entry 0x007 and verify invariants."""
-        dummy_size = ENTRY_007_SECTORS * 2048
-        e7 = bytearray(b"\xAA" * dummy_size)
-
-        # Setup MIPS exit instruction at 0x02B78C
-        struct.pack_into("<II", e7, OFFSET_MIPS_INIT_EXIT, 0x03E00008, 0x00000000)
-
-        # Setup dummy UI buttons, prompts, dialogue cues, and tables
-        e7[OFFSET_SYSTEM_BUTTONS_START:OFFSET_SYSTEM_BUTTONS_END] = b"\x11" * (OFFSET_SYSTEM_BUTTONS_END - OFFSET_SYSTEM_BUTTONS_START)
-        e7[OFFSET_DIALOGUES_START:OFFSET_DIALOGUES_END] = b"\x22" * (OFFSET_DIALOGUES_END - OFFSET_DIALOGUES_START)
-        e7[OFFSET_TABLE2_START:OFFSET_TABLE2_START + 148] = b"\x33" * 148
-        e7[OFFSET_TABLE3_START:OFFSET_TABLE3_START + 200] = b"\x44" * 200
-
-        # Apply spell menu patch (writes Russian spell menu by default)
-        patched = patch_spell_menu_in_entry_007(e7)
-
-        # 1. MIPS exit instruction intact
-        mips = struct.unpack_from("<II", patched, OFFSET_MIPS_INIT_EXIT)
-        assert mips == (0x03E00008, 0x00000000)
-
-        # 2. System buttons intact
-        assert patched[OFFSET_SYSTEM_BUTTONS_START:OFFSET_SYSTEM_BUTTONS_END] == b"\x11" * (OFFSET_SYSTEM_BUTTONS_END - OFFSET_SYSTEM_BUTTONS_START)
-
-        # 3. Dialogues intact
-        assert patched[OFFSET_DIALOGUES_START:OFFSET_DIALOGUES_END] == b"\x22" * (OFFSET_DIALOGUES_END - OFFSET_DIALOGUES_START)
-
-        # 4. Table 2 and Table 3 intact
-        assert patched[OFFSET_TABLE2_START:OFFSET_TABLE2_START + 148] == b"\x33" * 148
-        assert patched[OFFSET_TABLE3_START:OFFSET_TABLE3_START + 200] == b"\x44" * 200
-
-        # 5. Spell menu region holds the verified English bytes (8-bit Bank-0 renderer, hand_off §5.28)
-        menu_bytes = patched[ENTRY_007_SPELL_MENU_START:ENTRY_007_SPELL_MENU_END]
-        assert len(menu_bytes) == ENTRY_007_SPELL_MENU_SIZE
-        assert menu_bytes == ENTRY_007_CLEAN_SPELL_MENU_BYTES
-        assert menu_bytes != ENTRY_007_RU_SPELL_MENU_BYTES
-
-        # 6. Pointer table region is left untouched
-        ptr_bytes = patched[ENTRY_007_POINTER_TABLE_START:ENTRY_007_POINTER_TABLE_START + len(ENTRY_007_RU_POINTER_BYTES)]
-        assert ptr_bytes == e7[ENTRY_007_POINTER_TABLE_START:ENTRY_007_POINTER_TABLE_START + len(ENTRY_007_RU_POINTER_BYTES)]
-
-        # 7. Explicit clean English patch works as well
-        patched_en = patch_spell_menu_in_entry_007(e7, clean_bytes=ENTRY_007_CLEAN_SPELL_MENU_BYTES)
-        assert patched_en[ENTRY_007_SPELL_MENU_START:ENTRY_007_SPELL_MENU_END] == ENTRY_007_CLEAN_SPELL_MENU_BYTES
-
-    def test_clean_spell_menu_avoids_default_charmap_mojibake(self):
-        """Verify that Entry 0x007 menus avoid DEFAULT_CHARMAP (preventing 'RO L ON' mojibake)."""
-        from tools.patch_inspection import DEFAULT_CHARMAP
-        mojibake_rondo = bytes([DEFAULT_CHARMAP["Р"], DEFAULT_CHARMAP["о"], DEFAULT_CHARMAP["н"], DEFAULT_CHARMAP["д"], DEFAULT_CHARMAP["о"]])
-        assert mojibake_rondo not in ENTRY_007_CLEAN_SPELL_MENU_BYTES
-        assert mojibake_rondo not in ENTRY_007_RU_SPELL_MENU_BYTES

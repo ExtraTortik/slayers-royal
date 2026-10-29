@@ -1,0 +1,17 @@
+# Конфигурация среды агента (Oh My Pi / OpenDevin)
+symbolPreset: unicode
+theme:
+  dark: titanium
+setupVersion: 2
+
+# Основная рабочая модель оркестратора
+modelRoles:
+  default: google-antigravity/gemini-3.8-flash:high
+  scout: google-antigravity/gemini-3.8-flash
+  task: google-antigravity/gemini-3.8-flash:high
+  reviewer: google-antigravity/gemini-3.8-flash:high
+
+composer:
+  shape: box
+
+defaultThinkingLevel: auto

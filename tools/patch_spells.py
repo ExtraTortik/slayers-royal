@@ -72,67 +72,10 @@ ENTRY_007_SPELL_MENU_START = 0x06F2CC
 ENTRY_007_SPELL_MENU_END = 0x06F4D8
 ENTRY_007_SPELL_MENU_SIZE = 524
 
-# Original 8-bit spell selection menu bytes from PROG.UNT Entry 0x007
-# (0x06F2CC..0x06F4D8).  The in-battle spell list renderer is hard-wired to
-# the original Japanese/Latin 8-bit font tile set and cannot display Cyrillic.
-# These are the verified-clean English bytes that produce readable spell names
-# (BURST RONDO, FLARE ARROW, etc.) in the selection menu.
-ENTRY_007_CLEAN_SPELL_MENU_BYTES = bytes.fromhex(
-    "070d0a151724101013225f05002c0c0903080a0a5f012c290312065f07001211"
-    "0308040b5f1408291024040e080c061a032c062a1b231304030f00062a1b2313"
-    "04195f5f050a1c1f1c2e141a050f0404161f1c2e141a5f5f010a0010115f0010"
-    "075f5f5f03321d11172d0011071b5f5f050a000f1f232804080208020a045f23"
-    "28045f5f010f000b5f061d070b0406005f012c2903210b5f1408291b0010112c"
-    "0a5f13080c045f5f16040a1d170f08030425040908005f2328045f5f010f000b"
-    "5f012316040f5f5f1e0f10115f2e290d2d2f0f2d02302a19010d0b011b2b0803"
-    "03000b5f010f1d10030f00062a1b231304185f5f060d165f13312e120f005f11"
-    "080a115f050a000f1f1c2e14020a0015170d0b01052d04161f1c2e14050f0404"
-    "1604170f08035f5f012c0b5f05000c060f04020d13040f1503150c1d11172d00"
-    "11075f5f03042627180f3311000a5f5f0b2a0d5f130d0a110a08060711080c06"
-    "0f000627172303040308065f130d0a1103210b5f140829180a08060711080c06"
-    "100a04040e080c060f042f0f2d02302a0308020a04000f151e0f10115f05232d"
-    "05080f0401000a0a5f5f5f5f010a1d11170d0b01010d0b015f102b0803175f5f"
-    "03000b170f1d101703321d11172d001107175f5f0f005f11080a111705080f04"
-    "01000a0a5f5f5f5f00040f0d170d0b0103080a0a5f010f0029175f5f03122007"
-    "001211172d020d13040f1517"
-)
-assert len(ENTRY_007_CLEAN_SPELL_MENU_BYTES) == ENTRY_007_SPELL_MENU_SIZE
-
-# Russian 8-bit spell selection menu bytes for PROG.UNT Entry 0x007
-# (0x06F2CC..0x06F4D8). Encoded in 26 Cyrillic 8x10 font tiles.
-ENTRY_007_RU_SPELL_MENU_BYTES = bytes.fromhex(
-    "03011112135f110f0e060f150c070a115f1911110f14150c070a115f0c190e12"
-    "15020711030f0c03011112135f150c070a11030c0212135f030f0d0302061102"
-    "05145f120c070a0406110205145f120c00141102050e025f030c070a065f5f5f"
-    "5f5f5f5f5f5f5f5f120c09105f0e150c070a1100195f0e1511090800195f0e06"
-    "02051602141306090d04090e06030c0212131917020a12090b0c5f0c190e1203"
-    "11020d0502170d0705025f0311020e0608070c02125f031109060311020d5f03"
-    "0c070a08030f0d035f121011090606020d031102120b0c070a030f0d15110908"
-    "5f1911110f14151109085f031109060311020d5f15020e0506020a0e02121306"
-    "070d0f0e02060905040f0c130219110f5f030f0d03025f5f5f5f5f5f5f5f5f5f"
-    "5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f160f0c09"
-    "0003040912001506090c0c000306020a0e001206090d001202121311020c190c"
-    "180d070b110708001406110205000b050f0800041411021311070b020407110d"
-    "0f0e0f00040c020a13000206090d000b0c020a130003120c0910090e05110708"
-    "0f111106090b0c09021115020711030f0c0600030600165f5f5f5f5f5f5f5f5f"
-    "5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f5f"
-    "030f0d0300120306020d00035f0306020a0e0212135f03110200135f0311070b"
-    "02045f035f5f5f5f5f5f5f5f"
-)
-assert len(ENTRY_007_RU_SPELL_MENU_BYTES) == ENTRY_007_SPELL_MENU_SIZE
-
-ENTRY_007_RU_POINTER_BYTES = bytes.fromhex(
-    "000000007cd80b8087d80b8092d80b809cd80b80a3d80b80aed80b80b9d80b80"
-    "c4d80b80ced80b80e4d80b80ead80b80f3d80b80fbd80b8002d90b8009d90b80"
-    "10d90b801bd90b8022d90b802cd90b8036d90b8040d90b804ad90b8051d90b80"
-    "58d90b8062d90b806bd90b8074d90b807bd90b8081d90b8088d90b80b8d90b80"
-    "bed90b80c3d90b80c9d90b80cfd90b80d4d90b80dad90b80e0d90b80e5d90b80"
-    "ebd90b80f1d90b80f4d90b80fbd90b8001da0b8007da0b800cda0b8012da0b80"
-    "19da0b801fda0b8026da0b802dda0b8030da0b805cda0b8063da0b806ada0b80"
-    "73da0b8079da0b8088da0b80"
-)
+# Entry 0x007 spell menu diagnostics (the Russian menu is injected by
+# tools/patch_spell_menu_ru.py after this tool has written the 119 help entries).
 ENTRY_007_POINTER_TABLE_START = 0x06F4D8
-ENTRY_007_POINTER_TABLE_SIZE = len(ENTRY_007_RU_POINTER_BYTES)  # 236 bytes
+ENTRY_007_POINTER_TABLE_SIZE = 236  # 59 pointers: NULL + 57 names + end
 ENTRY_COMBAT_FONT = 0x142
 # Invariant offsets in Entry 0x007
 OFFSET_MIPS_INIT_EXIT = 0x02B78C
@@ -173,46 +116,6 @@ def get_prog_unt_entry_extent(bin_path: Path, entry_index: int) -> tuple[int, in
     entries = read_unt_index(sec0)
     e = entries[entry_index]
     return prog_lba, e.start_sector, e.sector_count
-
-
-def patch_spell_menu_in_entry_007(
-    e7_data: bytearray,
-    clean_bytes: bytes | None = None,
-    pointer_bytes: bytes | None = None,
-) -> bytearray:
-    """Write Russian spell selection menu and pointer table into Entry 0x007."""
-    if not isinstance(e7_data, bytearray):
-        e7_data = bytearray(e7_data)
-
-    # Verify MIPS init exit invariant
-    mips_code = struct.unpack_from("<II", e7_data, OFFSET_MIPS_INIT_EXIT)
-    if mips_code != (0x03E00008, 0x00000000):
-        raise ValueError(
-            f"MIPS exit instruction at 0x{OFFSET_MIPS_INIT_EXIT:06X} corrupted: "
-            f"0x{mips_code[0]:08X}, 0x{mips_code[1]:08X}"
-        )
-
-    # The in-battle spell list is drawn by an 8-bit renderer bound to the
-    # original Bank-0 tiles of font 0x142; Cyrillic cannot be displayed there
-    # (hand_off §5.28).  Always restore the verified English bytes and leave
-    # the pointer table alone.  ENTRY_007_RU_* are kept only for --verify to
-    # recognise (and reject) images built by the earlier, broken variant.
-    payload = clean_bytes if clean_bytes is not None else ENTRY_007_CLEAN_SPELL_MENU_BYTES
-    ptrs = pointer_bytes
-
-    if len(payload) != ENTRY_007_SPELL_MENU_SIZE:
-        raise ValueError(f"Spell menu payload size mismatch: {len(payload)} != {ENTRY_007_SPELL_MENU_SIZE}")
-
-    e7_data[ENTRY_007_SPELL_MENU_START : ENTRY_007_SPELL_MENU_START + ENTRY_007_SPELL_MENU_SIZE] = payload
-    if ptrs is not None:
-        e7_data[ENTRY_007_POINTER_TABLE_START : ENTRY_007_POINTER_TABLE_START + len(ptrs)] = ptrs
-
-    # Re-verify MIPS exit invariant
-    mips_post = struct.unpack_from("<II", e7_data, OFFSET_MIPS_INIT_EXIT)
-    if mips_post != (0x03E00008, 0x00000000):
-        raise ValueError("MIPS exit instruction was corrupted during spell menu injection!")
-
-    return e7_data
 
 
 def encode_spell(
@@ -373,7 +276,6 @@ def verify_spells_on_disc(
         "edc_ecc_valid": 0,
         "content_valid": 0,
         "entry_007_edc_ecc_valid": 0,
-        "entry_007_menu_valid": 0,
         "errors": [],
     }
 
@@ -447,20 +349,6 @@ def verify_spells_on_disc(
     if mips_code != (0x03E00008, 0x00000000):
         results["errors"].append(f"Entry 0x007: MIPS exit instruction corrupted: {mips_code}")
 
-    # Verify Entry 0x007 spell menu (0x06F2CC..0x06F4D8) matches clean baseline
-    menu_bytes = bytes(e7_bytes[ENTRY_007_SPELL_MENU_START : ENTRY_007_SPELL_MENU_START + ENTRY_007_SPELL_MENU_SIZE])
-    if menu_bytes == ENTRY_007_RU_SPELL_MENU_BYTES:
-        raise AssertionError(
-            "Entry 0x007 spell list holds the Cyrillic Bank-0 encoding, which the 8-bit "
-            "in-battle renderer displays as garbage; rebuild (patch_spells restores the English bytes)"
-        )
-    if menu_bytes == ENTRY_007_CLEAN_SPELL_MENU_BYTES:
-        results["entry_007_menu_valid"] = sum(len(ids) for ids in SECTION_SPELL_IDS)
-    else:
-        results["errors"].append(
-            f"Entry 0x007 spell menu at 0x{ENTRY_007_SPELL_MENU_START:06X} is corrupted: "
-            f"does not match Russian translation or clean baseline"
-        )
     return results
 
 
@@ -470,7 +358,7 @@ def patch_spells(
     output_bin: Path | None = None,
     dry_run: bool = False,
 ) -> dict[str, Any]:
-    """Encode and patch all 119 spells and Entry 0x007 spell menu into target disc image."""
+    """Encode and patch all 119 spell help entries into the target disc image."""
     cat_path = catalog_path or DEFAULT_CATALOG
     if not cat_path.is_file():
         raise FileNotFoundError(f"Translations catalog not found at {cat_path}")
@@ -505,32 +393,10 @@ def patch_spells(
         if used_len > max_payload_size:
             max_payload_size = used_len
 
-    # 2. Ensure Entry 0x007 in-battle spell selection menu (0x06F2CC..0x06F4D8) is Russian
-    prog_lba_e7, e7_start, e7_count = get_prog_unt_entry_extent(work_bin, ENTRY_COMBAT_DATA)
-    orig_e7 = bytearray(read_extent(work_bin, prog_lba_e7 + e7_start, e7_count * 2048))
-    current_menu_bytes = bytes(orig_e7[ENTRY_007_SPELL_MENU_START : ENTRY_007_SPELL_MENU_START + ENTRY_007_SPELL_MENU_SIZE])
-    current_ptrs = bytes(orig_e7[ENTRY_007_POINTER_TABLE_START : ENTRY_007_POINTER_TABLE_START + ENTRY_007_POINTER_TABLE_SIZE])
-    need_e7_write = current_menu_bytes != ENTRY_007_CLEAN_SPELL_MENU_BYTES
-    if not need_e7_write and not dry_run:
-        # Verify EDC/ECC across all 745 sectors of Entry 0x007
-        checksums = CdChecksums()
-        with work_bin.open("rb") as f:
-            for sec_i in range(e7_count):
-                f.seek((prog_lba_e7 + e7_start + sec_i) * RAW_SECTOR_SIZE)
-                raw_sec = f.read(RAW_SECTOR_SIZE)
-                if (checksums.compute_edc(raw_sec[0x10:0x818]) != raw_sec[0x818:0x81C] or
-                    checksums.compute_ecc(raw_sec[0x10:], 86, 24, 2, 86) != raw_sec[0x81C:0x8C8] or
-                    checksums.compute_ecc(raw_sec[0x10:], 52, 43, 86, 88) != raw_sec[0x8C8:0x930]):
-                    need_e7_write = True
-                    break
-
-    if need_e7_write:
-        patched_e7 = patch_spell_menu_in_entry_007(orig_e7)
-        if not dry_run:
-            replace_extent_in_place(work_bin, prog_lba_e7 + e7_start, bytes(patched_e7))
-
     # Font 0x142 Bank 0 is never modified (see patch_combat_font.apply_combat_font_patches).
+    # The in-battle spell list itself is injected by tools/patch_spell_menu_ru.py.
 
+    _prog_lba_e7, _e7_start, e7_count = get_prog_unt_entry_extent(work_bin, ENTRY_COMBAT_DATA)
     prog_lba, first_offset, sector_offsets = get_prog_unt_spells_extent(work_bin)
     # Check contiguity of 119 spells
     is_contiguous = all(
@@ -548,7 +414,6 @@ def patch_spells(
                 replace_extent_in_place(work_bin, prog_lba + offset, encoded_entries[idx])
     return {
         "spells_patched": len(encoded_entries),
-        "menu_spells_patched": sum(len(ids) for ids in SECTION_SPELL_IDS),
         "entry_007_sectors": e7_count,
         "target_bin": str(work_bin),
         "dry_run": dry_run,
@@ -577,7 +442,6 @@ def main() -> int:
             print(f"EDC/ECC valid (325..): {results['edc_ecc_valid']}/{results['entries_total']}")
             print(f"Content valid (325..): {results['content_valid']}/{results['entries_total']}")
             print(f"EDC/ECC valid (0x007): {results['entry_007_edc_ecc_valid']}/{ENTRY_007_SECTORS}")
-            print(f"Spell menu valid (E7): {results['entry_007_menu_valid']}/57")
             if results["errors"]:
                 print(f"Verification FAILED with {len(results['errors'])} errors:")
                 for err in results["errors"][:10]:
@@ -585,7 +449,7 @@ def main() -> int:
                 if len(results["errors"]) > 10:
                     print(f"  ... and {len(results['errors']) - 10} more errors")
                 return 1
-            print("100% OK: All 119 spell entries, Entry 0x007 spell menu and EDC/ECC verified successfully.")
+            print("100% OK: All 119 spell entries and EDC/ECC verified successfully.")
             return 0
         except Exception as e:
             print(f"Verification error: {e}", file=sys.stderr)
@@ -602,7 +466,6 @@ def main() -> int:
             dry_run=args.dry_run,
         )
         print(f"Successfully processed {res['spells_patched']} spell entries.")
-        print(f"Successfully processed {res['menu_spells_patched']} in-battle spell menu names in Entry 0x007.")
         print(f"Max payload size: {res['max_payload_size']} bytes / {res['entry_budget']} bytes budget.")
         if not args.dry_run:
             print("Verifying EDC/ECC and written entries on disc...")
