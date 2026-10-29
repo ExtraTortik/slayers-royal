@@ -107,9 +107,6 @@ if !ERRORLEVEL! neq 0 exit /b !ERRORLEVEL!
 if not exist "%RU_DIR%" mkdir "%RU_DIR%"
 
 echo [1/9] Синхронизация и компиляция сюжетных диалогов...
-%PYTHON_CMD% "%SCRIPT_DIR%\tools\sync_story_dialogues.py" --sync-if-newer
-if !ERRORLEVEL! neq 0 exit /b !ERRORLEVEL!
-
 %PYTHON_CMD% "%SCRIPT_DIR%\tools\localize_ru.py" build --bin "%BIN_ORIG%" --output-dir "%RU_DIR%"
 if !ERRORLEVEL! neq 0 exit /b !ERRORLEVEL!
 
